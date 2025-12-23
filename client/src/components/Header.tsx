@@ -50,7 +50,7 @@ export function Header() {
               className="text-xl font-bold text-foreground hover-elevate px-2 py-1 rounded-md cursor-pointer"
               data-testid="link-logo"
             >
-              Rotech<span className="text-primary"> Multi Solution</span>
+              Rotech
             </span>
           </Link>
 
