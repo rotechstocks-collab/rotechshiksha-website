@@ -654,6 +654,256 @@ export async function registerRoutes(
     });
   });
 
+  // Financial News Routes
+  const sampleNewsEnglish = [
+    {
+      id: "1",
+      title: "Nifty 50 hits new all-time high as IT stocks surge on global tech rally",
+      summary: "The benchmark Nifty 50 index touched a fresh all-time high of 24,500 points driven by strong buying in IT heavyweights like TCS, Infosys, and Wipro following positive global cues.",
+      category: "Markets",
+      tag: "BREAKING",
+      imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format",
+      source: "Market Watch",
+      publishedAt: new Date().toISOString(),
+      url: "#"
+    },
+    {
+      id: "2",
+      title: "RBI keeps repo rate unchanged at 6.5%, maintains growth outlook",
+      summary: "Reserve Bank of India maintains status quo on policy rates for the eighth consecutive time, citing inflation concerns while keeping GDP growth forecast at 7%.",
+      category: "Economy",
+      tag: "RBI UPDATE",
+      imageUrl: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format",
+      source: "Economic Times",
+      publishedAt: new Date(Date.now() - 3600000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "3",
+      title: "Reliance Industries announces major green energy investment of Rs 75,000 crore",
+      summary: "Mukesh Ambani-led Reliance Industries unveils ambitious plans to invest Rs 75,000 crore in renewable energy projects over the next 5 years.",
+      category: "Business",
+      tag: "EXCLUSIVE",
+      imageUrl: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&auto=format",
+      source: "Business Standard",
+      publishedAt: new Date(Date.now() - 7200000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "4",
+      title: "Gold prices surge to Rs 72,500 per 10 grams on safe-haven demand",
+      summary: "Gold prices hit record highs in Indian markets amid global uncertainties and strong festive demand. Silver also gains 2% to Rs 88,000 per kg.",
+      category: "Commodities",
+      tag: "COMMODITY",
+      imageUrl: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format",
+      source: "Commodity Insights",
+      publishedAt: new Date(Date.now() - 10800000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "5",
+      title: "FIIs turn net buyers after 3 months, pump Rs 15,000 crore into Indian equities",
+      summary: "Foreign Institutional Investors reverse their selling trend and inject significant capital into Indian markets, boosting sentiment across sectors.",
+      category: "Markets",
+      tag: "FII/DII",
+      imageUrl: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format",
+      source: "Mint",
+      publishedAt: new Date(Date.now() - 14400000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "6",
+      title: "HDFC Bank Q3 results: Net profit rises 20% to Rs 16,372 crore",
+      summary: "India's largest private sector lender reports strong quarterly results with healthy loan growth and improved asset quality metrics.",
+      category: "Banking",
+      tag: "RESULTS",
+      imageUrl: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?w=800&auto=format",
+      source: "CNBC-TV18",
+      publishedAt: new Date(Date.now() - 18000000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "7",
+      title: "Tata Motors EV sales cross 1 lakh units milestone in India",
+      summary: "Tata Motors becomes the first Indian automaker to achieve 1 lakh electric vehicle sales, with Nexon EV leading the charge in the domestic market.",
+      category: "Auto",
+      tag: "AUTO",
+      imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&auto=format",
+      source: "Auto Today",
+      publishedAt: new Date(Date.now() - 21600000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "8",
+      title: "SIP inflows hit record Rs 21,000 crore in November 2024",
+      summary: "Systematic Investment Plans continue their strong momentum with record monthly inflows, reflecting strong retail investor participation in mutual funds.",
+      category: "Mutual Funds",
+      tag: "MF EXCLUSIVE",
+      imageUrl: "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&auto=format",
+      source: "Value Research",
+      publishedAt: new Date(Date.now() - 25200000).toISOString(),
+      url: "#"
+    }
+  ];
+
+  const sampleNewsHindi = [
+    {
+      id: "1",
+      title: "निफ्टी 50 ने बनाया नया ऑल-टाइम हाई, IT स्टॉक्स में तेजी",
+      summary: "बेंचमार्क निफ्टी 50 इंडेक्स ने 24,500 अंकों का नया सर्वकालिक उच्च स्तर छुआ। TCS, इंफोसिस और विप्रो जैसे IT हैवीवेट्स में जोरदार खरीदारी देखी गई।",
+      category: "बाजार",
+      tag: "ब्रेकिंग",
+      imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format",
+      source: "मार्केट वॉच",
+      publishedAt: new Date().toISOString(),
+      url: "#"
+    },
+    {
+      id: "2",
+      title: "RBI ने रेपो रेट 6.5% पर बरकरार रखा, विकास का अनुमान जारी",
+      summary: "भारतीय रिजर्व बैंक ने लगातार आठवीं बार नीतिगत दरों में कोई बदलाव नहीं किया। मुद्रास्फीति की चिंताओं का हवाला देते हुए GDP ग्रोथ का अनुमान 7% रखा।",
+      category: "अर्थव्यवस्था",
+      tag: "RBI अपडेट",
+      imageUrl: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format",
+      source: "इकोनॉमिक टाइम्स",
+      publishedAt: new Date(Date.now() - 3600000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "3",
+      title: "रिलायंस इंडस्ट्रीज ने 75,000 करोड़ के ग्रीन एनर्जी निवेश की घोषणा की",
+      summary: "मुकेश अंबानी की अगुवाई वाली रिलायंस इंडस्ट्रीज ने अगले 5 वर्षों में अक्षय ऊर्जा परियोजनाओं में 75,000 करोड़ रुपये निवेश करने की महत्वाकांक्षी योजना का अनावरण किया।",
+      category: "बिजनेस",
+      tag: "एक्सक्लूसिव",
+      imageUrl: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&auto=format",
+      source: "बिजनेस स्टैंडर्ड",
+      publishedAt: new Date(Date.now() - 7200000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "4",
+      title: "सोने की कीमतें 72,500 रुपये प्रति 10 ग्राम के रिकॉर्ड स्तर पर",
+      summary: "वैश्विक अनिश्चितताओं और त्योहारी मांग के बीच भारतीय बाजारों में सोने की कीमतें रिकॉर्ड ऊंचाई पर पहुंचीं। चांदी भी 2% बढ़कर 88,000 रुपये प्रति किलो हुई।",
+      category: "कमोडिटी",
+      tag: "कमोडिटी",
+      imageUrl: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format",
+      source: "कमोडिटी इनसाइट्स",
+      publishedAt: new Date(Date.now() - 10800000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "5",
+      title: "FII ने 3 महीने बाद की जोरदार खरीदारी, भारतीय बाजारों में डाले 15,000 करोड़",
+      summary: "विदेशी संस्थागत निवेशकों ने अपनी बिकवाली का रुख बदला और भारतीय बाजारों में भारी पूंजी लगाई, जिससे सभी सेक्टर्स में सेंटीमेंट मजबूत हुआ।",
+      category: "बाजार",
+      tag: "FII/DII",
+      imageUrl: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format",
+      source: "मिंट",
+      publishedAt: new Date(Date.now() - 14400000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "6",
+      title: "HDFC बैंक Q3 नतीजे: शुद्ध लाभ 20% बढ़कर 16,372 करोड़ रुपये",
+      summary: "भारत के सबसे बड़े निजी क्षेत्र के बैंक ने मजबूत तिमाही नतीजे दर्ज किए। स्वस्थ ऋण वृद्धि और बेहतर परिसंपत्ति गुणवत्ता मैट्रिक्स के साथ।",
+      category: "बैंकिंग",
+      tag: "रिजल्ट्स",
+      imageUrl: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?w=800&auto=format",
+      source: "CNBC-TV18",
+      publishedAt: new Date(Date.now() - 18000000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "7",
+      title: "टाटा मोटर्स की EV बिक्री ने भारत में 1 लाख यूनिट का माइलस्टोन पार किया",
+      summary: "टाटा मोटर्स 1 लाख इलेक्ट्रिक वाहन बिक्री हासिल करने वाली पहली भारतीय ऑटोमेकर बनी। घरेलू बाजार में नेक्सॉन EV ने बढ़त बनाई।",
+      category: "ऑटो",
+      tag: "ऑटो",
+      imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&auto=format",
+      source: "ऑटो टुडे",
+      publishedAt: new Date(Date.now() - 21600000).toISOString(),
+      url: "#"
+    },
+    {
+      id: "8",
+      title: "नवंबर 2024 में SIP इनफ्लो रिकॉर्ड 21,000 करोड़ रुपये पहुंचा",
+      summary: "सिस्टमैटिक इन्वेस्टमेंट प्लान में रिकॉर्ड मासिक इनफ्लो जारी है, जो म्यूचुअल फंड में मजबूत खुदरा निवेशक भागीदारी को दर्शाता है।",
+      category: "म्यूचुअल फंड",
+      tag: "MF एक्सक्लूसिव",
+      imageUrl: "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&auto=format",
+      source: "वैल्यू रिसर्च",
+      publishedAt: new Date(Date.now() - 25200000).toISOString(),
+      url: "#"
+    }
+  ];
+
+  // Get financial news
+  app.get("/api/news", async (req: Request, res: Response) => {
+    try {
+      const language = (req.query.lang as string) || "en";
+      const category = req.query.category as string;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      let news = language === "hi" ? [...sampleNewsHindi] : [...sampleNewsEnglish];
+      
+      if (category && category !== "all") {
+        const categoryMap: Record<string, string[]> = {
+          markets: ["Markets", "बाजार"],
+          economy: ["Economy", "अर्थव्यवस्था"],
+          business: ["Business", "बिजनेस"],
+          commodities: ["Commodities", "कमोडिटी"],
+          banking: ["Banking", "बैंकिंग"],
+          auto: ["Auto", "ऑटो"],
+          "mutual-funds": ["Mutual Funds", "म्यूचुअल फंड"]
+        };
+        const validCategories = categoryMap[category.toLowerCase()] || [];
+        news = news.filter(n => validCategories.includes(n.category));
+      }
+
+      res.json({
+        news: news.slice(0, limit),
+        language,
+        total: news.length
+      });
+    } catch (error) {
+      console.error("News fetch error:", error);
+      res.status(500).json({ message: "Failed to fetch news" });
+    }
+  });
+
+  // Get featured news (top stories)
+  app.get("/api/news/featured", async (req: Request, res: Response) => {
+    try {
+      const language = (req.query.lang as string) || "en";
+      const news = language === "hi" ? sampleNewsHindi : sampleNewsEnglish;
+      
+      res.json({
+        featured: news[0],
+        topStories: news.slice(1, 4),
+        language
+      });
+    } catch (error) {
+      console.error("Featured news error:", error);
+      res.status(500).json({ message: "Failed to fetch featured news" });
+    }
+  });
+
+  // Get news categories
+  app.get("/api/news/categories", async (_req: Request, res: Response) => {
+    res.json({
+      categories: [
+        { id: "all", labelEn: "All News", labelHi: "सभी समाचार" },
+        { id: "markets", labelEn: "Markets", labelHi: "बाजार" },
+        { id: "economy", labelEn: "Economy", labelHi: "अर्थव्यवस्था" },
+        { id: "business", labelEn: "Business", labelHi: "बिजनेस" },
+        { id: "commodities", labelEn: "Commodities", labelHi: "कमोडिटी" },
+        { id: "banking", labelEn: "Banking", labelHi: "बैंकिंग" },
+        { id: "auto", labelEn: "Auto", labelHi: "ऑटो" },
+        { id: "mutual-funds", labelEn: "Mutual Funds", labelHi: "म्यूचुअल फंड" }
+      ]
+    });
+  });
+
   // Payment Routes
   app.post("/api/payments", async (req: Request, res: Response) => {
     try {

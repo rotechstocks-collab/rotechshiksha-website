@@ -6,6 +6,13 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Live News feature replacing Live Market
+  - MoneyControl-inspired news layout with featured stories
+  - Bilingual support (English/Hindi) with language toggle
+  - Category filtering (Markets, Economy, Business, Commodities, Banking, Auto, Mutual Funds)
+  - "In Focus" section with top stories
+  - News API routes (/api/news, /api/news/featured, /api/news/categories)
+
 - **Dec 2024**: Initial MVP build with all core features
   - PostgreSQL database with users, leads, otps, payments, chatMessages tables
   - OTP-based authentication with lead capture funnel
@@ -44,7 +51,7 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 | `/about` | Company info, team, values |
 | `/courses` | Course listing (4 levels) |
 | `/courses/:level` | Course details with modules/topics |
-| `/live-market` | Real-time market data |
+| `/live-news` | Financial news (English/Hindi) |
 | `/calculators` | Trading calculators |
 | `/pricing` | Pricing plans with FAQ |
 | `/payment/:planId` | Payment with screenshot upload |
@@ -88,6 +95,11 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 - `GET /api/market/live` - Get live market indices
 - `GET /api/market/search` - Search stocks by name/symbol
 - `GET /api/market/quote/:symbol` - Get single stock quote
+
+### News API
+- `GET /api/news` - Get financial news (params: lang=en|hi, category, limit)
+- `GET /api/news/featured` - Get featured/top stories
+- `GET /api/news/categories` - Get available news categories
 
 ### Alpha Vantage API (Real-time Data)
 - `GET /api/alphavantage/quote/:symbol` - Get real-time quote from Alpha Vantage

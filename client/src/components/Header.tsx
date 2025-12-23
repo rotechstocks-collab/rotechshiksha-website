@@ -26,7 +26,7 @@ const navItems = [
       { label: "Algo Trading", href: "/courses/algo" },
     ],
   },
-  { label: "Live Market", href: "/live-market" },
+  { label: "Live News", href: "/live-news" },
   { label: "Calculators", href: "/calculators" },
   { label: "Startup Connect", href: "/startup-connect" },
   { label: "Pricing", href: "/pricing" },

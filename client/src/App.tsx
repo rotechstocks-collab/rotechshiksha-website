@@ -15,7 +15,7 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Courses from "@/pages/Courses";
-import LiveMarket from "@/pages/LiveMarket";
+import LiveNews from "@/pages/LiveNews";
 import CalculatorsPage from "@/pages/CalculatorsPage";
 import PricingPage from "@/pages/PricingPage";
 import Payment from "@/pages/Payment";
@@ -32,7 +32,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
-      <Route path="/live-market" component={LiveMarket} />
+      <Route path="/live-news" component={LiveNews} />
       <Route path="/calculators" component={CalculatorsPage} />
       <Route path="/pricing" component={PricingPage} />
       <Route path="/payment/:planId" component={Payment} />
