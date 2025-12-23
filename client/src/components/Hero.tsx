@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
 import { Link } from "wouter";
+import { StockSearch } from "./StockSearch";
 import {
   TrendingUp,
   BookOpen,
@@ -12,6 +13,7 @@ import {
   Users,
   Award,
   Clock,
+  Search,
 } from "lucide-react";
 
 export function Hero() {
@@ -47,35 +49,45 @@ export function Hero() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              {isAuthenticated ? (
-                <Link href="/courses">
-                  <Button size="lg" className="w-full sm:w-auto" data-testid="button-explore-courses">
-                    Explore Courses
+            <div className="space-y-6">
+              <div className="bg-card/80 backdrop-blur-sm rounded-xl p-4 border border-border shadow-lg">
+                <div className="flex items-center gap-2 mb-3 text-sm text-muted-foreground">
+                  <Search className="w-4 h-4" />
+                  <span>Search any stock or index</span>
+                </div>
+                <StockSearch variant="hero" />
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                {isAuthenticated ? (
+                  <Link href="/courses">
+                    <Button size="lg" className="w-full sm:w-auto" data-testid="button-explore-courses">
+                      Explore Courses
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handleGetStarted}
+                    data-testid="button-get-started"
+                  >
+                    Start Learning Free
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
+                )}
+                <Link href="/live-market">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                    data-testid="button-live-market"
+                  >
+                    Live Market Data
+                  </Button>
                 </Link>
-              ) : (
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  onClick={handleGetStarted}
-                  data-testid="button-get-started"
-                >
-                  Start Learning Free
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              )}
-              <Link href="/live-market">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto"
-                  data-testid="button-live-market"
-                >
-                  Live Market Data
-                </Button>
-              </Link>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
