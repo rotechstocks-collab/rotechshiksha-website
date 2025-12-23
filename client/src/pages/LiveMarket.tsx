@@ -236,6 +236,7 @@ export default function LiveMarket() {
   const [selectedSymbol, setSelectedSymbol] = useState("NSE:NIFTY");
   const [selectedStock, setSelectedStock] = useState<MarketIndex | null>(null);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [dataSource, setDataSource] = useState<string>("loading");
 
   const fetchMarketData = useCallback(async () => {
     setIsRefreshing(true);
@@ -245,14 +246,35 @@ export default function LiveMarket() {
         const data = await response.json();
         if (data.length > 0) {
           setIndices(data);
+          // Check if data has source field
+          if (data[0]?.source === "alphavantage") {
+            setDataSource("Alpha Vantage");
+          } else {
+            setDataSource("Yahoo Finance");
+          }
         }
       }
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Failed to fetch market data:", error);
+      setDataSource("Simulated");
     } finally {
       setIsRefreshing(false);
     }
+  }, []);
+
+  // Check Alpha Vantage API status on mount
+  useEffect(() => {
+    fetch("/api/alphavantage/status")
+      .then(res => res.json())
+      .then(status => {
+        if (status.configured) {
+          setDataSource("Alpha Vantage");
+        } else {
+          setDataSource("Yahoo Finance");
+        }
+      })
+      .catch(() => setDataSource("Simulated"));
   }, []);
 
   useEffect(() => {
@@ -315,7 +337,11 @@ export default function LiveMarket() {
               <h1 className="text-2xl font-bold text-foreground">Live Market</h1>
               <p className="text-muted-foreground">Real-time market data & analysis</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="text-xs text-muted-foreground flex items-center gap-1" data-testid="data-source-indicator">
+                <Activity className="w-3 h-3" />
+                Source: <span className={`font-medium ${dataSource === "Alpha Vantage" ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>{dataSource}</span>
+              </span>
               <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Clock className="w-3 h-3" />
                 Updated: {lastUpdated.toLocaleTimeString()}
