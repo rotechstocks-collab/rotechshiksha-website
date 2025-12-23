@@ -79,63 +79,126 @@ const symbolMapping: Record<string, string> = {
   "HINDUNILVR": "NSE:HINDUNILVR",
 };
 
+declare global {
+  interface Window {
+    TradingView?: {
+      widget: new (config: Record<string, unknown>) => { remove: () => void };
+    };
+  }
+}
+
+let tvScriptLoaded = false;
+let tvScriptLoading = false;
+const tvScriptCallbacks: (() => void)[] = [];
+
+function loadTradingViewScript(): Promise<void> {
+  return new Promise((resolve) => {
+    if (tvScriptLoaded && window.TradingView) {
+      resolve();
+      return;
+    }
+    
+    tvScriptCallbacks.push(resolve);
+    
+    if (tvScriptLoading) return;
+    
+    tvScriptLoading = true;
+    const script = document.createElement("script");
+    script.src = "https://s3.tradingview.com/tv.js";
+    script.async = true;
+    script.onload = () => {
+      tvScriptLoaded = true;
+      tvScriptCallbacks.forEach((cb) => cb());
+      tvScriptCallbacks.length = 0;
+    };
+    document.head.appendChild(script);
+  });
+}
+
 function TradingViewWidget({ symbol }: { symbol: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const widgetRef = useRef<{ remove: () => void } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const widgetIdRef = useRef(0);
+  const instanceIdRef = useRef(0);
+  const containerId = useRef(`tv_chart_${Math.random().toString(36).substring(7)}`);
 
   useEffect(() => {
     if (!containerRef.current) return;
     
-    const currentWidgetId = ++widgetIdRef.current;
-    
+    const currentInstance = ++instanceIdRef.current;
     setIsLoading(true);
     setHasError(false);
-    containerRef.current.innerHTML = "";
     
-    // symbol is already mapped (e.g., "NSE:RELIANCE"), use directly
-    const mappedSymbol = symbol;
-    
-    const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-    script.type = "text/javascript";
-    script.async = true;
-    script.innerHTML = JSON.stringify({
-      autosize: true,
-      symbol: mappedSymbol,
-      interval: "D",
-      timezone: "Asia/Kolkata",
-      theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
-      style: "1",
-      locale: "en",
-      enable_publishing: false,
-      allow_symbol_change: false,
-      hide_top_toolbar: false,
-      hide_legend: false,
-      save_image: false,
-      calendar: false,
-      support_host: "https://www.tradingview.com",
-    });
-
-    script.onload = () => {
-      if (currentWidgetId === widgetIdRef.current) {
-        setTimeout(() => setIsLoading(false), 1000);
+    if (widgetRef.current) {
+      try {
+        widgetRef.current.remove();
+      } catch (e) {
+        // Widget may already be removed
       }
-    };
+      widgetRef.current = null;
+    }
     
-    script.onerror = () => {
-      if (currentWidgetId === widgetIdRef.current) {
-        setHasError(true);
-        setIsLoading(false);
-      }
-    };
+    if (containerRef.current) {
+      containerRef.current.innerHTML = `<div id="${containerId.current}" style="height: 100%;"></div>`;
+    }
 
-    containerRef.current.appendChild(script);
+    loadTradingViewScript()
+      .then(() => {
+        if (currentInstance !== instanceIdRef.current) return;
+        if (!window.TradingView || !containerRef.current) {
+          setHasError(true);
+          setIsLoading(false);
+          return;
+        }
+
+        const theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+        
+        try {
+          widgetRef.current = new window.TradingView.widget({
+            autosize: true,
+            symbol: symbol,
+            interval: "D",
+            timezone: "Asia/Kolkata",
+            theme: theme,
+            style: "1",
+            locale: "en",
+            toolbar_bg: theme === "dark" ? "#1e293b" : "#f8fafc",
+            enable_publishing: false,
+            allow_symbol_change: false,
+            container_id: containerId.current,
+            hide_top_toolbar: false,
+            hide_legend: false,
+            save_image: false,
+            studies: ["MASimple@tv-basicstudies", "RSI@tv-basicstudies"],
+          });
+          
+          setTimeout(() => {
+            if (currentInstance === instanceIdRef.current) {
+              setIsLoading(false);
+            }
+          }, 1500);
+        } catch (e) {
+          console.error("TradingView widget error:", e);
+          setHasError(true);
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (currentInstance === instanceIdRef.current) {
+          setHasError(true);
+          setIsLoading(false);
+        }
+      });
 
     return () => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML = "";
+      if (widgetRef.current) {
+        try {
+          widgetRef.current.remove();
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        widgetRef.current = null;
       }
     };
   }, [symbol]);
@@ -158,9 +221,7 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
           </div>
         </div>
       )}
-      <div className="tradingview-widget-container h-full" ref={containerRef}>
-        <div className="tradingview-widget-container__widget h-full"></div>
-      </div>
+      <div className="tradingview-widget-container h-full" ref={containerRef} />
     </div>
   );
 }

@@ -88,6 +88,42 @@ const fundamentalsData: Record<string, StockFundamentals> = {
   "ASIANPAINT": { marketCap: "₹2.8L Cr", peRatio: 52.5, eps: 55.8, roe: 28.5, debtToEquity: 0.05, dividendYield: 0.7, sector: "Consumer Goods", industry: "Paints & Coatings", description: "Asian Paints is India's largest paint company with leadership in decorative paints." },
 };
 
+declare global {
+  interface Window {
+    TradingView?: {
+      widget: new (config: Record<string, unknown>) => { remove: () => void };
+    };
+  }
+}
+
+let tvScriptLoaded = false;
+let tvScriptLoading = false;
+const tvScriptCallbacks: (() => void)[] = [];
+
+function loadTradingViewScript(): Promise<void> {
+  return new Promise((resolve) => {
+    if (tvScriptLoaded && window.TradingView) {
+      resolve();
+      return;
+    }
+    
+    tvScriptCallbacks.push(resolve);
+    
+    if (tvScriptLoading) return;
+    
+    tvScriptLoading = true;
+    const script = document.createElement("script");
+    script.src = "https://s3.tradingview.com/tv.js";
+    script.async = true;
+    script.onload = () => {
+      tvScriptLoaded = true;
+      tvScriptCallbacks.forEach((cb) => cb());
+      tvScriptCallbacks.length = 0;
+    };
+    document.head.appendChild(script);
+  });
+}
+
 interface StockDetailModalProps {
   stock: StockData | null;
   isOpen: boolean;
@@ -96,9 +132,12 @@ interface StockDetailModalProps {
 
 export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
+  const widgetRef = useRef<{ remove: () => void } | null>(null);
   const [chartLoading, setChartLoading] = useState(true);
   const [chartError, setChartError] = useState(false);
   const [timeframe, setTimeframe] = useState("D");
+  const instanceIdRef = useRef(0);
+  const containerId = useRef(`tv_modal_chart_${Math.random().toString(36).substring(7)}`);
 
   const fundamentals = stock ? fundamentalsData[stock.symbol] || {
     marketCap: "N/A",
@@ -115,67 +154,80 @@ export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalPro
   useEffect(() => {
     if (!isOpen || !stock || !chartContainerRef.current) return;
 
+    const currentInstance = ++instanceIdRef.current;
     setChartLoading(true);
     setChartError(false);
 
+    if (widgetRef.current) {
+      try {
+        widgetRef.current.remove();
+      } catch (e) {
+        // Widget may already be removed
+      }
+      widgetRef.current = null;
+    }
+
     const container = chartContainerRef.current;
-    container.innerHTML = "";
+    container.innerHTML = `<div id="${containerId.current}" style="height: 100%; width: 100%;"></div>`;
 
     const tvSymbol = symbolMapping[stock.symbol] || `NSE:${stock.symbol}`;
 
-    const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-    script.type = "text/javascript";
-    script.async = true;
-    script.innerHTML = JSON.stringify({
-      autosize: true,
-      symbol: tvSymbol,
-      interval: timeframe,
-      timezone: "Asia/Kolkata",
-      theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
-      style: "1",
-      locale: "en",
-      enable_publishing: false,
-      hide_top_toolbar: false,
-      hide_legend: false,
-      save_image: false,
-      calendar: false,
-      hide_volume: false,
-      support_host: "https://www.tradingview.com",
-      studies: ["MASimple@tv-basicstudies", "RSI@tv-basicstudies", "MACD@tv-basicstudies"],
-      container_id: "tv_chart_container",
-    });
+    loadTradingViewScript()
+      .then(() => {
+        if (currentInstance !== instanceIdRef.current) return;
+        if (!window.TradingView || !chartContainerRef.current) {
+          setChartError(true);
+          setChartLoading(false);
+          return;
+        }
 
-    script.onload = () => setChartLoading(false);
-    script.onerror = () => {
-      setChartLoading(false);
-      setChartError(true);
-    };
+        const theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
 
-    const widgetContainer = document.createElement("div");
-    widgetContainer.className = "tradingview-widget-container";
-    widgetContainer.style.height = "100%";
-    widgetContainer.style.width = "100%";
+        try {
+          widgetRef.current = new window.TradingView.widget({
+            autosize: true,
+            symbol: tvSymbol,
+            interval: timeframe,
+            timezone: "Asia/Kolkata",
+            theme: theme,
+            style: "1",
+            locale: "en",
+            toolbar_bg: theme === "dark" ? "#1e293b" : "#f8fafc",
+            enable_publishing: false,
+            allow_symbol_change: false,
+            container_id: containerId.current,
+            hide_top_toolbar: false,
+            hide_legend: false,
+            save_image: false,
+            studies: ["MASimple@tv-basicstudies", "RSI@tv-basicstudies", "MACD@tv-basicstudies"],
+          });
 
-    const widgetInner = document.createElement("div");
-    widgetInner.id = "tv_chart_container";
-    widgetInner.style.height = "100%";
-    widgetInner.style.width = "100%";
-
-    widgetContainer.appendChild(widgetInner);
-    widgetContainer.appendChild(script);
-    container.appendChild(widgetContainer);
-
-    const timeout = setTimeout(() => {
-      if (chartLoading) {
-        setChartLoading(false);
-      }
-    }, 5000);
+          setTimeout(() => {
+            if (currentInstance === instanceIdRef.current) {
+              setChartLoading(false);
+            }
+          }, 1500);
+        } catch (e) {
+          console.error("TradingView widget error:", e);
+          setChartError(true);
+          setChartLoading(false);
+        }
+      })
+      .catch(() => {
+        if (currentInstance === instanceIdRef.current) {
+          setChartError(true);
+          setChartLoading(false);
+        }
+      });
 
     return () => {
-      clearTimeout(timeout);
-      if (container) {
-        container.innerHTML = "";
+      if (widgetRef.current) {
+        try {
+          widgetRef.current.remove();
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        widgetRef.current = null;
       }
     };
   }, [isOpen, stock, timeframe]);
