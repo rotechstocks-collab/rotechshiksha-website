@@ -26,7 +26,7 @@ export function Footer() {
                 <SiWhatsapp className="w-5 h-5" />
               </a>
               <a
-                href="https://t.me/rotechmultisolution"
+                href="https://t.me/Bharatfincap"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-md hover-elevate active-elevate-2 bg-blue-500/10 text-blue-600 dark:text-blue-400"
