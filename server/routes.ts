@@ -49,10 +49,24 @@ async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Pro
       return cached.data;
     }
 
-    // Keywords for Indian stock market and finance news
-    const searchQuery = `(${query} OR "stock market" OR "share market" OR "nifty" OR "sensex" OR "stocks" OR "trading" OR "investment" OR "finance") India`;
+    // Financial news sources prioritized for India
+    const financialSources = [
+      "economic-times",
+      "the-times-of-india",
+      "business-standard",
+      "cnbc-tv18",
+      "moneycontrol",
+      "business-today",
+      "mint",
+      "hindu-business-line",
+      "reuters",
+      "bbc-news"
+    ].join(",");
+
+    // More specific financial keywords
+    const searchQuery = `(${query} OR stock OR market OR nifty OR sensex OR rupee OR trade OR invest OR share OR economy OR banking OR mutual-fund) AND -recipe AND -food AND -cooking`;
     
-    const url = `${NEWSAPI_BASE_URL}/everything?q=${encodeURIComponent(searchQuery)}&sortBy=publishedAt&language=${language}&pageSize=12&apiKey=${NEWSAPI_KEY}`;
+    const url = `${NEWSAPI_BASE_URL}/everything?q=${encodeURIComponent(searchQuery)}&sources=${encodeURIComponent(financialSources)}&sortBy=publishedAt&language=${language}&pageSize=15&apiKey=${NEWSAPI_KEY}`;
     
     const response = await fetch(url);
     if (!response.ok) {
@@ -61,16 +75,26 @@ async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Pro
     
     const data = await response.json();
     
-    if (!data.articles) {
+    if (!data.articles || data.articles.length === 0) {
       return [];
     }
 
+    // Filter out non-financial content more aggressively
     const articles = data.articles
-      .filter((article: any) => article.urlToImage && article.content)
+      .filter((article: any) => {
+        if (!article.urlToImage || !article.content) return false;
+        const title = article.title.toLowerCase();
+        const content = (article.description || "").toLowerCase();
+        // Exclude lifestyle, food, entertainment, sports content
+        const excludeWords = ["recipe", "cooking", "food", "movie", "film", "actor", "sports", "match", "game", "celebrity"];
+        const hasExcludedWord = excludeWords.some(word => title.includes(word) || content.includes(word));
+        return !hasExcludedWord;
+      })
+      .slice(0, 12)
       .map((article: any, index: number) => ({
         id: `${cacheKey}-${index}`,
         title: article.title,
-        summary: article.description || article.content?.substring(0, 150),
+        summary: article.description || article.content?.substring(0, 200),
         category: categorizeNews(article.title),
         tag: article.source.name,
         imageUrl: article.urlToImage,
