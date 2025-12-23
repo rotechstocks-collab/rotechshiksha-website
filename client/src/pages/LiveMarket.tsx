@@ -54,13 +54,44 @@ const analysisInsights = [
   },
 ];
 
+const symbolMapping: Record<string, string> = {
+  "NSEI": "NSE:NIFTY",
+  "NSEBANK": "NSE:BANKNIFTY", 
+  "BSESN": "BSE:SENSEX",
+  "RELIANCE": "NSE:RELIANCE",
+  "TCS": "NSE:TCS",
+  "HDFCBANK": "NSE:HDFCBANK",
+  "ICICIBANK": "NSE:ICICIBANK",
+  "INFY": "NSE:INFY",
+  "SBIN": "NSE:SBIN",
+  "BHARTIARTL": "NSE:BHARTIARTL",
+  "ITC": "NSE:ITC",
+  "KOTAKBANK": "NSE:KOTAKBANK",
+  "LT": "NSE:LT",
+  "AXISBANK": "NSE:AXISBANK",
+  "BAJFINANCE": "NSE:BAJFINANCE",
+  "MARUTI": "NSE:MARUTI",
+  "TITAN": "NSE:TITAN",
+  "WIPRO": "NSE:WIPRO",
+  "ADANIENT": "NSE:ADANIENT",
+  "TATAMOTORS": "NSE:TATAMOTORS",
+  "TATASTEEL": "NSE:TATASTEEL",
+  "HINDUNILVR": "NSE:HINDUNILVR",
+};
+
 function TradingViewWidget({ symbol }: { symbol: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
     
+    setIsLoading(true);
+    setHasError(false);
     containerRef.current.innerHTML = "";
+    
+    const mappedSymbol = symbolMapping[symbol] || symbol;
     
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
@@ -68,7 +99,7 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
     script.async = true;
     script.innerHTML = JSON.stringify({
       autosize: true,
-      symbol: symbol,
+      symbol: mappedSymbol,
       interval: "D",
       timezone: "Asia/Kolkata",
       theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
@@ -83,6 +114,15 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
       support_host: "https://www.tradingview.com",
     });
 
+    script.onload = () => {
+      setTimeout(() => setIsLoading(false), 1000);
+    };
+    
+    script.onerror = () => {
+      setHasError(true);
+      setIsLoading(false);
+    };
+
     containerRef.current.appendChild(script);
 
     return () => {
@@ -93,8 +133,26 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
   }, [symbol]);
 
   return (
-    <div className="tradingview-widget-container h-[500px]" ref={containerRef}>
-      <div className="tradingview-widget-container__widget h-full"></div>
+    <div className="relative h-[500px]">
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-card z-10">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <span className="text-sm text-muted-foreground">Loading chart...</span>
+          </div>
+        </div>
+      )}
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-card z-10">
+          <div className="flex flex-col items-center gap-3 text-center p-4">
+            <AlertTriangle className="w-10 h-10 text-amber-500" />
+            <span className="text-sm text-muted-foreground">Failed to load chart. Please try again.</span>
+          </div>
+        </div>
+      )}
+      <div className="tradingview-widget-container h-full" ref={containerRef}>
+        <div className="tradingview-widget-container__widget h-full"></div>
+      </div>
     </div>
   );
 }
@@ -158,11 +216,7 @@ export default function LiveMarket() {
     setSearchQuery(stock.name);
     setShowSearchResults(false);
     
-    let tvSymbol = "NSE:" + stock.symbol;
-    if (stock.symbol === "NSEI") tvSymbol = "NSE:NIFTY";
-    else if (stock.symbol === "NSEBANK") tvSymbol = "NSE:BANKNIFTY";
-    else if (stock.symbol === "BSESN") tvSymbol = "BSE:SENSEX";
-    
+    const tvSymbol = symbolMapping[stock.symbol] || `NSE:${stock.symbol}`;
     setSelectedSymbol(tvSymbol);
 
     try {

@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-foreground">
-              Rotech
+              Rotech Shiksha
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Learn stock market trading with India's trusted education platform.
@@ -130,7 +130,7 @@ export function Footer() {
               </p>
             </div>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Rotech. All rights reserved.
+              © {new Date().getFullYear()} Rotech Shiksha. All rights reserved.
             </p>
           </div>
         </div>

@@ -253,7 +253,7 @@ export default function Payment() {
                   <div className="space-y-2 p-3 bg-muted rounded-lg text-sm">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Account Name:</span>
-                      <span className="font-medium">Rotech Multi Solution</span>
+                      <span className="font-medium">Rotech Shiksha</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Account No:</span>

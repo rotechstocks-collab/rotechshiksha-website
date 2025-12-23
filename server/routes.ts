@@ -208,7 +208,7 @@ export async function registerRoutes(
 
       res.json({
         ...user,
-        message: "Login successful - Welcome to Rotech Multi Solution!"
+        message: "Login successful - Welcome to Rotech Shiksha!"
       });
     } catch (error) {
       console.error("Verify OTP error:", error);

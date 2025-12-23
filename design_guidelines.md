@@ -1,4 +1,4 @@
-# Rotech Multi Solution - Design Guidelines
+# Rotech Shiksha - Design Guidelines
 
 ## Design Approach
 **Hybrid System**: Material Design principles + Modern Indian Fintech aesthetics (Zerodha Varsity + Groww simplicity)

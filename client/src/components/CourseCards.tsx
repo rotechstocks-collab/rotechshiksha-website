@@ -9,6 +9,7 @@ import {
   Bot,
   ChevronRight,
   Lock,
+  Play,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -190,14 +191,18 @@ export function CourseCards() {
 
                   <Link href={course.href}>
                     <Button
-                      variant="ghost"
-                      className="w-full justify-between group/btn"
+                      className={`w-full justify-between group/btn bg-gradient-to-r ${
+                        course.color === "emerald" ? "from-emerald-500 to-emerald-600" :
+                        course.color === "blue" ? "from-blue-500 to-blue-600" :
+                        course.color === "purple" ? "from-purple-500 to-purple-600" :
+                        "from-amber-500 to-orange-500"
+                      } text-white shadow-md`}
                       onClick={(e) => handleViewContent(e, course.title)}
                       data-testid={`button-view-${course.id}`}
                     >
                       <span className="flex items-center gap-2">
-                        {!isAuthenticated && <Lock className="w-4 h-4" />}
-                        View Content
+                        {!isAuthenticated ? <Lock className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        {isAuthenticated ? "Watch Now" : "Access Free Content"}
                       </span>
                       <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>

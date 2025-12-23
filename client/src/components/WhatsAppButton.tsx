@@ -2,7 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 
 const WHATSAPP_NUMBER = "918349024108";
-const WHATSAPP_MESSAGE = "Hi! I have a question about Rotech Multi Solution.";
+const WHATSAPP_MESSAGE = "Hi! I have a question about Rotech Shiksha.";
 
 export function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;

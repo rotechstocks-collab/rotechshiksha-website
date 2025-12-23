@@ -106,7 +106,7 @@ export function AuthModal() {
         setStep("success");
         toast({
           title: "Login Successful!",
-          description: "Welcome to Rotech Multi Solution!",
+          description: "Welcome to Rotech Shiksha!",
         });
         setTimeout(() => {
           setShowAuthPopup(false);

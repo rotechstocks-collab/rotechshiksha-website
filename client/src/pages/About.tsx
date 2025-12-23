@@ -81,7 +81,7 @@ export default function About() {
                 <span className="text-primary block mt-2">Financial Literacy</span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Rotech Multi Solution was founded with a simple mission: make stock market
+                Rotech Shiksha was founded with a simple mission: make stock market
                 education accessible to every Indian. We believe that with the right knowledge,
                 anyone can make informed investment decisions.
               </p>

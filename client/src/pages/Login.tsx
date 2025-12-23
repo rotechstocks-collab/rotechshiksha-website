@@ -56,7 +56,7 @@ export default function Login() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-foreground">
-                  Rotech Multi Solution
+                  Rotech Shiksha
                 </h1>
                 <p className="text-lg text-muted-foreground mt-2">
                   Start learning stock market – Free

@@ -1,8 +1,8 @@
-# Rotech Multi Solution
+# Rotech Shiksha
 
 ## Overview
 
-Rotech Multi Solution is a comprehensive stock market education platform targeting Indian retail investors. The platform provides free and paid educational content including ebooks, video tutorials, and financial calculators. It features OTP-based mobile authentication, a live market ticker, course management across skill levels (Basic to Algo Trading), and an admin dashboard for lead and payment management.
+Rotech Shiksha is a comprehensive stock market education platform targeting Indian retail investors. The platform provides free and paid educational content including ebooks, video tutorials, and financial calculators. It features OTP-based mobile authentication, a live market ticker with TradingView integration, course management across skill levels (Basic to Algo Trading), and an admin dashboard for lead and payment management.
 
 ## Recent Changes
 
