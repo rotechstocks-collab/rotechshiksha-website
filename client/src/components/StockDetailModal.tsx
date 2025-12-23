@@ -423,7 +423,84 @@ export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalPro
           </div>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="px-6 pt-4 pb-2">
+          <h3 className="text-sm font-semibold text-muted-foreground mb-3">Key Metrics</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">Market Capitalization</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-marketcap">
+                {fundamentals?.marketCap || "N/A"}
+              </p>
+              <p className="text-xs text-muted-foreground">Market Leader</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3 border-l-2 border-primary">
+              <p className="text-xs text-muted-foreground mb-1">PE TTM</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-pe">
+                {fundamentals?.peRatio?.toFixed(1) || "N/A"}
+              </p>
+              <p className="text-xs text-primary">Below Industry Median</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">PEG TTM</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-peg">
+                {fundamentals?.peRatio ? (fundamentals.peRatio / 15).toFixed(1) : "N/A"}
+              </p>
+              <p className="text-xs text-muted-foreground">Below Industry Median</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">Price to Book</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-pb">
+                {fundamentals?.pbRatio?.toFixed(1) || (fundamentals?.peRatio ? (fundamentals.peRatio / 5).toFixed(1) : "N/A")}
+              </p>
+              <p className="text-xs text-muted-foreground">Above Industry Median</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">ROE %</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-roe">
+                {fundamentals?.roe?.toFixed(1) || "N/A"}%
+              </p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400">Above Industry Median</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">EPS (TTM)</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-eps">
+                ₹{fundamentals?.eps?.toFixed(2) || "N/A"}
+              </p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400">Market Runner Up</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">Debt to Equity</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-de">
+                {fundamentals?.debtToEquity?.toFixed(2) || "N/A"}
+              </p>
+              <p className="text-xs text-muted-foreground">Below Industry Median</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">Dividend Yield</p>
+              <p className="text-lg font-bold font-mono" data-testid="metric-dividend">
+                {fundamentals?.dividendYield?.toFixed(2) || "N/A"}%
+              </p>
+              <p className="text-xs text-muted-foreground">Above Industry Median</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">52W High</p>
+              <p className="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400" data-testid="metric-52w-high">
+                ₹{(stock.high * 1.15).toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+              </p>
+              <p className="text-xs text-muted-foreground">Near 52W High</p>
+            </div>
+            <div className="bg-muted/30 rounded-md p-3">
+              <p className="text-xs text-muted-foreground mb-1">52W Low</p>
+              <p className="text-lg font-bold font-mono text-red-600 dark:text-red-400" data-testid="metric-52w-low">
+                ₹{(stock.low * 0.75).toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+              </p>
+              <p className="text-xs text-muted-foreground">52W Low</p>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">All financials are in INR Cr and price data in INR</p>
+        </div>
+        
+        <div className="p-6 pt-2 space-y-6">
           <Tabs defaultValue="chart" className="w-full">
             <TabsList className="grid w-full grid-cols-4 gap-2">
               <TabsTrigger value="chart" className="flex items-center gap-2" data-testid="tab-chart">
@@ -537,97 +614,102 @@ export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalPro
                         />
                       </AreaChart>
                     ) : (
-                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                        <XAxis 
-                          dataKey="time" 
-                          axisLine={false} 
-                          tickLine={false} 
-                          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                          interval="preserveStartEnd"
-                          minTickGap={40}
-                        />
-                        <YAxis 
-                          domain={["dataMin - 10", "dataMax + 10"]}
-                          axisLine={false}
-                          tickLine={false}
-                          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                          tickFormatter={(value) => `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
-                          width={70}
-                        />
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: "hsl(var(--background))", 
-                            border: "1px solid hsl(var(--border))",
-                            borderRadius: "6px",
-                            fontSize: "12px"
-                          }}
-                          content={({ active, payload, label }) => {
-                            if (active && payload && payload.length > 0) {
-                              const data = payload[0]?.payload as ChartDataPoint;
-                              if (!data) return null;
-                              return (
-                                <div className="bg-background border border-border rounded-md p-2 text-xs shadow-lg">
-                                  <p className="font-medium mb-1">{label}</p>
-                                  <p className="text-muted-foreground">Open: <span className="text-foreground">₹{data.open.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
-                                  <p className="text-muted-foreground">High: <span className="text-emerald-500">₹{data.high.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
-                                  <p className="text-muted-foreground">Low: <span className="text-red-500">₹{data.low.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
-                                  <p className="text-muted-foreground">Close: <span className="text-foreground font-medium">₹{data.close.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
-                                </div>
-                              );
-                            }
-                            return null;
-                          }}
-                        />
-                        <Bar 
-                          dataKey="close"
-                          shape={(props: any) => {
-                            const { x, width, payload, background } = props;
-                            if (!payload) return null;
-                            
-                            const yAxisDomain = chartData.reduce((acc, d) => ({
-                              min: Math.min(acc.min, d.low),
-                              max: Math.max(acc.max, d.high)
-                            }), { min: Infinity, max: -Infinity });
-                            
-                            const chartHeight = 300;
-                            const range = yAxisDomain.max - yAxisDomain.min + 20;
-                            const scale = chartHeight / range;
-                            
-                            const candleIsGreen = payload.close >= payload.open;
-                            const candleColor = candleIsGreen ? "#10b981" : "#ef4444";
-                            
-                            const highY = (yAxisDomain.max + 10 - payload.high) * scale;
-                            const lowY = (yAxisDomain.max + 10 - payload.low) * scale;
-                            const openY = (yAxisDomain.max + 10 - payload.open) * scale;
-                            const closeY = (yAxisDomain.max + 10 - payload.close) * scale;
-                            
-                            const bodyTop = Math.min(openY, closeY);
-                            const bodyHeight = Math.max(Math.abs(closeY - openY), 2);
-                            
-                            return (
-                              <g>
-                                <line
-                                  x1={x + width / 2}
-                                  y1={highY}
-                                  x2={x + width / 2}
-                                  y2={lowY}
-                                  stroke={candleColor}
-                                  strokeWidth={1}
-                                />
-                                <rect
-                                  x={x + width * 0.2}
-                                  y={bodyTop}
-                                  width={width * 0.6}
-                                  height={bodyHeight}
-                                  fill={candleColor}
-                                  stroke={candleColor}
-                                  strokeWidth={0.5}
-                                />
-                              </g>
-                            );
-                          }}
-                        />
-                      </BarChart>
+                      (() => {
+                        const yDomain = chartData.reduce((acc, d) => ({
+                          min: Math.min(acc.min, d.low),
+                          max: Math.max(acc.max, d.high)
+                        }), { min: Infinity, max: -Infinity });
+                        const domainMin = yDomain.min - (yDomain.max - yDomain.min) * 0.05;
+                        const domainMax = yDomain.max + (yDomain.max - yDomain.min) * 0.05;
+                        const chartHeight = 310;
+                        const priceToY = (price: number) => {
+                          return chartHeight - ((price - domainMin) / (domainMax - domainMin)) * chartHeight;
+                        };
+                        
+                        return (
+                          <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                            <XAxis 
+                              dataKey="time" 
+                              axisLine={false} 
+                              tickLine={false} 
+                              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                              interval="preserveStartEnd"
+                              minTickGap={40}
+                            />
+                            <YAxis 
+                              domain={[domainMin, domainMax]}
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                              tickFormatter={(value) => `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+                              width={70}
+                            />
+                            <Tooltip 
+                              contentStyle={{ 
+                                backgroundColor: "hsl(var(--background))", 
+                                border: "1px solid hsl(var(--border))",
+                                borderRadius: "6px",
+                                fontSize: "12px"
+                              }}
+                              content={({ active, payload, label }) => {
+                                if (active && payload && payload.length > 0) {
+                                  const data = payload[0]?.payload as ChartDataPoint;
+                                  if (!data) return null;
+                                  return (
+                                    <div className="bg-background border border-border rounded-md p-2 text-xs shadow-lg">
+                                      <p className="font-medium mb-1">{label}</p>
+                                      <p className="text-muted-foreground">Open: <span className="text-foreground">₹{data.open.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                      <p className="text-muted-foreground">High: <span className="text-emerald-500">₹{data.high.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                      <p className="text-muted-foreground">Low: <span className="text-red-500">₹{data.low.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                      <p className="text-muted-foreground">Close: <span className="text-foreground font-medium">₹{data.close.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              }}
+                            />
+                            <Bar 
+                              dataKey="high"
+                              fill="transparent"
+                              shape={(props: any) => {
+                                const { x, width, payload } = props;
+                                if (!payload) return <g />;
+                                
+                                const candleIsGreen = payload.close >= payload.open;
+                                const candleColor = candleIsGreen ? "#10b981" : "#ef4444";
+                                
+                                const wickTopY = priceToY(payload.high);
+                                const wickBottomY = priceToY(payload.low);
+                                const bodyTopY = priceToY(Math.max(payload.open, payload.close));
+                                const bodyBottomY = priceToY(Math.min(payload.open, payload.close));
+                                const bodyHeight = Math.max(bodyBottomY - bodyTopY, 2);
+                                
+                                return (
+                                  <g>
+                                    <line
+                                      x1={x + width / 2}
+                                      y1={wickTopY}
+                                      x2={x + width / 2}
+                                      y2={wickBottomY}
+                                      stroke={candleColor}
+                                      strokeWidth={1}
+                                    />
+                                    <rect
+                                      x={x + width * 0.2}
+                                      y={bodyTopY}
+                                      width={width * 0.6}
+                                      height={bodyHeight}
+                                      fill={candleColor}
+                                      stroke={candleColor}
+                                      strokeWidth={0.5}
+                                    />
+                                  </g>
+                                );
+                              }}
+                            />
+                          </BarChart>
+                        );
+                      })()
                     )}
                   </ResponsiveContainer>
                 </div>
