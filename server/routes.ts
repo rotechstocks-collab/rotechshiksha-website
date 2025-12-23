@@ -49,59 +49,59 @@ async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Pro
       return cached.data;
     }
 
-    // Financial news sources prioritized for India
-    const financialSources = [
-      "economic-times",
-      "the-times-of-india",
-      "business-standard",
-      "cnbc-tv18",
-      "moneycontrol",
-      "business-today",
-      "mint",
-      "hindu-business-line",
-      "reuters",
-      "bbc-news"
-    ].join(",");
-
-    // More specific financial keywords
-    const searchQuery = `(${query} OR stock OR market OR nifty OR sensex OR rupee OR trade OR invest OR share OR economy OR banking OR mutual-fund) AND -recipe AND -food AND -cooking`;
+    // Build search query for financial news
+    const searchQuery = query.includes("stock") ? query : `${query} India financial news`;
     
-    const url = `${NEWSAPI_BASE_URL}/everything?q=${encodeURIComponent(searchQuery)}&sources=${encodeURIComponent(financialSources)}&sortBy=publishedAt&language=${language}&pageSize=15&apiKey=${NEWSAPI_KEY}`;
+    // Use /top-headlines endpoint instead for better results
+    const url = `${NEWSAPI_BASE_URL}/top-headlines?q=${encodeURIComponent(searchQuery)}&language=${language}&pageSize=15&apiKey=${NEWSAPI_KEY}`;
+    
+    console.log(`Fetching news from: ${url.replace(NEWSAPI_KEY, "***")}`);
     
     const response = await fetch(url);
     if (!response.ok) {
+      console.error(`NewsAPI error: ${response.status}`);
       throw new Error(`NewsAPI error: ${response.status}`);
     }
     
     const data = await response.json();
     
     if (!data.articles || data.articles.length === 0) {
+      console.log(`No articles found for query: ${query}`);
       return [];
     }
 
-    // Filter out non-financial content more aggressively
+    console.log(`Found ${data.articles.length} articles for query: ${query}`);
+
+    // Filter articles with required fields
     const articles = data.articles
       .filter((article: any) => {
-        if (!article.urlToImage || !article.content) return false;
+        // Must have image and description
+        if (!article.urlToImage) return false;
+        if (!article.description && !article.content) return false;
+        
         const title = article.title.toLowerCase();
-        const content = (article.description || "").toLowerCase();
-        // Exclude lifestyle, food, entertainment, sports content
-        const excludeWords = ["recipe", "cooking", "food", "movie", "film", "actor", "sports", "match", "game", "celebrity"];
-        const hasExcludedWord = excludeWords.some(word => title.includes(word) || content.includes(word));
+        const desc = (article.description || "").toLowerCase();
+        
+        // Exclude non-financial content
+        const excludeWords = ["recipe", "cooking", "food", "movie", "film", "actor", "sports", "match", "game", "celebrity", "entertainment"];
+        const hasExcludedWord = excludeWords.some(word => title.includes(word) || desc.includes(word));
+        
         return !hasExcludedWord;
       })
-      .slice(0, 12)
       .map((article: any, index: number) => ({
-        id: `${cacheKey}-${index}`,
-        title: article.title,
-        summary: article.description || article.content?.substring(0, 200),
-        category: categorizeNews(article.title),
-        tag: article.source.name,
-        imageUrl: article.urlToImage,
-        source: article.source.name,
-        publishedAt: article.publishedAt,
-        url: article.url
-      }));
+        id: `${cacheKey}-${index}-${Date.now()}`,
+        title: article.title || "Untitled",
+        summary: article.description || article.content?.substring(0, 250) || "No description available",
+        category: categorizeNews(article.title || ""),
+        tag: article.source?.name || "News",
+        imageUrl: article.urlToImage || "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format",
+        source: article.source?.name || "Financial News",
+        publishedAt: article.publishedAt || new Date().toISOString(),
+        url: article.url || "#"
+      }))
+      .slice(0, 12);
+
+    console.log(`Processed ${articles.length} articles`);
 
     // Cache the results
     newsCache[cacheKey] = {
