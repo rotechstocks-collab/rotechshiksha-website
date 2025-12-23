@@ -5,12 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Newspaper,
   Clock,
   RefreshCw,
   Globe,
   TrendingUp,
   ExternalLink,
+  X,
 } from "lucide-react";
 
 interface NewsArticle {
@@ -34,6 +42,7 @@ interface NewsCategory {
 export default function LiveNews() {
   const [language, setLanguage] = useState<"en" | "hi">("en");
   const [activeCategory, setActiveCategory] = useState("all");
+  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const queryClient = useQueryClient();
 
   const { data: categoriesData } = useQuery<{ categories: NewsCategory[] }>({
@@ -158,7 +167,11 @@ export default function LiveNews() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           {featuredNews && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <Card className="lg:col-span-2 overflow-hidden group cursor-pointer hover-elevate" data-testid="featured-news">
+              <Card 
+                className="lg:col-span-2 overflow-hidden group cursor-pointer hover-elevate" 
+                data-testid="featured-news"
+                onClick={() => setSelectedArticle(featuredNews)}
+              >
                 <div className="relative h-64 lg:h-80">
                   <img
                     src={featuredNews.imageUrl}
@@ -190,7 +203,12 @@ export default function LiveNews() {
                   {language === "hi" ? "इन फोकस" : "IN FOCUS"}
                 </h3>
                 {topStories.map((story) => (
-                  <Card key={story.id} className="cursor-pointer hover-elevate" data-testid={`top-story-${story.id}`}>
+                  <Card 
+                    key={story.id} 
+                    className="cursor-pointer hover-elevate" 
+                    data-testid={`top-story-${story.id}`}
+                    onClick={() => setSelectedArticle(story)}
+                  >
                     <CardContent className="p-4">
                       <Badge variant="secondary" className="mb-2 text-xs">
                         {story.tag}
@@ -238,7 +256,12 @@ export default function LiveNews() {
                   ))
                 ) : (
                   news.map((article) => (
-                    <Card key={article.id} className="overflow-hidden cursor-pointer hover-elevate" data-testid={`news-card-${article.id}`}>
+                    <Card 
+                      key={article.id} 
+                      className="overflow-hidden cursor-pointer hover-elevate" 
+                      data-testid={`news-card-${article.id}`}
+                      onClick={() => setSelectedArticle(article)}
+                    >
                       <div className="relative h-40">
                         <img
                           src={article.imageUrl}
@@ -286,6 +309,48 @@ export default function LiveNews() {
               </Button>
             </CardContent>
           </Card>
+
+          <Dialog open={!!selectedArticle} onOpenChange={(open) => !open && setSelectedArticle(null)}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              {selectedArticle && (
+                <>
+                  <DialogHeader>
+                    <div className="space-y-4 w-full">
+                      <img
+                        src={selectedArticle.imageUrl}
+                        alt={selectedArticle.title}
+                        className="w-full h-64 object-cover rounded-lg"
+                      />
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge className="bg-primary/90 text-primary-foreground border-0">
+                            {selectedArticle.tag}
+                          </Badge>
+                          <Badge variant="secondary">{selectedArticle.category}</Badge>
+                        </div>
+                        <DialogTitle className="text-xl line-clamp-none">
+                          {selectedArticle.title}
+                        </DialogTitle>
+                        <DialogDescription className="text-base text-foreground/80">
+                          {selectedArticle.summary}
+                        </DialogDescription>
+                      </div>
+                    </div>
+                  </DialogHeader>
+
+                  <div className="space-y-4 pt-4 border-t">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span className="font-medium">{selectedArticle.source}</span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {formatTime(selectedArticle.publishedAt)}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
     </div>

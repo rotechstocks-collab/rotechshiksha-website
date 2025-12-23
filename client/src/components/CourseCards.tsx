@@ -146,25 +146,25 @@ export function CourseCards() {
             return (
               <Card
                 key={course.id}
-                className="group relative overflow-visible hover-elevate transition-all duration-300"
+                className="group relative hover-elevate transition-all duration-300"
                 data-testid={`card-course-${course.id}`}
               >
-                <div
-                  className={`absolute -top-3 left-4 w-8 h-8 rounded-full flex items-center justify-center ${colors.bg} ${colors.text} font-bold text-sm border-2 border-background`}
-                >
-                  {index + 1}
-                </div>
-
-                {course.badge && (
-                  <Badge
-                    className={`absolute -top-2 right-4 ${colors.badge} border-0`}
-                    variant="outline"
-                  >
-                    {course.badge}
-                  </Badge>
-                )}
-
-                <CardHeader className="pt-8">
+                <CardHeader className="pt-6">
+                  <div className="flex items-start justify-between gap-2 mb-4">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${colors.bg} ${colors.text} font-bold text-sm`}
+                    >
+                      {index + 1}
+                    </div>
+                    {course.badge && (
+                      <Badge
+                        className={`${colors.badge} border-0`}
+                        variant="outline"
+                      >
+                        {course.badge}
+                      </Badge>
+                    )}
+                  </div>
                   <div
                     className={`w-12 h-12 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center mb-4`}
                   >
