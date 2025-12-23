@@ -58,25 +58,17 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold text-foreground">Quick Links</h4>
             <nav className="flex flex-col gap-2">
-              <Link href="/courses/basic">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Basic Course
-                </span>
+              <Link href="/courses/basic" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-basic-course">
+                Basic Course
               </Link>
-              <Link href="/courses/intermediate">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Intermediate Course
-                </span>
+              <Link href="/courses/intermediate" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-intermediate-course">
+                Intermediate Course
               </Link>
-              <Link href="/courses/advanced">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Advanced Course
-                </span>
+              <Link href="/courses/advanced" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-advanced-course">
+                Advanced Course
               </Link>
-              <Link href="/courses/algo">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Algo Trading
-                </span>
+              <Link href="/courses/algo" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-algo-trading">
+                Algo Trading
               </Link>
             </nav>
           </div>
@@ -84,30 +76,20 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold text-foreground">Resources</h4>
             <nav className="flex flex-col gap-2">
-              <Link href="/calculators">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Calculators
-                </span>
+              <Link href="/calculators" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-calculators">
+                Calculators
               </Link>
-              <Link href="/live-market">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Live Market
-                </span>
+              <Link href="/live-market" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-live-market">
+                Live Market
               </Link>
-              <Link href="/startup-connect">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Startup Connect
-                </span>
+              <Link href="/startup-connect" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-startup-connect">
+                Startup Connect
               </Link>
-              <Link href="/pricing">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Pricing Plans
-                </span>
+              <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-pricing">
+                Pricing Plans
               </Link>
-              <Link href="/about">
-                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  About Us
-                </span>
+              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" data-testid="footer-link-about">
+                About Us
               </Link>
             </nav>
           </div>
