@@ -89,20 +89,44 @@ const defaultPrices: Record<string, { price: number; change: number; changePerce
   "TATAMOTORS": { price: 812.35, change: 9.45, changePercent: 1.18, open: 802.90, high: 818.00, low: 798.00, prevClose: 802.90 },
   "ADANIENT": { price: 3025.60, change: -45.80, changePercent: -1.49, open: 3071.40, high: 3085.00, low: 3008.00, prevClose: 3071.40 },
   "ASIANPAINT": { price: 2925.40, change: 28.60, changePercent: 0.99, open: 2896.80, high: 2938.00, low: 2888.00, prevClose: 2896.80 },
+  "BAJFINANCE": { price: 7245.80, change: 85.45, changePercent: 1.19, open: 7160.35, high: 7285.00, low: 7145.00, prevClose: 7160.35 },
+  "TITAN": { price: 3425.60, change: -28.75, changePercent: -0.83, open: 3454.35, high: 3468.00, low: 3412.00, prevClose: 3454.35 },
+  "TATASTEEL": { price: 142.85, change: 2.15, changePercent: 1.53, open: 140.70, high: 144.20, low: 140.00, prevClose: 140.70 },
+  "SUNPHARMA": { price: 1785.40, change: 18.60, changePercent: 1.05, open: 1766.80, high: 1798.00, low: 1762.00, prevClose: 1766.80 },
+  "ULTRACEMCO": { price: 11245.25, change: -95.80, changePercent: -0.85, open: 11341.05, high: 11380.00, low: 11200.00, prevClose: 11341.05 },
+  "NESTLEIND": { price: 2485.60, change: 22.45, changePercent: 0.91, open: 2463.15, high: 2498.00, low: 2458.00, prevClose: 2463.15 },
+  "POWERGRID": { price: 285.45, change: 3.25, changePercent: 1.15, open: 282.20, high: 287.50, low: 281.00, prevClose: 282.20 },
+  "NTPC": { price: 385.60, change: -4.85, changePercent: -1.24, open: 390.45, high: 392.00, low: 383.00, prevClose: 390.45 },
+  "ONGC": { price: 265.80, change: 2.95, changePercent: 1.12, open: 262.85, high: 268.00, low: 261.00, prevClose: 262.85 },
+  "TECHM": { price: 1685.25, change: -18.45, changePercent: -1.08, open: 1703.70, high: 1712.00, low: 1678.00, prevClose: 1703.70 },
+  "HCLTECH": { price: 1825.40, change: 24.60, changePercent: 1.37, open: 1800.80, high: 1838.00, low: 1795.00, prevClose: 1800.80 },
+  "JSWSTEEL": { price: 945.25, change: 12.85, changePercent: 1.38, open: 932.40, high: 952.00, low: 928.00, prevClose: 932.40 },
+  "COALINDIA": { price: 425.60, change: -5.45, changePercent: -1.27, open: 431.05, high: 433.00, low: 422.00, prevClose: 431.05 },
+  "BPCL": { price: 585.80, change: 8.25, changePercent: 1.43, open: 577.55, high: 590.00, low: 574.00, prevClose: 577.55 },
+  "DRREDDY": { price: 6425.40, change: -48.60, changePercent: -0.75, open: 6474.00, high: 6495.00, low: 6405.00, prevClose: 6474.00 },
+  "CIPLA": { price: 1485.60, change: 16.85, changePercent: 1.15, open: 1468.75, high: 1498.00, low: 1465.00, prevClose: 1468.75 },
+  "EICHERMOT": { price: 4685.25, change: 52.45, changePercent: 1.13, open: 4632.80, high: 4715.00, low: 4620.00, prevClose: 4632.80 },
+  "DIVISLAB": { price: 5245.80, change: -38.60, changePercent: -0.73, open: 5284.40, high: 5298.00, low: 5225.00, prevClose: 5284.40 },
+  "GRASIM": { price: 2685.40, change: 28.75, changePercent: 1.08, open: 2656.65, high: 2705.00, low: 2648.00, prevClose: 2656.65 },
+  "BRITANNIA": { price: 5485.60, change: -42.85, changePercent: -0.77, open: 5528.45, high: 5545.00, low: 5468.00, prevClose: 5528.45 },
 };
 
-function highlightMatch(text: string, query: string) {
-  if (!query.trim()) return text;
+function highlightMatch(text: string, query: string): JSX.Element {
+  if (!query.trim()) return <>{text}</>;
   
   const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
   const parts = text.split(regex);
   
-  return parts.map((part, i) => 
-    regex.test(part) ? (
-      <span key={i} className="text-primary font-semibold">{part}</span>
-    ) : (
-      part
-    )
+  return (
+    <>
+      {parts.map((part, i) => 
+        regex.test(part) ? (
+          <span key={i} className="text-primary font-semibold">{part}</span>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
   );
 }
 
