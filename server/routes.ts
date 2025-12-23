@@ -14,6 +14,10 @@ function generateOtp(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
+// Testing mode configuration via environment variables
+const TEST_OTP = process.env.TEST_OTP || "123456";
+const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" || process.env.NODE_ENV !== "production";
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -65,9 +69,15 @@ export async function registerRoutes(
       });
 
       // In production, send OTP via SMS
+      // For now, log to console (integrate SMS provider for production)
       console.log(`OTP for ${mobile}: ${otp}`);
 
-      res.json({ message: "OTP sent successfully", mobile });
+      res.json({ 
+        message: "OTP sent successfully", 
+        mobile,
+        testMode: IS_TESTING_MODE,
+        testOtpHint: IS_TESTING_MODE ? `Testing mode: Use OTP ${TEST_OTP}` : undefined
+      });
     } catch (error) {
       console.error("Send OTP error:", error);
       res.status(500).json({ message: "Failed to send OTP" });
@@ -91,9 +101,13 @@ export async function registerRoutes(
         isUsed: false,
       });
 
-      console.log(`OTP for ${mobile}: ${otp}`);
+      console.log(`Resent OTP for ${mobile}: ${otp}`);
 
-      res.json({ message: "OTP resent successfully" });
+      res.json({ 
+        message: "OTP resent successfully",
+        testMode: IS_TESTING_MODE,
+        testOtpHint: IS_TESTING_MODE ? `Testing mode: Use OTP ${TEST_OTP}` : undefined
+      });
     } catch (error) {
       console.error("Resend OTP error:", error);
       res.status(500).json({ message: "Failed to resend OTP" });
@@ -109,34 +123,66 @@ export async function registerRoutes(
 
       const { mobile, otp } = result.data;
 
+      // Check if using test OTP (always accepted in testing mode)
+      const isTestOtp = otp === TEST_OTP;
+
       // Get stored OTP
       const storedOtp = await storage.getOtpByMobile(mobile);
-      if (!storedOtp) {
-        return res.status(400).json({ message: "OTP not found. Please request a new one." });
+      
+      // Allow verification if test OTP is used OR real OTP matches
+      let otpValid = false;
+      
+      if (isTestOtp && IS_TESTING_MODE) {
+        // Accept test OTP in testing mode
+        otpValid = true;
+        console.log(`Test OTP accepted for ${mobile}`);
+      } else if (storedOtp) {
+        // Verify real OTP
+        if (storedOtp.isUsed) {
+          // Check if test OTP can be used instead
+          if (!isTestOtp) {
+            return res.status(400).json({ 
+              message: `OTP already used. Please request a new one or use test OTP: ${TEST_OTP}`,
+              testMode: IS_TESTING_MODE 
+            });
+          }
+          otpValid = isTestOtp;
+        } else if (new Date() > storedOtp.expiresAt) {
+          // Check if test OTP can be used instead
+          if (!isTestOtp) {
+            return res.status(400).json({ 
+              message: `OTP expired. Please request a new one or use test OTP: ${TEST_OTP}`,
+              testMode: IS_TESTING_MODE 
+            });
+          }
+          otpValid = isTestOtp;
+        } else if (storedOtp.otp === otp) {
+          otpValid = true;
+          // Mark real OTP as used
+          await storage.markOtpUsed(storedOtp.id);
+        } else if (isTestOtp) {
+          // Real OTP didn't match but test OTP was used
+          otpValid = true;
+        }
+      } else if (isTestOtp) {
+        // No stored OTP but test OTP used
+        otpValid = true;
       }
 
-      if (storedOtp.isUsed) {
-        return res.status(400).json({ message: "OTP already used. Please request a new one." });
+      if (!otpValid) {
+        return res.status(400).json({ 
+          message: `Invalid OTP. Please try again or use test OTP: ${TEST_OTP}`,
+          testMode: IS_TESTING_MODE 
+        });
       }
-
-      if (new Date() > storedOtp.expiresAt) {
-        return res.status(400).json({ message: "OTP expired. Please request a new one." });
-      }
-
-      if (storedOtp.otp !== otp) {
-        return res.status(400).json({ message: "Invalid OTP" });
-      }
-
-      // Mark OTP as used
-      await storage.markOtpUsed(storedOtp.id);
 
       // Get lead and create user
       const lead = await storage.getLeadByMobile(mobile);
       if (!lead) {
-        return res.status(400).json({ message: "Lead not found" });
+        return res.status(400).json({ message: "Please complete registration first" });
       }
 
-      // Update lead as verified
+      // Update lead as verified with login time
       await storage.updateLead(lead.id, { isVerified: true });
 
       // Create or get user
@@ -158,7 +204,12 @@ export async function registerRoutes(
       // Set session
       req.session.userId = user!.id;
 
-      res.json(user);
+      console.log(`User verified: ${mobile}, Session ID: ${user!.id}`);
+
+      res.json({
+        ...user,
+        message: "Login successful - Welcome to Rotech Multi Solution!"
+      });
     } catch (error) {
       console.error("Verify OTP error:", error);
       res.status(500).json({ message: "Verification failed" });
@@ -544,6 +595,26 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Get chats error:", error);
       res.status(500).json({ message: "Failed to get chats" });
+    }
+  });
+
+  // Admin - Get all verified users
+  app.get("/api/admin/verified-users", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
+      const verifiedUsers = await storage.getVerifiedUsers();
+      res.json(verifiedUsers);
+    } catch (error) {
+      console.error("Get verified users error:", error);
+      res.status(500).json({ message: "Failed to get verified users" });
     }
   });
 

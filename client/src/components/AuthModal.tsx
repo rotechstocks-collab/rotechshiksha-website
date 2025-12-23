@@ -40,6 +40,7 @@ export function AuthModal() {
   const [step, setStep] = useState<Step>("details");
   const [mobile, setMobile] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTestMode, setIsTestMode] = useState(false);
 
   const detailsForm = useForm<LeadFormData>({
     resolver: zodResolver(leadFormSchema),
@@ -64,19 +65,20 @@ export function AuthModal() {
     setIsSubmitting(true);
     try {
       const response = await apiRequest("POST", "/api/auth/send-otp", data);
+      const result = await response.json();
       if (response.ok) {
         setMobile(data.mobile);
         otpForm.setValue("mobile", data.mobile);
+        setIsTestMode(result.testMode || false);
         setStep("otp");
         toast({
           title: "OTP Sent!",
-          description: `OTP sent to +91 ${data.mobile}`,
+          description: result.testOtpHint || `OTP sent to +91 ${data.mobile}`,
         });
       } else {
-        const error = await response.json();
         toast({
           title: "Error",
-          description: error.message || "Failed to send OTP",
+          description: result.message || "Failed to send OTP",
           variant: "destructive",
         });
       }
@@ -98,25 +100,25 @@ export function AuthModal() {
         mobile: mobile,
         otp: data.otp,
       });
+      const result = await response.json();
       if (response.ok) {
-        const user = await response.json();
-        login(user);
+        login(result);
         setStep("success");
         toast({
-          title: "Welcome!",
-          description: "You are now logged in. Enjoy free learning!",
+          title: "Login Successful!",
+          description: "Welcome to Rotech Multi Solution!",
         });
         setTimeout(() => {
           setShowAuthPopup(false);
           setStep("details");
+          setIsTestMode(false);
           detailsForm.reset();
           otpForm.reset();
         }, 1500);
       } else {
-        const error = await response.json();
         toast({
-          title: "Invalid OTP",
-          description: error.message || "Please enter the correct OTP",
+          title: "OTP Verification Failed",
+          description: result.message || "Please enter the correct OTP",
           variant: "destructive",
         });
       }
@@ -155,6 +157,7 @@ export function AuthModal() {
   const handleClose = () => {
     setShowAuthPopup(false);
     setStep("details");
+    setIsTestMode(false);
     detailsForm.reset();
     otpForm.reset();
   };
@@ -326,6 +329,16 @@ export function AuthModal() {
               <DialogDescription>
                 Enter the 6-digit OTP sent to +91 {mobile}
               </DialogDescription>
+              {isTestMode && (
+                <div className="mt-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                  <p className="text-sm text-amber-700 dark:text-amber-300 font-medium">
+                    Testing Mode: Use OTP 123456
+                  </p>
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                    SMS not configured. Use test OTP to continue.
+                  </p>
+                </div>
+              )}
             </DialogHeader>
 
             <Form {...otpForm}>

@@ -43,28 +43,36 @@ export default function Admin() {
 
   const { data: leads = [], refetch: refetchLeads } = useQuery({
     queryKey: ["/api/admin/leads"],
-    enabled: isAuthenticated && user?.isAdmin,
+    enabled: !!(isAuthenticated && user?.isAdmin),
   });
 
   const { data: payments = [], refetch: refetchPayments } = useQuery({
     queryKey: ["/api/admin/payments"],
-    enabled: isAuthenticated && user?.isAdmin,
+    enabled: !!(isAuthenticated && user?.isAdmin),
   });
 
   const { data: chatMessages = [] } = useQuery({
     queryKey: ["/api/admin/chats"],
-    enabled: isAuthenticated && user?.isAdmin,
+    enabled: !!(isAuthenticated && user?.isAdmin),
   });
 
   const { data: startups = [], refetch: refetchStartups } = useQuery({
     queryKey: ["/api/admin/startups"],
-    enabled: isAuthenticated && user?.isAdmin,
+    enabled: !!(isAuthenticated && user?.isAdmin),
   });
 
   const { data: investors = [], refetch: refetchInvestors } = useQuery({
     queryKey: ["/api/admin/investors"],
-    enabled: isAuthenticated && user?.isAdmin,
+    enabled: !!(isAuthenticated && user?.isAdmin),
   });
+
+  const { data: verifiedUsers = [], refetch: refetchVerifiedUsers } = useQuery({
+    queryKey: ["/api/admin/verified-users"],
+    enabled: !!(isAuthenticated && user?.isAdmin),
+  });
+
+  const [userSearchTerm, setUserSearchTerm] = useState("");
+  const [userTypeFilter, setUserTypeFilter] = useState<"all" | "student" | "startup" | "investor">("all");
 
   const approvePaymentMutation = useMutation({
     mutationFn: async (paymentId: string) => {
@@ -128,6 +136,46 @@ export default function Admin() {
   const pendingPayments = Array.isArray(payments)
     ? payments.filter((p: any) => p.status === "pending").length
     : 0;
+  const totalVerifiedUsers = Array.isArray(verifiedUsers) ? verifiedUsers.length : 0;
+
+  const filteredVerifiedUsers = Array.isArray(verifiedUsers)
+    ? verifiedUsers.filter((usr: any) => {
+        const matchesSearch =
+          usr.fullName?.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+          usr.mobile?.includes(userSearchTerm) ||
+          usr.email?.toLowerCase().includes(userSearchTerm.toLowerCase());
+        const matchesFilter =
+          userTypeFilter === "all" ||
+          usr.userType === userTypeFilter;
+        return matchesSearch && matchesFilter;
+      })
+    : [];
+
+  const exportVerifiedUsers = () => {
+    const csv = [
+      ["Name", "Mobile", "Email", "User Type", "Experience", "Source", "Verified", "Last Login", "Date"],
+      ...filteredVerifiedUsers.map((usr: any) => [
+        usr.fullName,
+        usr.mobile,
+        usr.email || "",
+        usr.userType || "student",
+        usr.experience,
+        usr.source || "free",
+        usr.isVerified ? "Yes" : "No",
+        usr.lastLoginAt ? new Date(usr.lastLoginAt).toLocaleDateString() : "-",
+        usr.createdAt ? new Date(usr.createdAt).toLocaleDateString() : "-",
+      ]),
+    ]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `otp-verified-users-${new Date().toISOString().split("T")[0]}.csv`;
+    a.click();
+  };
 
   const exportLeads = () => {
     const csv = [
@@ -186,8 +234,8 @@ export default function Admin() {
                     <CheckCircle className="w-5 h-5 text-emerald-600" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold">{verifiedLeads}</div>
-                    <div className="text-sm text-muted-foreground">Verified Users</div>
+                    <div className="text-2xl font-bold">{totalVerifiedUsers}</div>
+                    <div className="text-sm text-muted-foreground">OTP Verified Users</div>
                   </div>
                 </div>
               </CardContent>
@@ -222,8 +270,12 @@ export default function Admin() {
             </Card>
           </div>
 
-          <Tabs defaultValue="leads" className="space-y-6">
+          <Tabs defaultValue="verified-users" className="space-y-6">
             <TabsList className="flex-wrap">
+              <TabsTrigger value="verified-users">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                OTP Users
+              </TabsTrigger>
               <TabsTrigger value="leads">
                 <Users className="w-4 h-4 mr-2" />
                 Leads
@@ -245,6 +297,132 @@ export default function Admin() {
                 Investors
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="verified-users">
+              <Card>
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                      <CardTitle>OTP Verified Users</CardTitle>
+                      <CardDescription>All users who completed OTP verification</CardDescription>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => refetchVerifiedUsers()}
+                        data-testid="button-refresh-verified-users"
+                      >
+                        <RefreshCw className="w-4 h-4 mr-2" />
+                        Refresh
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={exportVerifiedUsers}
+                        data-testid="button-export-verified-users"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Export CSV
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search by name, mobile, or email..."
+                        value={userSearchTerm}
+                        onChange={(e) => setUserSearchTerm(e.target.value)}
+                        className="pl-10"
+                        data-testid="input-search-verified-users"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant={userTypeFilter === "all" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setUserTypeFilter("all")}
+                      >
+                        All
+                      </Button>
+                      <Button
+                        variant={userTypeFilter === "student" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setUserTypeFilter("student")}
+                      >
+                        Student
+                      </Button>
+                      <Button
+                        variant={userTypeFilter === "startup" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setUserTypeFilter("startup")}
+                      >
+                        Startup
+                      </Button>
+                      <Button
+                        variant={userTypeFilter === "investor" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setUserTypeFilter("investor")}
+                      >
+                        Investor
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Mobile</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>User Type</TableHead>
+                          <TableHead>Source</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Registered</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredVerifiedUsers.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                              No verified users found
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          filteredVerifiedUsers.map((usr: any) => (
+                            <TableRow key={usr.id}>
+                              <TableCell className="font-medium">{usr.fullName}</TableCell>
+                              <TableCell>{usr.mobile}</TableCell>
+                              <TableCell>{usr.email || "-"}</TableCell>
+                              <TableCell className="capitalize">
+                                <Badge variant="secondary">{usr.userType || "student"}</Badge>
+                              </TableCell>
+                              <TableCell className="capitalize">
+                                <Badge className="bg-blue-500/10 text-blue-600 border-0">
+                                  {usr.source || "free"}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge className="bg-emerald-500/10 text-emerald-600 border-0">
+                                  Verified
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                {usr.createdAt ? new Date(usr.createdAt).toLocaleDateString() : "-"}
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             <TabsContent value="leads">
               <Card>

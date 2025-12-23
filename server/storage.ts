@@ -32,6 +32,7 @@ export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByMobile(mobile: string): Promise<User | undefined>;
+  getVerifiedUsers(): Promise<User[]>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, data: Partial<User>): Promise<User | undefined>;
 
@@ -107,6 +108,10 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
+  }
+
+  async getVerifiedUsers(): Promise<User[]> {
+    return db.select().from(users).where(eq(users.isVerified, true)).orderBy(desc(users.createdAt));
   }
 
   // Leads

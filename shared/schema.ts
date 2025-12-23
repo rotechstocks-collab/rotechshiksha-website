@@ -10,8 +10,11 @@ export const users = pgTable("users", {
   email: text("email"),
   experience: text("experience").notNull(), // beginner, intermediate, advanced
   investmentRange: text("investment_range"),
+  userType: text("user_type").default("student"), // student, startup, investor
+  source: text("source").default("free"), // free, startup, investor, paid
   isVerified: boolean("is_verified").default(false),
   isAdmin: boolean("is_admin").default(false),
+  lastLoginAt: timestamp("last_login_at"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -32,7 +35,10 @@ export const leads = pgTable("leads", {
   email: text("email"),
   experience: text("experience").notNull(),
   investmentRange: text("investment_range"),
+  userType: text("user_type").default("student"), // student, startup, investor
+  source: text("source").default("free"), // free, startup, investor
   isVerified: boolean("is_verified").default(false),
+  verifiedAt: timestamp("verified_at"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
