@@ -276,11 +276,20 @@ const fundamentalsData: Record<string, StockFundamentals> = {
   },
 };
 
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { ExternalLink } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { ExternalLink, LineChart as LineChartIcon, CandlestickChart } from "lucide-react";
 
-function generateChartData(basePrice: number, change: number, timeframe: string): { time: string; price: number }[] {
-  const data: { time: string; price: number }[] = [];
+interface ChartDataPoint {
+  time: string;
+  price: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}
+
+function generateChartData(basePrice: number, change: number, timeframe: string): ChartDataPoint[] {
+  const data: ChartDataPoint[] = [];
   let points = 30;
   let format = "time";
   
@@ -293,9 +302,8 @@ function generateChartData(basePrice: number, change: number, timeframe: string)
     case "12M": points = 52; format = "week"; break;
   }
   
-  const isPositive = change >= 0;
   const startPrice = basePrice - change;
-  const volatility = basePrice * 0.008;
+  const volatility = basePrice * 0.012;
   
   let currentPrice = startPrice;
   const priceStep = change / points;
@@ -303,7 +311,14 @@ function generateChartData(basePrice: number, change: number, timeframe: string)
   for (let i = 0; i < points; i++) {
     const randomWalk = (Math.random() - 0.5) * volatility;
     const trend = priceStep * (1 + (Math.random() - 0.5) * 0.5);
-    currentPrice = currentPrice + trend + randomWalk;
+    
+    const open = currentPrice;
+    const candleMove = (Math.random() - 0.5) * volatility * 1.5;
+    const close = currentPrice + trend + randomWalk;
+    const high = Math.max(open, close) + Math.abs(candleMove) * 0.5;
+    const low = Math.min(open, close) - Math.abs(candleMove) * 0.5;
+    
+    currentPrice = close;
     
     let label = "";
     if (format === "time") {
@@ -320,11 +335,19 @@ function generateChartData(basePrice: number, change: number, timeframe: string)
       label = `${d.getDate()}/${d.getMonth() + 1}`;
     }
     
-    data.push({ time: label, price: Math.max(currentPrice, startPrice * 0.9) });
+    data.push({ 
+      time: label, 
+      price: Math.max(close, startPrice * 0.9),
+      open: Math.max(open, startPrice * 0.9),
+      high: Math.max(high, startPrice * 0.9),
+      low: Math.max(low, startPrice * 0.85),
+      close: Math.max(close, startPrice * 0.9)
+    });
   }
   
   if (data.length > 0) {
     data[data.length - 1].price = basePrice;
+    data[data.length - 1].close = basePrice;
   }
   
   return data;
@@ -336,9 +359,12 @@ interface StockDetailModalProps {
   onClose: () => void;
 }
 
+type ChartType = "line" | "candlestick";
+
 export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalProps) {
   const [timeframe, setTimeframe] = useState("D");
-  const [chartData, setChartData] = useState<{ time: string; price: number }[]>([]);
+  const [chartType, setChartType] = useState<ChartType>("line");
+  const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
 
   const fundamentals = stock ? fundamentalsData[stock.symbol] || {
     marketCap: "N/A",
@@ -420,71 +446,189 @@ export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalPro
 
             <TabsContent value="chart" className="mt-4">
               <div className="space-y-4">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-sm text-muted-foreground mr-2">Timeframe:</span>
-                  {[
-                    { label: "1D", value: "D" },
-                    { label: "1W", value: "W" },
-                    { label: "1M", value: "M" },
-                    { label: "3M", value: "3M" },
-                    { label: "6M", value: "6M" },
-                    { label: "1Y", value: "12M" },
-                  ].map((tf) => (
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm text-muted-foreground">Timeframe:</span>
+                    {[
+                      { label: "1D", value: "D" },
+                      { label: "1W", value: "W" },
+                      { label: "1M", value: "M" },
+                      { label: "3M", value: "3M" },
+                      { label: "6M", value: "6M" },
+                      { label: "1Y", value: "12M" },
+                    ].map((tf) => (
+                      <Button
+                        key={tf.value}
+                        size="sm"
+                        variant={timeframe === tf.value ? "default" : "outline"}
+                        onClick={() => setTimeframe(tf.value)}
+                        data-testid={`timeframe-${tf.value.toLowerCase()}`}
+                      >
+                        {tf.label}
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-md">
                     <Button
-                      key={tf.value}
                       size="sm"
-                      variant={timeframe === tf.value ? "default" : "outline"}
-                      onClick={() => setTimeframe(tf.value)}
-                      data-testid={`timeframe-${tf.value.toLowerCase()}`}
+                      variant={chartType === "line" ? "default" : "ghost"}
+                      onClick={() => setChartType("line")}
+                      className="h-8 px-3"
+                      data-testid="chart-type-line"
                     >
-                      {tf.label}
+                      <LineChartIcon className="w-4 h-4 mr-1" />
+                      Line
                     </Button>
-                  ))}
+                    <Button
+                      size="sm"
+                      variant={chartType === "candlestick" ? "default" : "ghost"}
+                      onClick={() => setChartType("candlestick")}
+                      className="h-8 px-3"
+                      data-testid="chart-type-candlestick"
+                    >
+                      <CandlestickChart className="w-4 h-4 mr-1" />
+                      Candle
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="relative h-[350px] w-full bg-muted/30 rounded-md p-4">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id={`colorPrice-${stock.symbol}`} x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity={0.3} />
-                          <stop offset="95%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <XAxis 
-                        dataKey="time" 
-                        axisLine={false} 
-                        tickLine={false} 
-                        tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                        interval="preserveStartEnd"
-                        minTickGap={40}
-                      />
-                      <YAxis 
-                        domain={["auto", "auto"]}
-                        axisLine={false}
-                        tickLine={false}
-                        tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                        tickFormatter={(value) => `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
-                        width={70}
-                      />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: "hsl(var(--background))", 
-                          border: "1px solid hsl(var(--border))",
-                          borderRadius: "6px",
-                          fontSize: "12px"
-                        }}
-                        formatter={(value: number) => [`₹${value.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`, "Price"]}
-                        labelFormatter={(label) => `Time: ${label}`}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="price"
-                        stroke={isPositive ? "#10b981" : "#ef4444"}
-                        strokeWidth={2}
-                        fill={`url(#colorPrice-${stock.symbol})`}
-                      />
-                    </AreaChart>
+                    {chartType === "line" ? (
+                      <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id={`colorPrice-${stock.symbol}`} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity={0.3} />
+                            <stop offset="95%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis 
+                          dataKey="time" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                          interval="preserveStartEnd"
+                          minTickGap={40}
+                        />
+                        <YAxis 
+                          domain={["auto", "auto"]}
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                          tickFormatter={(value) => `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+                          width={70}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: "hsl(var(--background))", 
+                            border: "1px solid hsl(var(--border))",
+                            borderRadius: "6px",
+                            fontSize: "12px"
+                          }}
+                          formatter={(value: number) => [`₹${value.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`, "Price"]}
+                          labelFormatter={(label) => `Time: ${label}`}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="price"
+                          stroke={isPositive ? "#10b981" : "#ef4444"}
+                          strokeWidth={2}
+                          fill={`url(#colorPrice-${stock.symbol})`}
+                        />
+                      </AreaChart>
+                    ) : (
+                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <XAxis 
+                          dataKey="time" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                          interval="preserveStartEnd"
+                          minTickGap={40}
+                        />
+                        <YAxis 
+                          domain={["dataMin - 10", "dataMax + 10"]}
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                          tickFormatter={(value) => `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+                          width={70}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: "hsl(var(--background))", 
+                            border: "1px solid hsl(var(--border))",
+                            borderRadius: "6px",
+                            fontSize: "12px"
+                          }}
+                          content={({ active, payload, label }) => {
+                            if (active && payload && payload.length > 0) {
+                              const data = payload[0]?.payload as ChartDataPoint;
+                              if (!data) return null;
+                              return (
+                                <div className="bg-background border border-border rounded-md p-2 text-xs shadow-lg">
+                                  <p className="font-medium mb-1">{label}</p>
+                                  <p className="text-muted-foreground">Open: <span className="text-foreground">₹{data.open.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                  <p className="text-muted-foreground">High: <span className="text-emerald-500">₹{data.high.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                  <p className="text-muted-foreground">Low: <span className="text-red-500">₹{data.low.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                  <p className="text-muted-foreground">Close: <span className="text-foreground font-medium">₹{data.close.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span></p>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <Bar 
+                          dataKey="close"
+                          shape={(props: any) => {
+                            const { x, width, payload, background } = props;
+                            if (!payload) return null;
+                            
+                            const yAxisDomain = chartData.reduce((acc, d) => ({
+                              min: Math.min(acc.min, d.low),
+                              max: Math.max(acc.max, d.high)
+                            }), { min: Infinity, max: -Infinity });
+                            
+                            const chartHeight = 300;
+                            const range = yAxisDomain.max - yAxisDomain.min + 20;
+                            const scale = chartHeight / range;
+                            
+                            const candleIsGreen = payload.close >= payload.open;
+                            const candleColor = candleIsGreen ? "#10b981" : "#ef4444";
+                            
+                            const highY = (yAxisDomain.max + 10 - payload.high) * scale;
+                            const lowY = (yAxisDomain.max + 10 - payload.low) * scale;
+                            const openY = (yAxisDomain.max + 10 - payload.open) * scale;
+                            const closeY = (yAxisDomain.max + 10 - payload.close) * scale;
+                            
+                            const bodyTop = Math.min(openY, closeY);
+                            const bodyHeight = Math.max(Math.abs(closeY - openY), 2);
+                            
+                            return (
+                              <g>
+                                <line
+                                  x1={x + width / 2}
+                                  y1={highY}
+                                  x2={x + width / 2}
+                                  y2={lowY}
+                                  stroke={candleColor}
+                                  strokeWidth={1}
+                                />
+                                <rect
+                                  x={x + width * 0.2}
+                                  y={bodyTop}
+                                  width={width * 0.6}
+                                  height={bodyHeight}
+                                  fill={candleColor}
+                                  stroke={candleColor}
+                                  strokeWidth={0.5}
+                                />
+                              </g>
+                            );
+                          }}
+                        />
+                      </BarChart>
+                    )}
                   </ResponsiveContainer>
                 </div>
 

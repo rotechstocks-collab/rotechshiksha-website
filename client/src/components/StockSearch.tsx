@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, TrendingUp, Building2, BarChart3, X, Clock } from "lucide-react";
+import { Search, X, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StockDetailModal } from "./StockDetailModal";
 
@@ -66,6 +66,10 @@ const stockDatabase: StockSearchResult[] = [
   { symbol: "DIVISLAB", name: "Divi's Laboratories Ltd", exchange: "NSE", type: "stock" },
   { symbol: "GRASIM", name: "Grasim Industries Ltd", exchange: "NSE", type: "stock" },
   { symbol: "BRITANNIA", name: "Britannia Industries Ltd", exchange: "NSE", type: "stock" },
+  { symbol: "ADANIPORTS", name: "Adani Ports & Special Economic Zone Ltd", exchange: "NSE", type: "stock" },
+  { symbol: "ADANIPOWER", name: "Adani Power Ltd", exchange: "NSE", type: "stock" },
+  { symbol: "ADANIGREEN", name: "Adani Green Energy Ltd", exchange: "NSE", type: "stock" },
+  { symbol: "ATGL", name: "Adani Total Gas Ltd", exchange: "NSE", type: "stock" },
 ];
 
 const defaultPrices: Record<string, { price: number; change: number; changePercent: number; open: number; high: number; low: number; prevClose: number }> = {
@@ -109,6 +113,10 @@ const defaultPrices: Record<string, { price: number; change: number; changePerce
   "DIVISLAB": { price: 5245.80, change: -38.60, changePercent: -0.73, open: 5284.40, high: 5298.00, low: 5225.00, prevClose: 5284.40 },
   "GRASIM": { price: 2685.40, change: 28.75, changePercent: 1.08, open: 2656.65, high: 2705.00, low: 2648.00, prevClose: 2656.65 },
   "BRITANNIA": { price: 5485.60, change: -42.85, changePercent: -0.77, open: 5528.45, high: 5545.00, low: 5468.00, prevClose: 5528.45 },
+  "ADANIPORTS": { price: 1493.60, change: -15.10, changePercent: -1.00, open: 1508.70, high: 1549.00, low: 1485.00, prevClose: 1508.70 },
+  "ADANIPOWER": { price: 144.30, change: 1.05, changePercent: 0.73, open: 143.25, high: 146.50, low: 142.00, prevClose: 143.25 },
+  "ADANIGREEN": { price: 1016.90, change: -3.85, changePercent: -0.38, open: 1020.75, high: 1032.00, low: 1008.00, prevClose: 1020.75 },
+  "ATGL": { price: 563.40, change: -5.25, changePercent: -0.93, open: 568.65, high: 575.00, low: 558.00, prevClose: 568.65 },
 };
 
 function highlightMatch(text: string, query: string): JSX.Element {
@@ -135,6 +143,8 @@ interface StockSearchProps {
   className?: string;
 }
 
+type FilterType = "all" | "stock" | "index";
+
 export function StockSearch({ variant = "hero", className = "" }: StockSearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<StockSearchResult[]>([]);
@@ -143,6 +153,7 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
   const [showModal, setShowModal] = useState(false);
   const [recentSearches, setRecentSearches] = useState<StockSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [filterType, setFilterType] = useState<FilterType>("all");
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -167,22 +178,34 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSearch = useCallback((searchQuery: string) => {
-    setQuery(searchQuery);
-    
+  const runSearch = useCallback((searchQuery: string, filter: FilterType) => {
     if (searchQuery.length < 1) {
       setResults([]);
       return;
     }
 
-    const filtered = stockDatabase.filter(stock => 
+    let filtered = stockDatabase.filter(stock => 
       stock.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       stock.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 8);
+    );
 
-    setResults(filtered);
-    setShowResults(true);
+    if (filter !== "all") {
+      filtered = filtered.filter(stock => stock.type === filter);
+    }
+
+    setResults(filtered.slice(0, 10));
   }, []);
+
+  const handleSearch = useCallback((searchQuery: string) => {
+    setQuery(searchQuery);
+    runSearch(searchQuery, filterType);
+    setShowResults(true);
+  }, [filterType, runSearch]);
+
+  const handleFilterChange = useCallback((newFilter: FilterType) => {
+    setFilterType(newFilter);
+    runSearch(query, newFilter);
+  }, [query, runSearch]);
 
   const handleSelectStock = useCallback(async (stock: StockSearchResult) => {
     setIsLoading(true);
@@ -242,7 +265,17 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
     inputRef.current?.focus();
   }, []);
 
+  const getStockPrice = (symbol: string) => {
+    return defaultPrices[symbol] || { price: 0, change: 0, changePercent: 0 };
+  };
+
   const isHero = variant === "hero";
+
+  const filterTabs: { label: string; value: FilterType }[] = [
+    { label: "All", value: "all" },
+    { label: "Stock", value: "stock" },
+    { label: "Index", value: "index" },
+  ];
 
   return (
     <>
@@ -253,7 +286,7 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Search Stock, Index or Company (e.g., Reliance, TCS, Nifty)"
+              placeholder="Search any stock or index"
               value={query}
               onChange={(e) => handleSearch(e.target.value)}
               onFocus={() => {
@@ -277,78 +310,111 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
             )}
           </div>
 
-          {showResults && (results.length > 0 || (query.length === 0 && recentSearches.length > 0)) && (
-            <Card className={`absolute top-full left-0 right-0 mt-2 z-50 shadow-xl border-2 ${isHero ? "rounded-xl" : ""}`}>
-              <CardContent className="p-2">
+          {showResults && (results.length > 0 || (query.length === 0 && recentSearches.length > 0) || query.length > 0) && (
+            <Card className={`absolute top-full left-0 right-0 mt-2 z-50 shadow-xl border overflow-hidden ${isHero ? "rounded-xl" : ""}`}>
+              <div className="border-b bg-muted/30">
+                <div className="flex items-center gap-1 p-2">
+                  {filterTabs.map((tab) => (
+                    <button
+                      key={tab.value}
+                      onClick={() => handleFilterChange(tab.value)}
+                      className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                        filterType === tab.value 
+                          ? "bg-primary text-primary-foreground" 
+                          : "text-muted-foreground hover:bg-muted"
+                      }`}
+                      data-testid={`filter-${tab.value}`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <CardContent className="p-0 max-h-[400px] overflow-y-auto">
                 {query.length === 0 && recentSearches.length > 0 && (
-                  <div className="mb-2">
-                    <div className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground">
+                  <div>
+                    <div className="flex items-center gap-2 px-4 py-2 text-xs text-muted-foreground bg-muted/20 border-b">
                       <Clock className="w-3 h-3" />
                       Recent Searches
                     </div>
-                    {recentSearches.map((stock) => (
-                      <button
-                        key={`recent-${stock.symbol}`}
-                        className="w-full text-left px-3 py-3 rounded-lg hover-elevate flex items-center justify-between gap-2"
-                        onClick={() => handleSelectStock(stock)}
-                        data-testid={`recent-search-${stock.symbol.toLowerCase()}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg ${stock.type === "index" ? "bg-amber-500/10" : "bg-primary/10"}`}>
-                            {stock.type === "index" ? (
-                              <BarChart3 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                            ) : (
-                              <Building2 className="w-4 h-4 text-primary" />
+                    {recentSearches.map((stock) => {
+                      const priceData = getStockPrice(stock.symbol);
+                      const isPositive = priceData.changePercent >= 0;
+                      return (
+                        <button
+                          key={`recent-${stock.symbol}`}
+                          className="w-full text-left px-4 py-3 hover:bg-muted/50 flex items-center justify-between gap-2 border-b border-border/50 transition-colors"
+                          onClick={() => handleSelectStock(stock)}
+                          data-testid={`recent-search-${stock.symbol.toLowerCase()}`}
+                        >
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-foreground truncate">{stock.name}</div>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 font-normal">
+                                {stock.exchange} : {stock.symbol}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <div className="font-semibold font-mono">
+                              {priceData.price > 0 ? `₹${priceData.price.toLocaleString("en-IN")}` : ""}
+                            </div>
+                            {priceData.price > 0 && (
+                              <div className={`text-sm font-medium ${isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
+                                {isPositive ? "+" : ""}{priceData.changePercent.toFixed(2)}%
+                              </div>
                             )}
                           </div>
-                          <div>
-                            <div className="font-medium text-foreground">{stock.name}</div>
-                            <div className="text-xs text-muted-foreground">{stock.symbol}</div>
-                          </div>
-                        </div>
-                        <Badge variant="outline" className="text-xs">
-                          {stock.exchange}
-                        </Badge>
-                      </button>
-                    ))}
-                    {results.length > 0 && <div className="border-t border-border my-2" />}
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
                 
-                {results.map((stock) => (
-                  <button
-                    key={stock.symbol}
-                    className="w-full text-left px-3 py-3 rounded-lg hover-elevate flex items-center justify-between gap-2"
-                    onClick={() => handleSelectStock(stock)}
-                    data-testid={`search-result-${stock.symbol.toLowerCase()}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${stock.type === "index" ? "bg-amber-500/10" : "bg-primary/10"}`}>
-                        {stock.type === "index" ? (
-                          <BarChart3 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                        ) : (
-                          <Building2 className="w-4 h-4 text-primary" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-medium text-foreground">
-                          {highlightMatch(stock.name, query)}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {highlightMatch(stock.symbol, query)}
-                        </div>
-                      </div>
+                {results.length > 0 && (
+                  <div>
+                    <div className="px-4 py-2 text-xs font-medium text-primary bg-primary/5 border-b">
+                      Equity
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={stock.type === "index" ? "secondary" : "outline"} className="text-xs">
-                        {stock.type === "index" ? "Index" : stock.exchange}
-                      </Badge>
-                    </div>
-                  </button>
-                ))}
+                    {results.map((stock) => {
+                      const priceData = getStockPrice(stock.symbol);
+                      const isPositive = priceData.changePercent >= 0;
+                      return (
+                        <button
+                          key={stock.symbol}
+                          className="w-full text-left px-4 py-3 hover:bg-muted/50 flex items-center justify-between gap-2 border-b border-border/50 transition-colors"
+                          onClick={() => handleSelectStock(stock)}
+                          data-testid={`search-result-${stock.symbol.toLowerCase()}`}
+                        >
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-foreground">
+                              {highlightMatch(stock.name, query)}
+                            </div>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 font-normal">
+                                {stock.exchange} : {highlightMatch(stock.symbol, query)}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <div className="font-semibold font-mono">
+                              {priceData.price > 0 ? `₹${priceData.price.toLocaleString("en-IN")}` : ""}
+                            </div>
+                            {priceData.price > 0 && (
+                              <div className={`text-sm font-medium ${isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
+                                {isPositive ? "+" : ""}{priceData.changePercent.toFixed(2)}%
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {results.length === 0 && query.length > 0 && (
-                  <div className="px-4 py-6 text-center text-muted-foreground">
+                  <div className="px-4 py-8 text-center text-muted-foreground">
                     <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
                     <p>No stocks found for "{query}"</p>
                     <p className="text-xs mt-1">Try searching by company name or symbol</p>
