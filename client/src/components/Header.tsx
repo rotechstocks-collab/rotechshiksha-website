@@ -27,6 +27,7 @@ const navItems = [
   },
   { label: "Live Market", href: "/live-market" },
   { label: "Calculators", href: "/calculators" },
+  { label: "Startup Connect", href: "/startup-connect" },
   { label: "Pricing", href: "/pricing" },
 ];
 

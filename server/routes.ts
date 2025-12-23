@@ -192,64 +192,137 @@ export async function registerRoutes(
     });
   });
 
+  // Stock symbols mapping for Indian market
+  const stockSymbols: Record<string, string> = {
+    "^NSEI": "NIFTY 50",
+    "^NSEBANK": "BANK NIFTY",
+    "^BSESN": "SENSEX",
+    "RELIANCE.NS": "Reliance",
+    "TCS.NS": "TCS",
+    "HDFCBANK.NS": "HDFC Bank",
+    "ICICIBANK.NS": "ICICI Bank",
+    "INFY.NS": "Infosys",
+    "HINDUNILVR.NS": "HUL",
+    "SBIN.NS": "SBI",
+    "BHARTIARTL.NS": "Bharti Airtel",
+    "ITC.NS": "ITC",
+    "KOTAKBANK.NS": "Kotak Bank",
+    "LT.NS": "L&T",
+    "AXISBANK.NS": "Axis Bank",
+    "BAJFINANCE.NS": "Bajaj Finance",
+    "MARUTI.NS": "Maruti",
+    "TITAN.NS": "Titan",
+    "WIPRO.NS": "Wipro",
+    "ADANIENT.NS": "Adani Ent",
+    "TATAMOTORS.NS": "Tata Motors",
+    "TATASTEEL.NS": "Tata Steel",
+  };
+
+  // Helper function to fetch Yahoo Finance data
+  async function fetchYahooQuote(symbol: string) {
+    try {
+      const response = await fetch(
+        `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`,
+        { signal: AbortSignal.timeout(5000) }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        const quote = data.chart?.result?.[0];
+        if (quote) {
+          const meta = quote.meta;
+          const prev = meta.previousClose || meta.chartPreviousClose || 0;
+          const current = meta.regularMarketPrice || prev;
+          const change = current - prev;
+          const changePercent = prev ? (change / prev) * 100 : 0;
+          
+          return {
+            name: stockSymbols[symbol] || meta.symbol || symbol,
+            symbol: symbol.replace("^", "").replace(".NS", ""),
+            price: current,
+            change: change,
+            changePercent: changePercent,
+            open: meta.regularMarketOpen || current,
+            high: meta.regularMarketDayHigh || current,
+            low: meta.regularMarketDayLow || current,
+            prevClose: prev,
+          };
+        }
+      }
+    } catch (err) {
+      console.error(`Failed to fetch ${symbol}:`, err);
+    }
+    return null;
+  }
+
   // Market Data Routes - fetch from Yahoo Finance public API
   app.get("/api/market/live", async (_req: Request, res: Response) => {
     try {
-      // Use Yahoo Finance v7 public endpoint for Indian indices
-      const symbols = ["^NSEI", "^NSEBANK", "^BSESN"];
-      const results = [];
+      const mainSymbols = ["^NSEI", "^NSEBANK", "^BSESN", "RELIANCE.NS", "TCS.NS", "HDFCBANK.NS", "ICICIBANK.NS", "INFY.NS", "SBIN.NS"];
+      const promises = mainSymbols.map(fetchYahooQuote);
+      const results = (await Promise.all(promises)).filter(Boolean);
       
-      for (const symbol of symbols) {
-        try {
-          const response = await fetch(
-            `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            const quote = data.chart?.result?.[0];
-            if (quote) {
-              const meta = quote.meta;
-              const prev = meta.previousClose || meta.chartPreviousClose || 0;
-              const current = meta.regularMarketPrice || prev;
-              const change = current - prev;
-              const changePercent = prev ? (change / prev) * 100 : 0;
-              
-              let name = "Index";
-              if (symbol === "^NSEI") name = "NIFTY 50";
-              else if (symbol === "^NSEBANK") name = "BANK NIFTY";
-              else if (symbol === "^BSESN") name = "SENSEX";
-              
-              results.push({
-                name,
-                symbol: symbol.replace("^", ""),
-                price: current,
-                change: change,
-                changePercent: changePercent,
-                open: meta.regularMarketOpen || current,
-                high: meta.regularMarketDayHigh || current,
-                low: meta.regularMarketDayLow || current,
-                prevClose: prev,
-              });
-            }
-          }
-        } catch (err) {
-          console.error(`Failed to fetch ${symbol}:`, err);
-        }
-      }
-      
-      // Fallback to sample data if API fails
       if (results.length === 0) {
-        results.push(
+        return res.json([
           { name: "NIFTY 50", symbol: "NSEI", price: 24180.80, change: 156.35, changePercent: 0.65, open: 24024.45, high: 24225.50, low: 24010.20, prevClose: 24024.45 },
           { name: "BANK NIFTY", symbol: "NSEBANK", price: 52340.15, change: -245.80, changePercent: -0.47, open: 52585.95, high: 52650.00, low: 52280.40, prevClose: 52585.95 },
-          { name: "SENSEX", symbol: "BSESN", price: 79820.45, change: 485.25, changePercent: 0.61, open: 79335.20, high: 79950.80, low: 79300.00, prevClose: 79335.20 }
-        );
+          { name: "SENSEX", symbol: "BSESN", price: 79820.45, change: 485.25, changePercent: 0.61, open: 79335.20, high: 79950.80, low: 79300.00, prevClose: 79335.20 },
+          { name: "Reliance", symbol: "RELIANCE", price: 2456.75, change: 32.50, changePercent: 1.34, open: 2424.25, high: 2468.00, low: 2418.00, prevClose: 2424.25 },
+          { name: "TCS", symbol: "TCS", price: 4125.30, change: -28.45, changePercent: -0.69, open: 4153.75, high: 4162.00, low: 4115.00, prevClose: 4153.75 },
+          { name: "HDFC Bank", symbol: "HDFCBANK", price: 1725.60, change: 15.20, changePercent: 0.89, open: 1710.40, high: 1732.00, low: 1708.00, prevClose: 1710.40 },
+        ]);
       }
       
       res.json(results);
     } catch (error) {
       console.error("Market data fetch error:", error);
       res.status(500).json({ message: "Failed to fetch market data" });
+    }
+  });
+
+  // Stock search endpoint
+  app.get("/api/market/search", async (req: Request, res: Response) => {
+    try {
+      const query = (req.query.q as string || "").toLowerCase();
+      if (!query || query.length < 2) {
+        return res.json([]);
+      }
+
+      const allStocks = Object.entries(stockSymbols).map(([symbol, name]) => ({
+        symbol: symbol.replace("^", "").replace(".NS", ""),
+        yahooSymbol: symbol,
+        name,
+      }));
+
+      const matches = allStocks.filter(
+        stock => stock.name.toLowerCase().includes(query) || stock.symbol.toLowerCase().includes(query)
+      ).slice(0, 10);
+
+      res.json(matches);
+    } catch (error) {
+      console.error("Stock search error:", error);
+      res.status(500).json({ message: "Failed to search stocks" });
+    }
+  });
+
+  // Get single stock quote
+  app.get("/api/market/quote/:symbol", async (req: Request, res: Response) => {
+    try {
+      const symbol = req.params.symbol;
+      let yahooSymbol = symbol;
+      
+      if (!symbol.startsWith("^") && !symbol.endsWith(".NS")) {
+        yahooSymbol = `${symbol}.NS`;
+      }
+      
+      const quote = await fetchYahooQuote(yahooSymbol);
+      if (quote) {
+        res.json(quote);
+      } else {
+        res.status(404).json({ message: "Stock not found" });
+      }
+    } catch (error) {
+      console.error("Quote fetch error:", error);
+      res.status(500).json({ message: "Failed to fetch quote" });
     }
   });
 
@@ -471,6 +544,233 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Get chats error:", error);
       res.status(500).json({ message: "Failed to get chats" });
+    }
+  });
+
+  // Startup Routes
+  app.post("/api/startups", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Please login to list your startup" });
+      }
+
+      const { startupName, founderName, mobile, email, industry, investmentRequired, businessModel, revenueProjection, stage, pitchDeckUrl } = req.body;
+
+      if (!startupName || !founderName || !mobile || !email || !industry || !investmentRequired || !businessModel || !stage) {
+        return res.status(400).json({ message: "All required fields must be filled" });
+      }
+
+      const startup = await storage.createStartup({
+        userId: req.session.userId,
+        startupName,
+        founderName,
+        mobile,
+        email,
+        industry,
+        investmentRequired,
+        businessModel,
+        revenueProjection: revenueProjection || null,
+        stage,
+        pitchDeckUrl: pitchDeckUrl || null,
+        status: "under_review",
+      });
+
+      res.json(startup);
+    } catch (error) {
+      console.error("Create startup error:", error);
+      res.status(500).json({ message: "Failed to create startup listing" });
+    }
+  });
+
+  app.get("/api/startups", async (req: Request, res: Response) => {
+    try {
+      const startups = await storage.getLiveStartups();
+      res.json(startups);
+    } catch (error) {
+      console.error("Get startups error:", error);
+      res.status(500).json({ message: "Failed to get startups" });
+    }
+  });
+
+  app.get("/api/startups/my", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const startups = await storage.getStartupsByUser(req.session.userId);
+      res.json(startups);
+    } catch (error) {
+      console.error("Get my startups error:", error);
+      res.status(500).json({ message: "Failed to get startups" });
+    }
+  });
+
+  app.get("/api/startups/:id", async (req: Request, res: Response) => {
+    try {
+      const startup = await storage.getStartup(req.params.id);
+      if (!startup) {
+        return res.status(404).json({ message: "Startup not found" });
+      }
+      res.json(startup);
+    } catch (error) {
+      console.error("Get startup error:", error);
+      res.status(500).json({ message: "Failed to get startup" });
+    }
+  });
+
+  // Investor Routes
+  app.post("/api/investors", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Please login to register as investor" });
+      }
+
+      const existing = await storage.getInvestorByUser(req.session.userId);
+      if (existing) {
+        return res.json(existing);
+      }
+
+      const { name, mobile, email, investmentAmountRange, interestedIndustry, investmentType } = req.body;
+
+      if (!name || !mobile || !email || !investmentAmountRange || !interestedIndustry || !investmentType) {
+        return res.status(400).json({ message: "All required fields must be filled" });
+      }
+
+      const investor = await storage.createInvestor({
+        userId: req.session.userId,
+        name,
+        mobile,
+        email,
+        investmentAmountRange,
+        interestedIndustry,
+        investmentType,
+      });
+
+      res.json(investor);
+    } catch (error) {
+      console.error("Create investor error:", error);
+      res.status(500).json({ message: "Failed to register investor" });
+    }
+  });
+
+  app.get("/api/investors/me", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const investor = await storage.getInvestorByUser(req.session.userId);
+      res.json(investor || null);
+    } catch (error) {
+      console.error("Get investor error:", error);
+      res.status(500).json({ message: "Failed to get investor profile" });
+    }
+  });
+
+  // Investor Interest
+  app.post("/api/investor-interests", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const investor = await storage.getInvestorByUser(req.session.userId);
+      if (!investor) {
+        return res.status(400).json({ message: "Please register as investor first" });
+      }
+
+      const { startupId } = req.body;
+      if (!startupId) {
+        return res.status(400).json({ message: "Startup ID is required" });
+      }
+
+      const interest = await storage.createInvestorInterest({
+        investorId: investor.id,
+        startupId,
+        status: "interested",
+      });
+
+      res.json(interest);
+    } catch (error) {
+      console.error("Create interest error:", error);
+      res.status(500).json({ message: "Failed to mark interest" });
+    }
+  });
+
+  // Admin Startup/Investor Routes
+  app.get("/api/admin/startups", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
+      const startups = await storage.getAllStartups();
+      res.json(startups);
+    } catch (error) {
+      console.error("Get all startups error:", error);
+      res.status(500).json({ message: "Failed to get startups" });
+    }
+  });
+
+  app.patch("/api/admin/startups/:id/status", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
+      const { status } = req.body;
+      if (!["under_review", "live", "closed", "rejected"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+
+      const startup = await storage.updateStartupStatus(req.params.id, status);
+      res.json(startup);
+    } catch (error) {
+      console.error("Update startup status error:", error);
+      res.status(500).json({ message: "Failed to update startup status" });
+    }
+  });
+
+  app.get("/api/admin/investors", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
+      const investors = await storage.getAllInvestors();
+      res.json(investors);
+    } catch (error) {
+      console.error("Get all investors error:", error);
+      res.status(500).json({ message: "Failed to get investors" });
+    }
+  });
+
+  app.get("/api/admin/startup-interests/:startupId", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
+      const interests = await storage.getInterestsByStartup(req.params.startupId);
+      res.json(interests);
+    } catch (error) {
+      console.error("Get startup interests error:", error);
+      res.status(500).json({ message: "Failed to get interests" });
     }
   });
 

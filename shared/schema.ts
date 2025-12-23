@@ -80,6 +80,46 @@ export const chatMessages = pgTable("chat_messages", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Startups - for Tata Funding / Startup Connect module
+export const startups = pgTable("startups", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("user_id", { length: 36 }).notNull(),
+  startupName: text("startup_name").notNull(),
+  founderName: text("founder_name").notNull(),
+  mobile: text("mobile").notNull(),
+  email: text("email").notNull(),
+  industry: text("industry").notNull(),
+  investmentRequired: integer("investment_required").notNull(),
+  businessModel: text("business_model").notNull(),
+  revenueProjection: text("revenue_projection"),
+  stage: text("stage").notNull(), // idea, early, growth
+  pitchDeckUrl: text("pitch_deck_url"),
+  status: text("status").notNull().default("under_review"), // under_review, live, closed, rejected
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Investors - for investment interest tracking
+export const investors = pgTable("investors", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("user_id", { length: 36 }).notNull(),
+  name: text("name").notNull(),
+  mobile: text("mobile").notNull(),
+  email: text("email").notNull(),
+  investmentAmountRange: text("investment_amount_range").notNull(),
+  interestedIndustry: text("interested_industry").notNull(),
+  investmentType: text("investment_type").notNull(), // equity, debt, both
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Investor interest in startups
+export const investorInterests = pgTable("investor_interests", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  investorId: varchar("investor_id", { length: 36 }).notNull(),
+  startupId: varchar("startup_id", { length: 36 }).notNull(),
+  status: text("status").notNull().default("interested"), // interested, contacted
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
 export const insertOtpSchema = createInsertSchema(otps).omit({ id: true });
@@ -88,6 +128,9 @@ export const insertContentSchema = createInsertSchema(contents).omit({ id: true 
 export const insertPlanSchema = createInsertSchema(plans).omit({ id: true });
 export const insertPaymentSchema = createInsertSchema(payments).omit({ id: true, createdAt: true });
 export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({ id: true, createdAt: true });
+export const insertStartupSchema = createInsertSchema(startups).omit({ id: true, createdAt: true });
+export const insertInvestorSchema = createInsertSchema(investors).omit({ id: true, createdAt: true });
+export const insertInvestorInterestSchema = createInsertSchema(investorInterests).omit({ id: true, createdAt: true });
 
 // Types
 export type User = typeof users.$inferSelect;
@@ -104,6 +147,12 @@ export type Payment = typeof payments.$inferSelect;
 export type InsertPayment = z.infer<typeof insertPaymentSchema>;
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type Startup = typeof startups.$inferSelect;
+export type InsertStartup = z.infer<typeof insertStartupSchema>;
+export type Investor = typeof investors.$inferSelect;
+export type InsertInvestor = z.infer<typeof insertInvestorSchema>;
+export type InvestorInterest = typeof investorInterests.$inferSelect;
+export type InsertInvestorInterest = z.infer<typeof insertInvestorInterestSchema>;
 
 // Lead capture form schema with validation
 export const leadFormSchema = z.object({

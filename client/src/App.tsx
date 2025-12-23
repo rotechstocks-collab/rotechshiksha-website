@@ -10,6 +10,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 import Home from "@/pages/Home";
 import About from "@/pages/About";
@@ -21,6 +22,7 @@ import Payment from "@/pages/Payment";
 import Dashboard from "@/pages/Dashboard";
 import Admin from "@/pages/Admin";
 import Login from "@/pages/Login";
+import StartupConnect from "@/pages/StartupConnect";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -37,6 +39,7 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/admin" component={Admin} />
       <Route path="/login" component={Login} />
+      <Route path="/startup-connect" component={StartupConnect} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -57,6 +60,7 @@ function App() {
               <Footer />
               <AuthModal />
               <LiveChat />
+              <WhatsAppButton />
             </div>
             <Toaster />
           </TooltipProvider>

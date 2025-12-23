@@ -4,6 +4,9 @@ import {
   otps,
   payments,
   chatMessages,
+  startups,
+  investors,
+  investorInterests,
   type User,
   type InsertUser,
   type Lead,
@@ -14,6 +17,12 @@ import {
   type InsertPayment,
   type ChatMessage,
   type InsertChatMessage,
+  type Startup,
+  type InsertStartup,
+  type Investor,
+  type InsertInvestor,
+  type InvestorInterest,
+  type InsertInvestorInterest,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -49,6 +58,25 @@ export interface IStorage {
   getChatMessages(sessionId: string): Promise<ChatMessage[]>;
   getAllChatMessages(): Promise<ChatMessage[]>;
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+
+  // Startups
+  getStartup(id: string): Promise<Startup | undefined>;
+  getStartupsByUser(userId: string): Promise<Startup[]>;
+  getAllStartups(): Promise<Startup[]>;
+  getLiveStartups(): Promise<Startup[]>;
+  createStartup(startup: InsertStartup): Promise<Startup>;
+  updateStartupStatus(id: string, status: string): Promise<Startup | undefined>;
+
+  // Investors
+  getInvestor(id: string): Promise<Investor | undefined>;
+  getInvestorByUser(userId: string): Promise<Investor | undefined>;
+  getAllInvestors(): Promise<Investor[]>;
+  createInvestor(investor: InsertInvestor): Promise<Investor>;
+
+  // Investor Interests
+  createInvestorInterest(interest: InsertInvestorInterest): Promise<InvestorInterest>;
+  getInterestsByStartup(startupId: string): Promise<InvestorInterest[]>;
+  getInterestsByInvestor(investorId: string): Promise<InvestorInterest[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -189,6 +217,84 @@ export class DatabaseStorage implements IStorage {
       .values({ ...insertMessage, id })
       .returning();
     return message;
+  }
+
+  // Startups
+  async getStartup(id: string): Promise<Startup | undefined> {
+    const [startup] = await db.select().from(startups).where(eq(startups.id, id));
+    return startup || undefined;
+  }
+
+  async getStartupsByUser(userId: string): Promise<Startup[]> {
+    return db.select().from(startups).where(eq(startups.userId, userId)).orderBy(desc(startups.createdAt));
+  }
+
+  async getAllStartups(): Promise<Startup[]> {
+    return db.select().from(startups).orderBy(desc(startups.createdAt));
+  }
+
+  async getLiveStartups(): Promise<Startup[]> {
+    return db.select().from(startups).where(eq(startups.status, "live")).orderBy(desc(startups.createdAt));
+  }
+
+  async createStartup(insertStartup: InsertStartup): Promise<Startup> {
+    const id = randomUUID();
+    const [startup] = await db
+      .insert(startups)
+      .values({ ...insertStartup, id })
+      .returning();
+    return startup;
+  }
+
+  async updateStartupStatus(id: string, status: string): Promise<Startup | undefined> {
+    const [startup] = await db
+      .update(startups)
+      .set({ status })
+      .where(eq(startups.id, id))
+      .returning();
+    return startup || undefined;
+  }
+
+  // Investors
+  async getInvestor(id: string): Promise<Investor | undefined> {
+    const [investor] = await db.select().from(investors).where(eq(investors.id, id));
+    return investor || undefined;
+  }
+
+  async getInvestorByUser(userId: string): Promise<Investor | undefined> {
+    const [investor] = await db.select().from(investors).where(eq(investors.userId, userId));
+    return investor || undefined;
+  }
+
+  async getAllInvestors(): Promise<Investor[]> {
+    return db.select().from(investors).orderBy(desc(investors.createdAt));
+  }
+
+  async createInvestor(insertInvestor: InsertInvestor): Promise<Investor> {
+    const id = randomUUID();
+    const [investor] = await db
+      .insert(investors)
+      .values({ ...insertInvestor, id })
+      .returning();
+    return investor;
+  }
+
+  // Investor Interests
+  async createInvestorInterest(insertInterest: InsertInvestorInterest): Promise<InvestorInterest> {
+    const id = randomUUID();
+    const [interest] = await db
+      .insert(investorInterests)
+      .values({ ...insertInterest, id })
+      .returning();
+    return interest;
+  }
+
+  async getInterestsByStartup(startupId: string): Promise<InvestorInterest[]> {
+    return db.select().from(investorInterests).where(eq(investorInterests.startupId, startupId));
+  }
+
+  async getInterestsByInvestor(investorId: string): Promise<InvestorInterest[]> {
+    return db.select().from(investorInterests).where(eq(investorInterests.investorId, investorId));
   }
 }
 

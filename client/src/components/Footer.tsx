@@ -17,7 +17,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://wa.me/919999999999"
+                href="https://wa.me/918349024108"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-md hover-elevate active-elevate-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -94,6 +94,11 @@ export function Footer() {
                   Live Market
                 </span>
               </Link>
+              <Link href="/startup-connect">
+                <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
+                  Startup Connect
+                </span>
+              </Link>
               <Link href="/pricing">
                 <span className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
                   Pricing Plans
@@ -110,17 +115,23 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold text-foreground">Contact</h4>
             <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <a 
+                href="tel:+918349024108"
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+              >
                 <Phone className="w-4 h-4" />
-                <span>+91 99999 99999</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>+91 83490 24108</span>
+              </a>
+              <a 
+                href="mailto:support@rotechshiksha.com"
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+              >
                 <Mail className="w-4 h-4" />
-                <span>contact@rotechmultisolution.com</span>
-              </div>
+                <span>support@rotechshiksha.com</span>
+              </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4 mt-0.5" />
-                <span>Mumbai, Maharashtra, India</span>
+                <span>India</span>
               </div>
             </div>
           </div>

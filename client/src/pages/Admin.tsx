@@ -29,7 +29,10 @@ import {
   Search,
   Filter,
   RefreshCw,
+  Rocket,
+  TrendingUp,
 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Admin() {
   const [, setLocation] = useLocation();
@@ -53,6 +56,16 @@ export default function Admin() {
     enabled: isAuthenticated && user?.isAdmin,
   });
 
+  const { data: startups = [], refetch: refetchStartups } = useQuery({
+    queryKey: ["/api/admin/startups"],
+    enabled: isAuthenticated && user?.isAdmin,
+  });
+
+  const { data: investors = [], refetch: refetchInvestors } = useQuery({
+    queryKey: ["/api/admin/investors"],
+    enabled: isAuthenticated && user?.isAdmin,
+  });
+
   const approvePaymentMutation = useMutation({
     mutationFn: async (paymentId: string) => {
       return apiRequest("PATCH", `/api/admin/payments/${paymentId}/approve`, {});
@@ -70,6 +83,16 @@ export default function Admin() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/payments"] });
       toast({ title: "Payment rejected" });
+    },
+  });
+
+  const updateStartupStatusMutation = useMutation({
+    mutationFn: async ({ startupId, status }: { startupId: number; status: string }) => {
+      return apiRequest("PATCH", `/api/admin/startups/${startupId}/status`, { status });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/startups"] });
+      toast({ title: "Startup status updated" });
     },
   });
 
@@ -200,7 +223,7 @@ export default function Admin() {
           </div>
 
           <Tabs defaultValue="leads" className="space-y-6">
-            <TabsList>
+            <TabsList className="flex-wrap">
               <TabsTrigger value="leads">
                 <Users className="w-4 h-4 mr-2" />
                 Leads
@@ -212,6 +235,14 @@ export default function Admin() {
               <TabsTrigger value="chats">
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Chats
+              </TabsTrigger>
+              <TabsTrigger value="startups">
+                <Rocket className="w-4 h-4 mr-2" />
+                Startups
+              </TabsTrigger>
+              <TabsTrigger value="investors">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Investors
               </TabsTrigger>
             </TabsList>
 
@@ -463,6 +494,167 @@ export default function Admin() {
                       ))}
                     </div>
                   )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="startups">
+              <Card>
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                      <CardTitle>Startup Management</CardTitle>
+                      <CardDescription>Review and approve startup listings</CardDescription>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => refetchStartups()}
+                      data-testid="button-refresh-startups"
+                    >
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Refresh
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Startup Name</TableHead>
+                          <TableHead>Category</TableHead>
+                          <TableHead>Funding</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Submitted</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {!Array.isArray(startups) || startups.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                              No startups found
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          startups.map((startup: any) => (
+                            <TableRow key={startup.id}>
+                              <TableCell className="font-medium">{startup.startupName}</TableCell>
+                              <TableCell className="capitalize">{startup.category}</TableCell>
+                              <TableCell>{startup.fundingRequired}</TableCell>
+                              <TableCell>
+                                {startup.status === "live" && (
+                                  <Badge className="bg-emerald-500/10 text-emerald-600 border-0">Live</Badge>
+                                )}
+                                {startup.status === "under_review" && (
+                                  <Badge className="bg-amber-500/10 text-amber-600 border-0">Under Review</Badge>
+                                )}
+                                {startup.status === "rejected" && (
+                                  <Badge className="bg-red-500/10 text-red-600 border-0">Rejected</Badge>
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {startup.createdAt ? new Date(startup.createdAt).toLocaleDateString() : '-'}
+                              </TableCell>
+                              <TableCell>
+                                <Select
+                                  value={startup.status}
+                                  onValueChange={(value) => 
+                                    updateStartupStatusMutation.mutate({ startupId: startup.id, status: value })
+                                  }
+                                >
+                                  <SelectTrigger className="w-32" data-testid={`select-status-${startup.id}`}>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="under_review">Under Review</SelectItem>
+                                    <SelectItem value="live">Live</SelectItem>
+                                    <SelectItem value="rejected">Rejected</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="investors">
+              <Card>
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                      <CardTitle>Investor Management</CardTitle>
+                      <CardDescription>View registered investors and their interests</CardDescription>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => refetchInvestors()}
+                      data-testid="button-refresh-investors"
+                    >
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Refresh
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Phone</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Investment Range</TableHead>
+                          <TableHead>Sectors</TableHead>
+                          <TableHead>Registered</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {!Array.isArray(investors) || investors.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                              No investors found
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          investors.map((investor: any) => (
+                            <TableRow key={investor.id}>
+                              <TableCell className="font-medium">{investor.fullName}</TableCell>
+                              <TableCell>{investor.email}</TableCell>
+                              <TableCell>{investor.phone}</TableCell>
+                              <TableCell className="capitalize">{investor.investorType?.replace('_', ' ')}</TableCell>
+                              <TableCell>{investor.investmentRange}</TableCell>
+                              <TableCell>
+                                <div className="flex flex-wrap gap-1">
+                                  {investor.sectorsOfInterest?.slice(0, 2).map((sector: string, i: number) => (
+                                    <Badge key={i} variant="secondary" className="text-xs">
+                                      {sector}
+                                    </Badge>
+                                  ))}
+                                  {investor.sectorsOfInterest?.length > 2 && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      +{investor.sectorsOfInterest.length - 2}
+                                    </Badge>
+                                  )}
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                {investor.createdAt ? new Date(investor.createdAt).toLocaleDateString() : '-'}
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

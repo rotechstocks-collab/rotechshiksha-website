@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -13,6 +13,8 @@ import {
   Activity,
   Clock,
   AlertTriangle,
+  Search,
+  X,
 } from "lucide-react";
 
 interface MarketIndex {
@@ -27,14 +29,11 @@ interface MarketIndex {
   prevClose: number;
 }
 
-const defaultIndices: MarketIndex[] = [
-  { name: "NIFTY 50", symbol: "NIFTY", price: 24180.80, change: 156.35, changePercent: 0.65, open: 24024.45, high: 24225.50, low: 24010.20, prevClose: 24024.45 },
-  { name: "BANK NIFTY", symbol: "BANKNIFTY", price: 52340.15, change: -245.80, changePercent: -0.47, open: 52585.95, high: 52650.00, low: 52280.40, prevClose: 52585.95 },
-  { name: "SENSEX", symbol: "SENSEX", price: 79820.45, change: 485.25, changePercent: 0.61, open: 79335.20, high: 79950.80, low: 79300.00, prevClose: 79335.20 },
-  { name: "NIFTY IT", symbol: "NIFTYIT", price: 38450.20, change: 320.15, changePercent: 0.84, open: 38130.05, high: 38520.00, low: 38100.50, prevClose: 38130.05 },
-  { name: "NIFTY BANK", symbol: "NIFTYBANK", price: 52120.80, change: -180.40, changePercent: -0.34, open: 52301.20, high: 52400.00, low: 52050.60, prevClose: 52301.20 },
-  { name: "NIFTY MIDCAP", symbol: "NIFTYMID", price: 55780.35, change: 425.60, changePercent: 0.77, open: 55354.75, high: 55850.00, low: 55300.00, prevClose: 55354.75 },
-];
+interface StockSearchResult {
+  symbol: string;
+  yahooSymbol: string;
+  name: string;
+}
 
 const analysisInsights = [
   {
@@ -55,13 +54,63 @@ const analysisInsights = [
   },
 ];
 
+function TradingViewWidget({ symbol }: { symbol: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    containerRef.current.innerHTML = "";
+    
+    const script = document.createElement("script");
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+    script.type = "text/javascript";
+    script.async = true;
+    script.innerHTML = JSON.stringify({
+      autosize: true,
+      symbol: symbol,
+      interval: "D",
+      timezone: "Asia/Kolkata",
+      theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
+      style: "1",
+      locale: "en",
+      enable_publishing: false,
+      allow_symbol_change: true,
+      hide_top_toolbar: false,
+      hide_legend: false,
+      save_image: false,
+      calendar: false,
+      support_host: "https://www.tradingview.com",
+    });
+
+    containerRef.current.appendChild(script);
+
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = "";
+      }
+    };
+  }, [symbol]);
+
+  return (
+    <div className="tradingview-widget-container h-[500px]" ref={containerRef}>
+      <div className="tradingview-widget-container__widget h-full"></div>
+    </div>
+  );
+}
+
 export default function LiveMarket() {
   const { isAuthenticated, setShowAuthPopup, setPendingAction } = useAuth();
-  const [indices, setIndices] = useState<MarketIndex[]>(defaultIndices);
+  const [indices, setIndices] = useState<MarketIndex[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<StockSearchResult[]>([]);
+  const [selectedSymbol, setSelectedSymbol] = useState("NSE:NIFTY");
+  const [selectedStock, setSelectedStock] = useState<MarketIndex | null>(null);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
-  const fetchMarketData = async () => {
+  const fetchMarketData = useCallback(async () => {
     setIsRefreshing(true);
     try {
       const response = await fetch("/api/market/live");
@@ -77,11 +126,54 @@ export default function LiveMarket() {
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const interval = setInterval(fetchMarketData, 30000);
+    fetchMarketData();
+    const interval = setInterval(fetchMarketData, 10000);
     return () => clearInterval(interval);
+  }, [fetchMarketData]);
+
+  const handleSearch = useCallback(async (query: string) => {
+    setSearchQuery(query);
+    if (query.length < 2) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/market/search?q=${encodeURIComponent(query)}`);
+      if (response.ok) {
+        const results = await response.json();
+        setSearchResults(results);
+        setShowSearchResults(true);
+      }
+    } catch (error) {
+      console.error("Search failed:", error);
+    }
+  }, []);
+
+  const selectStock = useCallback(async (stock: StockSearchResult) => {
+    setSearchQuery(stock.name);
+    setShowSearchResults(false);
+    
+    let tvSymbol = "NSE:" + stock.symbol;
+    if (stock.symbol === "NSEI") tvSymbol = "NSE:NIFTY";
+    else if (stock.symbol === "NSEBANK") tvSymbol = "NSE:BANKNIFTY";
+    else if (stock.symbol === "BSESN") tvSymbol = "BSE:SENSEX";
+    
+    setSelectedSymbol(tvSymbol);
+
+    try {
+      const response = await fetch(`/api/market/quote/${stock.symbol}`);
+      if (response.ok) {
+        const quote = await response.json();
+        setSelectedStock(quote);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quote:", error);
+    }
   }, []);
 
   const handleViewAnalysis = () => {
@@ -120,11 +212,59 @@ export default function LiveMarket() {
         </div>
       </section>
 
-      <section className="py-8">
+      <section className="py-6">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="relative max-w-md mb-6">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search stocks (e.g., Reliance, TCS, HDFC)"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
+              className="pl-10 pr-10"
+              data-testid="input-stock-search"
+            />
+            {searchQuery && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSearchResults([]);
+                  setShowSearchResults(false);
+                }}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
+            {showSearchResults && searchResults.length > 0 && (
+              <Card className="absolute top-full left-0 right-0 mt-1 z-20 max-h-64 overflow-auto">
+                <CardContent className="p-2">
+                  {searchResults.map((result) => (
+                    <button
+                      key={result.symbol}
+                      className="w-full text-left px-3 py-2 rounded-md hover-elevate flex items-center justify-between"
+                      onClick={() => selectStock(result)}
+                      data-testid={`search-result-${result.symbol.toLowerCase()}`}
+                    >
+                      <span className="font-medium">{result.name}</span>
+                      <span className="text-sm text-muted-foreground">{result.symbol}</span>
+                    </button>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {indices.map((index) => (
-              <Card key={index.symbol} data-testid={`card-index-${index.symbol.toLowerCase()}`}>
+              <Card 
+                key={index.symbol} 
+                className="cursor-pointer hover-elevate"
+                onClick={() => selectStock({ symbol: index.symbol, yahooSymbol: index.symbol, name: index.name })}
+                data-testid={`card-index-${index.symbol.toLowerCase()}`}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between">
                     <div>
@@ -198,21 +338,18 @@ export default function LiveMarket() {
             <TabsContent value="chart">
               <Card>
                 <CardHeader>
-                  <CardTitle>NIFTY 50 Chart</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    {selectedStock ? selectedStock.name : "NIFTY 50"} Chart
+                    {selectedStock && (
+                      <span className={`text-sm font-normal ${selectedStock.change >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                        {selectedStock.price.toLocaleString("en-IN")} ({selectedStock.change >= 0 ? "+" : ""}{selectedStock.changePercent.toFixed(2)}%)
+                      </span>
+                    )}
+                  </CardTitle>
                   <CardDescription>Interactive chart powered by TradingView</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                    <div className="text-center space-y-4 px-4">
-                      <BarChart3 className="w-12 h-12 mx-auto text-muted-foreground" />
-                      <p className="text-muted-foreground">
-                        TradingView chart widget will be embedded here
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        View real-time charts with technical indicators
-                      </p>
-                    </div>
-                  </div>
+                  <TradingViewWidget symbol={selectedSymbol} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -260,7 +397,7 @@ export default function LiveMarket() {
               <div className="text-sm">
                 <p className="font-medium text-amber-700 dark:text-amber-300">Disclaimer</p>
                 <p className="text-amber-600 dark:text-amber-400">
-                  This is for educational purposes only. Market data may be delayed.
+                  This is for educational purposes only. Market data may be delayed by 15-20 minutes.
                   Always verify with your broker before making trading decisions.
                   We do not provide buy/sell recommendations.
                 </p>
