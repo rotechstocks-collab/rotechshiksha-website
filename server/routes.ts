@@ -22,21 +22,18 @@ const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" || process.env.NODE
 const ALPHAVANTAGE_API_KEY = process.env.ALPHAVANTAGE_API_KEY || "";
 const ALPHAVANTAGE_BASE_URL = "https://www.alphavantage.co/query";
 
-// NewsAPI configuration
-const NEWSAPI_KEY = process.env.NEWSAPI_KEY || "";
-const NEWSAPI_BASE_URL = "https://newsapi.org/v2";
-
 // Cache for news data
 interface CachedNews {
   data: any;
   timestamp: number;
 }
 let newsCache: Record<string, CachedNews> = {};
-const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
-async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Promise<any[]> {
-  if (!NEWSAPI_KEY) {
-    console.log("NewsAPI key not configured, returning fallback data");
+// Fetch financial news from Alpha Vantage NEWS_SENTIMENT endpoint
+async function fetchNewsFromAlphaVantage(query: string, language: string = "en"): Promise<any[]> {
+  if (!ALPHAVANTAGE_API_KEY) {
+    console.log("Alpha Vantage API key not configured");
     return [];
   }
 
@@ -49,56 +46,65 @@ async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Pro
       return cached.data;
     }
 
-    // Build search query for financial news
-    const searchQuery = query.includes("stock") ? query : `${query} India financial news`;
+    // Map category queries to search keywords
+    const keywordMap: Record<string, string> = {
+      "stock market India": "india",
+      "Nifty Sensex BSE NSE": "nifty",
+      "RBI inflation GDP economy India": "rbi",
+      "business India companies": "business",
+      "gold crude oil commodity prices": "commodity",
+      "bank HDFC ICICI SBI": "banking",
+      "Tata Motors Maruti automobile": "auto",
+      "mutual fund SIP investment": "mutual fund"
+    };
+
+    const keywords = keywordMap[query] || "stock market";
+
+    const url = `${ALPHAVANTAGE_BASE_URL}?function=NEWS_SENTIMENT&keywords=${encodeURIComponent(keywords)}&limit=20&apikey=${ALPHAVANTAGE_API_KEY}`;
     
-    // Use /top-headlines endpoint instead for better results
-    const url = `${NEWSAPI_BASE_URL}/top-headlines?q=${encodeURIComponent(searchQuery)}&language=${language}&pageSize=15&apiKey=${NEWSAPI_KEY}`;
-    
-    console.log(`Fetching news from: ${url.replace(NEWSAPI_KEY, "***")}`);
+    console.log(`Fetching news from Alpha Vantage: ${keywords}`);
     
     const response = await fetch(url);
     if (!response.ok) {
-      console.error(`NewsAPI error: ${response.status}`);
-      throw new Error(`NewsAPI error: ${response.status}`);
+      throw new Error(`Alpha Vantage error: ${response.status}`);
     }
     
     const data = await response.json();
     
-    if (!data.articles || data.articles.length === 0) {
-      console.log(`No articles found for query: ${query}`);
+    // Check for API errors
+    if (data.Note || data.Information || !data.feed) {
+      console.log(`Alpha Vantage API note: ${data.Note || data.Information || "No feed data"}`);
       return [];
     }
 
-    console.log(`Found ${data.articles.length} articles for query: ${query}`);
+    if (!Array.isArray(data.feed) || data.feed.length === 0) {
+      console.log(`No news found for: ${keywords}`);
+      return [];
+    }
 
-    // Filter articles with required fields
-    const articles = data.articles
-      .filter((article: any) => {
-        // Must have image and description
-        if (!article.urlToImage) return false;
-        if (!article.description && !article.content) return false;
-        
-        const title = article.title.toLowerCase();
-        const desc = (article.description || "").toLowerCase();
-        
-        // Exclude non-financial content
-        const excludeWords = ["recipe", "cooking", "food", "movie", "film", "actor", "sports", "match", "game", "celebrity", "entertainment"];
-        const hasExcludedWord = excludeWords.some(word => title.includes(word) || desc.includes(word));
-        
-        return !hasExcludedWord;
+    console.log(`Found ${data.feed.length} news items for: ${keywords}`);
+
+    // Transform Alpha Vantage news to our format
+    const articles = data.feed
+      .map((item: any, index: number) => {
+        // Extract image from summary or use default
+        let imageUrl = "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format";
+        if (item.banner_image) {
+          imageUrl = item.banner_image;
+        }
+
+        return {
+          id: `av-${cacheKey}-${index}`,
+          title: item.title || "Untitled",
+          summary: item.summary || "Financial news article",
+          category: categorizeNews(item.title || ""),
+          tag: item.source || "Financial News",
+          imageUrl: imageUrl,
+          source: item.source || "Financial News",
+          publishedAt: item.time_published ? new Date(item.time_published).toISOString() : new Date().toISOString(),
+          url: item.url || "#"
+        };
       })
-      .map((article: any, index: number) => ({
-        id: `${cacheKey}-${index}-${Date.now()}`,
-        title: article.title || "Untitled",
-        summary: article.description || article.content?.substring(0, 250) || "No description available",
-        category: categorizeNews(article.title || ""),
-        tag: article.source?.name || "News",
-        imageUrl: article.urlToImage || "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format",
-        source: article.source?.name || "Financial News",
-        publishedAt: article.publishedAt || new Date().toISOString(),
-        url: article.url || "#"
-      }))
       .slice(0, 12);
 
     console.log(`Processed ${articles.length} articles`);
@@ -111,7 +117,7 @@ async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Pro
 
     return articles;
   } catch (error) {
-    console.error("NewsAPI fetch error:", error);
+    console.error("Alpha Vantage news fetch error:", error);
     return [];
   }
 }
@@ -964,8 +970,8 @@ export async function registerRoutes(
 
       const query = categoryQueryMap[category] || "stock market India";
       
-      // Fetch from NewsAPI
-      let news = await fetchNewsFromNewsAPI(query, language === "hi" ? "hi" : "en");
+      // Fetch from Alpha Vantage NEWS_SENTIMENT
+      let news = await fetchNewsFromAlphaVantage(query, language);
       
       // If no news from API or cache issues, use fallback sample data
       if (news.length === 0) {
@@ -988,8 +994,8 @@ export async function registerRoutes(
     try {
       const language = (req.query.lang as string) || "en";
       
-      // Fetch featured news from API
-      let news = await fetchNewsFromNewsAPI("stock market", language === "hi" ? "hi" : "en");
+      // Fetch featured news from Alpha Vantage
+      let news = await fetchNewsFromAlphaVantage("stock market India", language);
       
       // Fallback to sample data if API fails
       if (news.length === 0) {
