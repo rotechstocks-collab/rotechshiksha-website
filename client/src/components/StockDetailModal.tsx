@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,8 +14,6 @@ import {
   TrendingDown,
   BarChart3,
   Building2,
-  Loader2,
-  AlertCircle,
   Lightbulb,
   AlertTriangle,
   BookOpen,
@@ -278,40 +276,58 @@ const fundamentalsData: Record<string, StockFundamentals> = {
   },
 };
 
-declare global {
-  interface Window {
-    TradingView?: {
-      widget: new (config: Record<string, unknown>) => { remove: () => void };
-    };
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { ExternalLink } from "lucide-react";
+
+function generateChartData(basePrice: number, change: number, timeframe: string): { time: string; price: number }[] {
+  const data: { time: string; price: number }[] = [];
+  let points = 30;
+  let format = "time";
+  
+  switch (timeframe) {
+    case "D": points = 78; format = "time"; break;
+    case "W": points = 35; format = "day"; break;
+    case "M": points = 22; format = "day"; break;
+    case "3M": points = 65; format = "day"; break;
+    case "6M": points = 130; format = "week"; break;
+    case "12M": points = 52; format = "week"; break;
   }
-}
-
-let tvScriptLoaded = false;
-let tvScriptLoading = false;
-const tvScriptCallbacks: (() => void)[] = [];
-
-function loadTradingViewScript(): Promise<void> {
-  return new Promise((resolve) => {
-    if (tvScriptLoaded && window.TradingView) {
-      resolve();
-      return;
+  
+  const isPositive = change >= 0;
+  const startPrice = basePrice - change;
+  const volatility = basePrice * 0.008;
+  
+  let currentPrice = startPrice;
+  const priceStep = change / points;
+  
+  for (let i = 0; i < points; i++) {
+    const randomWalk = (Math.random() - 0.5) * volatility;
+    const trend = priceStep * (1 + (Math.random() - 0.5) * 0.5);
+    currentPrice = currentPrice + trend + randomWalk;
+    
+    let label = "";
+    if (format === "time") {
+      const hour = 9 + Math.floor(i * 6.5 / points);
+      const min = Math.floor((i * 390 / points) % 60);
+      label = `${hour}:${min.toString().padStart(2, "0")}`;
+    } else if (format === "day") {
+      const d = new Date();
+      d.setDate(d.getDate() - (points - i));
+      label = `${d.getDate()}/${d.getMonth() + 1}`;
+    } else {
+      const d = new Date();
+      d.setDate(d.getDate() - (points - i) * 7);
+      label = `${d.getDate()}/${d.getMonth() + 1}`;
     }
     
-    tvScriptCallbacks.push(resolve);
-    
-    if (tvScriptLoading) return;
-    
-    tvScriptLoading = true;
-    const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/tv.js";
-    script.async = true;
-    script.onload = () => {
-      tvScriptLoaded = true;
-      tvScriptCallbacks.forEach((cb) => cb());
-      tvScriptCallbacks.length = 0;
-    };
-    document.head.appendChild(script);
-  });
+    data.push({ time: label, price: Math.max(currentPrice, startPrice * 0.9) });
+  }
+  
+  if (data.length > 0) {
+    data[data.length - 1].price = basePrice;
+  }
+  
+  return data;
 }
 
 interface StockDetailModalProps {
@@ -321,13 +337,8 @@ interface StockDetailModalProps {
 }
 
 export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalProps) {
-  const chartContainerRef = useRef<HTMLDivElement>(null);
-  const widgetRef = useRef<{ remove: () => void } | null>(null);
-  const [chartLoading, setChartLoading] = useState(true);
-  const [chartError, setChartError] = useState(false);
   const [timeframe, setTimeframe] = useState("D");
-  const instanceIdRef = useRef(0);
-  const containerId = useRef(`tv_modal_chart_${Math.random().toString(36).substring(7)}`);
+  const [chartData, setChartData] = useState<{ time: string; price: number }[]>([]);
 
   const fundamentals = stock ? fundamentalsData[stock.symbol] || {
     marketCap: "N/A",
@@ -342,84 +353,10 @@ export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalPro
   } : null;
 
   useEffect(() => {
-    if (!isOpen || !stock || !chartContainerRef.current) return;
-
-    const currentInstance = ++instanceIdRef.current;
-    setChartLoading(true);
-    setChartError(false);
-
-    if (widgetRef.current) {
-      try {
-        widgetRef.current.remove();
-      } catch (e) {
-        // Widget may already be removed
-      }
-      widgetRef.current = null;
+    if (isOpen && stock) {
+      const data = generateChartData(stock.price, stock.change, timeframe);
+      setChartData(data);
     }
-
-    const container = chartContainerRef.current;
-    container.innerHTML = `<div id="${containerId.current}" style="height: 100%; width: 100%;"></div>`;
-
-    const tvSymbol = symbolMapping[stock.symbol] || `NSE:${stock.symbol}`;
-
-    loadTradingViewScript()
-      .then(() => {
-        if (currentInstance !== instanceIdRef.current) return;
-        if (!window.TradingView || !chartContainerRef.current) {
-          setChartError(true);
-          setChartLoading(false);
-          return;
-        }
-
-        const theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-
-        try {
-          widgetRef.current = new window.TradingView.widget({
-            autosize: true,
-            symbol: tvSymbol,
-            interval: timeframe,
-            timezone: "Asia/Kolkata",
-            theme: theme,
-            style: "1",
-            locale: "en",
-            toolbar_bg: theme === "dark" ? "#1e293b" : "#f8fafc",
-            enable_publishing: false,
-            allow_symbol_change: false,
-            container_id: containerId.current,
-            hide_top_toolbar: false,
-            hide_legend: false,
-            save_image: false,
-            studies: ["MASimple@tv-basicstudies", "RSI@tv-basicstudies", "MACD@tv-basicstudies"],
-          });
-
-          setTimeout(() => {
-            if (currentInstance === instanceIdRef.current) {
-              setChartLoading(false);
-            }
-          }, 1500);
-        } catch (e) {
-          console.error("TradingView widget error:", e);
-          setChartError(true);
-          setChartLoading(false);
-        }
-      })
-      .catch(() => {
-        if (currentInstance === instanceIdRef.current) {
-          setChartError(true);
-          setChartLoading(false);
-        }
-      });
-
-    return () => {
-      if (widgetRef.current) {
-        try {
-          widgetRef.current.remove();
-        } catch (e) {
-          // Ignore cleanup errors
-        }
-        widgetRef.current = null;
-      }
-    };
   }, [isOpen, stock, timeframe]);
 
   if (!stock) return null;
@@ -505,29 +442,66 @@ export function StockDetailModal({ stock, isOpen, onClose }: StockDetailModalPro
                   ))}
                 </div>
 
-                <div className="relative h-[400px] w-full bg-muted/30 rounded-md overflow-hidden">
-                  {chartLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
-                      <div className="flex flex-col items-center gap-2">
-                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                        <span className="text-sm text-muted-foreground">Loading chart...</span>
-                      </div>
-                    </div>
-                  )}
-                  {chartError && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
-                      <div className="flex flex-col items-center gap-2 text-destructive">
-                        <AlertCircle className="w-8 h-8" />
-                        <span className="text-sm">Failed to load chart</span>
-                      </div>
-                    </div>
-                  )}
-                  <div ref={chartContainerRef} className="h-full w-full" />
+                <div className="relative h-[350px] w-full bg-muted/30 rounded-md p-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id={`colorPrice-${stock.symbol}`} x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity={0.3} />
+                          <stop offset="95%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <XAxis 
+                        dataKey="time" 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                        interval="preserveStartEnd"
+                        minTickGap={40}
+                      />
+                      <YAxis 
+                        domain={["auto", "auto"]}
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                        tickFormatter={(value) => `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+                        width={70}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: "hsl(var(--background))", 
+                          border: "1px solid hsl(var(--border))",
+                          borderRadius: "6px",
+                          fontSize: "12px"
+                        }}
+                        formatter={(value: number) => [`₹${value.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`, "Price"]}
+                        labelFormatter={(label) => `Time: ${label}`}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="price"
+                        stroke={isPositive ? "#10b981" : "#ef4444"}
+                        strokeWidth={2}
+                        fill={`url(#colorPrice-${stock.symbol})`}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
 
-                <p className="text-xs text-muted-foreground text-center">
-                  Chart includes Moving Average, RSI, and MACD indicators. Powered by TradingView.
-                </p>
+                <div className="flex items-center justify-between flex-wrap gap-2 pt-2">
+                  <p className="text-xs text-muted-foreground">
+                    Simulated price movement for educational purposes only.
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(`https://www.tradingview.com/chart/?symbol=${symbolMapping[stock.symbol] || `NSE:${stock.symbol}`}`, "_blank")}
+                    data-testid="link-tradingview"
+                  >
+                    <ExternalLink className="w-3 h-3 mr-1" />
+                    View on TradingView
+                  </Button>
+                </div>
               </div>
             </TabsContent>
 
