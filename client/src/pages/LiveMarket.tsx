@@ -83,15 +83,19 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const widgetIdRef = useRef(0);
 
   useEffect(() => {
     if (!containerRef.current) return;
+    
+    const currentWidgetId = ++widgetIdRef.current;
     
     setIsLoading(true);
     setHasError(false);
     containerRef.current.innerHTML = "";
     
-    const mappedSymbol = symbolMapping[symbol] || symbol;
+    // symbol is already mapped (e.g., "NSE:RELIANCE"), use directly
+    const mappedSymbol = symbol;
     
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
@@ -106,7 +110,7 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
       style: "1",
       locale: "en",
       enable_publishing: false,
-      allow_symbol_change: true,
+      allow_symbol_change: false,
       hide_top_toolbar: false,
       hide_legend: false,
       save_image: false,
@@ -115,12 +119,16 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
     });
 
     script.onload = () => {
-      setTimeout(() => setIsLoading(false), 1000);
+      if (currentWidgetId === widgetIdRef.current) {
+        setTimeout(() => setIsLoading(false), 1000);
+      }
     };
     
     script.onerror = () => {
-      setHasError(true);
-      setIsLoading(false);
+      if (currentWidgetId === widgetIdRef.current) {
+        setHasError(true);
+        setIsLoading(false);
+      }
     };
 
     containerRef.current.appendChild(script);
