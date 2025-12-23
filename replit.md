@@ -6,16 +6,17 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
-- **Dec 2024**: Live News feature with real API integration
-  - MoneyControl-inspired news layout with featured stories and clickable articles
-  - Bilingual support (English/Hindi) with language toggle
+- **Dec 2024**: Live News feature with MoneyControl integration
+  - MoneyControl website scraping for real live news (primary source)
+  - Bilingual support (English/Hindi) - English (moneycontrol.com) & Hindi (hindi.moneycontrol.com)
   - Category filtering (Markets, Economy, Business, Commodities, Banking, Auto, Mutual Funds)
-  - "In Focus" section with top stories
+  - "In Focus" section with top stories and featured story hero
   - Full article modal with image, title, summary, source, and timestamp
-  - Alpha Vantage NEWS_SENTIMENT API integration for real financial news
+  - Fallback to Alpha Vantage NEWS_SENTIMENT API if MoneyControl scraping fails
   - News API routes (/api/news, /api/news/featured, /api/news/categories)
-  - 10-minute cache for API results
-  - Proper news categorization based on article titles
+  - 10-minute caching for optimized performance
+  - Automatic news categorization based on article content
+  - Cheerio-based HTML parsing for reliable content extraction
   - Course cards reorganized with numbered badges inside card headers
 
 - **Dec 2024**: Initial MVP build with all core features

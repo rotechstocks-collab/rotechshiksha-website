@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import session from "express-session";
 import { storage } from "./storage";
 import { leadFormSchema, otpVerifySchema } from "@shared/schema";
+import axios from "axios";
+import * as cheerio from "cheerio";
 
 declare module "express-session" {
   interface SessionData {
@@ -30,7 +32,101 @@ interface CachedNews {
 let newsCache: Record<string, CachedNews> = {};
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
-// Fetch financial news from Alpha Vantage NEWS_SENTIMENT endpoint
+// Fetch financial news from MoneyControl
+async function fetchNewsFromMoneyControl(language: string = "en"): Promise<any[]> {
+  try {
+    const cacheKey = `moneycontrol-${language}`;
+    const cached = newsCache[cacheKey];
+    
+    // Return cached data if still valid
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached.data;
+    }
+
+    // Use MoneyControl API wrapper or scrape based on language
+    const url = language === "hi" 
+      ? "https://hindi.moneycontrol.com/"
+      : "https://www.moneycontrol.com/news/";
+
+    console.log(`Fetching news from MoneyControl (${language}): ${url}`);
+
+    const response = await axios.get(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+      },
+      timeout: 8000
+    });
+
+    const $ = cheerio.load(response.data);
+    const articles: any[] = [];
+
+    // Scrape article cards from MoneyControl
+    $("div.eachNews, article, div.newsItem, div.news-item, a[href*='/news/']").each((index, element) => {
+      if (articles.length >= 12) return;
+
+      try {
+        const $el = $(element);
+        let title = $el.find("h2, h3, .newsTtl, .nwsHeading").text().trim();
+        let summary = $el.find("p, .newsDsc, .nwsDsc").text().trim();
+        let imageUrl = $el.find("img").attr("src") || $el.find("img").attr("data-src") || "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format";
+        let url = $el.find("a").attr("href") || "#";
+
+        // Ensure we have content
+        if (!title) title = $el.text().trim().substring(0, 100);
+        if (!summary) summary = "Financial news from MoneyControl";
+
+        // Clean up image URL
+        if (imageUrl && !imageUrl.startsWith("http")) {
+          imageUrl = `https://moneycontrol.com${imageUrl}`;
+        }
+
+        // Clean up link
+        if (url && !url.startsWith("http")) {
+          const baseUrl = language === "hi" ? "https://hindi.moneycontrol.com" : "https://moneycontrol.com";
+          url = `${baseUrl}${url}`;
+        }
+
+        if (title && title.length > 10) {
+          articles.push({
+            id: `mc-${language}-${index}`,
+            title: title.substring(0, 200),
+            summary: summary.substring(0, 300),
+            category: categorizeNews(title),
+            tag: "MoneyControl",
+            imageUrl: imageUrl,
+            source: "MoneyControl",
+            publishedAt: new Date().toISOString(),
+            url: url
+          });
+        }
+      } catch (err) {
+        // Skip malformed elements
+      }
+    });
+
+    console.log(`Found ${articles.length} articles from MoneyControl (${language})`);
+
+    // If scraping failed, fall back to Alpha Vantage
+    if (articles.length === 0) {
+      console.log("MoneyControl scraping returned 0 articles, using Alpha Vantage fallback");
+      return await fetchNewsFromAlphaVantage("stock market India", language);
+    }
+
+    // Cache the results
+    newsCache[cacheKey] = {
+      data: articles,
+      timestamp: Date.now()
+    };
+
+    return articles;
+  } catch (error) {
+    console.error("MoneyControl fetch error:", error);
+    // Fallback to Alpha Vantage
+    return await fetchNewsFromAlphaVantage("stock market India", language);
+  }
+}
+
+// Fetch financial news from Alpha Vantage NEWS_SENTIMENT endpoint (fallback)
 async function fetchNewsFromAlphaVantage(query: string, language: string = "en"): Promise<any[]> {
   if (!ALPHAVANTAGE_API_KEY) {
     console.log("Alpha Vantage API key not configured");
@@ -87,7 +183,6 @@ async function fetchNewsFromAlphaVantage(query: string, language: string = "en")
     // Transform Alpha Vantage news to our format
     const articles = data.feed
       .map((item: any, index: number) => {
-        // Extract image from summary or use default
         let imageUrl = "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format";
         if (item.banner_image) {
           imageUrl = item.banner_image;
@@ -970,8 +1065,8 @@ export async function registerRoutes(
 
       const query = categoryQueryMap[category] || "stock market India";
       
-      // Fetch from Alpha Vantage NEWS_SENTIMENT
-      let news = await fetchNewsFromAlphaVantage(query, language);
+      // Fetch from MoneyControl (with Alpha Vantage fallback)
+      let news = await fetchNewsFromMoneyControl(language);
       
       // If no news from API or cache issues, use fallback sample data
       if (news.length === 0) {
@@ -994,8 +1089,8 @@ export async function registerRoutes(
     try {
       const language = (req.query.lang as string) || "en";
       
-      // Fetch featured news from Alpha Vantage
-      let news = await fetchNewsFromAlphaVantage("stock market India", language);
+      // Fetch featured news from MoneyControl
+      let news = await fetchNewsFromMoneyControl(language);
       
       // Fallback to sample data if API fails
       if (news.length === 0) {
