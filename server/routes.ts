@@ -22,6 +22,88 @@ const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" || process.env.NODE
 const ALPHAVANTAGE_API_KEY = process.env.ALPHAVANTAGE_API_KEY || "";
 const ALPHAVANTAGE_BASE_URL = "https://www.alphavantage.co/query";
 
+// NewsAPI configuration
+const NEWSAPI_KEY = process.env.NEWSAPI_KEY || "";
+const NEWSAPI_BASE_URL = "https://newsapi.org/v2";
+
+// Cache for news data
+interface CachedNews {
+  data: any;
+  timestamp: number;
+}
+let newsCache: Record<string, CachedNews> = {};
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+
+async function fetchNewsFromNewsAPI(query: string, language: string = "en"): Promise<any[]> {
+  if (!NEWSAPI_KEY) {
+    console.log("NewsAPI key not configured, returning fallback data");
+    return [];
+  }
+
+  try {
+    const cacheKey = `${query}-${language}`;
+    const cached = newsCache[cacheKey];
+    
+    // Return cached data if still valid
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached.data;
+    }
+
+    // Keywords for Indian stock market and finance news
+    const searchQuery = `(${query} OR "stock market" OR "share market" OR "nifty" OR "sensex" OR "stocks" OR "trading" OR "investment" OR "finance") India`;
+    
+    const url = `${NEWSAPI_BASE_URL}/everything?q=${encodeURIComponent(searchQuery)}&sortBy=publishedAt&language=${language}&pageSize=12&apiKey=${NEWSAPI_KEY}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`NewsAPI error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.articles) {
+      return [];
+    }
+
+    const articles = data.articles
+      .filter((article: any) => article.urlToImage && article.content)
+      .map((article: any, index: number) => ({
+        id: `${cacheKey}-${index}`,
+        title: article.title,
+        summary: article.description || article.content?.substring(0, 150),
+        category: categorizeNews(article.title),
+        tag: article.source.name,
+        imageUrl: article.urlToImage,
+        source: article.source.name,
+        publishedAt: article.publishedAt,
+        url: article.url
+      }));
+
+    // Cache the results
+    newsCache[cacheKey] = {
+      data: articles,
+      timestamp: Date.now()
+    };
+
+    return articles;
+  } catch (error) {
+    console.error("NewsAPI fetch error:", error);
+    return [];
+  }
+}
+
+function categorizeNews(title: string): string {
+  const lowerTitle = title.toLowerCase();
+  
+  if (lowerTitle.includes("gold") || lowerTitle.includes("silver") || lowerTitle.includes("crude") || lowerTitle.includes("commodity")) return "Commodities";
+  if (lowerTitle.includes("bank") || lowerTitle.includes("rbi") || lowerTitle.includes("credit")) return "Banking";
+  if (lowerTitle.includes("auto") || lowerTitle.includes("car") || lowerTitle.includes("vehicle") || lowerTitle.includes("motor")) return "Auto";
+  if (lowerTitle.includes("fund") || lowerTitle.includes("mutual") || lowerTitle.includes("sip")) return "Mutual Funds";
+  if (lowerTitle.includes("gdp") || lowerTitle.includes("inflation") || lowerTitle.includes("economy") || lowerTitle.includes("rbi") || lowerTitle.includes("rate")) return "Economy";
+  if (lowerTitle.includes("company") || lowerTitle.includes("startup") || lowerTitle.includes("business") || lowerTitle.includes("rupees")) return "Business";
+  return "Markets";
+}
+
 // Alpha Vantage symbol mapping for Indian stocks (BSE symbols)
 const alphaVantageSymbols: Record<string, string> = {
   "RELIANCE": "RELIANCE.BSE",
@@ -844,20 +926,26 @@ export async function registerRoutes(
       const category = req.query.category as string;
       const limit = parseInt(req.query.limit as string) || 10;
 
-      let news = language === "hi" ? [...sampleNewsHindi] : [...sampleNewsEnglish];
+      // Category-specific query mapping
+      const categoryQueryMap: Record<string, string> = {
+        all: "stock market India",
+        markets: "Nifty Sensex BSE NSE",
+        economy: "RBI inflation GDP economy India",
+        business: "business India companies",
+        commodities: "gold crude oil commodity prices",
+        banking: "bank HDFC ICICI SBI",
+        auto: "Tata Motors Maruti automobile",
+        "mutual-funds": "mutual fund SIP investment"
+      };
+
+      const query = categoryQueryMap[category] || "stock market India";
       
-      if (category && category !== "all") {
-        const categoryMap: Record<string, string[]> = {
-          markets: ["Markets", "बाजार"],
-          economy: ["Economy", "अर्थव्यवस्था"],
-          business: ["Business", "बिजनेस"],
-          commodities: ["Commodities", "कमोडिटी"],
-          banking: ["Banking", "बैंकिंग"],
-          auto: ["Auto", "ऑटो"],
-          "mutual-funds": ["Mutual Funds", "म्यूचुअल फंड"]
-        };
-        const validCategories = categoryMap[category.toLowerCase()] || [];
-        news = news.filter(n => validCategories.includes(n.category));
+      // Fetch from NewsAPI
+      let news = await fetchNewsFromNewsAPI(query, language === "hi" ? "hi" : "en");
+      
+      // If no news from API or cache issues, use fallback sample data
+      if (news.length === 0) {
+        news = language === "hi" ? [...sampleNewsHindi] : [...sampleNewsEnglish];
       }
 
       res.json({
@@ -875,10 +963,17 @@ export async function registerRoutes(
   app.get("/api/news/featured", async (req: Request, res: Response) => {
     try {
       const language = (req.query.lang as string) || "en";
-      const news = language === "hi" ? sampleNewsHindi : sampleNewsEnglish;
+      
+      // Fetch featured news from API
+      let news = await fetchNewsFromNewsAPI("stock market", language === "hi" ? "hi" : "en");
+      
+      // Fallback to sample data if API fails
+      if (news.length === 0) {
+        news = language === "hi" ? sampleNewsHindi : sampleNewsEnglish;
+      }
       
       res.json({
-        featured: news[0],
+        featured: news[0] || {},
         topStories: news.slice(1, 4),
         language
       });
