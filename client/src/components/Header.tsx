@@ -11,6 +11,7 @@ import {
 import { Menu, ChevronDown, Sun, Moon, User, LogOut, LayoutDashboard } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
+import { StockSearch } from "./StockSearch";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -98,6 +99,10 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <div className="hidden md:block w-56">
+              <StockSearch variant="compact" />
+            </div>
+            
             <Button
               size="icon"
               variant="ghost"
