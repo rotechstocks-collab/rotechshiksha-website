@@ -18,6 +18,142 @@ function generateOtp(): string {
 const TEST_OTP = process.env.TEST_OTP || "123456";
 const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" || process.env.NODE_ENV !== "production";
 
+// Alpha Vantage API configuration
+const ALPHAVANTAGE_API_KEY = process.env.ALPHAVANTAGE_API_KEY || "";
+const ALPHAVANTAGE_BASE_URL = "https://www.alphavantage.co/query";
+
+// Alpha Vantage symbol mapping for Indian stocks (BSE symbols)
+const alphaVantageSymbols: Record<string, string> = {
+  "RELIANCE": "RELIANCE.BSE",
+  "TCS": "TCS.BSE",
+  "HDFCBANK": "HDFCBANK.BSE",
+  "ICICIBANK": "ICICIBANK.BSE",
+  "INFY": "INFY.BSE",
+  "ITC": "ITC.BSE",
+  "SBIN": "SBIN.BSE",
+  "BHARTIARTL": "BHARTIARTL.BSE",
+  "KOTAKBANK": "KOTAKBANK.BSE",
+  "LT": "LT.BSE",
+  "HINDUNILVR": "HINDUNILVR.BSE",
+  "AXISBANK": "AXISBANK.BSE",
+  "WIPRO": "WIPRO.BSE",
+  "MARUTI": "MARUTI.BSE",
+  "TATAMOTORS": "TATAMOTORS.BSE",
+  "ADANIENT": "ADANIENT.BSE",
+  "ASIANPAINT": "ASIANPAINT.BSE",
+  "BAJFINANCE": "BAJFINANCE.BSE",
+  "BAJAJFINSV": "BAJAJFINSV.BSE",
+  "SUNPHARMA": "SUNPHARMA.BSE",
+  "TITAN": "TITAN.BSE",
+  "ULTRACEMCO": "ULTRACEMCO.BSE",
+  "ONGC": "ONGC.BSE",
+  "NTPC": "NTPC.BSE",
+  "POWERGRID": "POWERGRID.BSE",
+  "TECHM": "TECHM.BSE",
+  "HCLTECH": "HCLTECH.BSE",
+  "COALINDIA": "COALINDIA.BSE",
+  "DRREDDY": "DRREDDY.BSE",
+  "DIVISLAB": "DIVISLAB.BSE"
+};
+
+// Fetch quote from Alpha Vantage API
+async function fetchAlphaVantageQuote(symbol: string): Promise<any> {
+  if (!ALPHAVANTAGE_API_KEY) {
+    return null;
+  }
+  
+  try {
+    const avSymbol = alphaVantageSymbols[symbol] || `${symbol}.BSE`;
+    const url = `${ALPHAVANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${avSymbol}&apikey=${ALPHAVANTAGE_API_KEY}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Alpha Vantage API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Check for API limit message
+    if (data.Note || data.Information) {
+      console.log("Alpha Vantage API limit reached:", data.Note || data.Information);
+      return null;
+    }
+    
+    const quote = data["Global Quote"];
+    if (!quote || !quote["05. price"]) {
+      return null;
+    }
+    
+    const price = parseFloat(quote["05. price"]);
+    const open = parseFloat(quote["02. open"]);
+    const high = parseFloat(quote["03. high"]);
+    const low = parseFloat(quote["04. low"]);
+    const prevClose = parseFloat(quote["08. previous close"]);
+    const change = parseFloat(quote["09. change"]);
+    const changePercent = parseFloat(quote["10. change percent"]?.replace("%", "") || "0");
+    
+    return {
+      name: symbol, // Will be enriched with stockSymbols later in routes
+      symbol: symbol,
+      price,
+      change,
+      changePercent,
+      open,
+      high,
+      low,
+      prevClose,
+      source: "alphavantage"
+    };
+  } catch (error) {
+    console.error(`Alpha Vantage fetch error for ${symbol}:`, error);
+    return null;
+  }
+}
+
+// Fetch intraday data from Alpha Vantage
+async function fetchAlphaVantageIntraday(symbol: string, interval: string = "5min"): Promise<any[]> {
+  if (!ALPHAVANTAGE_API_KEY) {
+    return [];
+  }
+  
+  try {
+    const avSymbol = alphaVantageSymbols[symbol] || `${symbol}.BSE`;
+    const url = `${ALPHAVANTAGE_BASE_URL}?function=TIME_SERIES_INTRADAY&symbol=${avSymbol}&interval=${interval}&apikey=${ALPHAVANTAGE_API_KEY}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Alpha Vantage API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.Note || data.Information) {
+      console.log("Alpha Vantage API limit reached");
+      return [];
+    }
+    
+    const timeSeries = data[`Time Series (${interval})`];
+    if (!timeSeries) {
+      return [];
+    }
+    
+    const chartData = Object.entries(timeSeries).slice(0, 50).map(([time, values]: [string, any]) => ({
+      time: time.split(" ")[1] || time,
+      open: parseFloat(values["1. open"]),
+      high: parseFloat(values["2. high"]),
+      low: parseFloat(values["3. low"]),
+      close: parseFloat(values["4. close"]),
+      volume: parseInt(values["5. volume"]),
+      price: parseFloat(values["4. close"])
+    })).reverse();
+    
+    return chartData;
+  } catch (error) {
+    console.error(`Alpha Vantage intraday fetch error for ${symbol}:`, error);
+    return [];
+  }
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -395,6 +531,127 @@ export async function registerRoutes(
       console.error("Quote fetch error:", error);
       res.status(500).json({ message: "Failed to fetch quote" });
     }
+  });
+
+  // Alpha Vantage API endpoints
+  app.get("/api/alphavantage/quote/:symbol", async (req: Request, res: Response) => {
+    try {
+      const symbol = req.params.symbol.toUpperCase();
+      
+      if (!ALPHAVANTAGE_API_KEY) {
+        return res.status(503).json({ 
+          message: "Alpha Vantage API key not configured",
+          fallback: true
+        });
+      }
+      
+      const quote = await fetchAlphaVantageQuote(symbol);
+      if (quote) {
+        // Enrich with stock name
+        quote.name = stockSymbols[`${symbol}.NS`] || stockSymbols[symbol] || symbol;
+        res.json(quote);
+      } else {
+        // Fallback to Yahoo Finance
+        const yahooQuote = await fetchYahooQuote(`${symbol}.NS`);
+        if (yahooQuote) {
+          res.json({ ...yahooQuote, source: "yahoo_fallback" });
+        } else {
+          res.status(404).json({ message: "Stock not found" });
+        }
+      }
+    } catch (error) {
+      console.error("Alpha Vantage quote error:", error);
+      res.status(500).json({ message: "Failed to fetch quote" });
+    }
+  });
+
+  // Alpha Vantage intraday chart data
+  app.get("/api/alphavantage/intraday/:symbol", async (req: Request, res: Response) => {
+    try {
+      const symbol = req.params.symbol.toUpperCase();
+      const interval = (req.query.interval as string) || "5min";
+      
+      if (!ALPHAVANTAGE_API_KEY) {
+        return res.status(503).json({ 
+          message: "Alpha Vantage API key not configured",
+          data: []
+        });
+      }
+      
+      const chartData = await fetchAlphaVantageIntraday(symbol, interval);
+      res.json({
+        symbol,
+        interval,
+        data: chartData,
+        source: chartData.length > 0 ? "alphavantage" : "simulated"
+      });
+    } catch (error) {
+      console.error("Alpha Vantage intraday error:", error);
+      res.status(500).json({ message: "Failed to fetch intraday data" });
+    }
+  });
+
+  // Alpha Vantage search endpoint
+  app.get("/api/alphavantage/search", async (req: Request, res: Response) => {
+    try {
+      const query = req.query.q as string;
+      
+      if (!query || query.length < 2) {
+        return res.json([]);
+      }
+      
+      if (!ALPHAVANTAGE_API_KEY) {
+        // Fallback to local search
+        const allStocks = Object.entries(stockSymbols).map(([symbol, name]) => ({
+          symbol: symbol.replace("^", "").replace(".NS", ""),
+          name,
+        }));
+        const matches = allStocks.filter(
+          stock => stock.name.toLowerCase().includes(query.toLowerCase()) || 
+                   stock.symbol.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 10);
+        return res.json(matches);
+      }
+      
+      const url = `${ALPHAVANTAGE_BASE_URL}?function=SYMBOL_SEARCH&keywords=${encodeURIComponent(query)}&apikey=${ALPHAVANTAGE_API_KEY}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      if (data.Note || data.Information) {
+        // API limit - fallback to local
+        const allStocks = Object.entries(stockSymbols).map(([symbol, name]) => ({
+          symbol: symbol.replace("^", "").replace(".NS", ""),
+          name,
+        }));
+        const matches = allStocks.filter(
+          stock => stock.name.toLowerCase().includes(query.toLowerCase()) || 
+                   stock.symbol.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 10);
+        return res.json(matches);
+      }
+      
+      const matches = (data.bestMatches || [])
+        .filter((m: any) => m["4. region"] === "India/Bombay" || m["4. region"]?.includes("India"))
+        .slice(0, 10)
+        .map((m: any) => ({
+          symbol: m["1. symbol"].replace(".BSE", "").replace(".NSE", ""),
+          name: m["2. name"],
+          exchange: m["4. region"]
+        }));
+      
+      res.json(matches);
+    } catch (error) {
+      console.error("Alpha Vantage search error:", error);
+      res.status(500).json({ message: "Failed to search" });
+    }
+  });
+
+  // Check Alpha Vantage API status
+  app.get("/api/alphavantage/status", async (_req: Request, res: Response) => {
+    res.json({
+      configured: !!ALPHAVANTAGE_API_KEY,
+      source: ALPHAVANTAGE_API_KEY ? "alphavantage" : "yahoo_fallback"
+    });
   });
 
   // Payment Routes

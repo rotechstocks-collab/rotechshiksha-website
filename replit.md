@@ -86,15 +86,24 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ### Market Data
 - `GET /api/market/live` - Get live market indices
+- `GET /api/market/search` - Search stocks by name/symbol
+- `GET /api/market/quote/:symbol` - Get single stock quote
+
+### Alpha Vantage API (Real-time Data)
+- `GET /api/alphavantage/quote/:symbol` - Get real-time quote from Alpha Vantage
+- `GET /api/alphavantage/intraday/:symbol` - Get intraday chart data (5min intervals)
+- `GET /api/alphavantage/search` - Search stocks via Alpha Vantage API
+- `GET /api/alphavantage/status` - Check API configuration status
 
 ## Environment Variables
 
 - `DATABASE_URL` - PostgreSQL connection string
 - `SESSION_SECRET` - Session encryption key
+- `ALPHAVANTAGE_API_KEY` - Alpha Vantage API key for real-time stock data
 
 ## Development Notes
 
 - OTP is logged to console in development (integrate SMS provider for production)
-- Market data uses simulated values (integrate real API for production)
+- Market data uses Alpha Vantage API when configured, with Yahoo Finance fallback
 - Payment screenshots stored as base64 in database
 - Admin access requires `isAdmin: true` flag on user record
