@@ -26,6 +26,7 @@ import Dashboard from "@/pages/Dashboard";
 import Admin from "@/pages/Admin";
 import Login from "@/pages/Login";
 import IPO from "@/pages/IPO";
+import BrokerComparison from "@/pages/BrokerComparison";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -38,6 +39,7 @@ function Router() {
       <Route path="/live-news" component={LiveNews} />
       <Route path="/ipo" component={IPO} />
       <Route path="/ipo/:id" component={IPO} />
+      <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/calculators" component={CalculatorHub} />
       <Route path="/calculators/:id" component={GenericCalculator} />
       <Route path="/pricing" component={PricingPage} />

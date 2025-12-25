@@ -37,6 +37,7 @@ const navItemsConfig: NavItem[] = [
   },
   { labelKey: "nav.calculators", href: "/calculators" },
   { labelKey: "nav.ipo", href: "/ipo" },
+  { labelKey: "nav.brokers", href: "/compare-brokers" },
   { labelKey: "nav.pricing", href: "/pricing" },
 ];
 
