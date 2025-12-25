@@ -23,6 +23,8 @@ import {
   IndianRupee,
   BarChart3,
   Wallet,
+  Calendar,
+  Briefcase,
 } from "lucide-react";
 import { SiWhatsapp, SiTelegram } from "react-icons/si";
 import {
@@ -34,7 +36,25 @@ import {
   MentorCharacter,
   PiggyBank as PiggyBankIllustration,
   ChartAnalysis,
+  GrowthChart,
 } from "@/components/Illustrations";
+import { ipoData, formatDate, type IPO } from "@/lib/ipoData";
+
+const featuredIPOs = ipoData.filter(ipo => ipo.status === "ongoing" || ipo.status === "upcoming").slice(0, 3);
+
+const statusColors = {
+  upcoming: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  ongoing: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  closed: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  listed: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
+};
+
+const statusLabels = {
+  upcoming: "Upcoming",
+  ongoing: "Open Now",
+  closed: "Closed",
+  listed: "Listed"
+};
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -298,6 +318,121 @@ export default function Home() {
       </section>
 
       <CourseCards />
+
+      <section className="py-20 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative">
+          <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
+            <motion.div {...fadeInUp} className="space-y-4">
+              <Badge className="bg-primary/10 text-primary border-primary/20">
+                <TrendingUp className="w-3 h-3 mr-1" />
+                IPO Hub
+              </Badge>
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                Upcoming & Ongoing IPOs
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                Track the latest IPO opportunities, view subscription status, and stay updated with new listings
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <div className="relative">
+                <RocketGrowth size={160} />
+                <motion.div
+                  className="absolute -top-4 -right-8"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                >
+                  <GrowthChart size={100} />
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {featuredIPOs.map((ipo, index) => (
+              <motion.div
+                key={ipo.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Link href={`/ipo/${ipo.id}`}>
+                  <Card className="h-full hover-elevate cursor-pointer group" data-testid={`card-ipo-home-${ipo.id}`}>
+                    <CardContent className="pt-5 space-y-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                          {ipo.companyName.charAt(0)}
+                        </div>
+                        <Badge variant="outline" className={statusColors[ipo.status]}>
+                          {statusLabels[ipo.status]}
+                        </Badge>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                          {ipo.companyName}
+                        </h3>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                          <Briefcase className="w-3 h-3" />
+                          {ipo.industry}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <p className="text-muted-foreground text-xs">Price Band</p>
+                          <p className="font-semibold text-foreground">
+                            Rs {ipo.issuePrice.min} - {ipo.issuePrice.max}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground text-xs">Min. Investment</p>
+                          <p className="font-semibold text-foreground">
+                            Rs {ipo.minInvestment.toLocaleString("en-IN")}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
+                        <Calendar className="w-4 h-4" />
+                        {ipo.status === "upcoming" ? (
+                          <span>Opens: {formatDate(ipo.openDate)}</span>
+                        ) : (
+                          <span>Closes: {formatDate(ipo.closeDate)}</span>
+                        )}
+                      </div>
+                      {ipo.gmp && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <TrendingUp className="w-4 h-4 text-emerald-500" />
+                          <span className="text-muted-foreground">GMP:</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">+Rs {ipo.gmp}</span>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div {...fadeInUp} className="text-center">
+            <Link href="/ipo">
+              <Button size="lg" variant="outline" className="gap-2" data-testid="button-view-all-ipos">
+                View All IPOs
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">

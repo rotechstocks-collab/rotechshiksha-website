@@ -24,6 +24,7 @@ import Payment from "@/pages/Payment";
 import Dashboard from "@/pages/Dashboard";
 import Admin from "@/pages/Admin";
 import Login from "@/pages/Login";
+import IPO from "@/pages/IPO";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -34,6 +35,8 @@ function Router() {
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
       <Route path="/live-news" component={LiveNews} />
+      <Route path="/ipo" component={IPO} />
+      <Route path="/ipo/:id" component={IPO} />
       <Route path="/calculators" component={CalculatorHub} />
       <Route path="/calculators/:id" component={GenericCalculator} />
       <Route path="/pricing" component={PricingPage} />
