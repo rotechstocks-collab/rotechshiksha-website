@@ -34,9 +34,7 @@ const navItemsConfig: NavItem[] = [
       { labelKey: "nav.courses.algo", href: "/courses/algo" },
     ],
   },
-  { labelKey: "nav.liveNews", href: "/live-news" },
   { labelKey: "nav.calculators", href: "/calculators" },
-  { labelKey: "nav.startupConnect", href: "/startup-connect" },
   { labelKey: "nav.pricing", href: "/pricing" },
 ];
 
@@ -52,7 +50,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-12 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           <Link href="/">

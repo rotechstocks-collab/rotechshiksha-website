@@ -68,7 +68,7 @@ function AnimatedValue({ value, prefix = "" }: { value: number; prefix?: string 
 }
 
 export default function SIPCalculator() {
-  const [monthlyInvestment, setMonthlyInvestment] = useState(10000);
+  const [monthlyInvestment, setMonthlyInvestment] = useState(5000);
   const [timePeriod, setTimePeriod] = useState(10);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [showContactModal, setShowContactModal] = useState(false);
@@ -146,7 +146,7 @@ export default function SIPCalculator() {
   };
 
   return (
-    <div className="min-h-screen pt-28 pb-16 bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
       <div className="max-w-6xl mx-auto px-4 lg:px-8">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -189,7 +189,7 @@ export default function SIPCalculator() {
                       <Input
                         type="number"
                         value={monthlyInvestment}
-                        onChange={(e) => setMonthlyInvestment(Math.max(500, Math.min(200000, Number(e.target.value))))}
+                        onChange={(e) => setMonthlyInvestment(Math.max(100, Math.min(200000, Number(e.target.value))))}
                         className="w-32 h-9 text-right font-semibold"
                         data-testid="input-monthly-investment"
                       />
@@ -198,14 +198,14 @@ export default function SIPCalculator() {
                   <Slider
                     value={[monthlyInvestment]}
                     onValueChange={(v) => setMonthlyInvestment(v[0])}
-                    min={500}
+                    min={100}
                     max={200000}
-                    step={500}
+                    step={100}
                     className="py-2"
                     data-testid="slider-monthly-investment"
                   />
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>500</span>
+                    <span>100</span>
                     <span>2L</span>
                   </div>
                 </div>
