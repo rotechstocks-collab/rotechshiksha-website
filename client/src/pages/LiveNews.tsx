@@ -23,6 +23,11 @@ import {
   Video,
   Tv,
   Zap,
+  TrendingDown,
+  AlertTriangle,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  MinusCircle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
@@ -55,6 +60,117 @@ interface VideoChannel {
   thumbnail: string;
   isLive: boolean;
 }
+
+type MarketImpact = "positive" | "negative" | "neutral";
+
+const positiveKeywords = [
+  "rally", "surge", "gain", "rise", "jump", "soar", "boost", "profit", "growth", "bullish",
+  "record high", "all-time high", "strong", "recovery", "buy", "upgrade", "outperform",
+  "dividend", "bonus", "expansion", "success", "breakthrough", "innovation", "investment",
+  "तेजी", "बढ़त", "मुनाफा", "वृद्धि", "रिकॉर्ड", "मजबूत", "निवेश"
+];
+
+const negativeKeywords = [
+  "crash", "fall", "drop", "plunge", "decline", "loss", "slump", "bearish", "sell-off",
+  "warning", "crisis", "recession", "inflation", "debt", "downgrade", "layoff", "cut",
+  "weak", "concern", "risk", "volatile", "fraud", "scam", "penalty", "fine", "lawsuit",
+  "गिरावट", "नुकसान", "चेतावनी", "संकट", "मंदी", "जोखिम"
+];
+
+const breakingNewsKeywords = [
+  "breaking", "just in", "urgent", "alert", "rbi", "fed", "sebi", "crash", "surge",
+  "record", "historic", "major", "massive", "ipo", "merger", "acquisition", "resign",
+  "announce", "results", "q1", "q2", "q3", "q4", "quarterly", "billion", "trillion",
+  "ब्रेकिंग", "आरबीआई", "सेबी", "रिजल्ट", "तिमाही", "घोषणा"
+];
+
+const getMarketImpact = (title: string, summary: string): { impact: MarketImpact; reason: string; reasonHi: string } => {
+  const text = `${title} ${summary}`.toLowerCase();
+  
+  let positiveScore = 0;
+  let negativeScore = 0;
+  let matchedPositive = "";
+  let matchedNegative = "";
+  
+  positiveKeywords.forEach(keyword => {
+    if (text.includes(keyword.toLowerCase())) {
+      positiveScore++;
+      if (!matchedPositive) matchedPositive = keyword;
+    }
+  });
+  
+  negativeKeywords.forEach(keyword => {
+    if (text.includes(keyword.toLowerCase())) {
+      negativeScore++;
+      if (!matchedNegative) matchedNegative = keyword;
+    }
+  });
+  
+  if (positiveScore > negativeScore) {
+    return {
+      impact: "positive",
+      reason: "Indicates potential market growth or positive sentiment",
+      reasonHi: "बाजार में तेजी या सकारात्मक भावना का संकेत"
+    };
+  } else if (negativeScore > positiveScore) {
+    return {
+      impact: "negative",
+      reason: "May indicate market concern or downward pressure",
+      reasonHi: "बाजार में चिंता या गिरावट का संकेत हो सकता है"
+    };
+  }
+  
+  return {
+    impact: "neutral",
+    reason: "Market impact unclear or balanced",
+    reasonHi: "बाजार पर प्रभाव अस्पष्ट या संतुलित"
+  };
+};
+
+const isBreakingNews = (title: string, publishedAt: string): boolean => {
+  const text = title.toLowerCase();
+  const publishTime = new Date(publishedAt);
+  const now = new Date();
+  const hoursDiff = (now.getTime() - publishTime.getTime()) / (1000 * 60 * 60);
+  
+  if (hoursDiff > 2) return false;
+  
+  return breakingNewsKeywords.some(keyword => text.includes(keyword.toLowerCase()));
+};
+
+const generateAISummary = (title: string, summary: string, lang: "en" | "hi"): string => {
+  const text = `${title} ${summary}`.toLowerCase();
+  
+  if (text.includes("rbi") || text.includes("आरबीआई")) {
+    return lang === "hi" 
+      ? "RBI के इस फैसले का असर बैंकिंग सेक्टर और ब्याज दरों पर पड़ सकता है।"
+      : "This RBI decision may impact banking sector and interest rates.";
+  }
+  if (text.includes("ipo") || text.includes("आईपीओ")) {
+    return lang === "hi"
+      ? "IPO में निवेश से पहले कंपनी के फंडामेंटल्स और वैल्यूएशन की जांच करें।"
+      : "Before investing in IPO, analyze company fundamentals and valuation.";
+  }
+  if (text.includes("result") || text.includes("quarter") || text.includes("रिजल्ट") || text.includes("तिमाही")) {
+    return lang === "hi"
+      ? "कंपनी के तिमाही नतीजे शेयर प्राइस को प्रभावित कर सकते हैं।"
+      : "Quarterly results may influence stock price movement.";
+  }
+  if (text.includes("nifty") || text.includes("sensex") || text.includes("निफ्टी") || text.includes("सेंसेक्स")) {
+    return lang === "hi"
+      ? "इंडेक्स मूवमेंट से पोर्टफोलियो की वैल्यू प्रभावित होती है।"
+      : "Index movements affect overall portfolio value.";
+  }
+  if (text.includes("inflation") || text.includes("महंगाई")) {
+    return lang === "hi"
+      ? "महंगाई दर का असर ब्याज दरों और शेयर बाजार पर पड़ता है।"
+      : "Inflation rates impact interest rates and stock markets.";
+  }
+  
+  return lang === "hi"
+    ? "यह खबर निवेशकों के लिए महत्वपूर्ण हो सकती है।"
+    : "This news may be significant for investors.";
+};
 
 const globalNewsVideos: VideoChannel[] = [
   {
@@ -429,50 +545,95 @@ export default function LiveNews() {
                         <NewsCardSkeleton key={i} />
                       ))
                     ) : (
-                      news.map((article, index) => (
-                        <motion.div
-                          key={article.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: index * 0.05 }}
-                        >
-                          <Card 
-                            className="cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md" 
-                            data-testid={`news-card-${article.id}`}
-                            onClick={() => openArticle(article.url)}
+                      news.map((article, index) => {
+                        const marketImpact = getMarketImpact(article.title, article.summary);
+                        const isBreaking = isBreakingNews(article.title, article.publishedAt);
+                        const aiSummary = generateAISummary(article.title, article.summary, newsLanguage);
+                        
+                        return (
+                          <motion.div
+                            key={article.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: index * 0.05 }}
                           >
-                            <div className="relative h-40 overflow-hidden rounded-t-md">
-                              <img
-                                src={article.imageUrl}
-                                alt={article.title}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                loading="lazy"
-                                data-testid={`news-image-${article.id}`}
-                              />
-                              <div className="absolute top-3 left-3">
-                                <Badge className="bg-primary/90 text-primary-foreground border-0 text-xs">
-                                  {article.tag}
-                                </Badge>
+                            <Card 
+                              className={`cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md ${isBreaking ? "ring-2 ring-red-500/50" : ""}`}
+                              data-testid={`news-card-${article.id}`}
+                              onClick={() => openArticle(article.url)}
+                            >
+                              <div className="relative h-40 overflow-hidden rounded-t-md">
+                                <img
+                                  src={article.imageUrl}
+                                  alt={article.title}
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  loading="lazy"
+                                  data-testid={`news-image-${article.id}`}
+                                />
+                                <div className="absolute top-3 left-3 flex items-center gap-2">
+                                  {isBreaking && (
+                                    <Badge className="bg-red-600 text-white border-0 text-xs animate-pulse">
+                                      <Zap className="w-3 h-3 mr-1" />
+                                      {newsLanguage === "hi" ? "ब्रेकिंग" : "BREAKING"}
+                                    </Badge>
+                                  )}
+                                  <Badge className="bg-primary/90 text-primary-foreground border-0 text-xs">
+                                    {article.tag}
+                                  </Badge>
+                                </div>
                               </div>
-                            </div>
-                            <CardContent className="p-4">
-                              <h3 className="font-semibold text-sm line-clamp-2 mb-2" data-testid={`news-title-${article.id}`}>
-                                {article.title}
-                              </h3>
-                              <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                                {article.summary}
-                              </p>
-                              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                <span className="font-medium">{article.source}</span>
-                                <span className="flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />
-                                  {formatTime(article.publishedAt)}
-                                </span>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))
+                              <CardContent className="p-4">
+                                <h3 className="font-semibold text-sm line-clamp-2 mb-2" data-testid={`news-title-${article.id}`}>
+                                  {article.title}
+                                </h3>
+                                
+                                <div className="bg-muted/50 rounded-md p-2 mb-3">
+                                  <p className="text-xs text-muted-foreground italic flex items-start gap-1">
+                                    <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0 text-primary" />
+                                    <span>{aiSummary}</span>
+                                  </p>
+                                </div>
+                                
+                                <div className={`flex items-center gap-2 mb-3 p-2 rounded-md ${
+                                  marketImpact.impact === "positive" ? "bg-green-500/10" :
+                                  marketImpact.impact === "negative" ? "bg-red-500/10" : "bg-muted/50"
+                                }`}>
+                                  {marketImpact.impact === "positive" ? (
+                                    <ArrowUpCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                  ) : marketImpact.impact === "negative" ? (
+                                    <ArrowDownCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                                  ) : (
+                                    <MinusCircle className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                  )}
+                                  <div className="flex-1 min-w-0">
+                                    <span className={`text-xs font-medium ${
+                                      marketImpact.impact === "positive" ? "text-green-600" :
+                                      marketImpact.impact === "negative" ? "text-red-600" : "text-muted-foreground"
+                                    }`}>
+                                      {newsLanguage === "hi" 
+                                        ? (marketImpact.impact === "positive" ? "सकारात्मक" : 
+                                           marketImpact.impact === "negative" ? "नकारात्मक" : "तटस्थ")
+                                        : (marketImpact.impact === "positive" ? "Positive" : 
+                                           marketImpact.impact === "negative" ? "Negative" : "Neutral")}
+                                    </span>
+                                    <p className="text-xs text-muted-foreground truncate">
+                                      {newsLanguage === "hi" ? marketImpact.reasonHi : marketImpact.reason}
+                                    </p>
+                                  </div>
+                                </div>
+                                
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                  <span className="font-medium">{article.source}</span>
+                                  <span className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    {formatTime(article.publishedAt)}
+                                  </span>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        );
+                      })
                     )}
                   </div>
                 </TabsContent>
