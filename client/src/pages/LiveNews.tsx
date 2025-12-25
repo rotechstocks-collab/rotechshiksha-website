@@ -713,6 +713,14 @@ export default function LiveNews() {
 
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="sr-only">
+            <DialogTitle>
+              {selectedVideo ? (newsLanguage === "hi" ? selectedVideo.nameHi : selectedVideo.name) : "Video Player"}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedVideo ? (newsLanguage === "hi" ? selectedVideo.descriptionHi : selectedVideo.description) : "Watch market news video"}
+            </DialogDescription>
+          </DialogHeader>
           {selectedVideo && (
             <div className="space-y-0">
               <div className="aspect-video w-full">
@@ -725,7 +733,7 @@ export default function LiveNews() {
                 />
               </div>
               <div className="p-4 border-t">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-4">
                   <div>
                     <h3 className="font-bold text-lg">
                       {newsLanguage === "hi" ? selectedVideo.nameHi : selectedVideo.name}
