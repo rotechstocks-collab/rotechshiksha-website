@@ -1786,27 +1786,27 @@ export default function BrokerComparison() {
         <section className="py-6 bg-white/50 dark:bg-background">
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
             <FadeInUp delay={0.2}>
-              <div className="flex gap-6">
-                <div className="lg:hidden mb-4">
-                  <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-                    <SheetTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start gap-2">
-                        <Menu className="w-4 h-4" />
-                        {verticalTabs.find(t => t.id === activeTab)?.label || "Select Category"}
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="w-72">
-                      <div className="mt-6">
-                        <h3 className="font-semibold mb-4">Comparison Categories</h3>
-                        <VerticalNav 
-                          activeTab={activeTab} 
-                          onTabChange={handleTabChange}
-                        />
-                      </div>
-                    </SheetContent>
-                  </Sheet>
-                </div>
+              <div className="lg:hidden mb-4">
+                <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <Menu className="w-4 h-4" />
+                      {verticalTabs.find(t => t.id === activeTab)?.label || "Select Category"}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-72">
+                    <div className="mt-6">
+                      <h3 className="font-semibold mb-4">Comparison Categories</h3>
+                      <VerticalNav 
+                        activeTab={activeTab} 
+                        onTabChange={handleTabChange}
+                      />
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
 
+              <div className="flex flex-col lg:flex-row gap-6">
                 <div className="hidden lg:block w-64 flex-shrink-0">
                   <div className="sticky top-32 z-40">
                     <Card>

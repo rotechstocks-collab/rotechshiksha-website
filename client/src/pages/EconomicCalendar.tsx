@@ -199,27 +199,27 @@ function EventDetailModal({
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Card className={`${event.actual ? (isBetter ? "ring-2 ring-emerald-500" : isWorse ? "ring-2 ring-red-500" : "") : ""}`}>
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-1">Actual</p>
                 {event.actual !== null ? (
                   <div className="flex items-center justify-center gap-1">
-                    <span className={`text-2xl font-bold ${isBetter ? "text-emerald-600" : isWorse ? "text-red-600" : ""}`}>
+                    <span className={`text-xl sm:text-2xl font-bold ${isBetter ? "text-emerald-600" : isWorse ? "text-red-600" : ""}`}>
                       {event.actual}{event.unit}
                     </span>
                     {isBetter && <ArrowUpRight className="w-5 h-5 text-emerald-600" />}
                     {isWorse && <ArrowDownRight className="w-5 h-5 text-red-600" />}
                   </div>
                 ) : (
-                  <span className="text-2xl font-bold text-muted-foreground">--</span>
+                  <span className="text-xl sm:text-2xl font-bold text-muted-foreground">--</span>
                 )}
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-1">Forecast</p>
-                <span className="text-2xl font-bold">
+                <span className="text-xl sm:text-2xl font-bold">
                   {event.forecast !== null ? `${event.forecast}${event.unit}` : "--"}
                 </span>
               </CardContent>
@@ -227,7 +227,7 @@ function EventDetailModal({
             <Card>
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-1">Previous</p>
-                <span className="text-2xl font-bold text-muted-foreground">
+                <span className="text-xl sm:text-2xl font-bold text-muted-foreground">
                   {event.previous !== null ? `${event.previous}${event.unit}` : "--"}
                 </span>
               </CardContent>
@@ -276,7 +276,7 @@ function EventDetailModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card>
               <CardContent className="p-4">
                 <h4 className="flex items-center gap-2 font-medium mb-3">
@@ -299,15 +299,15 @@ function EventDetailModal({
                   Event Details
                 </h4>
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-2">
                     <span className="text-muted-foreground">Sector</span>
                     <span className="font-medium">{event.sector}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-2">
                     <span className="text-muted-foreground">Frequency</span>
                     <span className="font-medium">{event.frequency}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-2">
                     <span className="text-muted-foreground">Currency</span>
                     <span className="font-medium">{event.currency}</span>
                   </div>
@@ -586,7 +586,7 @@ export default function EconomicCalendar() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <ImpactStatCard impact="high" count={impactStats.high} label="High Impact" />
             <ImpactStatCard impact="medium" count={impactStats.medium} label="Medium Impact" />
             <ImpactStatCard impact="low" count={impactStats.low} label="Low Impact" />

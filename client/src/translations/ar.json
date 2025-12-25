@@ -20,6 +20,9 @@
   "nav.adminPanel": "لوحة الإدارة",
   "nav.logout": "تسجيل الخروج",
   "nav.login": "تسجيل الدخول بالهاتف",
+  "nav.language": "اللغة",
+  "nav.theme": "المظهر",
+  "nav.loansAndCreditCards": "القروض وبطاقات الائتمان",
 
   "hero.title": "بناء هند",
   "hero.subtitle": "واعية ماليًا وواثقة.",

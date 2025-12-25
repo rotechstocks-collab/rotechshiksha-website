@@ -20,6 +20,9 @@
   "nav.adminPanel": "Admin Panel",
   "nav.logout": "Logout",
   "nav.login": "Login with Mobile",
+  "nav.language": "Language",
+  "nav.theme": "Theme",
+  "nav.loansAndCreditCards": "Loans & Credit Cards",
 
   "hero.title": "Building a financially",
   "hero.subtitle": "aware and confident India.",
