@@ -20,6 +20,13 @@ import {
   Legend,
   Cell,
   Tooltip as RechartsTooltip,
+  PieChart as RechartsPieChart,
+  Pie,
+  LineChart,
+  Line,
+  Area,
+  AreaChart,
+  ComposedChart,
 } from "recharts";
 import {
   Users,
@@ -393,83 +400,213 @@ function ContentPanel({ activeTab, brokers }: ContentPanelProps) {
 
 function ClientsPanel({ brokers }: { brokers: BrokerData[] }) {
   const winnerId = getWinnerForMetric(brokers, b => b.activeClients.total);
+  const growthWinner = getWinnerForMetric(brokers, b => parseFloat(b.activeClients.growth.replace('+', '').replace('%', '')));
   
+  const pieData = brokers.map((b, i) => ({
+    name: b.name,
+    value: b.activeClients.total,
+    fill: CHART_COLORS[i % CHART_COLORS.length]
+  }));
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-blue-500/10">
-          <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+      <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+        <div className="flex items-center gap-3">
+          <motion.div 
+            className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/10"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          </motion.div>
+          <div>
+            <h2 className="text-xl font-bold">Active Clients Comparison</h2>
+            <p className="text-sm text-muted-foreground">Total client base and market share analysis</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold">Active Clients Comparison</h2>
-          <p className="text-sm text-muted-foreground">Total client base and market share analysis</p>
+        <div className="flex gap-2 flex-wrap">
+          {brokers.map((b) => {
+            const badges = [];
+            if (b.id === winnerId) badges.push({ label: "Most Popular", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" });
+            if (b.id === growthWinner) badges.push({ label: "Fastest Growing", color: "bg-blue-500/10 text-blue-600 border-blue-500/20" });
+            return badges.map((badge, i) => (
+              <Badge key={`${b.id}-${i}`} className={badge.color}>
+                <BrokerLogo broker={b} size="sm" />
+                <span className="ml-1">{badge.label}</span>
+              </Badge>
+            ));
+          })}
         </div>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-blue-500" />
+              Client Base Comparison
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={brokers.map((b, i) => ({ 
+                  name: b.name, 
+                  clients: b.activeClients.total / 1000000,
+                  growth: parseFloat(b.activeClients.growth.replace('+', '').replace('%', ''))
+                }))}>
+                  <defs>
+                    {brokers.map((b, i) => (
+                      <linearGradient key={b.id} id={`gradient-${b.id}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor={b.id === winnerId ? "#22c55e" : CHART_COLORS[i % CHART_COLORS.length]} stopOpacity={1} />
+                        <stop offset="100%" stopColor={b.id === winnerId ? "#16a34a" : CHART_COLORS[i % CHART_COLORS.length]} stopOpacity={0.7} />
+                      </linearGradient>
+                    ))}
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-20" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} 
+                    angle={-25} 
+                    textAnchor="end" 
+                    height={70}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} 
+                    tickFormatter={(v) => `${v}M`}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <RechartsTooltip 
+                    formatter={(value: number, name: string) => {
+                      if (name === 'clients') return [`${value.toFixed(2)}M clients`, "Active Clients"];
+                      return [`+${value}%`, "YoY Growth"];
+                    }}
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "12px",
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)"
+                    }}
+                    cursor={{ fill: "hsl(var(--muted))", opacity: 0.3 }}
+                  />
+                  <Bar dataKey="clients" radius={[8, 8, 0, 0]} animationDuration={1000} animationBegin={0}>
+                    {brokers.map((b, i) => (
+                      <Cell key={i} fill={`url(#gradient-${b.id})`} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <PieChart className="w-4 h-4 text-purple-500" />
+              Market Share
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={3}
+                    dataKey="value"
+                    animationDuration={1000}
+                    animationBegin={0}
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke="none" />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip 
+                    formatter={(value: number, name: string) => [formatNumber(value), name]}
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "8px" 
+                    }}
+                  />
+                </RechartsPieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center mt-2">
+              {brokers.slice(0, 4).map((b, i) => (
+                <div key={b.id} className="flex items-center gap-1 text-xs">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: CHART_COLORS[i] }} />
+                  <span className="text-muted-foreground">{b.name}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Card>
-        <CardContent className="p-4">
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={brokers.map((b, i) => ({ name: b.name, clients: b.activeClients.total / 1000000 }))}>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-20} textAnchor="end" height={60} />
-                <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}M`} />
-                <RechartsTooltip 
-                  formatter={(value: number) => [`${value.toFixed(2)}M clients`, "Active Clients"]}
-                  contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }}
-                />
-                <Bar dataKey="clients" radius={[4, 4, 0, 0]}>
-                  {brokers.map((b, i) => (
-                    <Cell key={i} fill={b.id === winnerId ? "#22c55e" : CHART_COLORS[i % CHART_COLORS.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-muted/30">
+                  <th className="text-left p-4 font-semibold">Broker</th>
+                  <th className="text-center p-4 font-semibold">Total Clients</th>
+                  <th className="text-center p-4 font-semibold">Growth</th>
+                  <th className="text-center p-4 font-semibold">Market Share</th>
+                  <th className="text-center p-4 font-semibold">Rank</th>
+                </tr>
+              </thead>
+              <tbody>
+                {brokers.map((b, index) => {
+                  const isWinner = b.id === winnerId;
+                  return (
+                    <motion.tr 
+                      key={b.id} 
+                      className={`border-b transition-colors ${isWinner ? "bg-emerald-500/5" : "hover-elevate"}`}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <BrokerLogo broker={b} size="sm" />
+                          <span className="font-medium">{b.name}</span>
+                          {isWinner && (
+                            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }}>
+                              <Trophy className="w-4 h-4 text-amber-500" />
+                            </motion.div>
+                          )}
+                        </div>
+                      </td>
+                      <td className={`p-4 text-center font-semibold ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                        {formatNumber(b.activeClients.total)}
+                      </td>
+                      <td className="p-4 text-center">
+                        <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                          <TrendingUp className="w-3 h-3 mr-1" />
+                          {b.activeClients.growth}
+                        </Badge>
+                      </td>
+                      <td className="p-4 text-center font-medium">{b.activeClients.marketShare}</td>
+                      <td className="p-4 text-center">
+                        <Badge variant="outline" className="font-bold">#{b.activeClients.rank}</Badge>
+                      </td>
+                    </motion.tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </CardContent>
       </Card>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left p-3 font-semibold">Broker</th>
-              <th className="text-center p-3 font-semibold">Total Clients</th>
-              <th className="text-center p-3 font-semibold">Growth</th>
-              <th className="text-center p-3 font-semibold">Market Share</th>
-              <th className="text-center p-3 font-semibold">Rank</th>
-            </tr>
-          </thead>
-          <tbody>
-            {brokers.map((b) => {
-              const isWinner = b.id === winnerId;
-              return (
-                <tr key={b.id} className={`border-b ${isWinner ? "bg-emerald-500/5" : ""}`}>
-                  <td className="p-3">
-                    <div className="flex items-center gap-2">
-                      <BrokerLogo broker={b} size="sm" />
-                      <span className="font-medium">{b.name}</span>
-                      {isWinner && <Trophy className="w-4 h-4 text-amber-500" />}
-                    </div>
-                  </td>
-                  <td className={`p-3 text-center font-semibold ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                    {formatNumber(b.activeClients.total)}
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
-                      {b.activeClients.growth}
-                    </Badge>
-                  </td>
-                  <td className="p-3 text-center">{b.activeClients.marketShare}</td>
-                  <td className="p-3 text-center">
-                    <Badge variant="outline">#{b.activeClients.rank}</Badge>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
@@ -482,200 +619,483 @@ function ChargesPanel({ brokers }: { brokers: BrokerData[] }) {
   const foWinner = getLowestChargeWinner(brokers, b => b.charges.futuresOptions);
   const dpWinner = getLowestChargeWinner(brokers, b => b.charges.dpCharges);
 
+  const barChartData = brokers.map((b, i) => ({
+    name: b.name,
+    accountOpening: b.charges.accountOpening,
+    amc: b.charges.maintenance,
+    dpCharges: b.charges.dpCharges,
+    color: CHART_COLORS[i % CHART_COLORS.length]
+  }));
+
+  const feeBreakdownData = [
+    { name: "Account Opening", value: 25, fill: "#4A90E2" },
+    { name: "AMC", value: 20, fill: "#4ECDC4" },
+    { name: "DP Charges", value: 30, fill: "#FF7B7B" },
+    { name: "Brokerage", value: 25, fill: "#9B59B6" },
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-amber-500/10">
-          <IndianRupee className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+      <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+        <div className="flex items-center gap-3">
+          <motion.div 
+            className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/10"
+            whileHover={{ scale: 1.05 }}
+          >
+            <IndianRupee className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          </motion.div>
+          <div>
+            <h2 className="text-xl font-bold">Brokerage & Charges</h2>
+            <p className="text-sm text-muted-foreground">Compare trading costs across brokers</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold">Brokerage & Charges</h2>
-          <p className="text-sm text-muted-foreground">Compare trading costs across brokers</p>
+        <div className="flex gap-2 flex-wrap">
+          {deliveryWinner && (
+            <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+              <Trophy className="w-3 h-3 mr-1" />
+              {brokers.find(b => b.id === deliveryWinner)?.name} - Low Cost
+            </Badge>
+          )}
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left p-3 font-semibold">Charge Type</th>
-              {brokers.map((b) => (
-                <th key={b.id} className="text-center p-3 font-semibold min-w-[120px]">
-                  <div className="flex flex-col items-center gap-1">
-                    <BrokerLogo broker={b} size="sm" />
-                    <span className="text-xs">{b.name}</span>
+      <div className="grid lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-amber-500" />
+              Fixed Charges Comparison
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={barChartData}>
+                  <defs>
+                    <linearGradient id="gradientAccount" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#4A90E2" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#4A90E2" stopOpacity={0.6} />
+                    </linearGradient>
+                    <linearGradient id="gradientAmc" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#4ECDC4" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#4ECDC4" stopOpacity={0.6} />
+                    </linearGradient>
+                    <linearGradient id="gradientDp" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#FF7B7B" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#FF7B7B" stopOpacity={0.6} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-20" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} 
+                    angle={-25} 
+                    textAnchor="end" 
+                    height={70}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} 
+                    tickFormatter={(v) => `₹${v}`}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <RechartsTooltip 
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "12px",
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)"
+                    }}
+                    formatter={(value: number, name: string) => {
+                      const labels: Record<string, string> = {
+                        accountOpening: "Account Opening",
+                        amc: "AMC",
+                        dpCharges: "DP Charges"
+                      };
+                      return [value === 0 ? "Free" : `₹${value}`, labels[name] || name];
+                    }}
+                  />
+                  <Legend 
+                    wrapperStyle={{ paddingTop: "10px" }}
+                    formatter={(value) => {
+                      const labels: Record<string, string> = {
+                        accountOpening: "Account Opening",
+                        amc: "AMC",
+                        dpCharges: "DP Charges"
+                      };
+                      return <span className="text-xs">{labels[value] || value}</span>;
+                    }}
+                  />
+                  <Bar dataKey="accountOpening" fill="url(#gradientAccount)" radius={[4, 4, 0, 0]} animationDuration={800} />
+                  <Bar dataKey="amc" fill="url(#gradientAmc)" radius={[4, 4, 0, 0]} animationDuration={800} animationBegin={200} />
+                  <Bar dataKey="dpCharges" fill="url(#gradientDp)" radius={[4, 4, 0, 0]} animationDuration={800} animationBegin={400} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <PieChart className="w-4 h-4 text-purple-500" />
+              Typical Fee Breakdown
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPieChart>
+                  <Pie
+                    data={feeBreakdownData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}
+                    outerRadius={70}
+                    paddingAngle={4}
+                    dataKey="value"
+                    animationDuration={1000}
+                  >
+                    {feeBreakdownData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke="none" />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip 
+                    formatter={(value: number) => [`${value}%`, "Share"]}
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "8px" 
+                    }}
+                  />
+                </RechartsPieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="space-y-1 mt-2">
+              {feeBreakdownData.map((item) => (
+                <div key={item.name} className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.fill }} />
+                    <span className="text-muted-foreground">{item.name}</span>
                   </div>
-                </th>
+                  <span className="font-medium">{item.value}%</span>
+                </div>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b">
-              <td className="p-3 text-muted-foreground">Account Opening</td>
-              {brokers.map((b) => {
-                const isWinner = b.id === accountOpeningWinner;
-                return (
-                  <td key={b.id} className={`p-3 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                    <div className="flex items-center justify-center gap-1">
-                      {b.charges.accountOpening === 0 ? "Free" : formatCurrency(b.charges.accountOpening)}
-                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 text-muted-foreground">AMC</td>
-              {brokers.map((b) => {
-                const isWinner = b.id === amcWinner;
-                return (
-                  <td key={b.id} className={`p-3 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                    <div className="flex items-center justify-center gap-1">
-                      {b.charges.maintenance === 0 ? "Free" : formatCurrency(b.charges.maintenance)}
-                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 text-muted-foreground">Equity Delivery</td>
-              {brokers.map((b) => {
-                const isWinner = b.id === deliveryWinner;
-                return (
-                  <td key={b.id} className={`p-3 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                    <div className="flex items-center justify-center gap-1">
-                      {b.charges.equityDelivery}
-                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 text-muted-foreground">Equity Intraday</td>
-              {brokers.map((b) => {
-                const isWinner = b.id === intradayWinner;
-                return (
-                  <td key={b.id} className={`p-3 text-center ${isWinner ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}`}>
-                    <div className="flex items-center justify-center gap-1">
-                      {b.charges.equityIntraday}
-                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 text-muted-foreground">F&O</td>
-              {brokers.map((b) => {
-                const isWinner = b.id === foWinner;
-                return (
-                  <td key={b.id} className={`p-3 text-center ${isWinner ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}`}>
-                    <div className="flex items-center justify-center gap-1">
-                      {b.charges.futuresOptions}
-                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-            <tr className="border-b">
-              <td className="p-3 text-muted-foreground">DP Charges</td>
-              {brokers.map((b) => {
-                const isWinner = b.id === dpWinner;
-                return (
-                  <td key={b.id} className={`p-3 text-center ${isWinner ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}`}>
-                    <div className="flex items-center justify-center gap-1">
-                      {formatCurrency(b.charges.dpCharges)}
-                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-          </tbody>
-        </table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-muted/30">
+                  <th className="text-left p-4 font-semibold">Charge Type</th>
+                  {brokers.map((b) => (
+                    <th key={b.id} className="text-center p-4 font-semibold min-w-[100px]">
+                      <div className="flex flex-col items-center gap-1">
+                        <BrokerLogo broker={b} size="sm" />
+                        <span className="text-xs">{b.name}</span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { label: "Account Opening", key: "accountOpening", winner: accountOpeningWinner, getValue: (b: BrokerData) => b.charges.accountOpening === 0 ? "Free" : formatCurrency(b.charges.accountOpening) },
+                  { label: "AMC", key: "amc", winner: amcWinner, getValue: (b: BrokerData) => b.charges.maintenance === 0 ? "Free" : formatCurrency(b.charges.maintenance) },
+                  { label: "Equity Delivery", key: "delivery", winner: deliveryWinner, getValue: (b: BrokerData) => b.charges.equityDelivery },
+                  { label: "Equity Intraday", key: "intraday", winner: intradayWinner, getValue: (b: BrokerData) => b.charges.equityIntraday },
+                  { label: "F&O", key: "fo", winner: foWinner, getValue: (b: BrokerData) => b.charges.futuresOptions },
+                  { label: "DP Charges", key: "dp", winner: dpWinner, getValue: (b: BrokerData) => formatCurrency(b.charges.dpCharges) },
+                ].map((row, rowIndex) => (
+                  <motion.tr 
+                    key={row.key} 
+                    className="border-b"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: rowIndex * 0.05 }}
+                  >
+                    <td className="p-4 text-muted-foreground font-medium">{row.label}</td>
+                    {brokers.map((b) => {
+                      const isWinner = b.id === row.winner;
+                      return (
+                        <td key={b.id} className={`p-4 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                          <div className="flex items-center justify-center gap-1">
+                            {row.getValue(b)}
+                            {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function ComplaintsPanel({ brokers }: { brokers: BrokerData[] }) {
   const winnerId = getWinnerForMetric(brokers, b => parseFloat(b.complaints.resolutionRate));
+  const fastestResolver = getWinnerForMetric(brokers, b => -b.complaints.avgResolutionDays);
   
+  const totalComplaints = brokers.reduce((sum, b) => sum + b.complaints.total, 0);
+  const totalResolved = brokers.reduce((sum, b) => sum + b.complaints.resolved, 0);
+  const totalPending = brokers.reduce((sum, b) => sum + b.complaints.pending, 0);
+
+  const complaintStatusData = [
+    { name: "Resolved", value: totalResolved, fill: "#22c55e" },
+    { name: "Pending", value: totalPending, fill: "#ef4444" },
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-red-500/10">
-          <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
+      <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+        <div className="flex items-center gap-3">
+          <motion.div 
+            className="p-2 rounded-lg bg-gradient-to-br from-red-500/20 to-red-600/10"
+            whileHover={{ scale: 1.05 }}
+          >
+            <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
+          </motion.div>
+          <div>
+            <h2 className="text-xl font-bold">Complaints Analysis</h2>
+            <p className="text-sm text-muted-foreground">Resolution rates and customer grievances</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold">Complaints Analysis</h2>
-          <p className="text-sm text-muted-foreground">Resolution rates and customer grievances</p>
+        <div className="flex gap-2 flex-wrap">
+          {winnerId && (
+            <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+              <Shield className="w-3 h-3 mr-1" />
+              {brokers.find(b => b.id === winnerId)?.name} - Best Resolution
+            </Badge>
+          )}
+          {fastestResolver && fastestResolver !== winnerId && (
+            <Badge className="bg-blue-500/10 text-blue-600 border-blue-500/20">
+              <Zap className="w-3 h-3 mr-1" />
+              {brokers.find(b => b.id === fastestResolver)?.name} - Fastest
+            </Badge>
+          )}
         </div>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-emerald-500" />
+              Resolution Rate Comparison
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={brokers.map((b, i) => ({ 
+                  name: b.name, 
+                  rate: parseFloat(b.complaints.resolutionRate),
+                  days: b.complaints.avgResolutionDays 
+                }))}>
+                  <defs>
+                    {brokers.map((b, i) => (
+                      <linearGradient key={b.id} id={`complaint-gradient-${b.id}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor={b.id === winnerId ? "#22c55e" : CHART_COLORS[i % CHART_COLORS.length]} stopOpacity={1} />
+                        <stop offset="100%" stopColor={b.id === winnerId ? "#16a34a" : CHART_COLORS[i % CHART_COLORS.length]} stopOpacity={0.6} />
+                      </linearGradient>
+                    ))}
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-20" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} 
+                    angle={-25} 
+                    textAnchor="end" 
+                    height={70}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    yAxisId="left"
+                    domain={[90, 100]} 
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} 
+                    tickFormatter={(v) => `${v}%`}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    yAxisId="right"
+                    orientation="right"
+                    domain={[0, 30]} 
+                    tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} 
+                    tickFormatter={(v) => `${v}d`}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <RechartsTooltip 
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "12px",
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)"
+                    }}
+                    formatter={(value: number, name: string) => {
+                      if (name === 'rate') return [`${value.toFixed(1)}%`, "Resolution Rate"];
+                      return [`${value} days`, "Avg Resolution Time"];
+                    }}
+                  />
+                  <Bar yAxisId="left" dataKey="rate" radius={[8, 8, 0, 0]} animationDuration={1000}>
+                    {brokers.map((b, i) => (
+                      <Cell key={i} fill={`url(#complaint-gradient-${b.id})`} />
+                    ))}
+                  </Bar>
+                  <Line 
+                    yAxisId="right" 
+                    type="monotone" 
+                    dataKey="days" 
+                    stroke="#9B59B6" 
+                    strokeWidth={3} 
+                    dot={{ fill: "#9B59B6", r: 5 }}
+                    animationDuration={1500}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex gap-4 justify-center mt-2 text-xs">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded bg-blue-500" />
+                <span className="text-muted-foreground">Resolution Rate (%)</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-full bg-purple-500" />
+                <span className="text-muted-foreground">Avg Days to Resolve</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <PieChart className="w-4 h-4 text-red-500" />
+              Overall Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPieChart>
+                  <Pie
+                    data={complaintStatusData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={70}
+                    paddingAngle={5}
+                    dataKey="value"
+                    animationDuration={1000}
+                  >
+                    {complaintStatusData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke="none" />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip 
+                    formatter={(value: number, name: string) => [value.toLocaleString(), name]}
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "8px" 
+                    }}
+                  />
+                </RechartsPieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="space-y-2 mt-2">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                  <span>Resolved</span>
+                </div>
+                <span className="font-bold text-emerald-600">{totalResolved.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <span>Pending</span>
+                </div>
+                <span className="font-bold text-red-600">{totalPending.toLocaleString()}</span>
+              </div>
+              <div className="pt-2 border-t">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Total Complaints</span>
+                  <span className="font-bold">{totalComplaints.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Card>
-        <CardContent className="p-4">
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={brokers.map((b, i) => ({ name: b.name, rate: parseFloat(b.complaints.resolutionRate) }))}>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-20} textAnchor="end" height={60} />
-                <YAxis domain={[90, 100]} tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}%`} />
-                <RechartsTooltip 
-                  formatter={(value: number) => [`${value.toFixed(1)}%`, "Resolution Rate"]}
-                  contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }}
-                />
-                <Bar dataKey="rate" radius={[4, 4, 0, 0]}>
-                  {brokers.map((b, i) => (
-                    <Cell key={i} fill={b.id === winnerId ? "#22c55e" : CHART_COLORS[i % CHART_COLORS.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-muted/30">
+                  <th className="text-left p-4 font-semibold">Broker</th>
+                  <th className="text-center p-4 font-semibold">Total</th>
+                  <th className="text-center p-4 font-semibold">Resolved</th>
+                  <th className="text-center p-4 font-semibold">Pending</th>
+                  <th className="text-center p-4 font-semibold">Resolution Rate</th>
+                  <th className="text-center p-4 font-semibold">Avg Days</th>
+                </tr>
+              </thead>
+              <tbody>
+                {brokers.map((b, index) => {
+                  const isWinner = b.id === winnerId;
+                  const isFastest = b.id === fastestResolver;
+                  return (
+                    <motion.tr 
+                      key={b.id} 
+                      className={`border-b transition-colors ${isWinner ? "bg-emerald-500/5" : ""}`}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <BrokerLogo broker={b} size="sm" />
+                          <span className="font-medium">{b.name}</span>
+                          {isWinner && <Shield className="w-4 h-4 text-emerald-500" />}
+                          {isFastest && !isWinner && <Zap className="w-4 h-4 text-blue-500" />}
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">{b.complaints.total.toLocaleString()}</td>
+                      <td className="p-4 text-center text-emerald-600 dark:text-emerald-400 font-medium">{b.complaints.resolved.toLocaleString()}</td>
+                      <td className="p-4 text-center text-red-600 dark:text-red-400">{b.complaints.pending}</td>
+                      <td className={`p-4 text-center font-semibold ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                        <Badge className={isWinner ? "bg-emerald-500/10 text-emerald-600" : "bg-muted"}>
+                          {b.complaints.resolutionRate}
+                        </Badge>
+                      </td>
+                      <td className={`p-4 text-center ${isFastest ? "text-blue-600 dark:text-blue-400 font-medium" : ""}`}>
+                        {b.complaints.avgResolutionDays} days
+                      </td>
+                    </motion.tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </CardContent>
       </Card>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left p-3 font-semibold">Broker</th>
-              <th className="text-center p-3 font-semibold">Total</th>
-              <th className="text-center p-3 font-semibold">Resolved</th>
-              <th className="text-center p-3 font-semibold">Pending</th>
-              <th className="text-center p-3 font-semibold">Resolution Rate</th>
-              <th className="text-center p-3 font-semibold">Avg Days</th>
-            </tr>
-          </thead>
-          <tbody>
-            {brokers.map((b) => {
-              const isWinner = b.id === winnerId;
-              return (
-                <tr key={b.id} className={`border-b ${isWinner ? "bg-emerald-500/5" : ""}`}>
-                  <td className="p-3">
-                    <div className="flex items-center gap-2">
-                      <BrokerLogo broker={b} size="sm" />
-                      <span className="font-medium">{b.name}</span>
-                      {isWinner && <Shield className="w-4 h-4 text-emerald-500" />}
-                    </div>
-                  </td>
-                  <td className="p-3 text-center">{b.complaints.total.toLocaleString()}</td>
-                  <td className="p-3 text-center text-emerald-600 dark:text-emerald-400">{b.complaints.resolved.toLocaleString()}</td>
-                  <td className="p-3 text-center text-red-600 dark:text-red-400">{b.complaints.pending}</td>
-                  <td className={`p-3 text-center font-semibold ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                    {b.complaints.resolutionRate}
-                  </td>
-                  <td className="p-3 text-center">{b.complaints.avgResolutionDays} days</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
@@ -792,127 +1212,346 @@ function ProsConsPanel({ brokers }: { brokers: BrokerData[] }) {
 }
 
 function FinancialsPanel({ brokers }: { brokers: BrokerData[] }) {
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-green-500/10">
-          <BarChart3 className="w-5 h-5 text-green-600 dark:text-green-400" />
-        </div>
-        <div>
-          <h2 className="text-xl font-bold">Financial Performance</h2>
-          <p className="text-sm text-muted-foreground">Revenue, profit, and net worth comparison</p>
-        </div>
-      </div>
+  const parseFinancialValue = (value: string): number => {
+    const num = parseFloat(value.replace(/[₹,]/g, ''));
+    if (value.includes('Cr')) return num;
+    return num;
+  };
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left p-3 font-semibold">Broker</th>
-              <th className="text-center p-3 font-semibold">Revenue</th>
-              <th className="text-center p-3 font-semibold">Profit</th>
-              <th className="text-center p-3 font-semibold">Net Worth</th>
-              <th className="text-center p-3 font-semibold">FY</th>
-            </tr>
-          </thead>
-          <tbody>
-            {brokers.map((b) => (
-              <tr key={b.id} className="border-b">
-                <td className="p-3">
-                  <div className="flex items-center gap-2">
-                    <BrokerLogo broker={b} size="sm" />
-                    <span className="font-medium">{b.name}</span>
-                  </div>
-                </td>
-                <td className="p-3 text-center font-medium">{b.financials.revenue}</td>
-                <td className="p-3 text-center text-emerald-600 dark:text-emerald-400 font-medium">{b.financials.profit}</td>
-                <td className="p-3 text-center">{b.financials.netWorth}</td>
-                <td className="p-3 text-center">
-                  <Badge variant="outline">{b.financials.fy}</Badge>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+  const barChartData = brokers.map((b, i) => ({
+    name: b.name,
+    revenue: parseFinancialValue(b.financials.revenue),
+    profit: parseFinancialValue(b.financials.profit),
+    netWorth: parseFinancialValue(b.financials.netWorth),
+  }));
+
+  const highestRevenue = brokers.reduce((max, b) => 
+    parseFinancialValue(b.financials.revenue) > parseFinancialValue(max.financials.revenue) ? b : max
   );
-}
+  const highestProfit = brokers.reduce((max, b) => 
+    parseFinancialValue(b.financials.profit) > parseFinancialValue(max.financials.profit) ? b : max
+  );
 
-function RatingsPanel({ brokers }: { brokers: BrokerData[] }) {
-  const winnerId = getWinnerForMetric(brokers, b => b.ratings.overall);
-  
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-amber-500/10">
-          <Star className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+      <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+        <div className="flex items-center gap-3">
+          <motion.div 
+            className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-600/10"
+            whileHover={{ scale: 1.05 }}
+          >
+            <BarChart3 className="w-5 h-5 text-green-600 dark:text-green-400" />
+          </motion.div>
+          <div>
+            <h2 className="text-xl font-bold">Financial Performance</h2>
+            <p className="text-sm text-muted-foreground">Revenue, profit, and net worth comparison</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold">Ratings Comparison</h2>
-          <p className="text-sm text-muted-foreground">Overall and category-wise ratings</p>
+        <div className="flex gap-2 flex-wrap">
+          <Badge className="bg-blue-500/10 text-blue-600 border-blue-500/20">
+            <TrendingUp className="w-3 h-3 mr-1" />
+            {highestRevenue.name} - Top Revenue
+          </Badge>
+          <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+            <IndianRupee className="w-3 h-3 mr-1" />
+            {highestProfit.name} - Top Profit
+          </Badge>
         </div>
       </div>
 
       <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-green-500" />
+            Revenue & Profit Comparison (in Crores)
+          </CardTitle>
+        </CardHeader>
         <CardContent className="p-4">
-          <div className="h-80">
+          <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={[
-                { metric: "Trading", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.trading])) },
-                { metric: "Research", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.research])) },
-                { metric: "Support", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.support])) },
-                { metric: "Platform", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.platform])) },
-                { metric: "Pricing", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.pricing])) },
-              ]}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="metric" tick={{ fontSize: 12 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 5]} tick={{ fontSize: 10 }} />
-                {brokers.map((broker, i) => (
-                  <Radar
-                    key={broker.id}
-                    name={broker.name}
-                    dataKey={broker.name}
-                    stroke={CHART_COLORS[i % CHART_COLORS.length]}
-                    fill={CHART_COLORS[i % CHART_COLORS.length]}
-                    fillOpacity={0.2}
-                  />
-                ))}
-                <Legend />
-              </RadarChart>
+              <BarChart data={barChartData}>
+                <defs>
+                  <linearGradient id="gradientRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#4A90E2" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#4A90E2" stopOpacity={0.6} />
+                  </linearGradient>
+                  <linearGradient id="gradientProfit" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#22c55e" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#22c55e" stopOpacity={0.6} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" className="opacity-20" vertical={false} />
+                <XAxis 
+                  dataKey="name" 
+                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} 
+                  angle={-25} 
+                  textAnchor="end" 
+                  height={70}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis 
+                  tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} 
+                  tickFormatter={(v) => `₹${v}Cr`}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <RechartsTooltip 
+                  contentStyle={{ 
+                    backgroundColor: "hsl(var(--card))", 
+                    border: "1px solid hsl(var(--border))", 
+                    borderRadius: "12px",
+                    boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)"
+                  }}
+                  formatter={(value: number, name: string) => [`₹${value} Cr`, name === 'revenue' ? 'Revenue' : 'Profit']}
+                />
+                <Legend 
+                  wrapperStyle={{ paddingTop: "10px" }}
+                  formatter={(value) => <span className="text-xs">{value === 'revenue' ? 'Revenue' : 'Profit'}</span>}
+                />
+                <Bar dataKey="revenue" fill="url(#gradientRevenue)" radius={[4, 4, 0, 0]} animationDuration={800} />
+                <Bar dataKey="profit" fill="url(#gradientProfit)" radius={[4, 4, 0, 0]} animationDuration={800} animationBegin={300} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
 
       <Card>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-muted/30">
+                  <th className="text-left p-4 font-semibold">Broker</th>
+                  <th className="text-center p-4 font-semibold">Revenue</th>
+                  <th className="text-center p-4 font-semibold">Profit</th>
+                  <th className="text-center p-4 font-semibold">Net Worth</th>
+                  <th className="text-center p-4 font-semibold">FY</th>
+                </tr>
+              </thead>
+              <tbody>
+                {brokers.map((b, index) => {
+                  const isTopRevenue = b.id === highestRevenue.id;
+                  const isTopProfit = b.id === highestProfit.id;
+                  return (
+                    <motion.tr 
+                      key={b.id} 
+                      className={`border-b transition-colors ${isTopRevenue || isTopProfit ? "bg-emerald-500/5" : ""}`}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <BrokerLogo broker={b} size="sm" />
+                          <span className="font-medium">{b.name}</span>
+                          {isTopRevenue && <Trophy className="w-4 h-4 text-amber-500" />}
+                        </div>
+                      </td>
+                      <td className={`p-4 text-center font-medium ${isTopRevenue ? "text-blue-600 dark:text-blue-400" : ""}`}>
+                        {b.financials.revenue}
+                      </td>
+                      <td className={`p-4 text-center font-medium ${isTopProfit ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                        {b.financials.profit}
+                      </td>
+                      <td className="p-4 text-center">{b.financials.netWorth}</td>
+                      <td className="p-4 text-center">
+                        <Badge variant="outline">{b.financials.fy}</Badge>
+                      </td>
+                    </motion.tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function RatingsPanel({ brokers }: { brokers: BrokerData[] }) {
+  const winnerId = getWinnerForMetric(brokers, b => b.ratings.overall);
+  const sortedBrokers = [...brokers]
+    .map(b => ({ broker: b, score: calculateOverallScore(b) }))
+    .sort((a, b) => b.score - a.score);
+  
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+        <div className="flex items-center gap-3">
+          <motion.div 
+            className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/10"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Star className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          </motion.div>
+          <div>
+            <h2 className="text-xl font-bold">Ratings Comparison</h2>
+            <p className="text-sm text-muted-foreground">Overall and category-wise ratings</p>
+          </div>
+        </div>
+        {sortedBrokers.length > 0 && (
+          <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20">
+            <Trophy className="w-3 h-3 mr-1" />
+            {sortedBrokers[0].broker.name} - Top Rated
+          </Badge>
+        )}
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Star className="w-4 h-4 text-amber-500" />
+              Multi-Dimensional Rating Comparison
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={[
+                  { metric: "Trading", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.trading])) },
+                  { metric: "Research", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.research])) },
+                  { metric: "Support", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.support])) },
+                  { metric: "Platform", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.platform])) },
+                  { metric: "Pricing", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.pricing])) },
+                ]}>
+                  <PolarGrid stroke="hsl(var(--border))" />
+                  <PolarAngleAxis 
+                    dataKey="metric" 
+                    tick={{ fontSize: 11, fill: "hsl(var(--foreground))" }} 
+                  />
+                  <PolarRadiusAxis 
+                    angle={30} 
+                    domain={[0, 5]} 
+                    tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} 
+                  />
+                  <RechartsTooltip 
+                    contentStyle={{ 
+                      backgroundColor: "hsl(var(--card))", 
+                      border: "1px solid hsl(var(--border))", 
+                      borderRadius: "12px",
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)"
+                    }}
+                  />
+                  {brokers.map((broker, i) => (
+                    <Radar
+                      key={broker.id}
+                      name={broker.name}
+                      dataKey={broker.name}
+                      stroke={CHART_COLORS[i % CHART_COLORS.length]}
+                      fill={CHART_COLORS[i % CHART_COLORS.length]}
+                      fillOpacity={0.25}
+                      strokeWidth={2}
+                      animationDuration={1000}
+                      animationBegin={i * 200}
+                    />
+                  ))}
+                  <Legend 
+                    wrapperStyle={{ paddingTop: "10px" }}
+                    formatter={(value) => <span className="text-xs">{value}</span>}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          {sortedBrokers.slice(0, 3).map((item, index) => (
+            <motion.div
+              key={item.broker.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card className={index === 0 ? "border-amber-500/30 bg-amber-500/5" : ""}>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                      index === 0 ? "bg-gradient-to-br from-amber-400 to-amber-600" : 
+                      index === 1 ? "bg-gradient-to-br from-slate-300 to-slate-500" : 
+                      "bg-gradient-to-br from-amber-600 to-amber-800"
+                    }`}>
+                      #{index + 1}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <BrokerLogo broker={item.broker} size="sm" />
+                        <span className="font-semibold">{item.broker.name}</span>
+                      </div>
+                    </div>
+                    {index === 0 && <Trophy className="w-5 h-5 text-amber-500" />}
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">Overall Score</span>
+                    <span className="text-2xl font-bold">{item.score}</span>
+                  </div>
+                  <Progress value={item.score} className="h-2" />
+                  <div className="grid grid-cols-5 gap-1 mt-3">
+                    {[
+                      { label: "Trade", value: item.broker.ratings.trading },
+                      { label: "Research", value: item.broker.ratings.research },
+                      { label: "Support", value: item.broker.ratings.support },
+                      { label: "Platform", value: item.broker.ratings.platform },
+                      { label: "Price", value: item.broker.ratings.pricing },
+                    ].map(rating => (
+                      <div key={rating.label} className="text-center">
+                        <div className="text-xs text-muted-foreground">{rating.label}</div>
+                        <div className="text-sm font-semibold">{rating.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Trophy className="w-5 h-5 text-amber-500" />
-            Overall Score Ranking
+            Complete Rankings
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {brokers
-              .map((b, i) => ({ broker: b, score: calculateOverallScore(b) }))
-              .sort((a, b) => b.score - a.score)
-              .map((item, index) => (
-                <div key={item.broker.id} className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${index === 0 ? "bg-amber-500" : index === 1 ? "bg-slate-400" : index === 2 ? "bg-amber-700" : "bg-muted text-muted-foreground"}`}>
-                    {index + 1}
-                  </div>
-                  <BrokerLogo broker={item.broker} size="sm" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-medium">{item.broker.name}</span>
-                      <span className="font-bold">{item.score}</span>
-                    </div>
-                    <Progress value={item.score} className="h-2" />
-                  </div>
-                  {index === 0 && <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20">Winner</Badge>}
+            {sortedBrokers.map((item, index) => (
+              <motion.div 
+                key={item.broker.id} 
+                className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${index < 3 ? "bg-amber-500/5" : "hover-elevate"}`}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                  index === 0 ? "bg-gradient-to-br from-amber-400 to-amber-600" : 
+                  index === 1 ? "bg-gradient-to-br from-slate-300 to-slate-500" : 
+                  index === 2 ? "bg-gradient-to-br from-amber-600 to-amber-800" : 
+                  "bg-muted text-muted-foreground"
+                }`}>
+                  {index + 1}
                 </div>
-              ))}
+                <BrokerLogo broker={item.broker} size="sm" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-medium">{item.broker.name}</span>
+                    <span className="font-bold text-lg">{item.score}</span>
+                  </div>
+                  <Progress value={item.score} className="h-2" />
+                </div>
+                {index === 0 && (
+                  <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20">
+                    <Trophy className="w-3 h-3 mr-1" />
+                    Winner
+                  </Badge>
+                )}
+              </motion.div>
+            ))}
           </div>
         </CardContent>
       </Card>
