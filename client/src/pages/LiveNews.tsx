@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   Newspaper,
-  Clock,
   RefreshCw,
   Globe,
   TrendingUp,
@@ -22,13 +21,17 @@ import {
   Play,
   Video,
   Tv,
-  Zap,
-  TrendingDown,
-  AlertTriangle,
-  ArrowUpCircle,
-  ArrowDownCircle,
-  MinusCircle,
+  Search,
+  MapPin,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -61,116 +64,14 @@ interface VideoChannel {
   isLive: boolean;
 }
 
-type MarketImpact = "positive" | "negative" | "neutral";
-
-const positiveKeywords = [
-  "rally", "surge", "gain", "rise", "jump", "soar", "boost", "profit", "growth", "bullish",
-  "record high", "all-time high", "strong", "recovery", "buy", "upgrade", "outperform",
-  "dividend", "bonus", "expansion", "success", "breakthrough", "innovation", "investment",
-  "तेजी", "बढ़त", "मुनाफा", "वृद्धि", "रिकॉर्ड", "मजबूत", "निवेश"
+const countryFilters = [
+  { id: "all", labelEn: "All", labelHi: "सभी" },
+  { id: "india", labelEn: "India", labelHi: "भारत" },
+  { id: "global", labelEn: "Global", labelHi: "ग्लोबल" },
+  { id: "usa", labelEn: "USA", labelHi: "अमेरिका" },
+  { id: "asia", labelEn: "Asia", labelHi: "एशिया" },
+  { id: "europe", labelEn: "Europe", labelHi: "यूरोप" },
 ];
-
-const negativeKeywords = [
-  "crash", "fall", "drop", "plunge", "decline", "loss", "slump", "bearish", "sell-off",
-  "warning", "crisis", "recession", "inflation", "debt", "downgrade", "layoff", "cut",
-  "weak", "concern", "risk", "volatile", "fraud", "scam", "penalty", "fine", "lawsuit",
-  "गिरावट", "नुकसान", "चेतावनी", "संकट", "मंदी", "जोखिम"
-];
-
-const breakingNewsKeywords = [
-  "breaking", "just in", "urgent", "alert", "rbi", "fed", "sebi", "crash", "surge",
-  "record", "historic", "major", "massive", "ipo", "merger", "acquisition", "resign",
-  "announce", "results", "q1", "q2", "q3", "q4", "quarterly", "billion", "trillion",
-  "ब्रेकिंग", "आरबीआई", "सेबी", "रिजल्ट", "तिमाही", "घोषणा"
-];
-
-const getMarketImpact = (title: string, summary: string): { impact: MarketImpact; reason: string; reasonHi: string } => {
-  const text = `${title} ${summary}`.toLowerCase();
-  
-  let positiveScore = 0;
-  let negativeScore = 0;
-  let matchedPositive = "";
-  let matchedNegative = "";
-  
-  positiveKeywords.forEach(keyword => {
-    if (text.includes(keyword.toLowerCase())) {
-      positiveScore++;
-      if (!matchedPositive) matchedPositive = keyword;
-    }
-  });
-  
-  negativeKeywords.forEach(keyword => {
-    if (text.includes(keyword.toLowerCase())) {
-      negativeScore++;
-      if (!matchedNegative) matchedNegative = keyword;
-    }
-  });
-  
-  if (positiveScore > negativeScore) {
-    return {
-      impact: "positive",
-      reason: "Indicates potential market growth or positive sentiment",
-      reasonHi: "बाजार में तेजी या सकारात्मक भावना का संकेत"
-    };
-  } else if (negativeScore > positiveScore) {
-    return {
-      impact: "negative",
-      reason: "May indicate market concern or downward pressure",
-      reasonHi: "बाजार में चिंता या गिरावट का संकेत हो सकता है"
-    };
-  }
-  
-  return {
-    impact: "neutral",
-    reason: "Market impact unclear or balanced",
-    reasonHi: "बाजार पर प्रभाव अस्पष्ट या संतुलित"
-  };
-};
-
-const isBreakingNews = (title: string, publishedAt: string): boolean => {
-  const text = title.toLowerCase();
-  const publishTime = new Date(publishedAt);
-  const now = new Date();
-  const hoursDiff = (now.getTime() - publishTime.getTime()) / (1000 * 60 * 60);
-  
-  if (hoursDiff > 2) return false;
-  
-  return breakingNewsKeywords.some(keyword => text.includes(keyword.toLowerCase()));
-};
-
-const generateAISummary = (title: string, summary: string, lang: "en" | "hi"): string => {
-  const text = `${title} ${summary}`.toLowerCase();
-  
-  if (text.includes("rbi") || text.includes("आरबीआई")) {
-    return lang === "hi" 
-      ? "RBI के इस फैसले का असर बैंकिंग सेक्टर और ब्याज दरों पर पड़ सकता है।"
-      : "This RBI decision may impact banking sector and interest rates.";
-  }
-  if (text.includes("ipo") || text.includes("आईपीओ")) {
-    return lang === "hi"
-      ? "IPO में निवेश से पहले कंपनी के फंडामेंटल्स और वैल्यूएशन की जांच करें।"
-      : "Before investing in IPO, analyze company fundamentals and valuation.";
-  }
-  if (text.includes("result") || text.includes("quarter") || text.includes("रिजल्ट") || text.includes("तिमाही")) {
-    return lang === "hi"
-      ? "कंपनी के तिमाही नतीजे शेयर प्राइस को प्रभावित कर सकते हैं।"
-      : "Quarterly results may influence stock price movement.";
-  }
-  if (text.includes("nifty") || text.includes("sensex") || text.includes("निफ्टी") || text.includes("सेंसेक्स")) {
-    return lang === "hi"
-      ? "इंडेक्स मूवमेंट से पोर्टफोलियो की वैल्यू प्रभावित होती है।"
-      : "Index movements affect overall portfolio value.";
-  }
-  if (text.includes("inflation") || text.includes("महंगाई")) {
-    return lang === "hi"
-      ? "महंगाई दर का असर ब्याज दरों और शेयर बाजार पर पड़ता है।"
-      : "Inflation rates impact interest rates and stock markets.";
-  }
-  
-  return lang === "hi"
-    ? "यह खबर निवेशकों के लिए महत्वपूर्ण हो सकती है।"
-    : "This news may be significant for investors.";
-};
 
 const globalNewsVideos: VideoChannel[] = [
   {
@@ -263,6 +164,8 @@ export default function LiveNews() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedVideo, setSelectedVideo] = useState<VideoChannel | null>(null);
   const [activeTab, setActiveTab] = useState<"news" | "videos">("news");
+  const [countryFilter, setCountryFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const queryClient = useQueryClient();
   const { t, language: appLanguage } = useLanguage();
 
@@ -298,34 +201,36 @@ export default function LiveNews() {
   });
 
   const categories = categoriesData?.categories || [];
-  const news = newsData?.news || [];
+  const allNews = newsData?.news || [];
   const featuredNews = featuredData?.featured || null;
   const topStories = featuredData?.topStories || [];
   const isLoading = isLoadingNews || isLoadingFeatured;
   const lastUpdated = dataUpdatedAt ? new Date(dataUpdatedAt) : new Date();
+
+  const news = allNews.filter(article => {
+    const matchesSearch = searchQuery === "" || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.source.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
 
   const handleRefresh = () => {
     queryClient.invalidateQueries({ queryKey: ["/api/news"] });
     queryClient.invalidateQueries({ queryKey: ["/api/news/featured"] });
   };
 
-  const formatTime = (dateString: string) => {
+  const formatExactTime = (dateString: string) => {
     const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-
-    if (diffMins < 60) {
-      return newsLanguage === "hi" ? `${diffMins} मिनट पहले` : `${diffMins} min ago`;
-    } else if (diffHours < 24) {
-      return newsLanguage === "hi" ? `${diffHours} घंटे पहले` : `${diffHours}h ago`;
-    } else {
-      return date.toLocaleDateString(newsLanguage === "hi" ? "hi-IN" : "en-IN", {
-        day: "numeric",
-        month: "short"
-      });
-    }
+    const day = date.getDate();
+    const month = date.toLocaleDateString(newsLanguage === "hi" ? "hi-IN" : "en-IN", { month: "short" });
+    const year = date.getFullYear();
+    const time = date.toLocaleTimeString(newsLanguage === "hi" ? "hi-IN" : "en-IN", { 
+      hour: "2-digit", 
+      minute: "2-digit",
+      hour12: true 
+    }).toUpperCase();
+    
+    return `${day} ${month} ${year} | ${time}`;
   };
 
   const getCategoryLabel = (cat: NewsCategory) => {
@@ -387,16 +292,6 @@ export default function LiveNews() {
                   हिंदी
                 </Button>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <div className={`w-2 h-2 rounded-full ${isFetching ? "bg-yellow-500 animate-pulse" : "bg-green-500"}`} />
-                  {isFetching ? "Updating..." : "Live"}
-                </Badge>
-                <span className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {lastUpdated.toLocaleTimeString()}
-                </span>
-              </div>
               <Button
                 size="sm"
                 variant="outline"
@@ -409,6 +304,32 @@ export default function LiveNews() {
               </Button>
             </div>
           </motion.div>
+
+          <div className="flex flex-wrap gap-3 mt-4">
+            <div className="relative flex-1 min-w-[200px] max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder={newsLanguage === "hi" ? "कंपनी खोजें..." : "Search company..."}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+                data-testid="input-search-news"
+              />
+            </div>
+            <Select value={countryFilter} onValueChange={setCountryFilter}>
+              <SelectTrigger className="w-[140px]" data-testid="select-country-filter">
+                <MapPin className="w-4 h-4 mr-2" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {countryFilters.map((country) => (
+                  <SelectItem key={country.id} value={country.id}>
+                    {newsLanguage === "hi" ? country.labelHi : country.labelEn}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           <div className="flex gap-2 mt-4">
             <Button
@@ -464,25 +385,13 @@ export default function LiveNews() {
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                      <div className="absolute top-4 left-4 flex items-center gap-2">
-                        <Badge className="bg-red-600 text-white border-0 animate-pulse">
-                          <Zap className="w-3 h-3 mr-1" />
-                          {newsLanguage === "hi" ? "ब्रेकिंग" : "BREAKING"}
-                        </Badge>
-                      </div>
                       <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <Badge className="mb-3 bg-primary/90 text-primary-foreground border-0">
-                          {featuredNews.tag}
-                        </Badge>
-                        <h2 className="text-xl lg:text-2xl font-bold text-white mb-2 line-clamp-2">
+                        <h2 className="text-xl lg:text-2xl font-bold text-white mb-3 line-clamp-2">
                           {featuredNews.title}
                         </h2>
-                        <p className="text-white/80 text-sm line-clamp-2 mb-3">
-                          {featuredNews.summary}
-                        </p>
-                        <div className="flex items-center gap-3 text-white/60 text-xs">
-                          <span>{featuredNews.source}</span>
-                          <span>{formatTime(featuredNews.publishedAt)}</span>
+                        <div className="flex items-center gap-3 text-white/70 text-sm">
+                          <span className="font-medium">{featuredNews.source}</span>
+                          <span>{formatExactTime(featuredNews.publishedAt)}</span>
                         </div>
                       </div>
                     </div>
@@ -514,7 +423,7 @@ export default function LiveNews() {
                             </h4>
                             <div className="flex items-center gap-2 text-xs text-muted-foreground">
                               <span>{story.source}</span>
-                              <span>{formatTime(story.publishedAt)}</span>
+                              <span>{formatExactTime(story.publishedAt)}</span>
                             </div>
                           </CardContent>
                         </Card>
@@ -545,99 +454,51 @@ export default function LiveNews() {
                         <NewsCardSkeleton key={i} />
                       ))
                     ) : (
-                      news.map((article, index) => {
-                        const marketImpact = getMarketImpact(article.title, article.summary);
-                        const isBreaking = isBreakingNews(article.title, article.publishedAt);
-                        const aiSummary = generateAISummary(article.title, article.summary, newsLanguage);
-                        
-                        return (
-                          <motion.div
-                            key={article.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: index * 0.05 }}
+                      news.map((article, index) => (
+                        <motion.div
+                          key={article.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                        >
+                          <Card 
+                            className="cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md h-full"
+                            data-testid={`news-card-${article.id}`}
+                            onClick={() => openArticle(article.url)}
                           >
-                            <Card 
-                              className={`cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md ${isBreaking ? "ring-2 ring-red-500/50" : ""}`}
-                              data-testid={`news-card-${article.id}`}
-                              onClick={() => openArticle(article.url)}
-                            >
-                              <div className="relative h-40 overflow-hidden rounded-t-md">
-                                <img
-                                  src={article.imageUrl}
-                                  alt={article.title}
-                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                  loading="lazy"
-                                  data-testid={`news-image-${article.id}`}
-                                />
-                                <div className="absolute top-3 left-3 flex items-center gap-2">
-                                  {isBreaking && (
-                                    <Badge className="bg-red-600 text-white border-0 text-xs animate-pulse">
-                                      <Zap className="w-3 h-3 mr-1" />
-                                      {newsLanguage === "hi" ? "ब्रेकिंग" : "BREAKING"}
-                                    </Badge>
-                                  )}
-                                  <Badge className="bg-primary/90 text-primary-foreground border-0 text-xs">
-                                    {article.tag}
-                                  </Badge>
-                                </div>
+                            <div className="relative h-44 overflow-hidden rounded-t-md">
+                              <img
+                                src={article.imageUrl}
+                                alt={article.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                loading="lazy"
+                                data-testid={`news-image-${article.id}`}
+                              />
+                            </div>
+                            <CardContent className="p-4">
+                              <h3 className="font-semibold text-sm line-clamp-2 mb-3 min-h-[40px]" data-testid={`news-title-${article.id}`}>
+                                {article.title}
+                              </h3>
+                              <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-3">
+                                <span className="font-medium text-foreground">{article.source}</span>
+                                <span>{formatExactTime(article.publishedAt)}</span>
                               </div>
-                              <CardContent className="p-4">
-                                <h3 className="font-semibold text-sm line-clamp-2 mb-2" data-testid={`news-title-${article.id}`}>
-                                  {article.title}
-                                </h3>
-                                
-                                <div className="bg-muted/50 rounded-md p-2 mb-3">
-                                  <p className="text-xs text-muted-foreground italic flex items-start gap-1">
-                                    <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0 text-primary" />
-                                    <span>{aiSummary}</span>
-                                  </p>
-                                </div>
-                                
-                                <div className={`flex items-center gap-2 mb-3 p-2 rounded-md ${
-                                  marketImpact.impact === "positive" ? "bg-green-500/10" :
-                                  marketImpact.impact === "negative" ? "bg-red-500/10" : "bg-muted/50"
-                                }`}>
-                                  {marketImpact.impact === "positive" ? (
-                                    <ArrowUpCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
-                                  ) : marketImpact.impact === "negative" ? (
-                                    <ArrowDownCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
-                                  ) : (
-                                    <MinusCircle className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                                  )}
-                                  <div className="flex-1 min-w-0">
-                                    <span className={`text-xs font-medium ${
-                                      marketImpact.impact === "positive" ? "text-green-600" :
-                                      marketImpact.impact === "negative" ? "text-red-600" : "text-muted-foreground"
-                                    }`}>
-                                      {newsLanguage === "hi" 
-                                        ? (marketImpact.impact === "positive" ? "सकारात्मक" : 
-                                           marketImpact.impact === "negative" ? "नकारात्मक" : "तटस्थ")
-                                        : (marketImpact.impact === "positive" ? "Positive" : 
-                                           marketImpact.impact === "negative" ? "Negative" : "Neutral")}
-                                    </span>
-                                    <p className="text-xs text-muted-foreground truncate">
-                                      {newsLanguage === "hi" ? marketImpact.reasonHi : marketImpact.reason}
-                                    </p>
-                                  </div>
-                                </div>
-                                
-                                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                  <span className="font-medium">{article.source}</span>
-                                  <span className="flex items-center gap-1">
-                                    <Clock className="w-3 h-3" />
-                                    {formatTime(article.publishedAt)}
-                                  </span>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </motion.div>
-                        );
-                      })
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))
                     )}
                   </div>
                 </TabsContent>
               </Tabs>
+
+              <div className="mt-8 p-4 bg-muted/30 rounded-lg border border-border/50">
+                <p className="text-xs text-muted-foreground text-center">
+                  {newsLanguage === "hi" 
+                    ? "सभी समाचार सामग्री संबंधित प्रकाशकों की है। केवल सूचनात्मक उद्देश्यों के लिए प्रदर्शित।"
+                    : "All news content belongs to respective publishers. Displayed for informational purposes only."}
+                </p>
+              </div>
             </div>
           </motion.section>
         ) : (
