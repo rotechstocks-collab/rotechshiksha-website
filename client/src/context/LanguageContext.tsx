@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import enTranslations from "../translations/en.json";
 
-export type Language = "en" | "hi" | "mr" | "ta" | "kn" | "gu" | "te";
+export type Language = "en" | "hi" | "mr" | "ta" | "kn" | "gu" | "te" | "ml" | "fr" | "es" | "ar" | "de" | "ru" | "ur";
 
 export interface LanguageOption {
   code: Language;
   name: string;
   nativeName: string;
+  isRTL?: boolean;
 }
 
 export const languages: LanguageOption[] = [
@@ -17,6 +18,13 @@ export const languages: LanguageOption[] = [
   { code: "kn", name: "Kannada", nativeName: "ಕನ್ನಡ" },
   { code: "gu", name: "Gujarati", nativeName: "ગુજરાતી" },
   { code: "te", name: "Telugu", nativeName: "తెలుగు" },
+  { code: "ml", name: "Malayalam", nativeName: "മലയാളം" },
+  { code: "fr", name: "French", nativeName: "Français" },
+  { code: "es", name: "Spanish", nativeName: "Español" },
+  { code: "ar", name: "Arabic", nativeName: "العربية", isRTL: true },
+  { code: "de", name: "German", nativeName: "Deutsch" },
+  { code: "ru", name: "Russian", nativeName: "Русский" },
+  { code: "ur", name: "Urdu", nativeName: "اردو", isRTL: true },
 ];
 
 interface LanguageContextType {
@@ -24,6 +32,7 @@ interface LanguageContextType {
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
   getLanguageInfo: () => LanguageOption;
+  isRTL: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -43,9 +52,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const [translations, setTranslations] = useState<Record<string, string>>(enTranslations);
 
+  const isRTL = language === "ar" || language === "ur";
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, language);
     document.documentElement.lang = language;
+    
+    if (isRTL) {
+      document.documentElement.dir = "rtl";
+      document.body.classList.add("rtl");
+    } else {
+      document.documentElement.dir = "ltr";
+      document.body.classList.remove("rtl");
+    }
     
     if (language === "en") {
       setTranslations(enTranslations);
@@ -58,14 +77,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           setTranslations(enTranslations);
         });
     }
-  }, [language]);
+  }, [language, isRTL]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
   };
 
   const t = (key: string): string => {
-    return translations[key] || key;
+    return translations[key] || enTranslations[key as keyof typeof enTranslations] || key;
   };
 
   const getLanguageInfo = (): LanguageOption => {
@@ -73,7 +92,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, getLanguageInfo }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, getLanguageInfo, isRTL }}>
       {children}
     </LanguageContext.Provider>
   );
