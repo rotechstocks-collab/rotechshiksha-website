@@ -1102,6 +1102,7 @@ export async function registerRoutes(
       const language = (req.query.lang as string) || "en";
       const category = req.query.category as string;
       const limit = parseInt(req.query.limit as string) || 10;
+      const maxHoursOld = parseInt(req.query.maxHoursOld as string) || 0;
 
       // Category-specific query mapping
       const categoryQueryMap: Record<string, string> = {
@@ -1123,6 +1124,19 @@ export async function registerRoutes(
       // If no news from API or cache issues, use fallback sample data
       if (news.length === 0) {
         news = language === "hi" ? [...sampleNewsHindi] : [...sampleNewsEnglish];
+      }
+
+      // Sort news by published time (newest first)
+      news.sort((a: any, b: any) => {
+        const dateA = new Date(a.publishedAt).getTime();
+        const dateB = new Date(b.publishedAt).getTime();
+        return dateB - dateA;
+      });
+
+      // Filter by time if maxHoursOld is specified
+      if (maxHoursOld > 0) {
+        const cutoffTime = Date.now() - (maxHoursOld * 60 * 60 * 1000);
+        news = news.filter((item: any) => new Date(item.publishedAt).getTime() > cutoffTime);
       }
 
       res.json({
@@ -1148,6 +1162,13 @@ export async function registerRoutes(
       if (news.length === 0) {
         news = language === "hi" ? sampleNewsHindi : sampleNewsEnglish;
       }
+
+      // Sort news by published time (newest first)
+      news.sort((a: any, b: any) => {
+        const dateA = new Date(a.publishedAt).getTime();
+        const dateB = new Date(b.publishedAt).getTime();
+        return dateB - dateA;
+      });
       
       res.json({
         featured: news[0] || {},
