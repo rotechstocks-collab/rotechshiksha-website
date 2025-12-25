@@ -1,16 +1,13 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
-import { format, parseISO, isToday, isPast, isFuture, startOfDay, addDays } from "date-fns";
+import { format, parseISO, isToday, isPast, startOfDay, addDays } from "date-fns";
 import { 
   Calendar, 
-  Globe, 
   TrendingUp, 
   TrendingDown, 
   Clock, 
   Filter,
   RefreshCw,
-  ChevronDown,
   AlertCircle,
   CheckCircle,
   Circle
@@ -102,17 +99,13 @@ function EventRow({ event, index }: { event: EconomicEvent; index: number }) {
 
   const actualValue = event.actual !== null ? parseFloat(event.actual) : null;
   const forecastValue = event.forecast !== null ? parseFloat(event.forecast) : null;
-  const previousValue = event.previous !== null ? parseFloat(event.previous) : null;
 
   const isBetterThanForecast = actualValue !== null && forecastValue !== null && actualValue > forecastValue;
   const isWorseThanForecast = actualValue !== null && forecastValue !== null && actualValue < forecastValue;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.02 }}
-      className={`grid grid-cols-12 gap-2 md:gap-4 p-3 md:p-4 border-b border-border/50 hover-elevate ${
+    <div
+      className={`grid grid-cols-12 gap-2 md:gap-4 p-3 md:p-4 border-b border-border/50 hover-elevate transition-opacity ${
         isPastEvent ? "opacity-60" : ""
       } ${isTodayEvent ? "bg-primary/5" : ""}`}
       data-testid={`event-row-${event.id}`}
@@ -187,7 +180,7 @@ function EventRow({ event, index }: { event: EconomicEvent; index: number }) {
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -286,11 +279,7 @@ export default function EconomicCalendar() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8 pt-32">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
               <h1 className="text-3xl font-bold flex items-center gap-3" data-testid="page-title">
@@ -410,7 +399,7 @@ export default function EconomicCalendar() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         <Card>
           <CardHeader className="border-b">
@@ -448,11 +437,11 @@ export default function EconomicCalendar() {
                 <p className="text-muted-foreground">Try adjusting your filters</p>
               </div>
             ) : (
-              <AnimatePresence mode="popLayout">
+              <div>
                 {filteredEvents.map((event, index) => (
                   <EventRow key={event.id} event={event} index={index} />
                 ))}
-              </AnimatePresence>
+              </div>
             )}
           </CardContent>
         </Card>
