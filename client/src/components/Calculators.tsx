@@ -386,10 +386,17 @@ export function BrokerageCalculator() {
     const sellValue = sell * qty;
     const turnover = buyValue + sellValue;
 
-    const brokeragePerSide = tradeType === "intraday" 
+    if (buyValue < 100) {
+      return { error: "Minimum trade value is INR 100" };
+    }
+
+    const brokerageBuySide = tradeType === "intraday" 
       ? Math.min(20, buyValue * 0.0003) 
       : 0;
-    const brokerage = brokeragePerSide * 2;
+    const brokerageSellSide = tradeType === "intraday" 
+      ? Math.min(20, sellValue * 0.0003) 
+      : 0;
+    const brokerage = brokerageBuySide + brokerageSellSide;
 
     const sttRate = tradeType === "intraday" ? 0.00025 : 0.001;
     const stt = tradeType === "intraday" 
@@ -432,6 +439,8 @@ export function BrokerageCalculator() {
 
   const result = calculateBrokerage();
   const hasValidInput = buy > 0 && sell > 0 && qty > 0;
+  const hasError = result && 'error' in result;
+  const hasResult = result && !hasError;
 
   return (
     <Card className="relative overflow-visible" data-testid="card-brokerage-calculator">
@@ -575,7 +584,15 @@ export function BrokerageCalculator() {
           </div>
         </div>
 
-        {hasValidInput && result ? (
+        {hasError && (
+          <div className="pt-4 border-t border-border">
+            <div className="text-center py-4 px-3 bg-red-500/10 rounded-lg border border-red-500/20">
+              <p className="text-sm text-red-600 dark:text-red-400 font-medium">{result.error}</p>
+            </div>
+          </div>
+        )}
+
+        {hasResult && result && !('error' in result) ? (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -659,7 +676,7 @@ export function BrokerageCalculator() {
               </span>
             </motion.div>
           </motion.div>
-        ) : (
+        ) : !hasError && (
           <div className="pt-4 border-t border-border">
             <div className="text-center py-6 text-muted-foreground">
               <Calculator className="w-10 h-10 mx-auto mb-2 opacity-50" />
