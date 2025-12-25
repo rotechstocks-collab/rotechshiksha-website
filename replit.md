@@ -6,6 +6,17 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Mobile-First & Performance Optimizations
+  - Professional logo implementation across entire site (header, footer, mobile menu, favicon)
+  - Comprehensive mobile hamburger menu with language selector, theme toggle, and login
+  - 44px minimum touch targets for all buttons/interactive elements (overrides Shadcn defaults)
+  - Safe-area support for notched devices (iPhone X+, etc.) in Header and Footer
+  - Lazy loading for all key images (flags, logos, news images)
+  - Hero animations: static on mobile for performance, animated on desktop
+  - Reduced motion support: only disables looping animations, keeps short transitions
+  - Mobile scrolling: webkit-overflow-scrolling touch for smooth scrolling
+  - Responsive layouts: cards stack vertically on mobile, grid on desktop
+
 - **Dec 2024**: Loans & Credit Cards Module
   - Comprehensive financial products comparison page under Tools menu
   - 6 sections: Home Loan, Personal Loan, Business Loan, Gold Loan, Education Loan, Credit Cards
