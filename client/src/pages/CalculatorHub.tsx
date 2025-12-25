@@ -115,6 +115,14 @@ const calculators: CalculatorItem[] = [
     popular: true,
   },
   {
+    id: "brokerage",
+    name: "Brokerage Calculator",
+    description: "Calculate trading charges and net profit/loss",
+    icon: <TrendingUp className="w-6 h-6" />,
+    category: "investment",
+    popular: true,
+  },
+  {
     id: "gst",
     name: "GST Calculator",
     description: "Calculate GST on goods and services",

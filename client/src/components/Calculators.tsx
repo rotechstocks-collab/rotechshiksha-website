@@ -399,9 +399,7 @@ export function BrokerageCalculator() {
     const brokerage = brokerageBuySide + brokerageSellSide;
 
     const sttRate = tradeType === "intraday" ? 0.00025 : 0.001;
-    const stt = tradeType === "intraday" 
-      ? sellValue * sttRate 
-      : turnover * sttRate;
+    const stt = sellValue * sttRate;
 
     const exchangeRate = exchange === "NSE" ? 0.0000297 : 0.0000375;
     const exchangeCharges = turnover * exchangeRate;

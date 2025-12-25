@@ -26,6 +26,7 @@ import {
   Wallet,
   Calendar,
   Briefcase,
+  Banknote,
 } from "lucide-react";
 import { SiWhatsapp, SiTelegram } from "react-icons/si";
 import {
@@ -75,11 +76,12 @@ const fadeInUp = {
 
 const popularCalculators = [
   { id: "sip", name: "SIP Calculator", icon: <PiggyBank className="w-6 h-6" />, color: "from-emerald-500 to-teal-500" },
-  { id: "emi", name: "EMI Calculator", icon: <IndianRupee className="w-6 h-6" />, color: "from-blue-500 to-indigo-500" },
-  { id: "fd", name: "FD Calculator", icon: <Wallet className="w-6 h-6" />, color: "from-amber-500 to-orange-500" },
+  { id: "lumpsum", name: "Lumpsum", icon: <Wallet className="w-6 h-6" />, color: "from-blue-500 to-indigo-500" },
   { id: "income-tax", name: "Income Tax", icon: <BarChart3 className="w-6 h-6" />, color: "from-purple-500 to-pink-500" },
   { id: "ppf", name: "PPF Calculator", icon: <Shield className="w-6 h-6" />, color: "from-cyan-500 to-blue-500" },
-  { id: "mutual-fund", name: "Mutual Fund", icon: <TrendingUp className="w-6 h-6" />, color: "from-rose-500 to-red-500" },
+  { id: "fd", name: "FD Calculator", icon: <Banknote className="w-6 h-6" />, color: "from-amber-500 to-orange-500" },
+  { id: "emi", name: "EMI Calculator", icon: <IndianRupee className="w-6 h-6" />, color: "from-rose-500 to-red-500" },
+  { id: "brokerage", name: "Brokerage", icon: <TrendingUp className="w-6 h-6" />, color: "from-teal-500 to-cyan-500" },
 ];
 
 const learningFeatures = [
@@ -217,7 +219,7 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
             {popularCalculators.map((calc, index) => (
               <motion.div
                 key={calc.id}

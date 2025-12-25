@@ -20,6 +20,7 @@ import Courses from "@/pages/Courses";
 import LiveNews from "@/pages/LiveNews";
 import CalculatorHub from "@/pages/CalculatorHub";
 import GenericCalculator from "@/pages/GenericCalculator";
+import BrokerageCalculatorPage from "@/pages/BrokerageCalculatorPage";
 import PricingPage from "@/pages/PricingPage";
 import Payment from "@/pages/Payment";
 import Dashboard from "@/pages/Dashboard";
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/ipo/:id" component={IPO} />
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/calculators" component={CalculatorHub} />
+      <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
       <Route path="/calculators/:id" component={GenericCalculator} />
       <Route path="/pricing" component={PricingPage} />
       <Route path="/payment/:planId" component={Payment} />
