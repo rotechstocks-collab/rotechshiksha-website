@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   BarChart,
   Bar,
@@ -100,15 +99,18 @@ function getBestForTag(broker: BrokerData): { tag: string; icon: typeof Trophy; 
 
 function calculateOverallScore(broker: BrokerData): number {
   let score = 0;
-  score += broker.ratings.overall * 10;
-  score += Math.min(broker.activeClients.total / 1000000, 10) * 5;
+  const maxScore = 100;
+  
+  score += (broker.ratings.overall / 5) * 30;
+  score += Math.min(broker.activeClients.total / 10000000, 1) * 15;
   const resolutionRate = parseFloat(broker.complaints.resolutionRate);
-  score += resolutionRate / 10;
+  score += (resolutionRate / 100) * 15;
   if (broker.charges.accountOpening === 0) score += 5;
-  if (broker.charges.equityDelivery === "Free") score += 5;
+  if (broker.charges.equityDelivery === "Free") score += 10;
   const featureCount = Object.values(broker.features).filter(Boolean).length;
-  score += featureCount * 2;
-  return Math.round(score);
+  score += (featureCount / 10) * 25;
+  
+  return Math.min(Math.round(score), maxScore);
 }
 
 function getWinnerForMetric(brokers: BrokerData[], getValue: (b: BrokerData) => number, isLowerBetter = false): string {
@@ -456,7 +458,7 @@ function ComparisonTable({ brokers }: { brokers: BrokerData[] }) {
                                 <span className="font-medium">{item.broker.name}</span>
                                 <span className="font-bold">{item.score}</span>
                               </div>
-                              <Progress value={(item.score / 100) * 100} className="h-2" style={{ "--progress-color": item.color } as React.CSSProperties} />
+                              <Progress value={item.score} className="h-2" />
                             </div>
                             {index === 0 && <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20">Winner</Badge>}
                           </div>
