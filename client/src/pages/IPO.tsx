@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -34,6 +42,15 @@ import {
   Banknote,
   PieChart,
   Timer,
+  Bell,
+  BellRing,
+  List,
+  CalendarCheck,
+  Lightbulb,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 import { useIPOList, useIPONews, formatCurrency, formatDate, getDaysRemaining, getTimeAgo, type IPOData } from "@/lib/ipoApi";
 import { RocketGrowth, GrowthChart, CoinStack } from "@/components/Illustrations";
@@ -53,6 +70,492 @@ const statusLabels = {
   closed: "Closed",
   listed: "Listed"
 };
+
+const riskColors = {
+  low: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  medium: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  high: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"
+};
+
+const riskLabels = {
+  low: "Low Risk",
+  medium: "Medium Risk",
+  high: "High Risk"
+};
+
+function generateAISummary(ipo: IPOData): { summary: string; riskLevel: "low" | "medium" | "high"; explanation: string } {
+  const industry = ipo.industry?.toLowerCase() || "";
+  const subscriptionTotal = ipo.subscriptionStatus?.total || 0;
+  const gmp = ipo.gmp || 0;
+  const issueSize = ipo.issueSize || 0;
+  
+  let riskLevel: "low" | "medium" | "high" = "medium";
+  let summary = "";
+  let explanation = "";
+
+  if (industry.includes("tech") || industry.includes("it") || industry.includes("software")) {
+    summary = `${ipo.companyName} is a technology company planning to raise capital through its IPO.`;
+    explanation = "Tech companies often have high growth potential but can be volatile. Good for investors who understand the sector.";
+  } else if (industry.includes("bank") || industry.includes("financ") || industry.includes("nbfc")) {
+    summary = `${ipo.companyName} operates in the financial services sector, seeking public funding.`;
+    explanation = "Financial companies are generally stable but sensitive to economic cycles and interest rates.";
+  } else if (industry.includes("pharma") || industry.includes("health") || industry.includes("hospital")) {
+    summary = `${ipo.companyName} is a healthcare/pharma company entering the public market.`;
+    explanation = "Healthcare sector is defensive and less affected by economic downturns. Good for long-term investors.";
+  } else if (industry.includes("energy") || industry.includes("power") || industry.includes("renewable")) {
+    summary = `${ipo.companyName} operates in the energy sector with growth opportunities.`;
+    explanation = "Energy companies benefit from government initiatives. Consider long-term investment potential.";
+  } else if (industry.includes("retail") || industry.includes("consumer") || industry.includes("fmcg")) {
+    summary = `${ipo.companyName} is a consumer-focused company with market presence.`;
+    explanation = "Consumer companies tend to be stable. Performance depends on brand strength and market share.";
+  } else {
+    summary = `${ipo.companyName} is raising capital to expand its business operations.`;
+    explanation = "Research the company's financials and growth prospects before investing.";
+  }
+
+  if (subscriptionTotal > 10) {
+    riskLevel = "low";
+    explanation += " High subscription indicates strong investor interest.";
+  } else if (subscriptionTotal < 1 && ipo.status !== "upcoming") {
+    riskLevel = "high";
+    explanation += " Lower subscription may indicate limited investor confidence.";
+  }
+
+  if (gmp > 50) {
+    riskLevel = riskLevel === "high" ? "medium" : "low";
+  } else if (gmp < 0) {
+    riskLevel = "high";
+  }
+
+  if (issueSize > 5000) {
+    explanation += " Large issue size - suitable for institutional and retail investors.";
+  } else if (issueSize < 500) {
+    explanation += " Small issue size - may have limited liquidity post-listing.";
+  }
+
+  return { summary, riskLevel, explanation };
+}
+
+interface IPOAlertData {
+  open: boolean;
+  close: boolean;
+  openDate?: string;
+  closeDate?: string;
+  companyName?: string;
+  notifiedOpen?: boolean;
+  notifiedClose?: boolean;
+}
+
+function useIPOAlerts() {
+  const [alerts, setAlerts] = useState<{ [ipoId: string]: IPOAlertData }>(() => {
+    const saved = localStorage.getItem("ipoAlerts");
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem("ipoAlerts", JSON.stringify(alerts));
+  }, [alerts]);
+
+  const setAlert = (ipoId: string, type: "open" | "close", ipo?: IPOData) => {
+    setAlerts(prev => ({
+      ...prev,
+      [ipoId]: {
+        ...prev[ipoId],
+        [type]: true,
+        openDate: ipo?.openDate || prev[ipoId]?.openDate,
+        closeDate: ipo?.closeDate || prev[ipoId]?.closeDate,
+        companyName: ipo?.companyName || prev[ipoId]?.companyName,
+      }
+    }));
+  };
+
+  const removeAlert = (ipoId: string, type: "open" | "close") => {
+    setAlerts(prev => ({
+      ...prev,
+      [ipoId]: {
+        ...prev[ipoId],
+        [type]: false
+      }
+    }));
+  };
+
+  const hasAlert = (ipoId: string, type: "open" | "close") => {
+    return alerts[ipoId]?.[type] || false;
+  };
+
+  const markNotified = (ipoId: string, type: "open" | "close") => {
+    setAlerts(prev => ({
+      ...prev,
+      [ipoId]: {
+        ...prev[ipoId],
+        [type === "open" ? "notifiedOpen" : "notifiedClose"]: true
+      }
+    }));
+  };
+
+  const getPendingNotifications = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const notifications: Array<{ ipoId: string; type: "open" | "close"; companyName: string; date: string }> = [];
+
+    Object.entries(alerts).forEach(([ipoId, alert]) => {
+      if (alert.open && alert.openDate && !alert.notifiedOpen) {
+        const openDate = new Date(alert.openDate);
+        openDate.setHours(0, 0, 0, 0);
+        const daysBefore = Math.ceil((openDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        if (daysBefore <= 1 && daysBefore >= 0) {
+          notifications.push({
+            ipoId,
+            type: "open",
+            companyName: alert.companyName || "IPO",
+            date: alert.openDate
+          });
+        }
+      }
+      if (alert.close && alert.closeDate && !alert.notifiedClose) {
+        const closeDate = new Date(alert.closeDate);
+        closeDate.setHours(0, 0, 0, 0);
+        const daysBefore = Math.ceil((closeDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        if (daysBefore <= 1 && daysBefore >= 0) {
+          notifications.push({
+            ipoId,
+            type: "close",
+            companyName: alert.companyName || "IPO",
+            date: alert.closeDate
+          });
+        }
+      }
+    });
+
+    return notifications;
+  };
+
+  return { alerts, setAlert, removeAlert, hasAlert, markNotified, getPendingNotifications };
+}
+
+function IPOCalendarView({ ipos }: { ipos: IPOData[] }) {
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+  
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+  
+  const days = [];
+  for (let i = 0; i < firstDayOfMonth; i++) {
+    days.push(null);
+  }
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push(i);
+  }
+
+  const getIPOsForDate = (day: number) => {
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return ipos.filter(ipo => 
+      ipo.openDate === dateStr || 
+      ipo.closeDate === dateStr || 
+      ipo.listingDate === dateStr
+    );
+  };
+
+  const monthName = new Date(currentYear, currentMonth).toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2">
+          <CalendarCheck className="w-5 h-5 text-primary" />
+          IPO Calendar - {monthName}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-7 gap-1 mb-2">
+          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
+            <div key={day} className="text-center text-xs font-medium text-muted-foreground py-2">
+              {day}
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-1">
+          {days.map((day, index) => {
+            if (day === null) {
+              return <div key={`empty-${index}`} className="aspect-square" />;
+            }
+            const dayIPOs = getIPOsForDate(day);
+            const isToday = day === today.getDate();
+            
+            return (
+              <div 
+                key={day} 
+                className={`aspect-square p-1 rounded-md border text-center text-sm relative ${
+                  isToday ? "bg-primary/10 border-primary" : "border-border"
+                } ${dayIPOs.length > 0 ? "bg-muted/50" : ""}`}
+              >
+                <span className={isToday ? "font-bold text-primary" : "text-foreground"}>{day}</span>
+                {dayIPOs.length > 0 && (
+                  <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 flex gap-0.5">
+                    {dayIPOs.slice(0, 3).map((ipo, i) => (
+                      <div 
+                        key={i} 
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          ipo.openDate.endsWith(`-${String(day).padStart(2, '0')}`) ? "bg-emerald-500" :
+                          ipo.closeDate.endsWith(`-${String(day).padStart(2, '0')}`) ? "bg-amber-500" :
+                          "bg-blue-500"
+                        }`}
+                        title={ipo.companyName}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>IPO Opens</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-amber-500" />
+            <span>IPO Closes</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-blue-500" />
+            <span>Listing Date</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function IPOPerformanceTracker({ ipos }: { ipos: IPOData[] }) {
+  const listedIPOs = ipos.filter(ipo => ipo.status === "listed" || ipo.status === "closed");
+  
+  const performanceData = listedIPOs.map(ipo => {
+    const issuePrice = ipo.issuePrice.max;
+    const listingPrice = ipo.listingPrice || (issuePrice + (ipo.gmp || 0));
+    const gainPercent = ipo.listingGainPercent || ((listingPrice - issuePrice) / issuePrice * 100);
+    return { ...ipo, listingPrice, gainPercent };
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 text-primary" />
+          IPO Performance Tracker
+        </CardTitle>
+        <CardDescription>Listing performance of recently closed IPOs</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {performanceData.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
+            <p>No closed IPOs to show performance data</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {performanceData.slice(0, 5).map((ipo) => (
+              <div key={ipo.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-primary font-bold">
+                    {ipo.companyName.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">{ipo.companyName}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Issue: Rs {ipo.issuePrice.max} | Listed: Rs {ipo.listingPrice.toFixed(0)}
+                    </p>
+                  </div>
+                </div>
+                <div className={`flex items-center gap-1 font-semibold ${
+                  ipo.gainPercent >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
+                }`}>
+                  {ipo.gainPercent >= 0 ? (
+                    <ArrowUpRight className="w-4 h-4" />
+                  ) : (
+                    <ArrowDownRight className="w-4 h-4" />
+                  )}
+                  <span>{ipo.gainPercent >= 0 ? "+" : ""}{ipo.gainPercent.toFixed(1)}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function IPOAlertButton({ ipo, hasAlert, setAlert, removeAlert }: { 
+  ipo: IPOData; 
+  hasAlert: (ipoId: string, type: "open" | "close") => boolean;
+  setAlert: (ipoId: string, type: "open" | "close", ipo?: IPOData) => void;
+  removeAlert: (ipoId: string, type: "open" | "close") => void;
+}) {
+  const { toast } = useToast();
+  const [showDialog, setShowDialog] = useState(false);
+  
+  const handleSetAlert = (type: "open" | "close") => {
+    if (hasAlert(ipo.id, type)) {
+      removeAlert(ipo.id, type);
+      toast({
+        title: "Alert Removed",
+        description: `${type === "open" ? "Opening" : "Closing"} reminder for ${ipo.companyName} removed.`,
+      });
+    } else {
+      setAlert(ipo.id, type, ipo);
+      toast({
+        title: "Alert Set",
+        description: `You'll be notified when ${ipo.companyName} IPO ${type === "open" ? "opens" : "closes"}.`,
+      });
+    }
+    setShowDialog(false);
+  };
+
+  if (ipo.status !== "upcoming" && ipo.status !== "ongoing") return null;
+
+  return (
+    <>
+      <Button 
+        variant="outline" 
+        size="sm" 
+        onClick={() => setShowDialog(true)}
+        className={hasAlert(ipo.id, "open") || hasAlert(ipo.id, "close") ? "border-primary text-primary" : ""}
+        data-testid={`button-alert-${ipo.id}`}
+      >
+        {hasAlert(ipo.id, "open") || hasAlert(ipo.id, "close") ? (
+          <BellRing className="w-4 h-4 mr-1" />
+        ) : (
+          <Bell className="w-4 h-4 mr-1" />
+        )}
+        {hasAlert(ipo.id, "open") || hasAlert(ipo.id, "close") ? "Alert Set" : "Set Alert"}
+      </Button>
+      
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Bell className="w-5 h-5 text-primary" />
+              Set IPO Alerts
+            </DialogTitle>
+            <DialogDescription>
+              Get notified about important dates for {ipo.companyName} IPO
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {ipo.status === "upcoming" && (
+              <div 
+                className={`p-4 border rounded-lg cursor-pointer hover-elevate ${
+                  hasAlert(ipo.id, "open") ? "border-primary bg-primary/5" : "border-border"
+                }`}
+                onClick={() => handleSetAlert("open")}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-emerald-500" />
+                    </div>
+                    <div>
+                      <p className="font-medium">IPO Opening Reminder</p>
+                      <p className="text-sm text-muted-foreground">Opens: {formatDate(ipo.openDate)}</p>
+                    </div>
+                  </div>
+                  {hasAlert(ipo.id, "open") && <CheckCircle className="w-5 h-5 text-primary" />}
+                </div>
+              </div>
+            )}
+            <div 
+              className={`p-4 border rounded-lg cursor-pointer hover-elevate ${
+                hasAlert(ipo.id, "close") ? "border-primary bg-primary/5" : "border-border"
+              }`}
+              onClick={() => handleSetAlert("close")}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-amber-500" />
+                  </div>
+                  <div>
+                    <p className="font-medium">IPO Closing Reminder</p>
+                    <p className="text-sm text-muted-foreground">Closes: {formatDate(ipo.closeDate)}</p>
+                  </div>
+                </div>
+                {hasAlert(ipo.id, "close") && <CheckCircle className="w-5 h-5 text-primary" />}
+              </div>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground text-center">
+            Alerts are stored locally in your browser and shown as on-site notifications.
+          </p>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function IPOAISummary({ ipo }: { ipo: IPOData }) {
+  const { summary, riskLevel, explanation } = generateAISummary(ipo);
+  
+  const RiskIcon = riskLevel === "low" ? ShieldCheck : riskLevel === "medium" ? Shield : ShieldAlert;
+  
+  return (
+    <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2 text-base">
+          <Sparkles className="w-5 h-5 text-primary" />
+          AI Summary
+          <Badge variant="secondary" className="text-xs">Beginner Friendly</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-sm text-foreground">{summary}</p>
+        
+        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+          <Lightbulb className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+          <p className="text-sm text-muted-foreground">{explanation}</p>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className={riskColors[riskLevel]}>
+            <RiskIcon className="w-3 h-3 mr-1" />
+            {riskLabels[riskLevel]}
+          </Badge>
+        </div>
+        
+        <p className="text-xs text-muted-foreground italic">
+          This is an AI-generated educational summary. Not investment advice.
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function LegalDisclaimer() {
+  return (
+    <div className="mt-12 p-6 bg-muted/30 rounded-lg border border-border">
+      <div className="flex items-start gap-3">
+        <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+        <div className="space-y-2">
+          <h4 className="font-semibold text-foreground">Important Disclaimer</h4>
+          <p className="text-sm text-muted-foreground">
+            IPO information displayed on this page is for <strong>educational purposes only</strong>. 
+            All data is sourced from public market information including NSE, BSE, and verified news sources.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            <strong>This is not investment advice.</strong> Please consult a SEBI-registered investment advisor 
+            before making any investment decisions. Stock market investments are subject to market risks.
+          </p>
+          <p className="text-xs text-muted-foreground mt-3">
+            Data auto-updates periodically. For the most accurate information, please refer to official SEBI filings and RHP documents.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function IPOCardSkeleton() {
   return (
@@ -175,10 +678,86 @@ function IPOCard({ ipo }: { ipo: IPOData }) {
   );
 }
 
+function IPONotificationBanner({ notifications, onDismiss }: { 
+  notifications: Array<{ ipoId: string; type: "open" | "close"; companyName: string; date: string }>;
+  onDismiss: (ipoId: string, type: "open" | "close") => void;
+}) {
+  if (notifications.length === 0) return null;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mb-6"
+    >
+      <Card className="border-primary/30 bg-primary/5">
+        <CardContent className="pt-4 pb-3">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <BellRing className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground">IPO Reminders</h4>
+              <p className="text-sm text-muted-foreground">Your scheduled alerts</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            {notifications.map((notification, index) => (
+              <div 
+                key={`${notification.ipoId}-${notification.type}`}
+                className="flex items-center justify-between p-3 bg-background rounded-lg border border-border"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    notification.type === "open" ? "bg-emerald-500/10" : "bg-amber-500/10"
+                  }`}>
+                    {notification.type === "open" ? (
+                      <Calendar className="w-4 h-4 text-emerald-500" />
+                    ) : (
+                      <Clock className="w-4 h-4 text-amber-500" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm text-foreground">{notification.companyName}</p>
+                    <p className="text-xs text-muted-foreground">
+                      IPO {notification.type === "open" ? "Opens" : "Closes"}: {formatDate(notification.date)}
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => onDismiss(notification.ipoId, notification.type)}
+                  data-testid={`button-dismiss-notification-${index}`}
+                >
+                  Dismiss
+                </Button>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
 function IPOListing() {
   const [activeTab, setActiveTab] = useState("all");
+  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
   const { data, isLoading, isError, refetch, isFetching } = useIPOList();
   const { data: newsData } = useIPONews();
+  const { alerts, hasAlert, setAlert, removeAlert, markNotified, getPendingNotifications } = useIPOAlerts();
+  const [pendingNotifications, setPendingNotifications] = useState<Array<{ ipoId: string; type: "open" | "close"; companyName: string; date: string }>>([]);
+  
+  useEffect(() => {
+    const notifications = getPendingNotifications();
+    setPendingNotifications(notifications);
+  }, [alerts]);
+
+  const handleDismissNotification = (ipoId: string, type: "open" | "close") => {
+    markNotified(ipoId, type);
+    setPendingNotifications(prev => prev.filter(n => !(n.ipoId === ipoId && n.type === type)));
+  };
 
   const ipos = data?.ipos || [];
   const ongoingIPOs = ipos.filter(ipo => ipo.status === "ongoing");
@@ -288,14 +867,42 @@ function IPOListing() {
           </motion.div>
         </div>
 
-        <Tabs defaultValue="all" className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full max-w-md grid-cols-4">
-            <TabsTrigger value="all" data-testid="tab-all-ipos">All ({ipos.length})</TabsTrigger>
-            <TabsTrigger value="ongoing" data-testid="tab-ongoing-ipos">Open ({ongoingIPOs.length})</TabsTrigger>
-            <TabsTrigger value="upcoming" data-testid="tab-upcoming-ipos">Upcoming ({upcomingIPOs.length})</TabsTrigger>
-            <TabsTrigger value="closed" data-testid="tab-closed-ipos">Closed ({closedIPOs.length})</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <IPONotificationBanner 
+          notifications={pendingNotifications} 
+          onDismiss={handleDismissNotification} 
+        />
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+          <Tabs defaultValue="all" onValueChange={setActiveTab}>
+            <TabsList className="grid w-full max-w-md grid-cols-4">
+              <TabsTrigger value="all" data-testid="tab-all-ipos">All ({ipos.length})</TabsTrigger>
+              <TabsTrigger value="ongoing" data-testid="tab-ongoing-ipos">Open ({ongoingIPOs.length})</TabsTrigger>
+              <TabsTrigger value="upcoming" data-testid="tab-upcoming-ipos">Upcoming ({upcomingIPOs.length})</TabsTrigger>
+              <TabsTrigger value="closed" data-testid="tab-closed-ipos">Closed ({closedIPOs.length})</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          
+          <div className="flex items-center gap-2">
+            <Button
+              variant={viewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              data-testid="button-list-view"
+            >
+              <List className="w-4 h-4 mr-1" />
+              List
+            </Button>
+            <Button
+              variant={viewMode === "calendar" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("calendar")}
+              data-testid="button-calendar-view"
+            >
+              <CalendarDays className="w-4 h-4 mr-1" />
+              Calendar
+            </Button>
+          </div>
+        </div>
 
         {isError && (
           <Card className="mb-8 border-amber-500/30">
@@ -312,36 +919,54 @@ function IPOListing() {
           </Card>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
-            [...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <IPOCardSkeleton />
-              </motion.div>
-            ))
-          ) : filteredIPOs.length > 0 ? (
-            filteredIPOs.map((ipo, index) => (
-              <motion.div
-                key={ipo.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <IPOCard ipo={ipo} />
-              </motion.div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12">
-              <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No IPOs found in this category</p>
+        {viewMode === "calendar" ? (
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            <div className="lg:col-span-2">
+              <IPOCalendarView ipos={ipos} />
             </div>
-          )}
-        </div>
+            <div>
+              <IPOPerformanceTracker ipos={ipos} />
+            </div>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              [...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <IPOCardSkeleton />
+                </motion.div>
+              ))
+            ) : filteredIPOs.length > 0 ? (
+              filteredIPOs.map((ipo, index) => (
+                <motion.div
+                  key={ipo.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <IPOCard ipo={ipo} />
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No IPOs found in this category</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {viewMode === "list" && (
+          <div className="grid lg:grid-cols-2 gap-6 mt-8">
+            <IPOCalendarView ipos={ipos} />
+            <IPOPerformanceTracker ipos={ipos} />
+          </div>
+        )}
 
         {newsData && newsData.articles.length > 0 && (
           <motion.div
@@ -389,6 +1014,8 @@ function IPOListing() {
             </div>
           </motion.div>
         )}
+
+        <LegalDisclaimer />
       </div>
     </div>
   );
@@ -470,6 +1097,7 @@ function IPODetail({ id }: { id: string }) {
   const { data: listData, isLoading, isError, refetch, isFetching } = useIPOList();
   const ipo = listData?.ipos.find(i => i.id === id);
   const [activeTab, setActiveTab] = useState("overview");
+  const { hasAlert, setAlert, removeAlert } = useIPOAlerts();
 
   if (isLoading) {
     return (
@@ -536,22 +1164,31 @@ function IPODetail({ id }: { id: string }) {
             </Button>
           </Link>
           
-          {listData?.lastUpdated && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="w-4 h-4" />
-              <span>Updated: {getTimeAgo(listData.lastUpdated)}</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => refetch()} 
-                disabled={isFetching}
-                className="h-7 px-2"
-                data-testid="button-refresh-ipo-detail"
-              >
-                <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
-              </Button>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <IPOAlertButton 
+              ipo={ipo} 
+              hasAlert={hasAlert} 
+              setAlert={setAlert} 
+              removeAlert={removeAlert} 
+            />
+            
+            {listData?.lastUpdated && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="w-4 h-4" />
+                <span>Updated: {getTimeAgo(listData.lastUpdated)}</span>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => refetch()} 
+                  disabled={isFetching}
+                  className="h-7 px-2"
+                  data-testid="button-refresh-ipo-detail"
+                >
+                  <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
 
         <motion.div
@@ -750,6 +1387,8 @@ function IPODetail({ id }: { id: string }) {
                 </Card>
               )}
             </div>
+
+            <IPOAISummary ipo={ipo} />
           </TabsContent>
 
           <TabsContent value="details" className="space-y-6">
@@ -1001,6 +1640,8 @@ function IPODetail({ id }: { id: string }) {
             )}
           </TabsContent>
         </Tabs>
+
+        <LegalDisclaimer />
       </div>
     </div>
   );

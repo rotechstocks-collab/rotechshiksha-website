@@ -37,6 +37,9 @@ export interface IPOData {
   leadManager?: string;
   exchange?: string[];
   documentUrl?: string;
+  listingPrice?: number;
+  listingGainPercent?: number;
+  riskLevel?: "low" | "medium" | "high";
 }
 
 export interface IPOListResponse {
