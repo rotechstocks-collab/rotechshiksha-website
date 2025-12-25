@@ -21,7 +21,7 @@ import {
   Zap,
   Bot,
 } from "lucide-react";
-import { LearnerCharacter, BookLearning, GrowthChart } from "@/components/Illustrations";
+import { LearningPerson, BookStack, GrowthGraph } from "@/components/SmallcaseIllustrations";
 
 interface Topic {
   id: string;

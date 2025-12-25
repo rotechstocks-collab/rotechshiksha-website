@@ -13,7 +13,7 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
-import { MentorCharacter, LearnerCharacter, RocketGrowth, TargetGoal } from "@/components/Illustrations";
+import { FinanceTeam, LearningPerson, IPORocket, TargetSuccess } from "@/components/SmallcaseIllustrations";
 
 const stats = [
   { label: "Years of Experience", value: "5+" },
@@ -104,13 +104,13 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="hidden lg:flex justify-center relative"
             >
-              <MentorCharacter size={240} />
+              <FinanceTeam size={280} />
               <motion.div
                 className="absolute -top-8 -right-4"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <RocketGrowth size={100} />
+                <IPORocket size={120} />
               </motion.div>
             </motion.div>
           </div>
