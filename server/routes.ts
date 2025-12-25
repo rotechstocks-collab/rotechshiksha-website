@@ -1299,6 +1299,49 @@ export async function registerRoutes(
     }
   });
 
+  // Lead capture endpoint (for calculators and CTAs)
+  app.post("/api/leads", async (req: Request, res: Response) => {
+    try {
+      const { fullName, mobile, email, experience, source, notes } = req.body;
+
+      // Validate required fields
+      if (!fullName || fullName.length < 2) {
+        return res.status(400).json({ message: "Name must be at least 2 characters" });
+      }
+      if (!mobile || !/^[6-9]\d{9}$/.test(mobile)) {
+        return res.status(400).json({ message: "Enter valid 10-digit Indian mobile number" });
+      }
+
+      // Check if lead already exists
+      let lead = await storage.getLeadByMobile(mobile);
+      if (lead) {
+        // Append new notes to existing notes
+        const updatedNotes = lead.notes
+          ? `${lead.notes}\n---\n${notes || ""}`
+          : notes || null;
+        lead = await storage.updateLead(lead.id, {
+          notes: updatedNotes,
+          source: source || lead.source,
+        });
+      } else {
+        // Create new lead with defaults
+        lead = await storage.createLead({
+          fullName,
+          mobile,
+          email: email || null,
+          experience: experience || "beginner",
+          source: source || "website",
+          notes: notes || null,
+        });
+      }
+
+      res.json({ message: "Thank you for your interest!", lead });
+    } catch (error) {
+      console.error("Create lead error:", error);
+      res.status(500).json({ message: "Failed to submit" });
+    }
+  });
+
   // Admin Routes
   app.get("/api/admin/leads", async (req: Request, res: Response) => {
     try {

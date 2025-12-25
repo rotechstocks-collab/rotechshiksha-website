@@ -172,6 +172,18 @@ export const leadFormSchema = z.object({
 
 export type LeadFormData = z.infer<typeof leadFormSchema>;
 
+// Quick lead form for calculators and CTAs (simpler than full lead form)
+export const quickLeadSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters"),
+  mobile: z.string().regex(/^[6-9]\d{9}$/, "Enter valid 10-digit Indian mobile number"),
+  email: z.string().email("Enter valid email").optional().or(z.literal("")),
+  experience: z.enum(["beginner", "intermediate", "advanced"]).default("beginner"),
+  source: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+export type QuickLeadData = z.infer<typeof quickLeadSchema>;
+
 // OTP verification schema
 export const otpVerifySchema = z.object({
   mobile: z.string(),
