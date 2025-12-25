@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { SiWhatsapp, SiTelegram, SiInstagram, SiYoutube } from "react-icons/si";
 import { AlertTriangle, Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import logoImage from "@assets/generated_images/professional_rotech_shiksha_logo.png";
 
 export function Footer() {
   const socialLinks = [
@@ -22,9 +23,14 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-lg font-bold bg-gradient-to-r from-[#4A90E2] to-[#4ECDC4] bg-clip-text text-transparent">
-              Rotech Shiksha
-            </h3>
+            <Link href="/">
+              <img 
+                src={logoImage} 
+                alt="Rotech Shiksha Logo" 
+                className="h-10 w-auto object-contain cursor-pointer"
+                data-testid="footer-logo"
+              />
+            </Link>
             <p className="text-sm text-slate-600 dark:text-muted-foreground leading-relaxed">
               Learn stock market trading with India's trusted education platform.
               From basics to advanced algo trading, we cover everything.

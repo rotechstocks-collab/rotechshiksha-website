@@ -15,7 +15,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { StockSearch } from "./StockSearch";
 import { LanguageSelector } from "./LanguageSelector";
 import { motion } from "framer-motion";
-import logoIcon from "@assets/generated_images/rotech_shiksha_stock_education_icon.png";
+import logoImage from "@assets/generated_images/professional_rotech_shiksha_logo.png";
 
 interface NavItem {
   labelKey: string;
@@ -75,24 +75,16 @@ export function Header() {
         <div className="flex items-center justify-between h-16 gap-4">
           <Link href="/">
             <motion.div
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center cursor-pointer"
               data-testid="link-logo"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               <img 
-                src={logoIcon} 
+                src={logoImage} 
                 alt="Rotech Shiksha Logo" 
-                className="w-10 h-10 rounded-lg object-contain"
+                className="h-10 sm:h-12 w-auto object-contain"
               />
-              <div className="hidden sm:flex flex-col leading-tight">
-                <span className="text-lg font-bold text-[#1a365d] dark:text-blue-400 tracking-tight">
-                  ROTECH
-                </span>
-                <span className="text-xs font-semibold text-[#22c55e] dark:text-emerald-400 -mt-0.5">
-                  SHIKSHA
-                </span>
-              </div>
             </motion.div>
           </Link>
 
