@@ -1,39 +1,40 @@
-# Rotech Shiksha - Design Guidelines
+# Fintech Education Platform - Smallcase-Inspired Design Guidelines
 
 ## Design Philosophy
-**Zerodha Varsity Inspired**: Clean, minimal, educational-first design with white-based layouts, cartoon illustrations, and card-based content organization.
+**Smallcase Inspired**: Premium fintech aesthetic with soft gradients, pastel colors, flat cartoon illustrations, and smooth micro-interactions throughout.
 
 ## Core Principles
-1. **Minimalist & Clean**: White backgrounds, ample whitespace, distraction-free
-2. **Card-Based Layout**: All content organized in rounded, shadowed cards
-3. **Educational Aesthetic**: Flat cartoon illustrations, soft colors
-4. **Mobile-First**: Responsive design prioritizing mobile experience
-5. **Fast Loading**: Lightweight assets, optimized performance
+1. **Clean & Modern**: Soft gradients, ample whitespace, premium feel
+2. **Animated Experience**: Micro-interactions on every touchpoint
+3. **Cartoon Illustrations**: Flat, friendly finance-themed characters with idle animations
+4. **Card-Based Layout**: Rounded cards with subtle shadows and hover effects
+5. **Smooth Transitions**: No jarring movements, everything flows naturally
 
 ## Color Palette
 
-### Primary Colors
-- **Background**: Pure white (#FFFFFF) / Very light gray (#FAFBFC)
-- **Surface/Cards**: White with subtle shadow
-- **Primary Accent**: Soft blue (#387ED1) - educational, trustworthy
-- **Secondary Accent**: Soft green (#10B981) - growth, success
+### Primary Colors (Smallcase-Inspired)
+- **Background**: White (#FFFFFF) with soft gradient accents
+- **Surface/Cards**: White with soft shadows
+- **Primary Accent**: Soft blue (#4A90E2) - trustworthy, premium
+- **Secondary Accent**: Coral/Salmon (#FF7B7B) - friendly, approachable
+- **Tertiary Accent**: Soft teal (#4ECDC4) - growth, success
+
+### Soft Pastel Gradients
+- **Hero Gradient**: From warm beige (#FDF6F0) to soft peach (#FFEEE4)
+- **Section Gradient 1**: From light blue (#F0F9FF) to white
+- **Section Gradient 2**: From soft mint (#F0FDF9) to white
+- **Accent Gradient**: From blue (#4A90E2) to teal (#4ECDC4)
 
 ### Text Colors
-- **Primary Text**: Dark charcoal (#1F2937)
-- **Secondary Text**: Medium gray (#6B7280)
-- **Muted Text**: Light gray (#9CA3AF)
+- **Primary Text**: Dark slate (#1E293B)
+- **Secondary Text**: Slate gray (#64748B)
+- **Muted Text**: Light gray (#94A3B8)
 
-### Semantic Colors
-- **Success**: Soft green (#10B981)
-- **Warning**: Soft amber (#F59E0B)
-- **Error**: Soft red (#EF4444)
-- **Info**: Soft blue (#3B82F6)
-
-### Accent Backgrounds (for cards/sections)
-- **Blue tint**: #EFF6FF (very light blue)
-- **Green tint**: #ECFDF5 (very light green)
-- **Amber tint**: #FFFBEB (very light amber)
-- **Gray tint**: #F9FAFB (very light gray)
+### Character Color Palette
+- **Skin Tones**: Warm beige (#F5D0C5), (#E8B4A0)
+- **Hair Colors**: Dark brown (#4A3728), Black (#1A1A2E)
+- **Clothing**: Blue (#4A90E2), Coral (#FF7B7B), Teal (#4ECDC4), Purple (#9B8CD7)
+- **Accents**: Gold (#FFD93D), Mint (#A8E6CF)
 
 ## Typography
 
@@ -42,163 +43,98 @@
 - **Fallback**: system-ui, sans-serif
 
 ### Font Sizes
-- **H1 (Page Title)**: 2.25rem (36px), font-weight: 700
-- **H2 (Section Title)**: 1.75rem (28px), font-weight: 600
+- **H1 (Hero Title)**: 3rem (48px), font-weight: 700
+- **H2 (Section Title)**: 2rem (32px), font-weight: 600
 - **H3 (Card Title)**: 1.25rem (20px), font-weight: 600
-- **H4 (Subsection)**: 1.125rem (18px), font-weight: 600
 - **Body**: 1rem (16px), font-weight: 400, line-height: 1.7
 - **Small**: 0.875rem (14px)
-- **Caption**: 0.75rem (12px)
 
-## Card System (Varsity-Style)
+## Animation System
 
-### Standard Card
-```
-- Background: white
-- Border: none or very subtle (1px border-gray-100)
-- Border-radius: 12px (rounded-xl)
-- Shadow: subtle (shadow-sm) - 0 1px 3px rgba(0,0,0,0.1)
-- Padding: 24px (p-6)
-- Hover: slightly elevated shadow
-```
+### Micro-Interactions
+1. **Hover Effects**:
+   - Scale: transform scale(1.02) to scale(1.05)
+   - Shadow: Increase shadow depth on hover
+   - Glow: Subtle color glow for buttons
+   
+2. **Click Effects**:
+   - Scale down briefly: scale(0.98)
+   - Smooth spring animation
 
-### Card Variants
-1. **Content Card**: Standard white card with title, description, optional icon
-2. **Module Card**: Card with numbered badge, icon, title, bullet points
-3. **Feature Card**: Icon + title + short description, center-aligned
-4. **Stat Card**: Large number/value + label, minimal design
+3. **Scroll Animations**:
+   - Fade in from bottom: opacity 0 → 1, translateY(20px) → 0
+   - Stagger children: 0.1s delay between items
+   - Once: Animations trigger once, not on scroll back
 
-### Card Spacing
-- Between cards: gap-6 (24px)
-- Internal padding: p-6 (24px)
-- Icon to title: mb-4 (16px)
-- Title to description: mb-2 (8px)
+### Character Animations
+1. **Floating**: Gentle up-down motion (3s loop)
+2. **Idle Sway**: Subtle side-to-side movement
+3. **Breathing**: Very subtle scale pulse
+4. **Waving**: Hand wave animation for greetings
 
-## Layout System
-
-### Container
-- Max width: max-w-7xl (1280px)
-- Padding: px-4 (mobile), px-6 (tablet), px-8 (desktop)
-
-### Section Spacing
-- Between sections: py-16 (64px) mobile, py-20 (80px) desktop
-- Section title margin: mb-12 (48px)
-
-### Grid Layouts
-- 2 columns: grid-cols-1 md:grid-cols-2
-- 3 columns: grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-- 4 columns: grid-cols-1 md:grid-cols-2 lg:grid-cols-4
-- Gap: gap-6 (standard), gap-8 (spacious)
+### Timing Functions
+- **Fast**: 150ms (hover states)
+- **Standard**: 300ms (most transitions)
+- **Slow**: 500ms (page transitions)
+- **Ease**: cubic-bezier(0.4, 0, 0.2, 1)
 
 ## Component Styles
 
-### Navigation
-- Background: white with subtle shadow
-- Height: h-16 (64px)
-- Logo: left-aligned
-- Links: center or right
-- Mobile: hamburger menu
-
-### Hero Section
-- Background: white or very light gradient
-- Layout: Content left (60%), Illustration right (40%)
-- Max-height: auto, content-driven
-- Illustration: Flat cartoon style, finance-themed
+### Cards
+- Background: white
+- Border-radius: 16px (rounded-2xl)
+- Shadow: 0 4px 20px rgba(0,0,0,0.08)
+- Hover Shadow: 0 8px 30px rgba(0,0,0,0.12)
+- Padding: 24px
+- Transition: all 300ms ease
 
 ### Buttons
-- **Primary**: bg-primary text-white, rounded-lg, px-6 py-3
-- **Secondary**: bg-secondary/10 text-secondary, rounded-lg
-- **Outline**: border-2 border-primary text-primary
-- **Ghost**: transparent, text-primary, hover:bg-primary/5
-- Height: h-11 (44px) for touch-friendly
-- No harsh shadows, soft hover transitions
+- **Primary**: bg-gradient-to-r from-blue to-teal, text-white
+- **Secondary**: bg-white border-2 border-primary
+- **Ghost**: transparent with hover bg
+- Border-radius: 12px (rounded-xl)
+- Padding: 16px 32px
+- Hover: scale(1.02), shadow increase
 
-### Form Inputs
-- Background: white
-- Border: 1px border-gray-200
-- Border-radius: rounded-lg (8px)
-- Height: h-12 (48px)
-- Focus: ring-2 ring-primary/20 border-primary
+### Hero Section
+- Background: Warm gradient (beige to peach)
+- Layout: 60% content, 40% illustration
+- Illustration: Animated cartoon scene
+- CTA: Prominent gradient button
 
-### Badges
-- Small, rounded-full
-- Soft background colors with matching text
-- Example: bg-blue-100 text-blue-700
+### Navigation
+- Background: white/glass-morphism
+- Shadow: subtle bottom shadow
+- Height: 72px
+- Logo: left, nav: center, actions: right
 
-## Illustrations & Icons
+## Illustration Style Guide
 
-### Style Guidelines
-- **Type**: Flat, 2D vector illustrations
-- **Colors**: Soft, muted palette matching site colors
-- **Theme**: Finance, education, growth
-- **Characters**: Friendly, approachable cartoon people
-- **Placement**: Near headings, in cards, hero sections
+### Character Design
+- **Style**: Flat 2D vector, no gradients on characters
+- **Proportions**: Slightly exaggerated, friendly
+- **Expressions**: Warm, approachable smiles
+- **Poses**: Dynamic, engaged in finance activities
 
-### Icon Usage
-- Use Lucide React icons
-- Size: w-5 h-5 (standard), w-6 h-6 (featured)
-- Color: text-primary or text-muted-foreground
-- Inside cards: w-10 h-10 with bg-primary/10 circle
+### Scene Elements
+- Buildings/Cityscape: Soft geometric shapes
+- Charts/Graphs: Stylized, colorful
+- Coins/Money: Gold with shine effects
+- Plants/Nature: Soft mint green accents
 
-## Animation Guidelines
-
-### Principles
-- Subtle and purposeful
-- No distracting animations
-- Enhance user experience
-
-### Allowed Animations
-- Card hover: translate-y-1, shadow increase
-- Button hover: subtle brightness change
-- Page transitions: fade-in (300ms)
-- Loading states: gentle pulse or skeleton
-
-### Timing
-- Fast: 150ms (buttons, small elements)
-- Standard: 300ms (cards, modals)
-- Slow: 500ms (page transitions)
-
-## Page-Specific Guidelines
-
-### Home Page
-- Hero with headline + illustration
-- Module cards grid (4 columns on desktop)
-- Features section with icon cards
-- Testimonials (if any)
-- CTA section
-
-### Courses Page
-- Category filters (tabs or buttons)
-- Course module cards in grid
-- Each card: icon, title, description, level badge
-- Progress indicators for logged-in users
-
-### Calculator Pages
-- Calculator cards with input forms
-- Live results display
-- Clean, labeled inputs
-- Mobile: stacked layout
-
-### IPO Pages
-- IPO listing with filter tabs
-- IPO cards with key metrics
-- Detail page with organized sections
-- Timeline and subscription status
+### Placement
+- Hero: Full scene with multiple characters
+- Cards: Single character or icon
+- Sections: Scattered decorative elements
 
 ## Responsive Breakpoints
 - **Mobile**: < 640px (sm)
 - **Tablet**: 640px - 1024px (md, lg)
 - **Desktop**: > 1024px (xl, 2xl)
 
-## Accessibility
-- Minimum touch target: 44x44px
-- Color contrast: WCAG AA compliant
-- Focus states: visible ring
-- Alt text for all images
-- Semantic HTML structure
-
-## Performance
-- Lazy load images below fold
-- Use SVG for icons and illustrations
-- Optimize images (WebP when possible)
-- Minimize CSS/JS bundle size
+## Performance Guidelines
+- Use SVG for all illustrations (scalable, small file size)
+- Lazy load below-fold content
+- Use CSS animations over JS when possible
+- Debounce scroll event handlers
+- Preload critical assets

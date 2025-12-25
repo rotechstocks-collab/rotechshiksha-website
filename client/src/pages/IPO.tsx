@@ -37,6 +37,8 @@ import {
 } from "lucide-react";
 import { useIPOList, useIPONews, formatCurrency, formatDate, getDaysRemaining, getTimeAgo, type IPOData } from "@/lib/ipoApi";
 import { RocketGrowth, GrowthChart, CoinStack } from "@/components/Illustrations";
+import { GrowthArrowIllustration, StockBasket } from "@/components/SmallcaseIllustrations";
+import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 
 const statusColors = {
   upcoming: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",

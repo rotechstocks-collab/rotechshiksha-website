@@ -14,6 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { StockSearch } from "./StockSearch";
 import { LanguageSelector } from "./LanguageSelector";
+import { motion } from "framer-motion";
 
 interface NavItem {
   labelKey: string;
@@ -51,16 +52,23 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+    <motion.header 
+      className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-background/90 backdrop-blur-md border-b border-slate-100 dark:border-border shadow-sm"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           <Link href="/">
-            <span
-              className="text-xl font-bold text-foreground hover-elevate px-2 py-1 rounded-md cursor-pointer"
+            <motion.span
+              className="text-xl font-bold bg-gradient-to-r from-[#4A90E2] to-[#4ECDC4] bg-clip-text text-transparent px-2 py-1 rounded-md cursor-pointer"
               data-testid="link-logo"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Rotech Shiksha
-            </span>
+            </motion.span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
@@ -169,9 +177,15 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-72">
                 <nav className="flex flex-col gap-2 mt-8">
-                  {navItemsConfig.map((item) =>
+                  {navItemsConfig.map((item, index) =>
                     item.children ? (
-                      <div key={item.labelKey} className="space-y-1">
+                      <motion.div 
+                        key={item.labelKey} 
+                        className="space-y-1"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
                         <span className="px-4 py-2 text-sm font-semibold text-muted-foreground">
                           {t(item.labelKey)}
                         </span>
@@ -186,17 +200,24 @@ export function Header() {
                             </Button>
                           </Link>
                         ))}
-                      </div>
+                      </motion.div>
                     ) : (
-                      <Link key={item.href} href={item.href}>
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {t(item.labelKey)}
-                        </Button>
-                      </Link>
+                      <motion.div
+                        key={item.href}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Link href={item.href}>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {t(item.labelKey)}
+                          </Button>
+                        </Link>
+                      </motion.div>
                     )
                   )}
                 </nav>
@@ -205,6 +226,6 @@ export function Header() {
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

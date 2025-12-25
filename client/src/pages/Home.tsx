@@ -39,6 +39,15 @@ import {
   ChartAnalysis,
   GrowthChart,
 } from "@/components/Illustrations";
+import {
+  InvestingCharacter,
+  GrowthArrowIllustration,
+  PortfolioCard,
+  PhoneWithChart,
+  StockBasket,
+  FloatingCoins,
+} from "@/components/SmallcaseIllustrations";
+import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem, HoverLift } from "@/components/AnimationWrappers";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIPOList, formatDate as formatIPODate, type IPOData } from "@/lib/ipoApi";
 

@@ -22,6 +22,8 @@ import {
   Bot,
 } from "lucide-react";
 import { LearnerCharacter, BookLearning, GrowthChart } from "@/components/Illustrations";
+import { InvestingCharacter, PortfolioCard, PhoneWithChart } from "@/components/SmallcaseIllustrations";
+import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem, HoverLift } from "@/components/AnimationWrappers";
 
 interface Topic {
   id: string;

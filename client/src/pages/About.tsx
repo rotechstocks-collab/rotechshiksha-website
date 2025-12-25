@@ -14,6 +14,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { MentorCharacter, LearnerCharacter, RocketGrowth, TargetGoal } from "@/components/Illustrations";
+import { InvestingCharacter } from "@/components/SmallcaseIllustrations";
+import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 
 const stats = [
   { label: "Years of Experience", value: "5+" },
@@ -73,19 +75,28 @@ export default function About() {
 
   return (
     <div className="min-h-screen pt-28">
-      <section className="py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+      <section className="relative py-16 lg:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
+        <motion.div
+          className="absolute top-20 right-10 w-72 h-72 bg-teal-400/10 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, delay: 2 }}
+        />
+        
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="space-y-6"
-            >
-              <Badge variant="secondary">About Us</Badge>
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground">
+            <FadeInUp className="space-y-6">
+              <Badge variant="outline" className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400">
+                About Us
+              </Badge>
+              <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 dark:text-foreground">
                 Empowering India with
-                <span className="text-primary block mt-2">Financial Literacy</span>
+                <span className="bg-gradient-to-r from-[#4A90E2] to-[#4ECDC4] bg-clip-text text-transparent block mt-2">Financial Literacy</span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Rotech Shiksha was founded with a simple mission: make stock market
