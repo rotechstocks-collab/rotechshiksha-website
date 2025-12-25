@@ -36,9 +36,15 @@ const navItemsConfig: NavItem[] = [
       { labelKey: "nav.courses.algo", href: "/courses/algo" },
     ],
   },
-  { labelKey: "nav.calculators", href: "/calculators" },
-  { labelKey: "nav.ipo", href: "/ipo" },
-  { labelKey: "nav.brokers", href: "/compare-brokers" },
+  {
+    labelKey: "nav.tools",
+    href: "/tools",
+    children: [
+      { labelKey: "nav.calculators", href: "/calculators" },
+      { labelKey: "nav.brokers", href: "/compare-brokers" },
+      { labelKey: "nav.ipo", href: "/ipo" },
+    ],
+  },
   { labelKey: "nav.pricing", href: "/pricing" },
 ];
 
