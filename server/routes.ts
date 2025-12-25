@@ -1197,6 +1197,115 @@ export async function registerRoutes(
     });
   });
 
+  // YouTube Educational Videos API
+  const sampleEducationalVideos = [
+    {
+      id: "stock-basics-1",
+      title: "Stock Market for Beginners - Complete Guide 2024",
+      thumbnail: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&auto=format",
+      channelName: "Zerodha Varsity",
+      publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "1.2M",
+      duration: "25:30",
+      category: "basics",
+    },
+    {
+      id: "technical-1",
+      title: "Technical Analysis - Candlestick Patterns Explained",
+      thumbnail: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&auto=format",
+      channelName: "CA Rachana Ranade",
+      publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "850K",
+      duration: "32:15",
+      category: "technical",
+    },
+    {
+      id: "ipo-1",
+      title: "How to Apply for IPO - Step by Step Guide",
+      thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&auto=format",
+      channelName: "Pranjal Kamra",
+      publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "650K",
+      duration: "18:45",
+      category: "ipo",
+    },
+    {
+      id: "mutual-1",
+      title: "Best Mutual Funds for SIP in 2024",
+      thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&auto=format",
+      channelName: "Asset Yogi",
+      publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "1.5M",
+      duration: "22:10",
+      category: "mutual-funds",
+    },
+    {
+      id: "technical-2",
+      title: "Support and Resistance Trading Strategy",
+      thumbnail: "https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=400&auto=format",
+      channelName: "Market Gurukul",
+      publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "420K",
+      duration: "28:30",
+      category: "technical",
+    },
+    {
+      id: "basics-2",
+      title: "Understanding P/E Ratio - Valuation Basics",
+      thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&auto=format",
+      channelName: "Finology",
+      publishedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "780K",
+      duration: "15:20",
+      category: "basics",
+    },
+    {
+      id: "ipo-2",
+      title: "IPO vs Direct Listing - Which is Better?",
+      thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&auto=format",
+      channelName: "Groww",
+      publishedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "320K",
+      duration: "12:45",
+      category: "ipo",
+    },
+    {
+      id: "mutual-2",
+      title: "Index Funds vs Active Funds - Detailed Comparison",
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format",
+      channelName: "Pushkar Raj Thakur",
+      publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+      viewCount: "950K",
+      duration: "20:55",
+      category: "mutual-funds",
+    },
+  ];
+
+  app.get("/api/youtube/videos", async (req: Request, res: Response) => {
+    try {
+      const category = req.query.category as string || "all";
+      
+      // Filter by category if specified
+      let videos = [...sampleEducationalVideos];
+      if (category !== "all") {
+        videos = videos.filter(v => v.category === category);
+      }
+      
+      // Sort by publishedAt (newest first)
+      videos.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      
+      res.json({
+        videos,
+        category,
+        total: videos.length,
+        source: "sample-data"
+      });
+    } catch (error) {
+      console.error("YouTube videos error:", error);
+      res.status(500).json({ message: "Failed to fetch videos", videos: sampleEducationalVideos });
+    }
+  });
+
   // Payment Routes
   app.post("/api/payments", async (req: Request, res: Response) => {
     try {

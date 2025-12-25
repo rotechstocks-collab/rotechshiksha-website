@@ -30,6 +30,7 @@ import IPO from "@/pages/IPO";
 import BrokerComparison from "@/pages/BrokerComparison";
 import EconomicCalendar from "@/pages/EconomicCalendar";
 import PaperTrade from "@/pages/PaperTrade";
+import EducationalVideos from "@/pages/EducationalVideos";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -45,6 +46,7 @@ function Router() {
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/economic-calendar" component={EconomicCalendar} />
       <Route path="/paper-trade" component={PaperTrade} />
+      <Route path="/educational-videos" component={EducationalVideos} />
       <Route path="/calculators" component={CalculatorHub} />
       <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
       <Route path="/calculators/:id" component={GenericCalculator} />
