@@ -189,6 +189,142 @@ function BrokerLogo({ broker, size = "md" }: { broker: BrokerData; size?: "sm" |
   );
 }
 
+const VARSITY_PASTEL_COLORS = [
+  { bg: "from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30", border: "border-blue-300/50 dark:border-blue-600/30", text: "text-blue-700 dark:text-blue-300", shadow: "shadow-blue-200/50 dark:shadow-blue-900/30" },
+  { bg: "from-emerald-100 to-emerald-200 dark:from-emerald-900/30 dark:to-emerald-800/30", border: "border-emerald-300/50 dark:border-emerald-600/30", text: "text-emerald-700 dark:text-emerald-300", shadow: "shadow-emerald-200/50 dark:shadow-emerald-900/30" },
+  { bg: "from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30", border: "border-purple-300/50 dark:border-purple-600/30", text: "text-purple-700 dark:text-purple-300", shadow: "shadow-purple-200/50 dark:shadow-purple-900/30" },
+  { bg: "from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30", border: "border-amber-300/50 dark:border-amber-600/30", text: "text-amber-700 dark:text-amber-300", shadow: "shadow-amber-200/50 dark:shadow-amber-900/30" },
+  { bg: "from-rose-100 to-rose-200 dark:from-rose-900/30 dark:to-rose-800/30", border: "border-rose-300/50 dark:border-rose-600/30", text: "text-rose-700 dark:text-rose-300", shadow: "shadow-rose-200/50 dark:shadow-rose-900/30" },
+  { bg: "from-cyan-100 to-cyan-200 dark:from-cyan-900/30 dark:to-cyan-800/30", border: "border-cyan-300/50 dark:border-cyan-600/30", text: "text-cyan-700 dark:text-cyan-300", shadow: "shadow-cyan-200/50 dark:shadow-cyan-900/30" },
+  { bg: "from-orange-100 to-orange-200 dark:from-orange-900/30 dark:to-orange-800/30", border: "border-orange-300/50 dark:border-orange-600/30", text: "text-orange-700 dark:text-orange-300", shadow: "shadow-orange-200/50 dark:shadow-orange-900/30" },
+  { bg: "from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30", border: "border-indigo-300/50 dark:border-indigo-600/30", text: "text-indigo-700 dark:text-indigo-300", shadow: "shadow-indigo-200/50 dark:shadow-indigo-900/30" },
+  { bg: "from-teal-100 to-teal-200 dark:from-teal-900/30 dark:to-teal-800/30", border: "border-teal-300/50 dark:border-teal-600/30", text: "text-teal-700 dark:text-teal-300", shadow: "shadow-teal-200/50 dark:shadow-teal-900/30" },
+  { bg: "from-pink-100 to-pink-200 dark:from-pink-900/30 dark:to-pink-800/30", border: "border-pink-300/50 dark:border-pink-600/30", text: "text-pink-700 dark:text-pink-300", shadow: "shadow-pink-200/50 dark:shadow-pink-900/30" },
+  { bg: "from-lime-100 to-lime-200 dark:from-lime-900/30 dark:to-lime-800/30", border: "border-lime-300/50 dark:border-lime-600/30", text: "text-lime-700 dark:text-lime-300", shadow: "shadow-lime-200/50 dark:shadow-lime-900/30" },
+  { bg: "from-sky-100 to-sky-200 dark:from-sky-900/30 dark:to-sky-800/30", border: "border-sky-300/50 dark:border-sky-600/30", text: "text-sky-700 dark:text-sky-300", shadow: "shadow-sky-200/50 dark:shadow-sky-900/30" },
+  { bg: "from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30", border: "border-violet-300/50 dark:border-violet-600/30", text: "text-violet-700 dark:text-violet-300", shadow: "shadow-violet-200/50 dark:shadow-violet-900/30" },
+  { bg: "from-fuchsia-100 to-fuchsia-200 dark:from-fuchsia-900/30 dark:to-fuchsia-800/30", border: "border-fuchsia-300/50 dark:border-fuchsia-600/30", text: "text-fuchsia-700 dark:text-fuchsia-300", shadow: "shadow-fuchsia-200/50 dark:shadow-fuchsia-900/30" },
+  { bg: "from-red-100 to-red-200 dark:from-red-900/30 dark:to-red-800/30", border: "border-red-300/50 dark:border-red-600/30", text: "text-red-700 dark:text-red-300", shadow: "shadow-red-200/50 dark:shadow-red-900/30" },
+  { bg: "from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30", border: "border-yellow-300/50 dark:border-yellow-600/30", text: "text-yellow-700 dark:text-yellow-300", shadow: "shadow-yellow-200/50 dark:shadow-yellow-900/30" },
+];
+
+function VarsityBrokerCard({ 
+  broker, 
+  index,
+  isSelected, 
+  onSelect 
+}: { 
+  broker: BrokerData; 
+  index: number;
+  isSelected: boolean; 
+  onSelect: () => void; 
+}) {
+  const colorScheme = VARSITY_PASTEL_COLORS[index % VARSITY_PASTEL_COLORS.length];
+  const bestFor = getBestForTag(broker);
+  const score = calculateOverallScore(broker);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05, duration: 0.3 }}
+      whileHover={{ 
+        y: -8, 
+        scale: 1.03,
+        rotateX: 5,
+        rotateY: 2,
+        transition: { duration: 0.2 }
+      }}
+      whileTap={{ scale: 0.98 }}
+      className="perspective-1000"
+    >
+      <div
+        className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${
+          isSelected 
+            ? "ring-4 ring-primary/50 border-primary shadow-xl scale-[1.02]" 
+            : `${colorScheme.border} shadow-lg hover:shadow-xl ${colorScheme.shadow}`
+        } bg-gradient-to-br ${colorScheme.bg}`}
+        onClick={onSelect}
+        data-testid={`broker-card-${broker.id}`}
+      >
+        <AnimatePresence>
+          {isSelected && (
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: 180 }}
+              className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-gradient-to-br from-primary to-primary/80 text-white flex items-center justify-center shadow-lg z-10"
+            >
+              <Check className="w-4 h-4" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        <div className="flex flex-col items-center text-center space-y-3">
+          <motion.div
+            whileHover={{ rotate: [0, -5, 5, 0] }}
+            transition={{ duration: 0.3 }}
+          >
+            <BrokerLogo broker={broker} size="xl" />
+          </motion.div>
+          
+          <div>
+            <h3 className={`font-bold text-base ${colorScheme.text}`}>
+              {broker.name}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {formatNumber(broker.activeClients.total)} clients
+            </p>
+          </div>
+
+          <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
+            {[...Array(5)].map((_, i) => (
+              <Star 
+                key={i} 
+                className={`w-3 h-3 ${i < Math.floor(broker.ratings.overall) ? "fill-current" : "opacity-30"}`} 
+              />
+            ))}
+            <span className="text-xs font-semibold ml-1">{broker.ratings.overall}</span>
+          </div>
+
+          <motion.button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect();
+            }}
+            className={`w-full py-2 px-4 rounded-xl font-semibold text-sm transition-all duration-200 ${
+              isSelected
+                ? "bg-primary text-white shadow-md"
+                : "bg-white/70 dark:bg-white/10 text-foreground hover:bg-white dark:hover:bg-white/20 border border-border"
+            }`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            data-testid={`button-add-compare-${broker.id}`}
+          >
+            {isSelected ? (
+              <span className="flex items-center justify-center gap-1">
+                <Check className="w-4 h-4" /> Added
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-1">
+                <Scale className="w-4 h-4" /> Add to Compare
+              </span>
+            )}
+          </motion.button>
+        </div>
+        
+        {isSelected && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 rounded-2xl bg-primary/5 pointer-events-none"
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 function BrokerCardMini({ 
   broker, 
   isSelected, 
@@ -208,7 +344,7 @@ function BrokerCardMini({
       }`}
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
-      data-testid={`broker-card-${broker.id}`}
+      data-testid={`broker-card-mini-${broker.id}`}
     >
       <AnimatePresence>
         {isSelected && (
@@ -1560,7 +1696,8 @@ function RatingsPanel({ brokers }: { brokers: BrokerData[] }) {
 }
 
 export default function BrokerComparison() {
-  const [selectedBrokers, setSelectedBrokers] = useState<string[]>(["zerodha", "groww", "angel-one"]);
+  const [selectedBrokers, setSelectedBrokers] = useState<string[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
   const [activeTab, setActiveTab] = useState("clients");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -1583,80 +1720,68 @@ export default function BrokerComparison() {
     setMobileNavOpen(false);
   };
 
-  return (
-    <div className="min-h-screen pt-28 pb-12">
-      <section className="relative py-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
-        <motion.div
-          className="absolute top-10 right-20 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
-          <FadeInUp className="flex items-center gap-4 mb-6">
-            <motion.div 
-              className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4A90E2] to-[#4ECDC4] text-white flex items-center justify-center shadow-lg"
-              whileHover={{ scale: 1.05, rotate: 5 }}
-            >
-              <Scale className="w-7 h-7" />
-            </motion.div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-foreground">Broker Comparison</h1>
-              <p className="text-slate-600 dark:text-muted-foreground">Compare India's top 16 stockbrokers side by side</p>
+  const handleCompareNow = () => {
+    setShowComparison(true);
+  };
+
+  const handleBackToSelection = () => {
+    setShowComparison(false);
+  };
+
+  if (showComparison && selectedBrokers.length >= 2) {
+    return (
+      <div className="min-h-screen pt-28 pb-12">
+        <section className="relative py-6 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
+          
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
+            <FadeInUp className="flex items-center justify-between gap-4 mb-6 flex-wrap">
+              <div className="flex items-center gap-4">
+                <motion.div 
+                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4A90E2] to-[#4ECDC4] text-white flex items-center justify-center shadow-lg"
+                  whileHover={{ scale: 1.05, rotate: 5 }}
+                >
+                  <Scale className="w-7 h-7" />
+                </motion.div>
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-foreground">Broker Comparison</h1>
+                  <p className="text-slate-600 dark:text-muted-foreground">Comparing {selectedBrokerData.map(b => b.name).join(", ")}</p>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                onClick={handleBackToSelection}
+                className="gap-2"
+                data-testid="button-back-to-selection"
+              >
+                <ChevronRight className="w-4 h-4 rotate-180" />
+                Change Brokers
+              </Button>
+            </FadeInUp>
+
+            <div className="flex items-center gap-2 mb-6 flex-wrap">
+              <span className="text-sm text-muted-foreground">Comparing:</span>
+              {selectedBrokerData.map((b) => (
+                <Badge key={b.id} variant="secondary" className="gap-1">
+                  <BrokerLogo broker={b} size="sm" />
+                  {b.name}
+                  <button 
+                    onClick={() => toggleBroker(b.id)}
+                    className="ml-1 hover:text-destructive"
+                    data-testid={`button-remove-broker-${b.id}`}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </Badge>
+              ))}
             </div>
-          </FadeInUp>
+          </div>
+        </section>
 
-          <FadeInUp delay={0.1}>
-            <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm mb-6">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between gap-4 flex-wrap">
-                  <div>
-                    <CardTitle className="text-lg">Select Brokers to Compare</CardTitle>
-                    <p className="text-sm text-muted-foreground">Click on brokers below (max 4)</p>
-                  </div>
-                  {selectedBrokers.length > 0 && (
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm text-muted-foreground">Selected:</span>
-                      {selectedBrokerData.map((b) => (
-                        <Badge key={b.id} variant="secondary" className="gap-1">
-                          {b.name}
-                          <button 
-                            onClick={() => toggleBroker(b.id)}
-                            className="ml-1 hover:text-destructive"
-                            data-testid={`button-remove-broker-${b.id}`}
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 lg:grid-cols-8 gap-3">
-                  {brokerData.map((broker) => (
-                    <BrokerCardMini
-                      key={broker.id}
-                      broker={broker}
-                      isSelected={selectedBrokers.includes(broker.id)}
-                      onSelect={() => toggleBroker(broker.id)}
-                    />
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </FadeInUp>
-        </div>
-      </section>
-
-      {selectedBrokers.length >= 2 && (
         <section className="py-6 bg-white/50 dark:bg-background">
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
             <FadeInUp delay={0.2}>
               <div className="flex gap-6">
-                {/* Mobile Nav Toggle */}
                 <div className="lg:hidden mb-4">
                   <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
                     <SheetTrigger asChild>
@@ -1677,7 +1802,6 @@ export default function BrokerComparison() {
                   </Sheet>
                 </div>
 
-                {/* Desktop Sidebar - Sticky */}
                 <div className="hidden lg:block w-64 flex-shrink-0">
                   <div className="sticky top-32 z-40">
                     <Card>
@@ -1694,7 +1818,6 @@ export default function BrokerComparison() {
                   </div>
                 </div>
 
-                {/* Main Content */}
                 <Card className="flex-1 min-w-0">
                   <CardContent className="p-4 md:p-6">
                     <ContentPanel 
@@ -1707,21 +1830,152 @@ export default function BrokerComparison() {
             </FadeInUp>
           </div>
         </section>
-      )}
+      </div>
+    );
+  }
 
-      {selectedBrokers.length < 2 && (
-        <section className="py-12">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            <Card className="bg-muted/50">
-              <CardContent className="py-12 text-center">
-                <Scale className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
-                <h3 className="text-lg font-semibold mb-2">Select at least 2 brokers to compare</h3>
-                <p className="text-muted-foreground">Click on the broker cards above to start comparing</p>
-              </CardContent>
-            </Card>
+  return (
+    <div className="min-h-screen pt-28 pb-12">
+      <section className="relative py-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
+        <motion.div
+          className="absolute top-10 right-20 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-10 left-20 w-48 h-48 bg-purple-400/10 rounded-full blur-3xl"
+          animate={{ scale: [1.1, 1, 1.1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
+        
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
+          <FadeInUp className="text-center mb-10">
+            <motion.div 
+              className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[#4A90E2] to-[#4ECDC4] text-white flex items-center justify-center shadow-xl"
+              whileHover={{ scale: 1.05, rotate: 5 }}
+            >
+              <Scale className="w-10 h-10" />
+            </motion.div>
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-foreground mb-2">
+              Compare India's Best Stock Brokers
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-muted-foreground max-w-2xl mx-auto">
+              Select brokers to compare their features, charges, ratings and more. Choose 2-4 brokers from our curated list.
+            </p>
+          </FadeInUp>
+
+          <AnimatePresence>
+            {selectedBrokers.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="mb-8"
+              >
+                <Card className="bg-white/90 dark:bg-card/90 backdrop-blur-sm border-primary/20 shadow-lg">
+                  <CardContent className="py-4">
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <Badge variant="outline" className="text-base px-3 py-1">
+                          {selectedBrokers.length} Selected
+                        </Badge>
+                        <div className="flex gap-2 flex-wrap">
+                          {selectedBrokerData.map((b) => (
+                            <motion.div
+                              key={b.id}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              exit={{ scale: 0 }}
+                            >
+                              <Badge variant="secondary" className="gap-2 py-1 px-2">
+                                <BrokerLogo broker={b} size="sm" />
+                                <span>{b.name}</span>
+                                <button 
+                                  onClick={() => toggleBroker(b.id)}
+                                  className="ml-1 hover:text-destructive transition-colors"
+                                  data-testid={`button-remove-broker-${b.id}`}
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </Badge>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {selectedBrokers.length >= 2 && (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        >
+                          <Button 
+                            onClick={handleCompareNow}
+                            className="gap-2 bg-gradient-to-r from-[#4A90E2] to-[#4ECDC4] hover:from-[#3A80D2] hover:to-[#3EBDB4] text-white shadow-lg"
+                            data-testid="button-compare-now"
+                          >
+                            <Scale className="w-4 h-4" />
+                            Compare Now
+                            <ChevronRight className="w-4 h-4" />
+                          </Button>
+                        </motion.div>
+                      )}
+                    </div>
+                    
+                    {selectedBrokers.length === 1 && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Select at least one more broker to start comparing
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <FadeInUp delay={0.1}>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-slate-700 dark:text-foreground mb-2">
+                Click on brokers to add to comparison
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Each card is interactive - hover for premium animations, click "Add to Compare" button
+              </p>
+            </div>
+          </FadeInUp>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-5">
+            {brokerData.map((broker, index) => (
+              <VarsityBrokerCard
+                key={broker.id}
+                broker={broker}
+                index={index}
+                isSelected={selectedBrokers.includes(broker.id)}
+                onSelect={() => toggleBroker(broker.id)}
+              />
+            ))}
           </div>
-        </section>
-      )}
+
+          {selectedBrokers.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-10 text-center"
+            >
+              <Card className="bg-white/60 dark:bg-card/60 backdrop-blur-sm inline-block">
+                <CardContent className="py-6 px-8">
+                  <Scale className="w-10 h-10 mx-auto mb-3 text-muted-foreground/50" />
+                  <p className="text-muted-foreground">
+                    Click "Add to Compare" on any broker card to start
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
