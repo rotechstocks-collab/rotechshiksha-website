@@ -153,159 +153,41 @@ function getWinnerForMetric(brokers: BrokerData[], getValue: (b: BrokerData) => 
   return sorted[0].id;
 }
 
-const BROKER_LOGOS: Record<string, { logo: string; fallbackGradient: string; initials: string; bgColor: string }> = {
-  zerodha: { 
-    logo: "https://logo.clearbit.com/zerodha.com",
-    fallbackGradient: "from-blue-600 to-blue-800", 
-    initials: "Z",
-    bgColor: "bg-white"
-  },
-  "angel-one": { 
-    logo: "https://logo.clearbit.com/angelone.in",
-    fallbackGradient: "from-red-500 to-red-700", 
-    initials: "A",
-    bgColor: "bg-white"
-  },
-  groww: { 
-    logo: "https://logo.clearbit.com/groww.in",
-    fallbackGradient: "from-green-500 to-green-700", 
-    initials: "G",
-    bgColor: "bg-white"
-  },
-  upstox: { 
-    logo: "https://logo.clearbit.com/upstox.com",
-    fallbackGradient: "from-purple-600 to-purple-800", 
-    initials: "U",
-    bgColor: "bg-white"
-  },
-  "icici-direct": { 
-    logo: "https://logo.clearbit.com/icicidirect.com",
-    fallbackGradient: "from-orange-500 to-orange-700", 
-    initials: "IC",
-    bgColor: "bg-white"
-  },
-  "hdfc-securities": { 
-    logo: "https://logo.clearbit.com/hdfcsec.com",
-    fallbackGradient: "from-blue-700 to-indigo-800", 
-    initials: "H",
-    bgColor: "bg-white"
-  },
-  "kotak-securities": { 
-    logo: "https://logo.clearbit.com/kotaksecurities.com",
-    fallbackGradient: "from-red-600 to-red-800", 
-    initials: "K",
-    bgColor: "bg-white"
-  },
-  "5paisa": { 
-    logo: "https://logo.clearbit.com/5paisa.com",
-    fallbackGradient: "from-teal-500 to-teal-700", 
-    initials: "5P",
-    bgColor: "bg-white"
-  },
-  dhan: { 
-    logo: "https://logo.clearbit.com/dhan.co",
-    fallbackGradient: "from-violet-500 to-violet-700", 
-    initials: "D",
-    bgColor: "bg-white"
-  },
-  "motilal-oswal": { 
-    logo: "https://logo.clearbit.com/motilaloswal.com",
-    fallbackGradient: "from-amber-600 to-amber-800", 
-    initials: "MO",
-    bgColor: "bg-white"
-  },
-  indmoney: { 
-    logo: "https://logo.clearbit.com/indmoney.com",
-    fallbackGradient: "from-emerald-500 to-emerald-700", 
-    initials: "IN",
-    bgColor: "bg-white"
-  },
-  "paytm-money": { 
-    logo: "https://logo.clearbit.com/paytmmoney.com",
-    fallbackGradient: "from-sky-500 to-sky-700", 
-    initials: "PM",
-    bgColor: "bg-white"
-  },
-  fyers: { 
-    logo: "https://logo.clearbit.com/fyers.in",
-    fallbackGradient: "from-indigo-500 to-indigo-700", 
-    initials: "FY",
-    bgColor: "bg-white"
-  },
-  "anand-rathi": { 
-    logo: "https://logo.clearbit.com/rfrathi.com",
-    fallbackGradient: "from-rose-600 to-rose-800", 
-    initials: "AR",
-    bgColor: "bg-white"
-  },
-  "alice-blue": { 
-    logo: "https://logo.clearbit.com/aliceblueonline.com",
-    fallbackGradient: "from-cyan-500 to-cyan-700", 
-    initials: "AB",
-    bgColor: "bg-white"
-  },
-  samco: { 
-    logo: "https://logo.clearbit.com/samco.in",
-    fallbackGradient: "from-pink-500 to-pink-700", 
-    initials: "S",
-    bgColor: "bg-white"
-  }
+const BROKER_LOGOS: Record<string, string> = {
+  zerodha: "/brokers/zerodha.svg",
+  "angel-one": "/brokers/angel-one.svg",
+  groww: "/brokers/groww.svg",
+  upstox: "/brokers/upstox.svg",
+  "icici-direct": "/brokers/icici-direct.svg",
+  "hdfc-securities": "/brokers/hdfc-securities.svg",
+  "kotak-securities": "/brokers/kotak-securities.svg",
+  "5paisa": "/brokers/5paisa.svg",
+  dhan: "/brokers/dhan.svg",
+  "motilal-oswal": "/brokers/motilal-oswal.svg",
+  indmoney: "/brokers/indmoney.svg",
+  "paytm-money": "/brokers/paytm-money.svg",
+  fyers: "/brokers/fyers.svg",
+  "anand-rathi": "/brokers/anand-rathi.svg",
+  "alice-blue": "/brokers/alice-blue.svg",
+  samco: "/brokers/samco.svg"
 };
 
 function BrokerLogo({ broker, size = "md" }: { broker: BrokerData; size?: "sm" | "md" | "lg" | "xl" }) {
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  
   const sizeClasses = {
     sm: "w-8 h-8",
     md: "w-10 h-10",
-    lg: "w-14 h-14",
+    lg: "w-16 h-16",
     xl: "w-20 h-20"
   };
-  
-  const imageSizes = {
-    sm: "w-6 h-6",
-    md: "w-8 h-8",
-    lg: "w-12 h-12",
-    xl: "w-16 h-16"
-  };
-  
-  const textSizes = {
-    sm: "text-xs",
-    md: "text-sm",
-    lg: "text-lg",
-    xl: "text-2xl"
-  };
 
-  const brokerConfig = BROKER_LOGOS[broker.id] || { 
-    logo: "", 
-    fallbackGradient: "from-gray-500 to-gray-700", 
-    initials: broker.name.charAt(0),
-    bgColor: "bg-white"
-  };
-
-  if (imageError || !brokerConfig.logo) {
-    return (
-      <div className={`${sizeClasses[size]} ${textSizes[size]} rounded-xl bg-gradient-to-br ${brokerConfig.fallbackGradient} text-white flex items-center justify-center font-bold shadow-md border border-white/20`}>
-        {brokerConfig.initials}
-      </div>
-    );
-  }
+  const logoPath = BROKER_LOGOS[broker.id];
 
   return (
-    <div className={`${sizeClasses[size]} rounded-xl ${brokerConfig.bgColor} dark:bg-white flex items-center justify-center shadow-md overflow-hidden p-2 border border-gray-100 dark:border-gray-200 relative`}>
-      {!imageLoaded && (
-        <div className={`absolute inset-0 flex items-center justify-center ${textSizes[size]} rounded-xl bg-gradient-to-br ${brokerConfig.fallbackGradient} text-white font-bold`}>
-          {brokerConfig.initials}
-        </div>
-      )}
+    <div className={`${sizeClasses[size]} rounded-xl overflow-hidden shadow-md flex items-center justify-center`}>
       <img 
-        src={brokerConfig.logo}
+        src={logoPath}
         alt={`${broker.name} logo`}
-        className={`${imageSizes[size]} object-contain ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
-        onError={() => setImageError(true)}
-        onLoad={() => setImageLoaded(true)}
-        loading="lazy"
+        className="w-full h-full object-cover"
       />
     </div>
   );
