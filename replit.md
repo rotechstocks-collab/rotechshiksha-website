@@ -6,6 +6,16 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Multi-language support (7 Indian languages)
+  - Language selector dropdown in header with globe icon
+  - Supported languages: English, Hindi, Marathi, Tamil, Kannada, Gujarati, Telugu
+  - JSON-based translation files in `client/src/translations/`
+  - LanguageContext with `useLanguage()` hook and `t()` function
+  - Language preference saved to localStorage (persists across sessions)
+  - SEO hreflang tags dynamically added for each language
+  - Home page and Hero component fully translated
+  - Scalable architecture for adding more translations
+
 - **Dec 2024**: Live News feature with MoneyControl integration
   - MoneyControl website scraping for real live news (primary source)
   - Bilingual support (English/Hindi) - English (moneycontrol.com) & Hindi (hindi.moneycontrol.com)
@@ -33,7 +43,8 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 ### Frontend Architecture
 - **Framework**: React 18 with TypeScript
 - **Routing**: Wouter (lightweight router)
-- **State Management**: TanStack React Query for server state, React Context for auth/theme
+- **State Management**: TanStack React Query for server state, React Context for auth/theme/language
+- **Internationalization**: Custom LanguageContext with JSON translation files
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **Build Tool**: Vite with Replit plugins
 
@@ -118,6 +129,35 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 - `DATABASE_URL` - PostgreSQL connection string
 - `SESSION_SECRET` - Session encryption key
 - `ALPHAVANTAGE_API_KEY` - Alpha Vantage API key for real-time stock data
+- `GNEWS_API_KEY` - GNews API key for live news integration
+
+## Multi-Language System
+
+### Supported Languages
+| Code | Language | Native Name |
+|------|----------|-------------|
+| en | English | English |
+| hi | Hindi | हिन्दी |
+| mr | Marathi | मराठी |
+| ta | Tamil | தமிழ் |
+| kn | Kannada | ಕನ್ನಡ |
+| gu | Gujarati | ગુજરાતી |
+| te | Telugu | తెలుగు |
+
+### Usage
+```tsx
+import { useLanguage } from "@/context/LanguageContext";
+
+function MyComponent() {
+  const { t, language, setLanguage } = useLanguage();
+  return <h1>{t("home.features.title")}</h1>;
+}
+```
+
+### Adding Translations
+1. Add new keys to all JSON files in `client/src/translations/`
+2. Use the `t("key.path")` function in components
+3. Translation files use flat key structure like `"nav.home": "Home"`
 
 ## Development Notes
 

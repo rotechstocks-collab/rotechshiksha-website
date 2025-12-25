@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { Link } from "wouter";
 import {
   Shield,
@@ -62,6 +63,7 @@ const testimonials = [
 
 export default function Home() {
   const { isAuthenticated, setShowAuthPopup, setPendingAction } = useAuth();
+  const { t } = useLanguage();
 
   const handleJoinCommunity = () => {
     if (!isAuthenticated) {
@@ -69,6 +71,29 @@ export default function Home() {
       setShowAuthPopup(true);
     }
   };
+
+  const translatedFeatures = [
+    {
+      icon: <BookOpen className="w-6 h-6" />,
+      title: t("home.features.ebooks.title"),
+      description: t("home.features.ebooks.description"),
+    },
+    {
+      icon: <Video className="w-6 h-6" />,
+      title: t("home.features.videos.title"),
+      description: t("home.features.videos.description"),
+    },
+    {
+      icon: <Calculator className="w-6 h-6" />,
+      title: t("home.features.calculators.title"),
+      description: t("home.features.calculators.description"),
+    },
+    {
+      icon: <ChartBar className="w-6 h-6" />,
+      title: t("home.features.analysis.title"),
+      description: t("home.features.analysis.description"),
+    },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -78,15 +103,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Everything You Need to Learn Trading
+              {t("home.features.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Access comprehensive resources designed to take you from beginner to confident trader
+              {t("home.features.subtitle")}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
+            {translatedFeatures.map((feature, index) => (
               <Card key={index} className="text-center hover-elevate" data-testid={`card-feature-${index}`}>
                 <CardContent className="pt-6 space-y-4">
                   <div className="w-14 h-14 mx-auto rounded-xl bg-primary/10 text-primary flex items-center justify-center">
@@ -107,10 +132,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              What Our Learners Say
+              {t("home.testimonials.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Join thousands who have started their trading journey with us
+              {t("home.testimonials.subtitle")}
             </p>
           </div>
 
@@ -136,10 +161,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-6 max-w-2xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Join Our Trading Community
+              {t("home.community.title")}
             </h2>
             <p className="text-muted-foreground">
-              Connect with fellow learners, get daily market updates, and never miss important insights
+              {t("home.community.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
@@ -154,7 +179,7 @@ export default function Home() {
                   data-testid="button-join-whatsapp"
                 >
                   <SiWhatsapp className="w-5 h-5 mr-2" />
-                  Join WhatsApp Group
+                  {t("home.community.whatsapp")}
                 </Button>
               </a>
               <a
@@ -170,7 +195,7 @@ export default function Home() {
                   data-testid="button-join-telegram"
                 >
                   <SiTelegram className="w-5 h-5 mr-2 text-blue-500" />
-                  Join Telegram Channel
+                  {t("home.community.telegram")}
                 </Button>
               </a>
             </div>
@@ -182,15 +207,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-6">
             <h2 className="text-3xl lg:text-4xl font-bold">
-              Start Your Trading Journey Today
+              {t("home.cta.title")}
             </h2>
             <p className="max-w-2xl mx-auto opacity-90">
-              Join 10,000+ learners who are building their stock market knowledge with our free courses
+              {t("home.cta.subtitle")}
             </p>
             {isAuthenticated ? (
               <Link href="/courses">
                 <Button size="lg" variant="secondary" data-testid="button-cta-explore">
-                  Explore Courses
+                  {t("hero.cta.explore")}
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
@@ -204,13 +229,13 @@ export default function Home() {
                 }}
                 data-testid="button-cta-start"
               >
-                Get Started Free
+                {t("home.cta.button")}
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             )}
             <p className="text-sm opacity-75 flex items-center justify-center gap-2">
               <Shield className="w-4 h-4" />
-              100% Free | No Credit Card Required
+              {t("home.cta.note")}
             </p>
           </div>
         </div>

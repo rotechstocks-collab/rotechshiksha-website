@@ -5,12 +5,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { LiveTicker } from "@/components/LiveTicker";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { HreflangTags } from "@/components/HreflangTags";
 
 import Home from "@/pages/Home";
 import About from "@/pages/About";
@@ -49,22 +51,25 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <div className="min-h-screen bg-background">
-              <LiveTicker />
-              <Header />
-              <main className="pt-0">
-                <Router />
-              </main>
-              <Footer />
-              <AuthModal />
-              <LiveChat />
-              <WhatsAppButton />
-            </div>
-            <Toaster />
-          </TooltipProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <HreflangTags />
+              <div className="min-h-screen bg-background">
+                <LiveTicker />
+                <Header />
+                <main className="pt-0">
+                  <Router />
+                </main>
+                <Footer />
+                <AuthModal />
+                <LiveChat />
+                <WhatsAppButton />
+              </div>
+              <Toaster />
+            </TooltipProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { Link } from "wouter";
 import {
   TrendingUp,
@@ -15,6 +16,7 @@ import {
 
 export function Hero() {
   const { isAuthenticated, setShowAuthPopup } = useAuth();
+  const { t } = useLanguage();
 
   const handleGetStarted = () => {
     if (!isAuthenticated) {
@@ -36,13 +38,12 @@ export function Hero() {
               </Badge>
 
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
-                Learn Stock Market
-                <span className="text-primary block mt-2">The Right Way</span>
+                {t("hero.title")}
+                <span className="text-primary block mt-2">{t("hero.subtitle")}</span>
               </h1>
 
               <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
-                Master the art of trading with comprehensive courses from basics to advanced
-                algo trading. Join thousands of learners on their wealth creation journey.
+                {t("hero.description")}
               </p>
             </div>
 
@@ -51,7 +52,7 @@ export function Hero() {
                 {isAuthenticated ? (
                   <Link href="/courses">
                     <Button size="lg" className="w-full sm:w-auto" data-testid="button-explore-courses">
-                      Explore Courses
+                      {t("hero.cta.explore")}
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </Link>
@@ -62,7 +63,7 @@ export function Hero() {
                     onClick={handleGetStarted}
                     data-testid="button-get-started"
                   >
-                    Start Learning Free
+                    {t("hero.cta.start")}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 )}

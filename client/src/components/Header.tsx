@@ -11,31 +11,40 @@ import {
 import { Menu, ChevronDown, Sun, Moon, User, LogOut, LayoutDashboard } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { StockSearch } from "./StockSearch";
+import { LanguageSelector } from "./LanguageSelector";
 
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+interface NavItem {
+  labelKey: string;
+  href: string;
+  children?: { labelKey: string; href: string }[];
+}
+
+const navItemsConfig: NavItem[] = [
+  { labelKey: "nav.home", href: "/" },
+  { labelKey: "nav.about", href: "/about" },
   {
-    label: "Courses",
+    labelKey: "nav.courses",
     href: "/courses",
     children: [
-      { label: "Basic Level", href: "/courses/basic" },
-      { label: "Intermediate", href: "/courses/intermediate" },
-      { label: "Advanced", href: "/courses/advanced" },
-      { label: "Algo Trading", href: "/courses/algo" },
+      { labelKey: "nav.courses.basic", href: "/courses/basic" },
+      { labelKey: "nav.courses.intermediate", href: "/courses/intermediate" },
+      { labelKey: "nav.courses.advanced", href: "/courses/advanced" },
+      { labelKey: "nav.courses.algo", href: "/courses/algo" },
     ],
   },
-  { label: "Live News", href: "/live-news" },
-  { label: "Calculators", href: "/calculators" },
-  { label: "Startup Connect", href: "/startup-connect" },
-  { label: "Pricing", href: "/pricing" },
+  { labelKey: "nav.liveNews", href: "/live-news" },
+  { labelKey: "nav.calculators", href: "/calculators" },
+  { labelKey: "nav.startupConnect", href: "/startup-connect" },
+  { labelKey: "nav.pricing", href: "/pricing" },
 ];
 
 export function Header() {
   const [location] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated, logout, setShowAuthPopup } = useAuth();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLoginClick = () => {
@@ -56,16 +65,16 @@ export function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) =>
+            {navItemsConfig.map((item) =>
               item.children ? (
-                <DropdownMenu key={item.label}>
+                <DropdownMenu key={item.labelKey}>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className={`gap-1 ${location.startsWith(item.href) ? "bg-accent" : ""}`}
-                      data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                      data-testid={`nav-${item.labelKey}`}
                     >
-                      {item.label}
+                      {t(item.labelKey)}
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -75,9 +84,9 @@ export function Header() {
                         <Link href={child.href}>
                           <span
                             className="w-full cursor-pointer"
-                            data-testid={`nav-${child.label.toLowerCase().replace(/\s+/g, "-")}`}
+                            data-testid={`nav-${child.labelKey}`}
                           >
-                            {child.label}
+                            {t(child.labelKey)}
                           </span>
                         </Link>
                       </DropdownMenuItem>
@@ -89,9 +98,9 @@ export function Header() {
                   <Button
                     variant="ghost"
                     className={location === item.href ? "bg-accent" : ""}
-                    data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                    data-testid={`nav-${item.labelKey}`}
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                   </Button>
                 </Link>
               )
@@ -102,6 +111,8 @@ export function Header() {
             <div className="hidden md:block w-56">
               <StockSearch variant="compact" />
             </div>
+            
+            <LanguageSelector />
             
             <Button
               size="icon"
@@ -125,7 +136,7 @@ export function Header() {
                     <Link href="/dashboard">
                       <span className="flex items-center gap-2 cursor-pointer w-full" data-testid="link-dashboard">
                         <LayoutDashboard className="w-4 h-4" />
-                        Dashboard
+                        {t("nav.dashboard")}
                       </span>
                     </Link>
                   </DropdownMenuItem>
@@ -134,20 +145,20 @@ export function Header() {
                       <Link href="/admin">
                         <span className="flex items-center gap-2 cursor-pointer w-full" data-testid="link-admin">
                           <User className="w-4 h-4" />
-                          Admin Panel
+                          {t("nav.adminPanel")}
                         </span>
                       </Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem onClick={logout} data-testid="button-logout">
                     <LogOut className="w-4 h-4 mr-2" />
-                    Logout
+                    {t("nav.logout")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <Button onClick={handleLoginClick} data-testid="button-login">
-                Login with Mobile
+                {t("nav.login")}
               </Button>
             )}
 
@@ -159,11 +170,11 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-72">
                 <nav className="flex flex-col gap-2 mt-8">
-                  {navItems.map((item) =>
+                  {navItemsConfig.map((item) =>
                     item.children ? (
-                      <div key={item.label} className="space-y-1">
+                      <div key={item.labelKey} className="space-y-1">
                         <span className="px-4 py-2 text-sm font-semibold text-muted-foreground">
-                          {item.label}
+                          {t(item.labelKey)}
                         </span>
                         {item.children.map((child) => (
                           <Link key={child.href} href={child.href}>
@@ -172,7 +183,7 @@ export function Header() {
                               className="w-full justify-start pl-8"
                               onClick={() => setMobileMenuOpen(false)}
                             >
-                              {child.label}
+                              {t(child.labelKey)}
                             </Button>
                           </Link>
                         ))}
@@ -184,7 +195,7 @@ export function Header() {
                           className="w-full justify-start"
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          {item.label}
+                          {t(item.labelKey)}
                         </Button>
                       </Link>
                     )
