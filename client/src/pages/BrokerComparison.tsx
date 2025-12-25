@@ -146,28 +146,85 @@ function getWinnerForMetric(brokers: BrokerData[], getValue: (b: BrokerData) => 
   return sorted[0].id;
 }
 
-function BrokerLogo({ broker, size = "md" }: { broker: BrokerData; size?: "sm" | "md" | "lg" }) {
+function BrokerLogo({ broker, size = "md" }: { broker: BrokerData; size?: "sm" | "md" | "lg" | "xl" }) {
   const sizeClasses = {
     sm: "w-8 h-8 text-sm",
     md: "w-10 h-10 text-base",
-    lg: "w-14 h-14 text-xl"
+    lg: "w-14 h-14 text-xl",
+    xl: "w-16 h-16 text-2xl"
   };
   
-  const colors: Record<string, string> = {
-    zerodha: "from-blue-600 to-blue-800",
-    "angel-one": "from-red-500 to-red-700",
-    groww: "from-green-500 to-green-700",
-    upstox: "from-purple-600 to-purple-800",
-    "icici-direct": "from-orange-500 to-orange-700",
-    "hdfc-securities": "from-blue-700 to-indigo-800",
-    "kotak-securities": "from-red-600 to-red-800",
-    "5paisa": "from-teal-500 to-teal-700"
+  const brokerStyles: Record<string, { gradient: string; initials: string }> = {
+    zerodha: { gradient: "from-blue-600 to-blue-800", initials: "Z" },
+    "angel-one": { gradient: "from-red-500 to-red-700", initials: "A" },
+    groww: { gradient: "from-green-500 to-green-700", initials: "G" },
+    upstox: { gradient: "from-purple-600 to-purple-800", initials: "U" },
+    "icici-direct": { gradient: "from-orange-500 to-orange-700", initials: "IC" },
+    "hdfc-securities": { gradient: "from-blue-700 to-indigo-800", initials: "H" },
+    "kotak-securities": { gradient: "from-red-600 to-red-800", initials: "K" },
+    "5paisa": { gradient: "from-teal-500 to-teal-700", initials: "5P" },
+    dhan: { gradient: "from-violet-500 to-violet-700", initials: "D" },
+    "motilal-oswal": { gradient: "from-amber-600 to-amber-800", initials: "MO" },
+    indmoney: { gradient: "from-emerald-500 to-emerald-700", initials: "IN" },
+    "paytm-money": { gradient: "from-sky-500 to-sky-700", initials: "PM" },
+    fyers: { gradient: "from-indigo-500 to-indigo-700", initials: "FY" },
+    "anand-rathi": { gradient: "from-rose-600 to-rose-800", initials: "AR" },
+    "alice-blue": { gradient: "from-cyan-500 to-cyan-700", initials: "AB" },
+    samco: { gradient: "from-pink-500 to-pink-700", initials: "S" }
   };
 
+  const style = brokerStyles[broker.id] || { gradient: "from-gray-500 to-gray-700", initials: broker.name.charAt(0) };
+
   return (
-    <div className={`${sizeClasses[size]} rounded-xl bg-gradient-to-br ${colors[broker.id] || "from-gray-500 to-gray-700"} text-white flex items-center justify-center font-bold shadow-md`}>
-      {broker.name.charAt(0)}
+    <div className={`${sizeClasses[size]} rounded-xl bg-gradient-to-br ${style.gradient} text-white flex items-center justify-center font-bold shadow-md`}>
+      {style.initials}
     </div>
+  );
+}
+
+function BrokerCardMini({ 
+  broker, 
+  isSelected, 
+  onSelect 
+}: { 
+  broker: BrokerData; 
+  isSelected: boolean; 
+  onSelect: () => void; 
+}) {
+  return (
+    <motion.button
+      onClick={onSelect}
+      className={`relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200 w-full ${
+        isSelected 
+          ? "bg-primary/10 ring-2 ring-primary shadow-md" 
+          : "bg-card hover-elevate border border-border"
+      }`}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      data-testid={`broker-card-${broker.id}`}
+    >
+      <AnimatePresence>
+        {isSelected && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center shadow-md z-10"
+          >
+            <Check className="w-3 h-3" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <BrokerLogo broker={broker} size="lg" />
+      <div className="text-center">
+        <h3 className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>
+          {broker.name}
+        </h3>
+        <p className="text-xs text-muted-foreground">
+          {formatNumber(broker.activeClients.total)} clients
+        </p>
+      </div>
+    </motion.button>
   );
 }
 
@@ -199,7 +256,7 @@ function BrokerCard({
             : "hover-elevate"
         }`}
         onClick={onSelect}
-        data-testid={`broker-card-${broker.id}`}
+        data-testid={`broker-card-detail-${broker.id}`}
       >
         <CardContent className="p-3">
           <div className="flex items-center gap-2">
@@ -907,24 +964,50 @@ export default function BrokerComparison() {
             </motion.div>
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-foreground">Broker Comparison</h1>
-              <p className="text-slate-600 dark:text-muted-foreground">Compare India's top stockbrokers side by side</p>
+              <p className="text-slate-600 dark:text-muted-foreground">Compare India's top 16 stockbrokers side by side</p>
             </div>
           </FadeInUp>
 
           <FadeInUp delay={0.1}>
-            <div className="mb-4">
-              <p className="text-sm text-muted-foreground mb-3">Select up to 4 brokers to compare:</p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
-                {brokerData.map((broker) => (
-                  <BrokerCard
-                    key={broker.id}
-                    broker={broker}
-                    isSelected={selectedBrokers.includes(broker.id)}
-                    onSelect={() => toggleBroker(broker.id)}
-                  />
-                ))}
-              </div>
-            </div>
+            <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm mb-6">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <div>
+                    <CardTitle className="text-lg">Select Brokers to Compare</CardTitle>
+                    <p className="text-sm text-muted-foreground">Click on brokers below (max 4)</p>
+                  </div>
+                  {selectedBrokers.length > 0 && (
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm text-muted-foreground">Selected:</span>
+                      {selectedBrokerData.map((b) => (
+                        <Badge key={b.id} variant="secondary" className="gap-1">
+                          {b.name}
+                          <button 
+                            onClick={() => toggleBroker(b.id)}
+                            className="ml-1 hover:text-destructive"
+                            data-testid={`button-remove-broker-${b.id}`}
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 lg:grid-cols-8 gap-3">
+                  {brokerData.map((broker) => (
+                    <BrokerCardMini
+                      key={broker.id}
+                      broker={broker}
+                      isSelected={selectedBrokers.includes(broker.id)}
+                      onSelect={() => toggleBroker(broker.id)}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </FadeInUp>
         </div>
       </section>

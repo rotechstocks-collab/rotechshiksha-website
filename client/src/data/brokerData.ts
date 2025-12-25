@@ -707,6 +707,638 @@ export const brokerData: BrokerData[] = [
       nri: false,
       margin: true
     }
+  },
+  {
+    id: "dhan",
+    name: "Dhan",
+    logo: "",
+    tagline: "Trade Faster, Trade Smarter",
+    established: 2021,
+    headquarters: "Mumbai",
+    website: "dhan.co",
+    activeClients: {
+      total: 1500000,
+      growth: "+85%",
+      marketShare: "4.1%",
+      rank: 9
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 0,
+      equityDelivery: "Free",
+      equityIntraday: "Rs 20 or 0.03%",
+      futuresOptions: "Rs 20 per order",
+      commodities: "Rs 20 per order",
+      currency: "Rs 20 per order",
+      dpCharges: 15
+    },
+    complaints: {
+      total: 456,
+      resolved: 441,
+      pending: 15,
+      resolutionRate: "96.7%",
+      avgResolutionDays: 6
+    },
+    shareHolding: {
+      nsdl: 900000,
+      cdsl: 600000,
+      total: 1500000,
+      avgHoldingValue: 195000
+    },
+    prosAndCons: {
+      pros: [
+        "Lightning fast order execution",
+        "Excellent charting with TradingView",
+        "Zero brokerage on delivery",
+        "Options trading tools",
+        "Clean modern interface"
+      ],
+      cons: [
+        "New player in the market",
+        "Limited research reports",
+        "No 3-in-1 account",
+        "Less features for long-term investors"
+      ]
+    },
+    financials: {
+      revenue: "Rs 320 Cr",
+      profit: "Rs 45 Cr",
+      netWorth: "Rs 580 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 4.3,
+      trading: 4.7,
+      research: 3.4,
+      support: 4.1,
+      platform: 4.8,
+      pricing: 4.7
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: true,
+      research: false,
+      ipo: true,
+      mutualFunds: true,
+      bonds: false,
+      insurance: false,
+      nri: false,
+      margin: true
+    }
+  },
+  {
+    id: "motilal-oswal",
+    name: "Motilal Oswal",
+    logo: "",
+    tagline: "Knowledge First",
+    established: 1987,
+    headquarters: "Mumbai",
+    website: "motilaloswal.com",
+    activeClients: {
+      total: 2100000,
+      growth: "+12%",
+      marketShare: "5.8%",
+      rank: 10
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 0,
+      equityDelivery: "0.30%",
+      equityIntraday: "0.03%",
+      futuresOptions: "Rs 20 per lot",
+      commodities: "0.02%",
+      currency: "Rs 20 per lot",
+      dpCharges: 25
+    },
+    complaints: {
+      total: 1876,
+      resolved: 1812,
+      pending: 64,
+      resolutionRate: "96.6%",
+      avgResolutionDays: 9
+    },
+    shareHolding: {
+      nsdl: 1400000,
+      cdsl: 700000,
+      total: 2100000,
+      avgHoldingValue: 385000
+    },
+    prosAndCons: {
+      pros: [
+        "Strong research & advisory",
+        "Long market experience",
+        "Multiple investment options",
+        "Good for PMS clients",
+        "Educational content"
+      ],
+      cons: [
+        "Higher brokerage on delivery",
+        "Complex fee structure",
+        "Platform can be slow",
+        "Not ideal for beginners"
+      ]
+    },
+    financials: {
+      revenue: "Rs 4,120 Cr",
+      profit: "Rs 1,050 Cr",
+      netWorth: "Rs 5,800 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 4.0,
+      trading: 4.0,
+      research: 4.8,
+      support: 3.9,
+      platform: 3.8,
+      pricing: 3.4
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: true,
+      research: true,
+      ipo: true,
+      mutualFunds: true,
+      bonds: true,
+      insurance: true,
+      nri: true,
+      margin: true
+    }
+  },
+  {
+    id: "indmoney",
+    name: "INDmoney",
+    logo: "",
+    tagline: "Super App for Financial Freedom",
+    established: 2019,
+    headquarters: "Gurugram",
+    website: "indmoney.com",
+    activeClients: {
+      total: 1200000,
+      growth: "+120%",
+      marketShare: "3.3%",
+      rank: 11
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 0,
+      equityDelivery: "Free",
+      equityIntraday: "Rs 20 or 0.05%",
+      futuresOptions: "Rs 20 per order",
+      commodities: "N/A",
+      currency: "N/A",
+      dpCharges: 15
+    },
+    complaints: {
+      total: 234,
+      resolved: 221,
+      pending: 13,
+      resolutionRate: "94.4%",
+      avgResolutionDays: 8
+    },
+    shareHolding: {
+      nsdl: 800000,
+      cdsl: 400000,
+      total: 1200000,
+      avgHoldingValue: 145000
+    },
+    prosAndCons: {
+      pros: [
+        "Complete financial tracking",
+        "US stocks available",
+        "Goal-based investing",
+        "Great for beginners",
+        "Unified portfolio view"
+      ],
+      cons: [
+        "Limited advanced trading",
+        "No commodity trading",
+        "New in stockbroking",
+        "Limited research tools"
+      ]
+    },
+    financials: {
+      revenue: "Rs 280 Cr",
+      profit: "Rs -85 Cr",
+      netWorth: "Rs 420 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 4.1,
+      trading: 3.8,
+      research: 3.5,
+      support: 4.2,
+      platform: 4.5,
+      pricing: 4.6
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: false,
+      research: false,
+      ipo: true,
+      mutualFunds: true,
+      bonds: true,
+      insurance: true,
+      nri: true,
+      margin: false
+    }
+  },
+  {
+    id: "paytm-money",
+    name: "Paytm Money",
+    logo: "",
+    tagline: "Investing Made Simple",
+    established: 2018,
+    headquarters: "Noida",
+    website: "paytmmoney.com",
+    activeClients: {
+      total: 980000,
+      growth: "+35%",
+      marketShare: "2.7%",
+      rank: 12
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 0,
+      equityDelivery: "Free",
+      equityIntraday: "Rs 10 per order",
+      futuresOptions: "Rs 10 per order",
+      commodities: "N/A",
+      currency: "N/A",
+      dpCharges: 15.93
+    },
+    complaints: {
+      total: 567,
+      resolved: 534,
+      pending: 33,
+      resolutionRate: "94.2%",
+      avgResolutionDays: 10
+    },
+    shareHolding: {
+      nsdl: 600000,
+      cdsl: 380000,
+      total: 980000,
+      avgHoldingValue: 95000
+    },
+    prosAndCons: {
+      pros: [
+        "Lowest intraday brokerage",
+        "Paytm ecosystem integration",
+        "Very user-friendly",
+        "Good for beginners",
+        "Free mutual funds"
+      ],
+      cons: [
+        "No commodity/currency trading",
+        "Limited advanced features",
+        "Less charting tools",
+        "No API access"
+      ]
+    },
+    financials: {
+      revenue: "Rs 185 Cr",
+      profit: "Rs -120 Cr",
+      netWorth: "Rs 650 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 3.9,
+      trading: 3.7,
+      research: 3.3,
+      support: 3.8,
+      platform: 4.2,
+      pricing: 4.8
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: false,
+      research: false,
+      ipo: true,
+      mutualFunds: true,
+      bonds: true,
+      insurance: false,
+      nri: false,
+      margin: true
+    }
+  },
+  {
+    id: "fyers",
+    name: "Fyers",
+    logo: "",
+    tagline: "Built for Traders, by Traders",
+    established: 2015,
+    headquarters: "Bengaluru",
+    website: "fyers.in",
+    activeClients: {
+      total: 650000,
+      growth: "+42%",
+      marketShare: "1.8%",
+      rank: 13
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 0,
+      equityDelivery: "Free",
+      equityIntraday: "Rs 20 or 0.03%",
+      futuresOptions: "Rs 20 per order",
+      commodities: "Rs 20 per order",
+      currency: "Rs 20 per order",
+      dpCharges: 15
+    },
+    complaints: {
+      total: 187,
+      resolved: 178,
+      pending: 9,
+      resolutionRate: "95.2%",
+      avgResolutionDays: 7
+    },
+    shareHolding: {
+      nsdl: 420000,
+      cdsl: 230000,
+      total: 650000,
+      avgHoldingValue: 225000
+    },
+    prosAndCons: {
+      pros: [
+        "Advanced charting tools",
+        "Excellent API for algo trading",
+        "Free equity delivery",
+        "Good for technical traders",
+        "Responsive customer support"
+      ],
+      cons: [
+        "Smaller user base",
+        "Limited research",
+        "No 3-in-1 account",
+        "Mobile app needs work"
+      ]
+    },
+    financials: {
+      revenue: "Rs 145 Cr",
+      profit: "Rs 28 Cr",
+      netWorth: "Rs 185 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 4.2,
+      trading: 4.6,
+      research: 3.4,
+      support: 4.3,
+      platform: 4.5,
+      pricing: 4.6
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: true,
+      research: false,
+      ipo: true,
+      mutualFunds: true,
+      bonds: false,
+      insurance: false,
+      nri: false,
+      margin: true
+    }
+  },
+  {
+    id: "anand-rathi",
+    name: "Anand Rathi",
+    logo: "",
+    tagline: "Your Wealth, Our Expertise",
+    established: 1994,
+    headquarters: "Mumbai",
+    website: "rfranalytics.com",
+    activeClients: {
+      total: 520000,
+      growth: "+15%",
+      marketShare: "1.4%",
+      rank: 14
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 500,
+      equityDelivery: "0.25%",
+      equityIntraday: "0.025%",
+      futuresOptions: "Rs 20 per lot",
+      commodities: "0.025%",
+      currency: "0.025%",
+      dpCharges: 20
+    },
+    complaints: {
+      total: 312,
+      resolved: 298,
+      pending: 14,
+      resolutionRate: "95.5%",
+      avgResolutionDays: 11
+    },
+    shareHolding: {
+      nsdl: 340000,
+      cdsl: 180000,
+      total: 520000,
+      avgHoldingValue: 420000
+    },
+    prosAndCons: {
+      pros: [
+        "Strong research team",
+        "Wealth management services",
+        "Good for HNI clients",
+        "Personalized advisory",
+        "Wide product range"
+      ],
+      cons: [
+        "Higher charges",
+        "AMC fees apply",
+        "Not for budget traders",
+        "Dated trading platform"
+      ]
+    },
+    financials: {
+      revenue: "Rs 1,280 Cr",
+      profit: "Rs 185 Cr",
+      netWorth: "Rs 980 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 3.8,
+      trading: 3.7,
+      research: 4.5,
+      support: 4.0,
+      platform: 3.5,
+      pricing: 3.2
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: false,
+      research: true,
+      ipo: true,
+      mutualFunds: true,
+      bonds: true,
+      insurance: true,
+      nri: true,
+      margin: true
+    }
+  },
+  {
+    id: "alice-blue",
+    name: "Alice Blue",
+    logo: "",
+    tagline: "Trade with Confidence",
+    established: 2012,
+    headquarters: "Chennai",
+    website: "aliceblueonline.com",
+    activeClients: {
+      total: 580000,
+      growth: "+28%",
+      marketShare: "1.6%",
+      rank: 15
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 0,
+      equityDelivery: "Rs 15 per order",
+      equityIntraday: "Rs 15 per order",
+      futuresOptions: "Rs 15 per order",
+      commodities: "Rs 15 per order",
+      currency: "Rs 15 per order",
+      dpCharges: 14
+    },
+    complaints: {
+      total: 423,
+      resolved: 398,
+      pending: 25,
+      resolutionRate: "94.1%",
+      avgResolutionDays: 12
+    },
+    shareHolding: {
+      nsdl: 380000,
+      cdsl: 200000,
+      total: 580000,
+      avgHoldingValue: 165000
+    },
+    prosAndCons: {
+      pros: [
+        "Low flat brokerage (Rs 15)",
+        "Good for options traders",
+        "Multiple trading platforms",
+        "API access available",
+        "Ant Nest algo platform"
+      ],
+      cons: [
+        "Charges on delivery too",
+        "Customer support issues",
+        "Platform stability concerns",
+        "Limited research"
+      ]
+    },
+    financials: {
+      revenue: "Rs 185 Cr",
+      profit: "Rs 32 Cr",
+      netWorth: "Rs 220 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 3.9,
+      trading: 4.1,
+      research: 3.2,
+      support: 3.4,
+      platform: 4.0,
+      pricing: 4.5
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: true,
+      research: false,
+      ipo: true,
+      mutualFunds: true,
+      bonds: false,
+      insurance: false,
+      nri: false,
+      margin: true
+    }
+  },
+  {
+    id: "samco",
+    name: "SAMCO",
+    logo: "",
+    tagline: "India's Fastest Growing Stockbroker",
+    established: 2015,
+    headquarters: "Mumbai",
+    website: "samco.in",
+    activeClients: {
+      total: 420000,
+      growth: "+22%",
+      marketShare: "1.2%",
+      rank: 16
+    },
+    charges: {
+      accountOpening: 0,
+      maintenance: 400,
+      equityDelivery: "Rs 20 per order",
+      equityIntraday: "Rs 20 or 0.02%",
+      futuresOptions: "Rs 20 per order",
+      commodities: "Rs 20 per order",
+      currency: "Rs 20 per order",
+      dpCharges: 20
+    },
+    complaints: {
+      total: 289,
+      resolved: 271,
+      pending: 18,
+      resolutionRate: "93.8%",
+      avgResolutionDays: 10
+    },
+    shareHolding: {
+      nsdl: 280000,
+      cdsl: 140000,
+      total: 420000,
+      avgHoldingValue: 195000
+    },
+    prosAndCons: {
+      pros: [
+        "High leverage available",
+        "Good for active traders",
+        "Multiple trading tools",
+        "StockNote app analytics",
+        "Options strategies support"
+      ],
+      cons: [
+        "AMC charges apply",
+        "Charges on delivery",
+        "Limited mutual funds",
+        "Customer support delays"
+      ]
+    },
+    financials: {
+      revenue: "Rs 165 Cr",
+      profit: "Rs 24 Cr",
+      netWorth: "Rs 180 Cr",
+      fy: "FY24"
+    },
+    ratings: {
+      overall: 3.9,
+      trading: 4.2,
+      research: 3.6,
+      support: 3.5,
+      platform: 4.1,
+      pricing: 4.0
+    },
+    features: {
+      mobileApp: true,
+      webPlatform: true,
+      apiAccess: true,
+      research: true,
+      ipo: true,
+      mutualFunds: true,
+      bonds: false,
+      insurance: false,
+      nri: false,
+      margin: true
+    }
   }
 ];
 
