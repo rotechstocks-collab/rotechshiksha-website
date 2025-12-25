@@ -6,17 +6,25 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
-- **Dec 2024**: Economic Calendar
+- **Dec 2024**: Advanced Economic Calendar (Premium Upgrade)
   - Backend service with Finnhub API integration (optional FINNHUB_API_KEY)
-  - 30-minute caching with auto-refresh background job
-  - Sample data fallback when API key not configured
+  - 15-minute caching with auto-refresh background job
+  - Comprehensive sample data fallback with 30+ event types
   - API route: GET /api/economic-calendar
-  - Frontend page with professional fintech UI
-  - Filters: Date range (Today, Upcoming, Week, Past, All), Country, Impact level
+  - **Clickable Event Detail Modal** with:
+    - Full event description and explanation
+    - Market impact analysis (Bullish/Bearish/Volatile/Neutral)
+    - Affected markets (Stocks, Forex, Bonds, Sectors)
+    - Sector classification and release frequency
+  - Premium card-based UI with hover animations
+  - "Upcoming High-Impact Events" spotlight section
+  - Smart insights with beginner-friendly explanations
   - Impact statistics dashboard (High/Medium/Low counts)
   - Color-coded impact indicators with actual vs forecast comparisons
-  - Trend indicators for better/worse than forecast
+  - Trend arrows for better/worse than forecast
   - Country flags using flagcdn.com
+  - Filters: Date range, Country, Impact level
+  - Auto-refresh every 3 minutes for real-time feel
   - Navigation added in all 7 languages via Tools dropdown
 
 - **Dec 2024**: IPO Tracking System
