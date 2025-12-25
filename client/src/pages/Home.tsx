@@ -1,4 +1,5 @@
 import { Hero } from "@/components/Hero";
+import { LiveVideoSection } from "@/components/LiveVideoSection";
 import { CourseCards } from "@/components/CourseCards";
 import { PricingPlans } from "@/components/PricingPlans";
 import { Card, CardContent } from "@/components/ui/card";
@@ -173,6 +174,8 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
+
+      <LiveVideoSection />
 
       <section className="py-20 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
