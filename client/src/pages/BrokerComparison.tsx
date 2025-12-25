@@ -1,10 +1,27 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Legend,
+  Cell,
+  Tooltip as RechartsTooltip,
+} from "recharts";
 import {
   Users,
   IndianRupee,
@@ -24,12 +41,22 @@ import {
   Shield,
   Smartphone,
   Zap,
+  Trophy,
+  Target,
+  Wallet,
+  Award,
+  Info,
 } from "lucide-react";
 import { brokerData, type BrokerData, formatNumber, formatCurrency } from "@/data/brokerData";
 import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 
+const CHART_COLORS = [
+  "#4A90E2", "#4ECDC4", "#FF7B7B", "#9B59B6", "#F39C12", "#1ABC9C", "#E74C3C", "#3498DB"
+];
+
 const comparisonTabs = [
   { id: "overview", label: "Overview", icon: Building2 },
+  { id: "charts", label: "Visual Charts", icon: BarChart3 },
   { id: "clients", label: "Active Clients", icon: Users },
   { id: "charges", label: "Charges", icon: IndianRupee },
   { id: "complaints", label: "Complaints", icon: AlertTriangle },
@@ -39,6 +66,60 @@ const comparisonTabs = [
   { id: "ratings", label: "Ratings", icon: Star },
   { id: "features", label: "Features", icon: Zap },
 ];
+
+function getBestForTag(broker: BrokerData): { tag: string; icon: typeof Trophy; color: string } {
+  const scores = {
+    beginners: 0,
+    traders: 0,
+    investors: 0,
+  };
+  
+  if (broker.charges.accountOpening === 0) scores.beginners += 2;
+  if (broker.charges.equityDelivery === "Free") scores.investors += 2;
+  if (broker.features.research) scores.investors += 1;
+  if (broker.features.mutualFunds) scores.investors += 1;
+  if (broker.ratings.support >= 4) scores.beginners += 2;
+  if (broker.features.apiAccess) scores.traders += 2;
+  if (broker.charges.equityIntraday.includes("20") || broker.charges.equityIntraday.includes("0.03")) scores.traders += 1;
+  if (broker.ratings.trading >= 4.2) scores.traders += 2;
+  if (broker.ratings.platform >= 4.2) scores.traders += 1;
+  
+  const maxCategory = Object.entries(scores).reduce((a, b) => a[1] > b[1] ? a : b);
+  
+  switch (maxCategory[0]) {
+    case "beginners":
+      return { tag: "Best for Beginners", icon: Target, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" };
+    case "traders":
+      return { tag: "Best for Traders", icon: Zap, color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" };
+    case "investors":
+      return { tag: "Best for Investors", icon: Wallet, color: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20" };
+    default:
+      return { tag: "Well Balanced", icon: Scale, color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20" };
+  }
+}
+
+function calculateOverallScore(broker: BrokerData): number {
+  let score = 0;
+  score += broker.ratings.overall * 10;
+  score += Math.min(broker.activeClients.total / 1000000, 10) * 5;
+  const resolutionRate = parseFloat(broker.complaints.resolutionRate);
+  score += resolutionRate / 10;
+  if (broker.charges.accountOpening === 0) score += 5;
+  if (broker.charges.equityDelivery === "Free") score += 5;
+  const featureCount = Object.values(broker.features).filter(Boolean).length;
+  score += featureCount * 2;
+  return Math.round(score);
+}
+
+function getWinnerForMetric(brokers: BrokerData[], getValue: (b: BrokerData) => number, isLowerBetter = false): string {
+  if (brokers.length === 0) return "";
+  const sorted = [...brokers].sort((a, b) => {
+    const valA = getValue(a);
+    const valB = getValue(b);
+    return isLowerBetter ? valA - valB : valB - valA;
+  });
+  return sorted[0].id;
+}
 
 function BrokerLogo({ broker, size = "md" }: { broker: BrokerData; size?: "sm" | "md" | "lg" }) {
   const sizeClasses = {
@@ -74,6 +155,10 @@ function BrokerCard({
   isSelected: boolean; 
   onSelect: () => void; 
 }) {
+  const bestFor = getBestForTag(broker);
+  const score = calculateOverallScore(broker);
+  const BestForIcon = bestFor.icon;
+  
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -111,13 +196,40 @@ function BrokerCard({
               )}
             </AnimatePresence>
           </div>
-          <div className="mt-3 flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">
-              {formatNumber(broker.activeClients.total)} clients
-            </span>
-            <Badge variant="outline" className="text-xs">
-              Rank #{broker.activeClients.rank}
+          
+          {/* Best For Tag */}
+          <div className="mt-3">
+            <Badge className={`text-xs ${bestFor.color}`}>
+              <BestForIcon className="w-3 h-3 mr-1" />
+              {bestFor.tag}
             </Badge>
+          </div>
+          
+          {/* Score and Stats */}
+          <div className="mt-3 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-500/10 rounded-md">
+                <Award className="w-3 h-3 text-amber-500" />
+                <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">{score}</span>
+              </div>
+              <span className="text-xs text-muted-foreground">
+                {formatNumber(broker.activeClients.total)} clients
+              </span>
+            </div>
+            <Badge variant="outline" className="text-xs">
+              #{broker.activeClients.rank}
+            </Badge>
+          </div>
+          
+          {/* Rating Stars */}
+          <div className="mt-2 flex items-center gap-0.5">
+            {[...Array(5)].map((_, i) => (
+              <Star 
+                key={i} 
+                className={`w-3 h-3 ${i < Math.floor(broker.ratings.overall) ? "text-amber-400 fill-amber-400" : "text-muted"}`}
+              />
+            ))}
+            <span className="ml-1 text-xs font-medium">{broker.ratings.overall}</span>
           </div>
         </CardContent>
       </Card>
@@ -221,23 +333,170 @@ function ComparisonTable({ brokers }: { brokers: BrokerData[] }) {
               </div>
             </TabsContent>
 
+            <TabsContent value="charts" className="mt-6">
+              <div className="space-y-8">
+                {/* Active Clients Bar Chart */}
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Users className="w-5 h-5 text-primary" />
+                      Active Clients Comparison
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={brokers.map((b, i) => ({ name: b.name, clients: b.activeClients.total / 1000000, color: CHART_COLORS[i % CHART_COLORS.length] }))}>
+                          <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                          <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${v}M`} />
+                          <RechartsTooltip 
+                            formatter={(value: number) => [`${value.toFixed(2)}M clients`, "Active Clients"]}
+                            contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }}
+                          />
+                          <Bar dataKey="clients" radius={[4, 4, 0, 0]}>
+                            {brokers.map((_, i) => (
+                              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Ratings Radar Chart */}
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Star className="w-5 h-5 text-amber-500" />
+                      Ratings Comparison (Radar View)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-80">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RadarChart data={[
+                          { metric: "Trading", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.trading])) },
+                          { metric: "Research", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.research])) },
+                          { metric: "Support", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.support])) },
+                          { metric: "Platform", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.platform])) },
+                          { metric: "Pricing", ...Object.fromEntries(brokers.map(b => [b.name, b.ratings.pricing])) },
+                        ]}>
+                          <PolarGrid />
+                          <PolarAngleAxis dataKey="metric" tick={{ fontSize: 12 }} />
+                          <PolarRadiusAxis angle={30} domain={[0, 5]} tick={{ fontSize: 10 }} />
+                          {brokers.map((broker, i) => (
+                            <Radar
+                              key={broker.id}
+                              name={broker.name}
+                              dataKey={broker.name}
+                              stroke={CHART_COLORS[i % CHART_COLORS.length]}
+                              fill={CHART_COLORS[i % CHART_COLORS.length]}
+                              fillOpacity={0.2}
+                            />
+                          ))}
+                          <Legend />
+                        </RadarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Complaints Resolution Rate */}
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Shield className="w-5 h-5 text-emerald-500" />
+                      Complaints Resolution Rate
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={brokers.map((b, i) => ({ name: b.name, rate: parseFloat(b.complaints.resolutionRate), color: CHART_COLORS[i % CHART_COLORS.length] }))}>
+                          <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                          <YAxis domain={[90, 100]} tick={{ fontSize: 12 }} tickFormatter={(v) => `${v}%`} />
+                          <RechartsTooltip 
+                            formatter={(value: number) => [`${value.toFixed(1)}%`, "Resolution Rate"]}
+                            contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }}
+                          />
+                          <Bar dataKey="rate" radius={[4, 4, 0, 0]}>
+                            {brokers.map((_, i) => (
+                              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Overall Score */}
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-amber-500" />
+                      Overall Score Ranking
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {brokers
+                        .map((b, i) => ({ broker: b, score: calculateOverallScore(b), color: CHART_COLORS[i % CHART_COLORS.length] }))
+                        .sort((a, b) => b.score - a.score)
+                        .map((item, index) => (
+                          <div key={item.broker.id} className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${index === 0 ? "bg-amber-500" : index === 1 ? "bg-slate-400" : index === 2 ? "bg-amber-700" : "bg-muted"}`}>
+                              {index + 1}
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-medium">{item.broker.name}</span>
+                                <span className="font-bold">{item.score}</span>
+                              </div>
+                              <Progress value={(item.score / 100) * 100} className="h-2" style={{ "--progress-color": item.color } as React.CSSProperties} />
+                            </div>
+                            {index === 0 && <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20">Winner</Badge>}
+                          </div>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
             <TabsContent value="clients" className="mt-6">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b">
                       <th className="text-left p-3 font-semibold">Metric</th>
-                      {brokers.map((b) => (
-                        <th key={b.id} className="text-center p-3 font-semibold">{b.name}</th>
-                      ))}
+                      {brokers.map((b) => {
+                        const isWinner = b.id === getWinnerForMetric(brokers, br => br.activeClients.total);
+                        return (
+                          <th key={b.id} className="text-center p-3 font-semibold">
+                            <div className="flex items-center justify-center gap-1">
+                              {b.name}
+                              {isWinner && <Trophy className="w-4 h-4 text-amber-500" />}
+                            </div>
+                          </th>
+                        );
+                      })}
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b">
                       <td className="p-3 text-muted-foreground">Total Clients</td>
-                      {brokers.map((b) => (
-                        <td key={b.id} className="p-3 text-center font-semibold">{formatNumber(b.activeClients.total)}</td>
-                      ))}
+                      {brokers.map((b) => {
+                        const isWinner = b.id === getWinnerForMetric(brokers, br => br.activeClients.total);
+                        return (
+                          <td key={b.id} className={`p-3 text-center font-semibold ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                            {formatNumber(b.activeClients.total)}
+                          </td>
+                        );
+                      })}
                     </tr>
                     <tr className="border-b">
                       <td className="p-3 text-muted-foreground">Growth</td>
