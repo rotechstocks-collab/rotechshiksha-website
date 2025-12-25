@@ -462,20 +462,21 @@ export default function LiveNews() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent" data-testid="videos-horizontal-scroll">
                   {businessNewsVideos.map((video, index) => (
                     <motion.div
                       key={video.id}
+                      className="flex-shrink-0 w-[320px] md:w-[380px] snap-start"
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
                       <Card 
-                        className="cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md"
+                        className="cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md h-full"
                         onClick={() => setSelectedVideo(video)}
                         data-testid={`video-card-${video.id}`}
                       >
-                        <div className="relative h-48 bg-muted overflow-hidden">
+                        <div className="relative h-48 bg-muted overflow-hidden rounded-t-md">
                           <img
                             src={video.thumbnail}
                             alt={video.name}
@@ -500,7 +501,7 @@ export default function LiveNews() {
                           <h3 className="font-bold text-lg mb-1" data-testid={`video-title-${video.id}`}>
                             {newsLanguage === "hi" ? video.nameHi : video.name}
                           </h3>
-                          <p className="text-sm text-muted-foreground" data-testid={`video-description-${video.id}`}>
+                          <p className="text-sm text-muted-foreground line-clamp-2" data-testid={`video-description-${video.id}`}>
                             {newsLanguage === "hi" ? video.descriptionHi : video.description}
                           </p>
                         </CardContent>
@@ -508,6 +509,9 @@ export default function LiveNews() {
                     </motion.div>
                   ))}
                 </div>
+                <p className="text-xs text-muted-foreground mt-2 text-center md:hidden">
+                  {newsLanguage === "hi" ? "← अधिक देखने के लिए स्वाइप करें →" : "← Swipe to see more →"}
+                </p>
 
                 <Card className="mt-8 bg-muted/30 border-dashed">
                   <CardContent className="p-6 text-center">
