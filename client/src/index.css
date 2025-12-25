@@ -72,6 +72,107 @@
   transform: scaleX(-1);
 }
 
+/* ===== MOBILE-FIRST OPTIMIZATIONS ===== */
+
+/* Reduce motion on mobile for better performance */
+@media (max-width: 768px) {
+  /* Disable heavy blur effects on mobile */
+  .blur-3xl,
+  .blur-2xl {
+    filter: blur(32px) !important;
+  }
+  
+  /* Reduce animation complexity */
+  .motion-reduce-mobile * {
+    animation-duration: 0.1s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1s !important;
+  }
+}
+
+/* Respect user preference for reduced motion - disable looping animations only */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable only looping/infinite animations */
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-ping {
+    animation: none !important;
+  }
+  
+  /* Disable hero blur animations */
+  .blur-3xl,
+  .blur-2xl {
+    animation: none !important;
+  }
+  
+  /* Keep transitions but reduce duration slightly */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.15s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile touch targets - minimum 44px for all interactive elements */
+@media (max-width: 768px) {
+  /* Global touch targets for buttons - override Shadcn min-h-9 (36px) */
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .inline-flex[role="combobox"],
+  [data-radix-collection-item] {
+    min-height: 44px !important;
+  }
+  
+  /* Navigation links need inline-flex to accept min-height */
+  nav a,
+  header a:not(p a):not(span a),
+  .touch-target {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  
+  /* Improve scrolling on mobile */
+  .overflow-y-auto,
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Better text readability on mobile */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Lazy loading placeholder animation */
+.lazy-placeholder {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: lazy-shimmer 1.5s infinite;
+}
+
+@keyframes lazy-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Safe area support for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* ===== END MOBILE-FIRST OPTIMIZATIONS ===== */
+
 /* LIGHT MODE - Smallcase Inspired Premium Fintech */
 :root {
   --button-outline: rgba(0,0,0, .08);

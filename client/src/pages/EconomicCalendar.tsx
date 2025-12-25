@@ -171,6 +171,7 @@ function EventDetailModal({
               src={`https://flagcdn.com/48x36/${countryFlags[event.countryCode] || "un"}.png`}
               alt={event.country}
               className="w-12 h-9 rounded shadow-sm object-cover"
+              loading="lazy"
             />
             <div className="flex-1">
               <DialogTitle className="text-xl font-bold leading-tight mb-1">
@@ -363,6 +364,7 @@ function EventCard({
               src={`https://flagcdn.com/32x24/${countryFlags[event.countryCode] || "un"}.png`}
               alt={event.country}
               className="w-8 h-6 rounded shadow-sm object-cover"
+              loading="lazy"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = "none";
               }}
@@ -613,6 +615,7 @@ export default function EconomicCalendar() {
                         src={`https://flagcdn.com/24x18/${countryFlags[event.countryCode] || "un"}.png`}
                         alt={event.country}
                         className="w-6 h-4 rounded shadow-sm"
+                        loading="lazy"
                       />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{event.event}</p>

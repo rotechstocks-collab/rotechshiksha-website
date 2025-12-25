@@ -188,6 +188,7 @@ function BrokerLogo({ broker, size = "md" }: { broker: BrokerData; size?: "sm" |
         src={logoPath}
         alt={`${broker.name} logo`}
         className="w-full h-full object-cover"
+        loading="lazy"
       />
     </div>
   );

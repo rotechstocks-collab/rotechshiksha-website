@@ -42,18 +42,23 @@ export function Hero() {
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
       
+      {/* Static blur elements for mobile (no animations for performance) */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-teal-400/20 rounded-full blur-3xl opacity-30 md:hidden" />
+      <div className="absolute bottom-20 right-10 w-64 h-64 bg-blue-400/15 rounded-full blur-3xl opacity-20 md:hidden" />
+      
+      {/* Animated blur elements for desktop */}
       <motion.div
-        className="absolute top-20 left-10 w-72 h-72 bg-teal-400/20 rounded-full blur-3xl"
+        className="absolute top-20 left-10 w-72 h-72 bg-teal-400/20 rounded-full blur-3xl hidden md:block"
         animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 8, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-blue-400/15 rounded-full blur-3xl"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-blue-400/15 rounded-full blur-3xl hidden md:block"
         animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.4, 0.2] }}
         transition={{ duration: 10, repeat: Infinity, delay: 2 }}
       />
       <motion.div
-        className="absolute top-1/3 right-1/4 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl"
+        className="absolute top-1/3 right-1/4 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl hidden lg:block"
         animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }}
         transition={{ duration: 12, repeat: Infinity, delay: 4 }}
       />

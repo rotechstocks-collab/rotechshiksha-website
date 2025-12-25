@@ -14,7 +14,7 @@ export function Footer() {
 
   return (
     <footer className="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-card dark:to-background border-t border-slate-100 dark:border-card-border">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12" style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))', paddingBottom: 'max(3rem, env(safe-area-inset-bottom))' }}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <motion.div 
             className="space-y-4"
@@ -28,6 +28,7 @@ export function Footer() {
                 src={logoImage} 
                 alt="Rotech Shiksha Logo" 
                 className="h-10 w-auto object-contain cursor-pointer"
+                loading="lazy"
                 data-testid="footer-logo"
               />
             </Link>
