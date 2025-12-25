@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 import {
   Calculator,
   PiggyBank,
@@ -18,6 +19,7 @@ import {
   LineChart,
   Landmark,
 } from "lucide-react";
+import { CalculatorIllustration, CoinStack, GrowthChart } from "@/components/Illustrations";
 
 interface CalculatorItem {
   id: string;
@@ -199,18 +201,47 @@ export default function CalculatorHub() {
   return (
     <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            <Calculator className="w-4 h-4" />
-            Financial Calculators
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-            Free Financial Calculators
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Plan your investments, calculate taxes, and make informed financial decisions
-            with our comprehensive suite of calculators.
-          </p>
+        <div className="grid lg:grid-cols-2 gap-8 items-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center lg:text-left"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+              <Calculator className="w-4 h-4" />
+              Financial Calculators
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Free Financial Calculators
+            </h1>
+            <p className="text-muted-foreground max-w-xl">
+              Plan your investments, calculate taxes, and make informed financial decisions
+              with our comprehensive suite of calculators.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="hidden lg:flex justify-center relative"
+          >
+            <CalculatorIllustration size={180} />
+            <motion.div
+              className="absolute -top-4 -right-4"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              <GrowthChart size={120} />
+            </motion.div>
+            <motion.div
+              className="absolute -bottom-4 -left-8"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+            >
+              <CoinStack size={80} />
+            </motion.div>
+          </motion.div>
         </div>
 
         {categories.map((category) => {

@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
+import { motion } from "framer-motion";
 import {
   Target,
   Users,
@@ -12,6 +13,7 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
+import { MentorCharacter, LearnerCharacter, RocketGrowth, TargetGoal } from "@/components/Illustrations";
 
 const stats = [
   { label: "Years of Experience", value: "5+" },
@@ -74,7 +76,12 @@ export default function About() {
       <section className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
               <Badge variant="secondary">About Us</Badge>
               <h1 className="text-4xl lg:text-5xl font-bold text-foreground">
                 Empowering India with
@@ -89,19 +96,40 @@ export default function About() {
                 Our courses are designed by market practitioners with real-world experience,
                 ensuring you learn practical skills that matter in today's markets.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, index) => (
-                <Card key={index} className="text-center" data-testid={`card-stat-${index}`}>
-                  <CardContent className="pt-6">
-                    <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="hidden lg:flex justify-center relative"
+            >
+              <MentorCharacter size={240} />
+              <motion.div
+                className="absolute -top-8 -right-4"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <RocketGrowth size={100} />
+              </motion.div>
+            </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12"
+          >
+            {stats.map((stat, index) => (
+              <Card key={index} className="text-center" data-testid={`card-stat-${index}`}>
+                <CardContent className="pt-6">
+                  <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </motion.div>
         </div>
       </section>
 

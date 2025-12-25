@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useAuth } from "@/context/AuthContext";
+import { motion } from "framer-motion";
 import {
   BookOpen,
   Video,
@@ -20,6 +21,7 @@ import {
   Zap,
   Bot,
 } from "lucide-react";
+import { LearnerCharacter, BookLearning, GrowthChart } from "@/components/Illustrations";
 
 interface Topic {
   id: string;
@@ -236,11 +238,33 @@ export default function Courses() {
       <div className="min-h-screen pt-28">
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            <div className="text-center space-y-4 mb-12">
-              <h1 className="text-4xl font-bold text-foreground">Our Courses</h1>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Choose your learning path and master the stock market step by step
-              </p>
+            <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-center lg:text-left space-y-4"
+              >
+                <h1 className="text-4xl font-bold text-foreground">Our Courses</h1>
+                <p className="text-muted-foreground max-w-xl">
+                  Choose your learning path and master the stock market step by step
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="hidden lg:flex justify-center relative"
+              >
+                <LearnerCharacter size={200} />
+                <motion.div
+                  className="absolute -top-4 -right-8"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                >
+                  <BookLearning size={100} />
+                </motion.div>
+              </motion.div>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

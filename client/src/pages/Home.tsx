@@ -12,7 +12,6 @@ import {
   Shield,
   TrendingUp,
   Users,
-  Award,
   ArrowRight,
   BookOpen,
   Video,
@@ -26,18 +25,22 @@ import {
   Wallet,
 } from "lucide-react";
 import { SiWhatsapp, SiTelegram } from "react-icons/si";
+import {
+  CalculatorIllustration,
+  BookLearning,
+  TargetGoal,
+  RocketGrowth,
+  LearnerCharacter,
+  MentorCharacter,
+  PiggyBank as PiggyBankIllustration,
+  ChartAnalysis,
+} from "@/components/Illustrations";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
   transition: { duration: 0.6 }
-};
-
-const stagger = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
 };
 
 const popularCalculators = [
@@ -132,18 +135,28 @@ export default function Home() {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 lg:px-8 relative">
-          <motion.div {...fadeInUp} className="text-center space-y-4 mb-12">
-            <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
-              <Calculator className="w-3 h-3 mr-1" />
-              Popular Tools
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Financial Calculators
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Plan your investments, calculate returns, and make informed financial decisions
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-3 gap-8 items-center mb-12">
+            <motion.div {...fadeInUp} className="lg:col-span-2 space-y-4">
+              <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
+                <Calculator className="w-3 h-3 mr-1" />
+                Popular Tools
+              </Badge>
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                Financial Calculators
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                Plan your investments, calculate returns, and make informed financial decisions
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <CalculatorIllustration size={140} />
+            </motion.div>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
             {popularCalculators.map((calc, index) => (
@@ -181,14 +194,33 @@ export default function Home() {
 
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              {t("home.features.title")}
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t("home.features.subtitle")}
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <div className="relative">
+                <LearnerCharacter size={220} />
+                <motion.div
+                  className="absolute -top-4 -right-4"
+                  animate={{ rotate: [0, 5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  <BookLearning size={100} />
+                </motion.div>
+              </div>
+            </motion.div>
+            <motion.div {...fadeInUp} className="space-y-4">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                {t("home.features.title")}
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                {t("home.features.subtitle")}
+              </p>
+            </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {learningFeatures.map((feature, index) => (
@@ -216,14 +248,33 @@ export default function Home() {
 
       <section className="py-20 bg-gradient-to-b from-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Why Choose Us?
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of learners who trust us for their financial education journey
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+            <motion.div {...fadeInUp} className="space-y-4">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                Why Choose Us?
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                Join thousands of learners who trust us for their financial education journey
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <div className="relative">
+                <TargetGoal size={160} />
+                <motion.div
+                  className="absolute -bottom-4 -left-8"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                >
+                  <PiggyBankIllustration size={100} />
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyChooseUs.map((item, index) => (
@@ -250,14 +301,24 @@ export default function Home() {
 
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              {t("home.testimonials.title")}
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t("home.testimonials.subtitle")}
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-3 gap-8 items-start mb-12">
+            <motion.div {...fadeInUp} className="lg:col-span-2 space-y-4">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                {t("home.testimonials.title")}
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                {t("home.testimonials.subtitle")}
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <MentorCharacter size={160} />
+            </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
@@ -294,47 +355,57 @@ export default function Home() {
 
       <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center space-y-6 max-w-2xl mx-auto">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              {t("home.community.title")}
-            </h2>
-            <p className="text-muted-foreground">
-              {t("home.community.subtitle")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="https://wa.me/919999999999"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto"
-              >
-                <Button
-                  size="lg"
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                  data-testid="button-join-whatsapp"
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <ChartAnalysis size={200} />
+            </motion.div>
+            <motion.div {...fadeInUp} className="text-center lg:text-left space-y-6">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                {t("home.community.title")}
+              </h2>
+              <p className="text-muted-foreground">
+                {t("home.community.subtitle")}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <a
+                  href="https://wa.me/919999999999"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
                 >
-                  <SiWhatsapp className="w-5 h-5 mr-2" />
-                  {t("home.community.whatsapp")}
-                </Button>
-              </a>
-              <a
-                href="https://t.me/rotechmultisolution"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto"
-              >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full"
-                  data-testid="button-join-telegram"
+                  <Button
+                    size="lg"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                    data-testid="button-join-whatsapp"
+                  >
+                    <SiWhatsapp className="w-5 h-5 mr-2" />
+                    {t("home.community.whatsapp")}
+                  </Button>
+                </a>
+                <a
+                  href="https://t.me/rotechmultisolution"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
                 >
-                  <SiTelegram className="w-5 h-5 mr-2 text-blue-500" />
-                  {t("home.community.telegram")}
-                </Button>
-              </a>
-            </div>
-          </motion.div>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full"
+                    data-testid="button-join-telegram"
+                  >
+                    <SiTelegram className="w-5 h-5 mr-2 text-blue-500" />
+                    {t("home.community.telegram")}
+                  </Button>
+                </a>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -353,48 +424,58 @@ export default function Home() {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 lg:px-8 relative">
-          <motion.div {...fadeInUp} className="text-center space-y-6">
-            <h2 className="text-3xl lg:text-4xl font-bold">
-              {t("home.cta.title")}
-            </h2>
-            <p className="max-w-2xl mx-auto opacity-90 text-lg">
-              {t("home.cta.subtitle")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/calculators">
-                <Button size="lg" variant="secondary" className="shadow-lg" data-testid="button-cta-calculators">
-                  <Calculator className="w-4 h-4 mr-2" />
-                  Explore Calculators
-                </Button>
-              </Link>
-              {isAuthenticated ? (
-                <Link href="/courses">
-                  <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" data-testid="button-cta-explore">
-                    {t("hero.cta.explore")}
-                    <ArrowRight className="ml-2 w-4 h-4" />
+          <div className="grid lg:grid-cols-3 gap-8 items-center">
+            <motion.div {...fadeInUp} className="lg:col-span-2 text-center lg:text-left space-y-6">
+              <h2 className="text-3xl lg:text-4xl font-bold">
+                {t("home.cta.title")}
+              </h2>
+              <p className="max-w-xl opacity-90 text-lg">
+                {t("home.cta.subtitle")}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <Link href="/calculators">
+                  <Button size="lg" variant="secondary" className="shadow-lg" data-testid="button-cta-calculators">
+                    <Calculator className="w-4 h-4 mr-2" />
+                    Explore Calculators
                   </Button>
                 </Link>
-              ) : (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10"
-                  onClick={() => {
-                    setPendingAction("access free courses");
-                    setShowAuthPopup(true);
-                  }}
-                  data-testid="button-cta-start"
-                >
-                  {t("home.cta.button")}
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              )}
-            </div>
-            <p className="text-sm opacity-75 flex items-center justify-center gap-2">
-              <Shield className="w-4 h-4" />
-              {t("home.cta.note")}
-            </p>
-          </motion.div>
+                {isAuthenticated ? (
+                  <Link href="/courses">
+                    <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" data-testid="button-cta-explore">
+                      {t("hero.cta.explore")}
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10"
+                    onClick={() => {
+                      setPendingAction("access free courses");
+                      setShowAuthPopup(true);
+                    }}
+                    data-testid="button-cta-start"
+                  >
+                    {t("home.cta.button")}
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+              <p className="text-sm opacity-75 flex items-center justify-center lg:justify-start gap-2">
+                <Shield className="w-4 h-4" />
+                {t("home.cta.note")}
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="hidden lg:flex justify-center"
+            >
+              <RocketGrowth size={180} />
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>

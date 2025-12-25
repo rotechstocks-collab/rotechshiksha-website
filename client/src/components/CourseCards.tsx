@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 import {
   BookOpen,
   TrendingUp,
@@ -12,6 +13,7 @@ import {
   Play,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { LearnerCharacter, BookLearning } from "@/components/Illustrations";
 
 interface CourseLevel {
   id: string;
@@ -131,13 +133,32 @@ export function CourseCards() {
   return (
     <section className="py-16 lg:py-24 bg-card/50">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Complete Learning Path
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            From stock market basics to advanced algo trading - learn everything step by step
-          </p>
+        <div className="grid lg:grid-cols-3 gap-8 items-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="hidden lg:flex justify-center"
+          >
+            <div className="relative">
+              <LearnerCharacter size={180} />
+              <motion.div
+                className="absolute -top-4 -right-4"
+                animate={{ rotate: [0, 5, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <BookLearning size={80} />
+              </motion.div>
+            </div>
+          </motion.div>
+          <div className="lg:col-span-2 text-center lg:text-left space-y-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+              Complete Learning Path
+            </h2>
+            <p className="text-muted-foreground max-w-xl">
+              From stock market basics to advanced algo trading - learn everything step by step
+            </p>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
