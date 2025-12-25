@@ -6,6 +6,7 @@ import { leadFormSchema, otpVerifySchema } from "@shared/schema";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import { fetchIPOData, getIPOById, startIPORefreshJob, clearIPOCache } from "./services/ipoService";
+import { fetchEconomicCalendar, startCalendarRefreshJob } from "./services/economicCalendarService";
 
 declare module "express-session" {
   interface SessionData {
@@ -1827,6 +1828,25 @@ export async function registerRoutes(
 
   // Start IPO refresh background job
   startIPORefreshJob();
+
+  // Economic Calendar API routes
+  app.get("/api/economic-calendar", async (req: Request, res: Response) => {
+    try {
+      const calendarData = await fetchEconomicCalendar();
+      res.json(calendarData);
+    } catch (error) {
+      console.error("Economic calendar fetch error:", error);
+      res.status(500).json({ 
+        message: "Failed to fetch economic calendar",
+        events: [],
+        lastUpdated: new Date().toISOString(),
+        isStale: true
+      });
+    }
+  });
+
+  // Start economic calendar refresh job
+  startCalendarRefreshJob();
 
   return httpServer;
 }
