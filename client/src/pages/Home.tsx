@@ -367,7 +367,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link href={`/ipo/${ipo.id}`}>
+                <Link href={`/ipo/${ipo.id}`} data-testid={`link-ipo-home-${ipo.id}`}>
                   <Card className="h-full hover-elevate cursor-pointer group" data-testid={`card-ipo-home-${ipo.id}`}>
                     <CardContent className="pt-5 space-y-4">
                       <div className="flex items-start justify-between gap-2">

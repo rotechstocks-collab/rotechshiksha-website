@@ -45,7 +45,7 @@ function IPOCard({ ipo }: { ipo: IPO }) {
   const daysRemaining = getDaysRemaining(ipo.status === "upcoming" ? ipo.openDate : ipo.closeDate);
   
   return (
-    <Link href={`/ipo/${ipo.id}`}>
+    <Link href={`/ipo/${ipo.id}`} data-testid={`link-ipo-${ipo.id}`}>
       <Card className="h-full hover-elevate cursor-pointer group" data-testid={`card-ipo-${ipo.id}`}>
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2 mb-2">
@@ -126,7 +126,7 @@ function IPOCard({ ipo }: { ipo: IPO }) {
             </div>
           )}
 
-          <Button variant="ghost" className="w-full mt-2 justify-between group-hover:text-primary">
+          <Button variant="ghost" className="w-full mt-2 justify-between group-hover:text-primary" data-testid={`button-view-ipo-${ipo.id}`}>
             View Details
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -262,7 +262,7 @@ function IPODetail({ id }: { id: string }) {
           <h2 className="text-xl font-semibold text-foreground mb-2">IPO Not Found</h2>
           <p className="text-muted-foreground mb-4">The IPO you're looking for doesn't exist.</p>
           <Link href="/ipo">
-            <Button>View All IPOs</Button>
+            <Button data-testid="button-view-all-ipos-404">View All IPOs</Button>
           </Link>
         </div>
       </div>
