@@ -56,7 +56,50 @@ interface VideoChannel {
   isLive: boolean;
 }
 
-const businessNewsVideos: VideoChannel[] = [
+const globalNewsVideos: VideoChannel[] = [
+  {
+    id: "reuters",
+    name: "Reuters Business",
+    nameHi: "रॉयटर्स बिजनेस",
+    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLLGXuJRc4gHDgPGj2fTXt-_NrZ_nxCLXQ&autoplay=0",
+    description: "Global business news & market analysis from Reuters",
+    descriptionHi: "रॉयटर्स से ग्लोबल बिजनेस न्यूज और मार्केट एनालिसिस",
+    thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&auto=format",
+    isLive: false,
+  },
+  {
+    id: "bloomberg",
+    name: "Bloomberg Live",
+    nameHi: "ब्लूमबर्ग लाइव",
+    embedUrl: "https://www.youtube.com/embed/live_stream?channel=UCIALMKvObZNtJ6AmdCLP7Lg&autoplay=0",
+    description: "24/7 live financial news & stock market updates",
+    descriptionHi: "24/7 लाइव फाइनेंशियल न्यूज और स्टॉक मार्केट अपडेट",
+    thumbnail: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&auto=format",
+    isLive: true,
+  },
+  {
+    id: "yahoo-finance",
+    name: "Yahoo Finance",
+    nameHi: "याहू फाइनेंस",
+    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLrAXtmErZgOeiI1GFiNcRpfQ93_xBH0_E&autoplay=0",
+    description: "Stock market insights, expert interviews & trading tips",
+    descriptionHi: "स्टॉक मार्केट इनसाइट्स, एक्सपर्ट इंटरव्यू और ट्रेडिंग टिप्स",
+    thumbnail: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&auto=format",
+    isLive: false,
+  },
+  {
+    id: "cnbc",
+    name: "CNBC Latest",
+    nameHi: "सीएनबीसी लेटेस्ट",
+    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLZHnYvH1qtOYiCgAD0T6Hn5wCTAVNj6MV&autoplay=0",
+    description: "US stock market news & global financial updates",
+    descriptionHi: "यूएस स्टॉक मार्केट न्यूज और ग्लोबल फाइनेंशियल अपडेट",
+    thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&auto=format",
+    isLive: false,
+  },
+];
+
+const indiaNewsVideos: VideoChannel[] = [
   {
     id: "cnbc-tv18",
     name: "CNBC TV18",
@@ -447,23 +490,23 @@ export default function LiveNews() {
                 transition={{ duration: 0.5 }}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-red-500/10 rounded-lg">
-                    <Tv className="w-5 h-5 text-red-500" />
+                  <div className="p-2 bg-blue-500/10 rounded-lg">
+                    <Globe className="w-5 h-5 text-blue-500" />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold">
-                      {newsLanguage === "hi" ? "लाइव बिजनेस न्यूज वीडियो" : "Live Business News Videos"}
+                      {newsLanguage === "hi" ? "ग्लोबल मार्केट न्यूज वीडियो" : "Global Market News Videos"}
                     </h2>
                     <p className="text-sm text-muted-foreground">
                       {newsLanguage === "hi" 
-                        ? "वेरिफाइड चैनलों से आधिकारिक लाइव स्ट्रीम और मार्केट अपडेट"
-                        : "Official live streams & market updates from verified channels"}
+                        ? "Reuters, Bloomberg, Yahoo Finance से आधिकारिक वीडियो"
+                        : "Official videos from Reuters, Bloomberg, Yahoo Finance"}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent" data-testid="videos-horizontal-scroll">
-                  {businessNewsVideos.map((video, index) => (
+                <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent" data-testid="global-videos-horizontal-scroll">
+                  {globalNewsVideos.map((video, index) => (
                     <motion.div
                       key={video.id}
                       className="flex-shrink-0 w-[320px] md:w-[380px] snap-start"
@@ -502,6 +545,70 @@ export default function LiveNews() {
                             {newsLanguage === "hi" ? video.nameHi : video.name}
                           </h3>
                           <p className="text-sm text-muted-foreground line-clamp-2" data-testid={`video-description-${video.id}`}>
+                            {newsLanguage === "hi" ? video.descriptionHi : video.description}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3 mb-6 mt-10">
+                  <div className="p-2 bg-orange-500/10 rounded-lg">
+                    <Tv className="w-5 h-5 text-orange-500" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold">
+                      {newsLanguage === "hi" ? "भारत मार्केट न्यूज वीडियो" : "India Market News Videos"}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {newsLanguage === "hi" 
+                        ? "CNBC TV18, ET Now, Zee Business से लाइव अपडेट"
+                        : "Live updates from CNBC TV18, ET Now, Zee Business"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent" data-testid="india-videos-horizontal-scroll">
+                  {indiaNewsVideos.map((video, index) => (
+                    <motion.div
+                      key={video.id}
+                      className="flex-shrink-0 w-[320px] md:w-[380px] snap-start"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <Card 
+                        className="cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md h-full"
+                        onClick={() => setSelectedVideo(video)}
+                        data-testid={`video-card-india-${video.id}`}
+                      >
+                        <div className="relative h-48 bg-muted overflow-hidden rounded-t-md">
+                          <img
+                            src={video.thumbnail}
+                            alt={video.name}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center" data-testid={`video-play-overlay-india-${video.id}`}>
+                            <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform group-hover:scale-110" data-testid={`video-play-button-india-${video.id}`}>
+                              <Play className="w-8 h-8 text-primary ml-1" />
+                            </div>
+                          </div>
+                          {video.isLive && (
+                            <div className="absolute top-3 left-3">
+                              <Badge className="bg-red-600 text-white border-0 animate-pulse">
+                                <div className="w-2 h-2 rounded-full bg-white mr-1.5" />
+                                LIVE
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
+                        <CardContent className="p-4">
+                          <h3 className="font-bold text-lg mb-1" data-testid={`video-title-india-${video.id}`}>
+                            {newsLanguage === "hi" ? video.nameHi : video.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground line-clamp-2" data-testid={`video-description-india-${video.id}`}>
                             {newsLanguage === "hi" ? video.descriptionHi : video.description}
                           </p>
                         </CardContent>

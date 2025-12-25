@@ -54,10 +54,14 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
   - Category filtering (All, Markets, Economy, Business, Tech, Banking, Mutual Funds)
   - "In Focus" section with top stories and featured story hero
   - Full article modal with image, title, summary, source, and timestamp
-  - **Live Business Videos Section** with official YouTube embeds:
-    - CNBC TV18, ET Now, Zee Business, MoneyControl channels
-    - Video player modal with embedded iframe (fully legal)
-    - LIVE badge indicator with animations
+  - **Global Market Videos Section** with official YouTube embeds:
+    - Reuters Business (auto-updating playlist)
+    - Bloomberg Live (24/7 live stream)
+    - Yahoo Finance (auto-updating playlist)
+    - CNBC Latest (auto-updating playlist)
+  - **India Market Videos Section** with official YouTube embeds:
+    - CNBC TV18, ET Now, Zee Business, MoneyControl
+  - Horizontal scroll layout for video cards
   - 60-second auto-refresh with visual countdown indicator
   - News/Videos tab switcher with Framer Motion animations
   - Proper data-testid attributes for testing
