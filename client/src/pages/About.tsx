@@ -107,7 +107,7 @@ export default function About() {
                 Our courses are designed by market practitioners with real-world experience,
                 ensuring you learn practical skills that matter in today's markets.
               </p>
-            </motion.div>
+            </FadeInUp>
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
