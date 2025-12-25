@@ -192,99 +192,68 @@ function IPOListing() {
         : closedIPOs;
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
-          >
-            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-              <TrendingUp className="w-3 h-3 mr-1" />
-              IPO Hub
-            </Badge>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-              Upcoming & Ongoing IPOs
-            </h1>
-            <p className="text-muted-foreground max-w-xl">
-              Track all upcoming and ongoing IPOs with real-time subscription status, GMP, and verified data from trusted sources.
-            </p>
+    <div className="min-h-screen pt-20 pb-16 bg-white dark:bg-background">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            <TrendingUp className="w-4 h-4" />
+            IPO Tracker
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+            IPO Calendar
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
+            Track upcoming and ongoing IPOs with subscription status, GMP, and key dates
+          </p>
 
-            {data?.lastUpdated && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="w-4 h-4" />
-                <span>Last updated: {getTimeAgo(data.lastUpdated)}</span>
-                {data.isStale && (
-                  <Badge variant="outline" className="text-amber-600 border-amber-500/30 text-xs">
-                    Data may be stale
-                  </Badge>
-                )}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => refetch()} 
-                  disabled={isFetching}
-                  className="h-7 px-2"
-                  data-testid="button-refresh-ipos"
-                >
-                  <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
-                </Button>
-              </div>
-            )}
-
-            <div className="grid grid-cols-3 gap-4 pt-4">
-              <Card className="text-center" data-testid="stat-ongoing">
-                <CardContent className="pt-4 pb-3">
-                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : ongoingIPOs.length}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Open Now</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center" data-testid="stat-upcoming">
-                <CardContent className="pt-4 pb-3">
-                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : upcomingIPOs.length}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Upcoming</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center" data-testid="stat-closed">
-                <CardContent className="pt-4 pb-3">
-                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : closedIPOs.length}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Recently Listed</div>
-                </CardContent>
-              </Card>
+          {data?.lastUpdated && (
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-6">
+              <Clock className="w-4 h-4" />
+              <span>Updated: {getTimeAgo(data.lastUpdated)}</span>
+              {data.isStale && (
+                <Badge variant="outline" className="text-amber-600 border-amber-500/30 text-xs">
+                  Stale
+                </Badge>
+              )}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => refetch()} 
+                disabled={isFetching}
+                className="h-7 px-2"
+                data-testid="button-refresh-ipos"
+              >
+                <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
+              </Button>
             </div>
-          </motion.div>
+          )}
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="hidden lg:flex justify-center relative"
-          >
-            <RocketGrowth size={200} />
-            <motion.div
-              className="absolute -top-4 -right-8"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            >
-              <GrowthChart size={120} />
-            </motion.div>
-            <motion.div
-              className="absolute -bottom-4 -left-8"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
-              <CoinStack size={80} />
-            </motion.div>
-          </motion.div>
-        </div>
+          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+            <div className="bg-white dark:bg-card rounded-xl border border-border/50 p-4 text-center" data-testid="stat-ongoing">
+              <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : ongoingIPOs.length}
+              </div>
+              <div className="text-xs text-muted-foreground">Open Now</div>
+            </div>
+            <div className="bg-white dark:bg-card rounded-xl border border-border/50 p-4 text-center" data-testid="stat-upcoming">
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : upcomingIPOs.length}
+              </div>
+              <div className="text-xs text-muted-foreground">Upcoming</div>
+            </div>
+            <div className="bg-white dark:bg-card rounded-xl border border-border/50 p-4 text-center" data-testid="stat-closed">
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : closedIPOs.length}
+              </div>
+              <div className="text-xs text-muted-foreground">Listed</div>
+            </div>
+          </div>
+        </motion.div>
 
         <Tabs defaultValue="all" className="mb-8" onValueChange={setActiveTab}>
           <TabsList className="grid w-full max-w-md grid-cols-4">
