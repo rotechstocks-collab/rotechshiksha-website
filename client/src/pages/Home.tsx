@@ -1,4 +1,5 @@
-import { VarsityHero } from "@/components/VarsityHero";
+import { Hero } from "@/components/Hero";
+import { LiveVideoSection } from "@/components/LiveVideoSection";
 import { CourseCards } from "@/components/CourseCards";
 import { PricingPlans } from "@/components/PricingPlans";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,16 +29,16 @@ import {
 } from "lucide-react";
 import { SiWhatsapp, SiTelegram } from "react-icons/si";
 import {
-  CalculatorCard,
-  LearningPerson,
-  GrowthGraph,
-  BookStack,
-  TargetSuccess,
-  IPORocket,
-  CoinsGrowth,
-  FinanceTeam,
-  InvestorWithChart,
-} from "@/components/SmallcaseIllustrations";
+  CalculatorIllustration,
+  BookLearning,
+  TargetGoal,
+  RocketGrowth,
+  LearnerCharacter,
+  MentorCharacter,
+  PiggyBank as PiggyBankIllustration,
+  ChartAnalysis,
+  GrowthChart,
+} from "@/components/Illustrations";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIPOList, formatDate as formatIPODate, type IPOData } from "@/lib/ipoApi";
 
@@ -171,8 +172,10 @@ export default function Home() {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-background">
-      <VarsityHero />
+    <div className="min-h-screen">
+      <Hero />
+
+      <LiveVideoSection />
 
       <section className="py-20 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
@@ -200,7 +203,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="hidden lg:flex justify-center"
             >
-              <CalculatorCard size={160} />
+              <CalculatorIllustration size={140} />
             </motion.div>
           </div>
 
@@ -248,13 +251,13 @@ export default function Home() {
               className="hidden lg:flex justify-center"
             >
               <div className="relative">
-                <LearningPerson size={240} />
+                <LearnerCharacter size={220} />
                 <motion.div
                   className="absolute -top-4 -right-4"
                   animate={{ rotate: [0, 5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <BookStack size={100} />
+                  <BookLearning size={100} />
                 </motion.div>
               </div>
             </motion.div>
@@ -310,13 +313,13 @@ export default function Home() {
               className="hidden lg:flex justify-center"
             >
               <div className="relative">
-                <TargetSuccess size={180} />
+                <TargetGoal size={160} />
                 <motion.div
                   className="absolute -bottom-4 -left-8"
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 2.5, repeat: Infinity }}
                 >
-                  <CoinsGrowth size={100} />
+                  <PiggyBankIllustration size={100} />
                 </motion.div>
               </div>
             </motion.div>
@@ -372,13 +375,13 @@ export default function Home() {
               className="hidden lg:flex justify-center"
             >
               <div className="relative">
-                <IPORocket size={180} />
+                <RocketGrowth size={160} />
                 <motion.div
                   className="absolute -top-4 -right-8"
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 2.5, repeat: Infinity }}
                 >
-                  <GrowthGraph size={120} />
+                  <GrowthChart size={100} />
                 </motion.div>
               </div>
             </motion.div>
@@ -495,7 +498,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="hidden lg:flex justify-center"
             >
-              <FinanceTeam size={260} />
+              <MentorCharacter size={160} />
             </motion.div>
           </div>
 
@@ -541,7 +544,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="hidden lg:flex justify-center"
             >
-              <GrowthGraph size={200} />
+              <ChartAnalysis size={200} />
             </motion.div>
             <motion.div {...fadeInUp} className="text-center lg:text-left space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
@@ -652,7 +655,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="hidden lg:flex justify-center"
             >
-              <IPORocket size={180} />
+              <RocketGrowth size={180} />
             </motion.div>
           </div>
         </div>

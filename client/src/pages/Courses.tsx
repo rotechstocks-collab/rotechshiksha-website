@@ -21,7 +21,7 @@ import {
   Zap,
   Bot,
 } from "lucide-react";
-import { LearningPerson, BookStack, GrowthGraph } from "@/components/SmallcaseIllustrations";
+import { LearnerCharacter, BookLearning, GrowthChart } from "@/components/Illustrations";
 
 interface Topic {
   id: string;
@@ -212,11 +212,11 @@ const courseData: Record<string, CourseData> = {
   },
 };
 
-const colorClasses: Record<string, { bg: string; text: string; number: string }> = {
-  emerald: { bg: "bg-emerald-50 dark:bg-emerald-950/20", text: "text-emerald-600 dark:text-emerald-400", number: "bg-emerald-500" },
-  blue: { bg: "bg-blue-50 dark:bg-blue-950/20", text: "text-blue-600 dark:text-blue-400", number: "bg-blue-500" },
-  purple: { bg: "bg-purple-50 dark:bg-purple-950/20", text: "text-purple-600 dark:text-purple-400", number: "bg-purple-500" },
-  amber: { bg: "bg-amber-50 dark:bg-amber-950/20", text: "text-amber-600 dark:text-amber-400", number: "bg-amber-500" },
+const colorClasses: Record<string, { bg: string; text: string }> = {
+  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400" },
+  blue: { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400" },
+  purple: { bg: "bg-purple-500/10", text: "text-purple-600 dark:text-purple-400" },
+  amber: { bg: "bg-amber-500/10", text: "text-amber-600 dark:text-amber-400" },
 };
 
 export default function Courses() {
@@ -235,78 +235,77 @@ export default function Courses() {
 
   if (!params?.level) {
     return (
-      <div className="min-h-screen pt-20 pb-16 bg-white dark:bg-background">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              <BookOpen className="w-4 h-4" />
-              Learning Modules
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Stock Market Courses
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose your learning path and master the stock market step by step
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.values(courseData).map((c, index) => {
-              const cl = colorClasses[c.color];
-              const totalTopics = c.modules.reduce((acc, m) => acc + m.topics.length, 0);
-              return (
+      <div className="min-h-screen pt-28">
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-center lg:text-left space-y-4"
+              >
+                <h1 className="text-4xl font-bold text-foreground">Our Courses</h1>
+                <p className="text-muted-foreground max-w-xl">
+                  Choose your learning path and master the stock market step by step
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="hidden lg:flex justify-center relative"
+              >
+                <LearnerCharacter size={200} />
                 <motion.div
-                  key={c.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  className="absolute -top-4 -right-8"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
                 >
-                  <Link href={`/courses/${c.id}`}>
-                    <div 
-                      className="bg-white dark:bg-card rounded-xl border border-border/50 p-6 h-full flex flex-col relative transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 cursor-pointer"
-                      data-testid={`card-course-list-${c.id}`}
-                    >
-                      <div className={`absolute -top-3 -left-2 w-8 h-8 rounded-full ${cl.number} text-white flex items-center justify-center text-sm font-bold shadow-md`}>
-                        {index + 1}
-                      </div>
-                      
-                      <div className={`w-14 h-14 rounded-xl ${cl.bg} ${cl.text} flex items-center justify-center mb-4`}>
-                        {c.icon}
-                      </div>
-                      
-                      <h3 className="text-lg font-semibold text-foreground mb-2">{c.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed flex-1">
-                        {c.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between text-sm text-muted-foreground pt-4 border-t border-border/50">
-                        <span>{c.modules.length} Modules</span>
-                        <span>{totalTopics} Topics</span>
-                      </div>
-                    </div>
-                  </Link>
+                  <BookLearning size={100} />
                 </motion.div>
-              );
-            })}
+              </motion.div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Object.values(courseData).map((c, index) => {
+                const cl = colorClasses[c.color];
+                const totalTopics = c.modules.reduce((acc, m) => acc + m.topics.length, 0);
+                return (
+                  <Link key={c.id} href={`/courses/${c.id}`}>
+                    <Card className="h-full hover-elevate cursor-pointer" data-testid={`card-course-list-${c.id}`}>
+                      <CardHeader>
+                        <div className={`w-12 h-12 rounded-lg ${cl.bg} ${cl.text} flex items-center justify-center mb-4`}>
+                          {c.icon}
+                        </div>
+                        <CardTitle>{c.title}</CardTitle>
+                        <CardDescription>{c.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <span>{c.modules.length} Modules</span>
+                          <span>{totalTopics} Topics</span>
+                        </div>
+                        <Button variant="ghost" className="w-full mt-4 justify-between">
+                          View Course
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-white dark:bg-background">
-      <div className="border-b border-border/50 py-8 mb-8">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4">
-            <ChevronRight className="w-4 h-4 rotate-180" />
-            Back to Courses
-          </Link>
+    <div className="min-h-screen pt-28">
+      <section className="py-8 bg-card/50 border-b">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center gap-4">
             <div className={`w-14 h-14 rounded-xl ${colors.bg} ${colors.text} flex items-center justify-center`}>
               {course.icon}
@@ -317,114 +316,116 @@ export default function Courses() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <Accordion type="single" collapsible defaultValue={course.modules[0]?.id} className="space-y-4">
-              {course.modules.map((module, moduleIndex) => (
-                <AccordionItem key={module.id} value={module.id} className="bg-white dark:bg-card border border-border/50 rounded-xl px-5">
-                  <AccordionTrigger className="hover:no-underline py-4">
-                    <div className="flex items-center gap-4 text-left">
-                      <div className={`w-10 h-10 rounded-lg ${colors.number} text-white flex items-center justify-center text-sm font-bold`}>
-                        {moduleIndex + 1}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">{module.title}</h3>
-                        <p className="text-sm text-muted-foreground">{module.description}</p>
-                      </div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-4">
-                    <div className="space-y-2 pl-14">
-                      {module.topics.map((topic) => (
-                        <div
-                          key={topic.id}
-                          className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover-elevate cursor-pointer"
-                          onClick={() => handleAccessContent(topic)}
-                          data-testid={`topic-${topic.id}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            {topic.type === "video" ? (
-                              <Play className="w-4 h-4 text-primary" />
-                            ) : (
-                              <FileText className="w-4 h-4 text-primary" />
-                            )}
-                            <span className="text-sm text-foreground">{topic.title}</span>
-                            {topic.duration && (
-                              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {topic.duration}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {topic.isFree && (
-                              <Badge variant="secondary" className="text-xs">Free</Badge>
-                            )}
-                            {!isAuthenticated && <Lock className="w-4 h-4 text-muted-foreground" />}
-                          </div>
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Accordion type="single" collapsible defaultValue={course.modules[0]?.id} className="space-y-4">
+                {course.modules.map((module) => (
+                  <AccordionItem key={module.id} value={module.id} className="border rounded-lg px-4">
+                    <AccordionTrigger className="hover:no-underline py-4">
+                      <div className="flex items-center gap-4 text-left">
+                        <div className={`w-10 h-10 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center text-sm font-bold`}>
+                          {module.topics.length}
                         </div>
-                      ))}
+                        <div>
+                          <h3 className="font-semibold text-foreground">{module.title}</h3>
+                          <p className="text-sm text-muted-foreground">{module.description}</p>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-4">
+                      <div className="space-y-2 pl-14">
+                        {module.topics.map((topic) => (
+                          <div
+                            key={topic.id}
+                            className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover-elevate cursor-pointer"
+                            onClick={() => handleAccessContent(topic)}
+                            data-testid={`topic-${topic.id}`}
+                          >
+                            <div className="flex items-center gap-3">
+                              {topic.type === "video" ? (
+                                <Play className="w-4 h-4 text-primary" />
+                              ) : (
+                                <FileText className="w-4 h-4 text-primary" />
+                              )}
+                              <span className="text-sm text-foreground">{topic.title}</span>
+                              {topic.duration && (
+                                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  {topic.duration}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {topic.isFree && (
+                                <Badge variant="secondary" className="text-xs">Free</Badge>
+                              )}
+                              {!isAuthenticated && <Lock className="w-4 h-4 text-muted-foreground" />}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+
+            <div className="lg:col-span-1">
+              <Card className="sticky top-32">
+                <CardHeader>
+                  <CardTitle className="text-lg">Course Progress</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-center py-4">
+                    {isAuthenticated ? (
+                      <>
+                        <div className="text-3xl font-bold text-primary mb-1">0%</div>
+                        <p className="text-sm text-muted-foreground">Start learning to track progress</p>
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground">Login to track your progress</p>
+                        <Button
+                          className="mt-4"
+                          onClick={() => {
+                            setPendingAction("track your learning progress");
+                            setShowAuthPopup(true);
+                          }}
+                          data-testid="button-login-progress"
+                        >
+                          Login to Continue
+                        </Button>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="border-t pt-4 space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Modules</span>
+                      <span className="font-medium">{course.modules.length}</span>
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-
-          <div className="lg:col-span-1">
-            <Card className="sticky top-32">
-              <CardHeader>
-                <CardTitle className="text-lg">Course Progress</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-center py-4">
-                  {isAuthenticated ? (
-                    <>
-                      <div className="text-3xl font-bold text-primary mb-1">0%</div>
-                      <p className="text-sm text-muted-foreground">Start learning to track progress</p>
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">Login to track your progress</p>
-                      <Button
-                        className="mt-4"
-                        onClick={() => {
-                          setPendingAction("track your learning progress");
-                          setShowAuthPopup(true);
-                        }}
-                        data-testid="button-login-progress"
-                      >
-                        Login to Continue
-                      </Button>
-                    </>
-                  )}
-                </div>
-
-                <div className="border-t pt-4 space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Modules</span>
-                    <span className="font-medium">{course.modules.length}</span>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Topics</span>
+                      <span className="font-medium">
+                        {course.modules.reduce((acc, m) => acc + m.topics.length, 0)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Duration</span>
+                      <span className="font-medium">Self-paced</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Topics</span>
-                    <span className="font-medium">
-                      {course.modules.reduce((acc, m) => acc + m.topics.length, 0)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Duration</span>
-                    <span className="font-medium">Self-paced</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

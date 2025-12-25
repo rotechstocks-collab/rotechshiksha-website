@@ -36,7 +36,7 @@ import {
   Timer,
 } from "lucide-react";
 import { useIPOList, useIPONews, formatCurrency, formatDate, getDaysRemaining, getTimeAgo, type IPOData } from "@/lib/ipoApi";
-import { IPORocket, GrowthGraph, CoinsGrowth } from "@/components/SmallcaseIllustrations";
+import { RocketGrowth, GrowthChart, CoinStack } from "@/components/Illustrations";
 
 const statusColors = {
   upcoming: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
@@ -191,179 +191,102 @@ function IPOListing() {
         ? upcomingIPOs 
         : closedIPOs;
 
-  const featuredIPO = ongoingIPOs[0] || upcomingIPOs[0];
-
   return (
-    <div className="min-h-screen bg-white dark:bg-background">
-      <div className="bg-gradient-to-br from-primary/5 via-emerald-500/5 to-teal-500/5 pt-24 pb-12 border-b border-border/30">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="grid lg:grid-cols-2 gap-8 items-center"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-4"
           >
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                <TrendingUp className="w-4 h-4" />
-                Live IPO Tracker
+            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+              <TrendingUp className="w-3 h-3 mr-1" />
+              IPO Hub
+            </Badge>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+              Upcoming & Ongoing IPOs
+            </h1>
+            <p className="text-muted-foreground max-w-xl">
+              Track all upcoming and ongoing IPOs with real-time subscription status, GMP, and verified data from trusted sources.
+            </p>
+
+            {data?.lastUpdated && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="w-4 h-4" />
+                <span>Last updated: {getTimeAgo(data.lastUpdated)}</span>
+                {data.isStale && (
+                  <Badge variant="outline" className="text-amber-600 border-amber-500/30 text-xs">
+                    Data may be stale
+                  </Badge>
+                )}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => refetch()} 
+                  disabled={isFetching}
+                  className="h-7 px-2"
+                  data-testid="button-refresh-ipos"
+                >
+                  <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
+                </Button>
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-                Invest in India's <br />
-                <span className="text-primary">Growth Stories</span>
-              </h1>
-              <p className="text-muted-foreground text-lg max-w-lg">
-                Track upcoming and ongoing IPOs with real-time subscription data, GMP trends, and key dates from NSE & BSE
-              </p>
+            )}
 
-              {data?.lastUpdated && (
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Live Data</span>
+            <div className="grid grid-cols-3 gap-4 pt-4">
+              <Card className="text-center" data-testid="stat-ongoing">
+                <CardContent className="pt-4 pb-3">
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : ongoingIPOs.length}
                   </div>
-                  <span>Updated: {getTimeAgo(data.lastUpdated)}</span>
-                  {data.isStale && (
-                    <Badge variant="outline" className="text-amber-600 border-amber-500/30 text-xs">
-                      Stale
-                    </Badge>
-                  )}
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => refetch()} 
-                    disabled={isFetching}
-                    className="h-7 px-2"
-                    data-testid="button-refresh-ipos"
-                  >
-                    <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className="bg-white dark:bg-card rounded-2xl border border-emerald-500/20 p-5 text-center shadow-sm hover-elevate cursor-pointer"
-                onClick={() => setActiveTab("ongoing")}
-                data-testid="stat-ongoing"
-              >
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
-                  <TrendingUp className="w-6 h-6 text-emerald-600" />
-                </div>
-                <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">
-                  {isLoading ? <Skeleton className="h-9 w-12 mx-auto" /> : ongoingIPOs.length}
-                </div>
-                <div className="text-sm text-muted-foreground font-medium">Open Now</div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="bg-white dark:bg-card rounded-2xl border border-blue-500/20 p-5 text-center shadow-sm hover-elevate cursor-pointer"
-                onClick={() => setActiveTab("upcoming")}
-                data-testid="stat-upcoming"
-              >
-                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
-                  <Calendar className="w-6 h-6 text-blue-600" />
-                </div>
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                  {isLoading ? <Skeleton className="h-9 w-12 mx-auto" /> : upcomingIPOs.length}
-                </div>
-                <div className="text-sm text-muted-foreground font-medium">Upcoming</div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="bg-white dark:bg-card rounded-2xl border border-purple-500/20 p-5 text-center shadow-sm hover-elevate cursor-pointer"
-                onClick={() => setActiveTab("closed")}
-                data-testid="stat-closed"
-              >
-                <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle className="w-6 h-6 text-purple-600" />
-                </div>
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">
-                  {isLoading ? <Skeleton className="h-9 w-12 mx-auto" /> : closedIPOs.length}
-                </div>
-                <div className="text-sm text-muted-foreground font-medium">Listed</div>
-              </motion.div>
+                  <div className="text-xs text-muted-foreground">Open Now</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center" data-testid="stat-upcoming">
+                <CardContent className="pt-4 pb-3">
+                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : upcomingIPOs.length}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Upcoming</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center" data-testid="stat-closed">
+                <CardContent className="pt-4 pb-3">
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : closedIPOs.length}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Recently Listed</div>
+                </CardContent>
+              </Card>
             </div>
           </motion.div>
 
-          {featuredIPO && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="hidden lg:flex justify-center relative"
+          >
+            <RocketGrowth size={200} />
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mt-8"
+              className="absolute -top-4 -right-8"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
             >
-              <Link href={`/ipo/${featuredIPO.id}`} data-testid="link-featured-ipo">
-                <Card className="bg-gradient-to-r from-primary/5 to-emerald-500/5 border-primary/20 hover-elevate cursor-pointer">
-                  <CardContent className="pt-5 pb-5">
-                    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-                      <div className="flex items-center gap-4 flex-1">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0">
-                          {featuredIPO.companyName.charAt(0)}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <Badge className="bg-gradient-to-r from-primary to-emerald-500 text-white border-0 text-xs">
-                              Featured
-                            </Badge>
-                            <Badge variant="outline" className={statusColors[featuredIPO.status]}>
-                              {statusLabels[featuredIPO.status]}
-                            </Badge>
-                          </div>
-                          <h3 className="font-bold text-lg text-foreground truncate">{featuredIPO.companyName}</h3>
-                          <p className="text-sm text-muted-foreground">{featuredIPO.industry || "General"}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center md:text-right">
-                        <div>
-                          <p className="text-xs text-muted-foreground">Price Band</p>
-                          <p className="font-bold text-foreground">Rs {featuredIPO.issuePrice.min}-{featuredIPO.issuePrice.max}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted-foreground">Lot Size</p>
-                          <p className="font-bold text-foreground">{featuredIPO.lotSize} Shares</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted-foreground">Min Investment</p>
-                          <p className="font-bold text-foreground">Rs {featuredIPO.minInvestment?.toLocaleString("en-IN")}</p>
-                        </div>
-                        {featuredIPO.gmp && featuredIPO.gmp > 0 ? (
-                          <div>
-                            <p className="text-xs text-muted-foreground">GMP</p>
-                            <p className="font-bold text-emerald-600 dark:text-emerald-400">+Rs {featuredIPO.gmp}</p>
-                          </div>
-                        ) : (
-                          <div className="hidden md:flex items-center justify-end">
-                            <Button variant="ghost" size="sm" className="gap-1" data-testid="button-featured-ipo-details">
-                              View Details
-                              <ArrowRight className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+              <GrowthChart size={120} />
             </motion.div>
-          )}
+            <motion.div
+              className="absolute -bottom-4 -left-8"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+            >
+              <CoinStack size={80} />
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8">
-
-        <Tabs value={activeTab} className="mb-8" onValueChange={setActiveTab}>
+        <Tabs defaultValue="all" className="mb-8" onValueChange={setActiveTab}>
           <TabsList className="grid w-full max-w-md grid-cols-4">
             <TabsTrigger value="all" data-testid="tab-all-ipos">All ({ipos.length})</TabsTrigger>
             <TabsTrigger value="ongoing" data-testid="tab-ongoing-ipos">Open ({ongoingIPOs.length})</TabsTrigger>

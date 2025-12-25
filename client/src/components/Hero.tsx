@@ -9,7 +9,7 @@ import {
   Play,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { InvestorWithChart } from "@/components/SmallcaseIllustrations";
+import { InvestorCharacter } from "@/components/Illustrations";
 
 export function Hero() {
   const { isAuthenticated, setShowAuthPopup, setPendingAction } = useAuth();
@@ -147,7 +147,7 @@ export function Hero() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-emerald-500/5 rounded-3xl transform rotate-3" />
               <div className="relative bg-gradient-to-br from-muted/50 to-muted/30 rounded-3xl p-8">
-                <InvestorWithChart size={320} className="relative z-10" />
+                <InvestorCharacter size={320} className="relative z-10" />
               </div>
             </div>
           </motion.div>

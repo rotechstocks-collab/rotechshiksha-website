@@ -12,7 +12,6 @@ import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { HreflangTags } from "@/components/HreflangTags";
-import { PageTransition } from "@/components/PageTransition";
 
 import Home from "@/pages/Home";
 import About from "@/pages/About";
@@ -61,9 +60,7 @@ function App() {
               <div className="min-h-screen bg-background">
                 <Header />
                 <main className="pt-0">
-                  <PageTransition>
-                    <Router />
-                  </PageTransition>
+                  <Router />
                 </main>
                 <Footer />
                 <AuthModal />
