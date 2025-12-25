@@ -19,6 +19,7 @@ import About from "@/pages/About";
 import Courses from "@/pages/Courses";
 import LiveNews from "@/pages/LiveNews";
 import CalculatorsPage from "@/pages/CalculatorsPage";
+import SIPCalculator from "@/pages/SIPCalculator";
 import PricingPage from "@/pages/PricingPage";
 import Payment from "@/pages/Payment";
 import Dashboard from "@/pages/Dashboard";
@@ -35,7 +36,8 @@ function Router() {
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
       <Route path="/live-news" component={LiveNews} />
-      <Route path="/calculators" component={CalculatorsPage} />
+      <Route path="/calculators" component={SIPCalculator} />
+      <Route path="/calculators/all" component={CalculatorsPage} />
       <Route path="/pricing" component={PricingPage} />
       <Route path="/payment/:planId" component={Payment} />
       <Route path="/dashboard" component={Dashboard} />

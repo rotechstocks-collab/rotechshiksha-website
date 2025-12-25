@@ -1,8 +1,8 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, X, Clock } from "lucide-react";
+import { Search, X, Clock, TrendingUp, TrendingDown, Building2, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StockDetailModal } from "./StockDetailModal";
 
@@ -11,6 +11,7 @@ interface StockSearchResult {
   name: string;
   exchange: string;
   type: "stock" | "index";
+  sector?: string;
 }
 
 interface StockData {
@@ -26,50 +27,50 @@ interface StockData {
 }
 
 const stockDatabase: StockSearchResult[] = [
-  { symbol: "NSEI", name: "NIFTY 50", exchange: "NSE", type: "index" },
-  { symbol: "NSEBANK", name: "BANK NIFTY", exchange: "NSE", type: "index" },
-  { symbol: "BSESN", name: "SENSEX", exchange: "BSE", type: "index" },
-  { symbol: "RELIANCE", name: "Reliance Industries Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "TCS", name: "Tata Consultancy Services Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "HDFCBANK", name: "HDFC Bank Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ICICIBANK", name: "ICICI Bank Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "INFY", name: "Infosys Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ITC", name: "ITC Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "SBIN", name: "State Bank of India", exchange: "NSE", type: "stock" },
-  { symbol: "BHARTIARTL", name: "Bharti Airtel Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "KOTAKBANK", name: "Kotak Mahindra Bank Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "LT", name: "Larsen & Toubro Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "HINDUNILVR", name: "Hindustan Unilever Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "AXISBANK", name: "Axis Bank Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "WIPRO", name: "Wipro Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "MARUTI", name: "Maruti Suzuki India Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "TATAMOTORS", name: "Tata Motors Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ADANIENT", name: "Adani Enterprises Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ASIANPAINT", name: "Asian Paints Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "BAJFINANCE", name: "Bajaj Finance Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "TITAN", name: "Titan Company Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "TATASTEEL", name: "Tata Steel Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "SUNPHARMA", name: "Sun Pharmaceutical Industries Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ULTRACEMCO", name: "UltraTech Cement Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "NESTLEIND", name: "Nestle India Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "POWERGRID", name: "Power Grid Corporation of India Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "NTPC", name: "NTPC Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ONGC", name: "Oil and Natural Gas Corporation Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "TECHM", name: "Tech Mahindra Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "HCLTECH", name: "HCL Technologies Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "JSWSTEEL", name: "JSW Steel Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "COALINDIA", name: "Coal India Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "BPCL", name: "Bharat Petroleum Corporation Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "DRREDDY", name: "Dr. Reddy's Laboratories Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "CIPLA", name: "Cipla Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "EICHERMOT", name: "Eicher Motors Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "DIVISLAB", name: "Divi's Laboratories Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "GRASIM", name: "Grasim Industries Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "BRITANNIA", name: "Britannia Industries Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ADANIPORTS", name: "Adani Ports & Special Economic Zone Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ADANIPOWER", name: "Adani Power Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ADANIGREEN", name: "Adani Green Energy Ltd", exchange: "NSE", type: "stock" },
-  { symbol: "ATGL", name: "Adani Total Gas Ltd", exchange: "NSE", type: "stock" },
+  { symbol: "NSEI", name: "NIFTY 50", exchange: "NSE", type: "index", sector: "Index" },
+  { symbol: "NSEBANK", name: "BANK NIFTY", exchange: "NSE", type: "index", sector: "Index" },
+  { symbol: "BSESN", name: "SENSEX", exchange: "BSE", type: "index", sector: "Index" },
+  { symbol: "RELIANCE", name: "Reliance Industries Ltd", exchange: "NSE", type: "stock", sector: "Oil & Gas" },
+  { symbol: "TCS", name: "Tata Consultancy Services Ltd", exchange: "NSE", type: "stock", sector: "IT" },
+  { symbol: "HDFCBANK", name: "HDFC Bank Ltd", exchange: "NSE", type: "stock", sector: "Banking" },
+  { symbol: "ICICIBANK", name: "ICICI Bank Ltd", exchange: "NSE", type: "stock", sector: "Banking" },
+  { symbol: "INFY", name: "Infosys Ltd", exchange: "NSE", type: "stock", sector: "IT" },
+  { symbol: "ITC", name: "ITC Ltd", exchange: "NSE", type: "stock", sector: "FMCG" },
+  { symbol: "SBIN", name: "State Bank of India", exchange: "NSE", type: "stock", sector: "Banking" },
+  { symbol: "BHARTIARTL", name: "Bharti Airtel Ltd", exchange: "NSE", type: "stock", sector: "Telecom" },
+  { symbol: "KOTAKBANK", name: "Kotak Mahindra Bank Ltd", exchange: "NSE", type: "stock", sector: "Banking" },
+  { symbol: "LT", name: "Larsen & Toubro Ltd", exchange: "NSE", type: "stock", sector: "Infrastructure" },
+  { symbol: "HINDUNILVR", name: "Hindustan Unilever Ltd", exchange: "NSE", type: "stock", sector: "FMCG" },
+  { symbol: "AXISBANK", name: "Axis Bank Ltd", exchange: "NSE", type: "stock", sector: "Banking" },
+  { symbol: "WIPRO", name: "Wipro Ltd", exchange: "NSE", type: "stock", sector: "IT" },
+  { symbol: "MARUTI", name: "Maruti Suzuki India Ltd", exchange: "NSE", type: "stock", sector: "Auto" },
+  { symbol: "TATAMOTORS", name: "Tata Motors Ltd", exchange: "NSE", type: "stock", sector: "Auto" },
+  { symbol: "ADANIENT", name: "Adani Enterprises Ltd", exchange: "NSE", type: "stock", sector: "Conglomerate" },
+  { symbol: "ASIANPAINT", name: "Asian Paints Ltd", exchange: "NSE", type: "stock", sector: "Paints" },
+  { symbol: "BAJFINANCE", name: "Bajaj Finance Ltd", exchange: "NSE", type: "stock", sector: "NBFC" },
+  { symbol: "TITAN", name: "Titan Company Ltd", exchange: "NSE", type: "stock", sector: "Consumer Durables" },
+  { symbol: "TATASTEEL", name: "Tata Steel Ltd", exchange: "NSE", type: "stock", sector: "Metals" },
+  { symbol: "SUNPHARMA", name: "Sun Pharmaceutical Industries Ltd", exchange: "NSE", type: "stock", sector: "Pharma" },
+  { symbol: "ULTRACEMCO", name: "UltraTech Cement Ltd", exchange: "NSE", type: "stock", sector: "Cement" },
+  { symbol: "NESTLEIND", name: "Nestle India Ltd", exchange: "NSE", type: "stock", sector: "FMCG" },
+  { symbol: "POWERGRID", name: "Power Grid Corporation of India Ltd", exchange: "NSE", type: "stock", sector: "Power" },
+  { symbol: "NTPC", name: "NTPC Ltd", exchange: "NSE", type: "stock", sector: "Power" },
+  { symbol: "ONGC", name: "Oil and Natural Gas Corporation Ltd", exchange: "NSE", type: "stock", sector: "Oil & Gas" },
+  { symbol: "TECHM", name: "Tech Mahindra Ltd", exchange: "NSE", type: "stock", sector: "IT" },
+  { symbol: "HCLTECH", name: "HCL Technologies Ltd", exchange: "NSE", type: "stock", sector: "IT" },
+  { symbol: "JSWSTEEL", name: "JSW Steel Ltd", exchange: "NSE", type: "stock", sector: "Metals" },
+  { symbol: "COALINDIA", name: "Coal India Ltd", exchange: "NSE", type: "stock", sector: "Mining" },
+  { symbol: "BPCL", name: "Bharat Petroleum Corporation Ltd", exchange: "NSE", type: "stock", sector: "Oil & Gas" },
+  { symbol: "DRREDDY", name: "Dr. Reddy's Laboratories Ltd", exchange: "NSE", type: "stock", sector: "Pharma" },
+  { symbol: "CIPLA", name: "Cipla Ltd", exchange: "NSE", type: "stock", sector: "Pharma" },
+  { symbol: "EICHERMOT", name: "Eicher Motors Ltd", exchange: "NSE", type: "stock", sector: "Auto" },
+  { symbol: "DIVISLAB", name: "Divi's Laboratories Ltd", exchange: "NSE", type: "stock", sector: "Pharma" },
+  { symbol: "GRASIM", name: "Grasim Industries Ltd", exchange: "NSE", type: "stock", sector: "Cement" },
+  { symbol: "BRITANNIA", name: "Britannia Industries Ltd", exchange: "NSE", type: "stock", sector: "FMCG" },
+  { symbol: "ADANIPORTS", name: "Adani Ports & Special Economic Zone Ltd", exchange: "NSE", type: "stock", sector: "Infrastructure" },
+  { symbol: "ADANIPOWER", name: "Adani Power Ltd", exchange: "NSE", type: "stock", sector: "Power" },
+  { symbol: "ADANIGREEN", name: "Adani Green Energy Ltd", exchange: "NSE", type: "stock", sector: "Power" },
+  { symbol: "ATGL", name: "Adani Total Gas Ltd", exchange: "NSE", type: "stock", sector: "Oil & Gas" },
 ];
 
 const defaultPrices: Record<string, { price: number; change: number; changePercent: number; open: number; high: number; low: number; prevClose: number }> = {
@@ -129,13 +130,24 @@ function highlightMatch(text: string, query: string): JSX.Element {
     <>
       {parts.map((part, i) => 
         regex.test(part) ? (
-          <span key={i} className="text-primary font-semibold">{part}</span>
+          <mark key={i} className="bg-primary/20 text-primary font-semibold rounded px-0.5">{part}</mark>
         ) : (
           <span key={i}>{part}</span>
         )
       )}
     </>
   );
+}
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
 }
 
 interface StockSearchProps {
@@ -154,8 +166,13 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
   const [recentSearches, setRecentSearches] = useState<StockSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [filterType, setFilterType] = useState<FilterType>("all");
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [isSearching, setIsSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const debouncedQuery = useDebounce(query, 150);
 
   useEffect(() => {
     const saved = localStorage.getItem("recentStockSearches");
@@ -172,45 +189,110 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setShowResults(false);
+        setHighlightedIndex(-1);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const runSearch = useCallback((searchQuery: string, filter: FilterType) => {
-    if (searchQuery.length < 1) {
+  useEffect(() => {
+    if (debouncedQuery.length < 1) {
       setResults([]);
+      setIsSearching(false);
       return;
     }
 
+    setIsSearching(true);
+    
     let filtered = stockDatabase.filter(stock => 
-      stock.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stock.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+      stock.name.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+      stock.symbol.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+      (stock.sector && stock.sector.toLowerCase().includes(debouncedQuery.toLowerCase()))
     );
 
-    if (filter !== "all") {
-      filtered = filtered.filter(stock => stock.type === filter);
+    if (filterType !== "all") {
+      filtered = filtered.filter(stock => stock.type === filterType);
     }
 
-    setResults(filtered.slice(0, 10));
-  }, []);
+    filtered.sort((a, b) => {
+      const aSymbolMatch = a.symbol.toLowerCase().startsWith(debouncedQuery.toLowerCase());
+      const bSymbolMatch = b.symbol.toLowerCase().startsWith(debouncedQuery.toLowerCase());
+      if (aSymbolMatch && !bSymbolMatch) return -1;
+      if (!aSymbolMatch && bSymbolMatch) return 1;
+      return 0;
+    });
+
+    const newResults = filtered.slice(0, 8);
+    setResults(newResults);
+    // Reset highlight when query changes for predictable behavior
+    setHighlightedIndex(-1);
+    setIsSearching(false);
+  }, [debouncedQuery, filterType]);
+
+  const allItems = useMemo(() => {
+    if (query.length === 0 && recentSearches.length > 0) {
+      return recentSearches;
+    }
+    return results;
+  }, [query, results, recentSearches]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showResults) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setHighlightedIndex(prev => 
+          prev < allItems.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setHighlightedIndex(prev => 
+          prev > 0 ? prev - 1 : allItems.length - 1
+        );
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (highlightedIndex >= 0 && highlightedIndex < allItems.length) {
+          handleSelectStock(allItems[highlightedIndex]);
+        } else if (results.length > 0 && query.length > 0) {
+          // Auto-select top result when user types and presses Enter without navigating
+          handleSelectStock(results[0]);
+        }
+        break;
+      case "Escape":
+        setShowResults(false);
+        setHighlightedIndex(-1);
+        inputRef.current?.blur();
+        break;
+    }
+  }, [showResults, highlightedIndex, allItems]);
+
+  useEffect(() => {
+    if (highlightedIndex >= 0 && resultsRef.current) {
+      const highlightedElement = resultsRef.current.querySelector(`[data-index="${highlightedIndex}"]`);
+      highlightedElement?.scrollIntoView({ block: "nearest" });
+    }
+  }, [highlightedIndex]);
 
   const handleSearch = useCallback((searchQuery: string) => {
     setQuery(searchQuery);
-    runSearch(searchQuery, filterType);
     setShowResults(true);
-  }, [filterType, runSearch]);
+    setHighlightedIndex(-1);
+  }, []);
 
   const handleFilterChange = useCallback((newFilter: FilterType) => {
     setFilterType(newFilter);
-    runSearch(query, newFilter);
-  }, [query, runSearch]);
+    setHighlightedIndex(-1);
+  }, []);
 
   const handleSelectStock = useCallback(async (stock: StockSearchResult) => {
     setIsLoading(true);
     setShowResults(false);
     setQuery(stock.name);
+    setHighlightedIndex(-1);
 
     const updatedRecent = [stock, ...recentSearches.filter(s => s.symbol !== stock.symbol)].slice(0, 5);
     setRecentSearches(updatedRecent);
@@ -262,6 +344,7 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
     setQuery("");
     setResults([]);
     setShowResults(false);
+    setHighlightedIndex(-1);
     inputRef.current?.focus();
   }, []);
 
@@ -271,22 +354,89 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
 
   const isHero = variant === "hero";
 
-  const filterTabs: { label: string; value: FilterType }[] = [
-    { label: "All", value: "all" },
-    { label: "Stock", value: "stock" },
-    { label: "Index", value: "index" },
+  const filterTabs: { label: string; value: FilterType; icon: typeof BarChart3 }[] = [
+    { label: "All", value: "all", icon: Search },
+    { label: "Stocks", value: "stock", icon: Building2 },
+    { label: "Indices", value: "index", icon: BarChart3 },
   ];
+
+  const renderResultItem = (stock: StockSearchResult, index: number, isRecent: boolean = false) => {
+    const priceData = getStockPrice(stock.symbol);
+    const isPositive = priceData.changePercent >= 0;
+    const isHighlighted = index === highlightedIndex;
+
+    return (
+      <button
+        key={`${isRecent ? 'recent-' : ''}${stock.symbol}`}
+        data-index={index}
+        className={`w-full text-left px-4 py-3 flex items-center justify-between gap-3 transition-all duration-150 group ${
+          isHighlighted 
+            ? "bg-primary/10 border-l-2 border-l-primary" 
+            : "hover:bg-muted/60 border-l-2 border-l-transparent"
+        }`}
+        onClick={() => handleSelectStock(stock)}
+        onMouseEnter={() => setHighlightedIndex(index)}
+        data-testid={`${isRecent ? 'recent-' : ''}search-result-${stock.symbol.toLowerCase()}`}
+      >
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+            stock.type === "index" 
+              ? "bg-blue-500/10 text-blue-600 dark:text-blue-400" 
+              : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+          }`}>
+            {stock.type === "index" ? (
+              <BarChart3 className="w-5 h-5" />
+            ) : (
+              <Building2 className="w-5 h-5" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-medium text-foreground truncate">
+              {highlightMatch(stock.name, query)}
+            </div>
+            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+              <span className="text-xs font-mono text-muted-foreground">
+                {stock.exchange}:{highlightMatch(stock.symbol, query)}
+              </span>
+              {stock.sector && (
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
+                  {stock.sector}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="text-right shrink-0">
+          {priceData.price > 0 && (
+            <>
+              <div className="font-semibold font-mono text-sm">
+                {priceData.price.toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 })}
+              </div>
+              <div className={`text-xs font-medium flex items-center justify-end gap-1 ${
+                isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
+              }`}>
+                {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                {isPositive ? "+" : ""}{priceData.changePercent.toFixed(2)}%
+              </div>
+            </>
+          )}
+        </div>
+      </button>
+    );
+  };
 
   return (
     <>
       <div ref={containerRef} className={`relative ${className}`}>
         <div className={`relative ${isHero ? "max-w-2xl mx-auto" : ""}`}>
-          <div className="relative">
-            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground ${isHero ? "w-5 h-5" : "w-4 h-4"}`} />
+          <div className={`relative transition-all duration-200 ${showResults ? "ring-2 ring-primary/20 rounded-xl" : ""}`}>
+            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors ${
+              showResults ? "text-primary" : ""
+            } ${isHero ? "w-5 h-5" : "w-4 h-4"}`} />
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Search any stock or index"
+              placeholder="Search stocks, indices, or sectors..."
               value={query}
               onChange={(e) => handleSearch(e.target.value)}
               onFocus={() => {
@@ -294,14 +444,19 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
                   setShowResults(true);
                 }
               }}
-              className={`${isHero ? "h-14 pl-12 pr-12 text-base rounded-xl shadow-lg border-2 focus:border-primary" : "h-10 pl-10 pr-10 text-sm"}`}
-              data-testid="input-stock-search-hero"
+              onKeyDown={handleKeyDown}
+              className={`transition-all duration-200 ${
+                isHero 
+                  ? "h-14 pl-12 pr-12 text-base rounded-xl shadow-lg border-2 focus:border-primary focus:shadow-xl" 
+                  : "h-10 pl-10 pr-10 text-sm rounded-lg"
+              }`}
+              data-testid="input-stock-search"
             />
             {query && (
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 opacity-60 hover:opacity-100"
                 onClick={clearSearch}
                 data-testid="button-clear-search"
               >
@@ -311,136 +466,105 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
           </div>
 
           {showResults && (results.length > 0 || (query.length === 0 && recentSearches.length > 0) || query.length > 0) && (
-            <Card className={`absolute top-full left-0 right-0 mt-2 z-50 shadow-xl border overflow-hidden ${isHero ? "rounded-xl" : ""}`}>
-              <div className="border-b bg-muted/30">
+            <Card className={`absolute top-full left-0 right-0 mt-2 z-50 shadow-2xl border overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150 ${
+              isHero ? "rounded-xl" : "rounded-lg"
+            }`}>
+              <div className="border-b bg-muted/30 backdrop-blur-sm sticky top-0 z-10">
                 <div className="flex items-center gap-1 p-2">
                   {filterTabs.map((tab) => (
                     <button
                       key={tab.value}
                       onClick={() => handleFilterChange(tab.value)}
-                      className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      className={`px-3 py-1.5 text-sm rounded-md transition-all duration-150 flex items-center gap-1.5 ${
                         filterType === tab.value 
-                          ? "bg-primary text-primary-foreground" 
-                          : "text-muted-foreground hover:bg-muted"
+                          ? "bg-primary text-primary-foreground shadow-sm" 
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
                       data-testid={`filter-${tab.value}`}
                     >
+                      <tab.icon className="w-3.5 h-3.5" />
                       {tab.label}
                     </button>
                   ))}
+                  {isSearching && (
+                    <div className="ml-auto pr-2">
+                      <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <CardContent className="p-0 max-h-[400px] overflow-y-auto">
+              <div ref={resultsRef} className="max-h-[400px] overflow-y-auto">
                 {query.length === 0 && recentSearches.length > 0 && (
                   <div>
-                    <div className="flex items-center gap-2 px-4 py-2 text-xs text-muted-foreground bg-muted/20 border-b">
-                      <Clock className="w-3 h-3" />
+                    <div className="flex items-center gap-2 px-4 py-2.5 text-xs font-medium text-muted-foreground bg-muted/20 border-b sticky top-0">
+                      <Clock className="w-3.5 h-3.5" />
                       Recent Searches
                     </div>
-                    {recentSearches.map((stock) => {
-                      const priceData = getStockPrice(stock.symbol);
-                      const isPositive = priceData.changePercent >= 0;
-                      return (
-                        <button
-                          key={`recent-${stock.symbol}`}
-                          className="w-full text-left px-4 py-3 hover:bg-muted/50 flex items-center justify-between gap-2 border-b border-border/50 transition-colors"
-                          onClick={() => handleSelectStock(stock)}
-                          data-testid={`recent-search-${stock.symbol.toLowerCase()}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-foreground truncate">{stock.name}</div>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 font-normal">
-                                {stock.exchange} : {stock.symbol}
-                              </Badge>
-                            </div>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <div className="font-semibold font-mono">
-                              {priceData.price > 0 ? `₹${priceData.price.toLocaleString("en-IN")}` : ""}
-                            </div>
-                            {priceData.price > 0 && (
-                              <div className={`text-sm font-medium ${isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
-                                {isPositive ? "+" : ""}{priceData.changePercent.toFixed(2)}%
-                              </div>
-                            )}
-                          </div>
-                        </button>
-                      );
-                    })}
+                    <div className="divide-y divide-border/50">
+                      {recentSearches.map((stock, index) => renderResultItem(stock, index, true))}
+                    </div>
                   </div>
                 )}
                 
                 {results.length > 0 && (
                   <div>
-                    <div className="px-4 py-2 text-xs font-medium text-primary bg-primary/5 border-b">
-                      Equity
+                    <div className="px-4 py-2.5 text-xs font-medium text-primary bg-primary/5 border-b sticky top-0 flex items-center justify-between">
+                      <span>Search Results</span>
+                      <span className="text-muted-foreground">{results.length} found</span>
                     </div>
-                    {results.map((stock) => {
-                      const priceData = getStockPrice(stock.symbol);
-                      const isPositive = priceData.changePercent >= 0;
-                      return (
-                        <button
-                          key={stock.symbol}
-                          className="w-full text-left px-4 py-3 hover:bg-muted/50 flex items-center justify-between gap-2 border-b border-border/50 transition-colors"
-                          onClick={() => handleSelectStock(stock)}
-                          data-testid={`search-result-${stock.symbol.toLowerCase()}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-foreground">
-                              {highlightMatch(stock.name, query)}
-                            </div>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 font-normal">
-                                {stock.exchange} : {highlightMatch(stock.symbol, query)}
-                              </Badge>
-                            </div>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <div className="font-semibold font-mono">
-                              {priceData.price > 0 ? `₹${priceData.price.toLocaleString("en-IN")}` : ""}
-                            </div>
-                            {priceData.price > 0 && (
-                              <div className={`text-sm font-medium ${isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
-                                {isPositive ? "+" : ""}{priceData.changePercent.toFixed(2)}%
-                              </div>
-                            )}
-                          </div>
-                        </button>
-                      );
-                    })}
+                    <div className="divide-y divide-border/30">
+                      {results.map((stock, index) => renderResultItem(stock, index))}
+                    </div>
                   </div>
                 )}
 
-                {results.length === 0 && query.length > 0 && (
-                  <div className="px-4 py-8 text-center text-muted-foreground">
-                    <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p>No stocks found for "{query}"</p>
-                    <p className="text-xs mt-1">Try searching by company name or symbol</p>
+                {results.length === 0 && query.length > 0 && !isSearching && (
+                  <div className="px-4 py-12 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted/50 flex items-center justify-center">
+                      <Search className="w-8 h-8 text-muted-foreground/50" />
+                    </div>
+                    <p className="text-foreground font-medium">No results for "{query}"</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Try searching by company name, symbol, or sector
+                    </p>
                   </div>
                 )}
-              </CardContent>
+              </div>
+
+              {(results.length > 0 || recentSearches.length > 0) && (
+                <div className="border-t bg-muted/20 px-4 py-2 text-xs text-muted-foreground flex items-center justify-between">
+                  <span>Use arrow keys to navigate</span>
+                  <span>Press Enter to select</span>
+                </div>
+              )}
             </Card>
           )}
         </div>
 
         {isHero && (
           <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
-            <span className="text-xs text-muted-foreground">Popular:</span>
+            <span className="text-xs text-muted-foreground">Trending:</span>
             {["RELIANCE", "TCS", "NIFTY 50", "HDFC Bank"].map((name) => {
               const stock = stockDatabase.find(s => s.name.includes(name) || s.symbol === name.replace(" ", ""));
               if (!stock) return null;
+              const priceData = getStockPrice(stock.symbol);
+              const isPositive = priceData.changePercent >= 0;
               return (
                 <Button
                   key={name}
                   variant="outline"
                   size="sm"
-                  className="text-xs h-7"
+                  className="text-xs h-8 gap-1.5 group"
                   onClick={() => handleSelectStock(stock)}
-                  data-testid={`popular-${stock.symbol.toLowerCase()}`}
+                  data-testid={`trending-${stock.symbol.toLowerCase()}`}
                 >
                   {name}
+                  {priceData.price > 0 && (
+                    <span className={`text-[10px] ${isPositive ? "text-emerald-600" : "text-red-600"}`}>
+                      {isPositive ? "+" : ""}{priceData.changePercent.toFixed(1)}%
+                    </span>
+                  )}
                 </Button>
               );
             })}
@@ -450,7 +574,7 @@ export function StockSearch({ variant = "hero", className = "" }: StockSearchPro
 
       {isLoading && (
         <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-card p-6 rounded-xl shadow-xl flex items-center gap-4">
+          <div className="bg-card p-6 rounded-xl shadow-xl flex items-center gap-4 animate-in fade-in-0 zoom-in-95">
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             <span className="text-foreground font-medium">Loading stock data...</span>
           </div>

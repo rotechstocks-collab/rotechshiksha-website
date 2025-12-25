@@ -37,6 +37,7 @@ export const leads = pgTable("leads", {
   investmentRange: text("investment_range"),
   userType: text("user_type").default("student"), // student, startup, investor
   source: text("source").default("free"), // free, startup, investor
+  notes: text("notes"), // Additional context from forms like SIP calculator
   isVerified: boolean("is_verified").default(false),
   verifiedAt: timestamp("verified_at"),
   createdAt: timestamp("created_at").defaultNow(),
