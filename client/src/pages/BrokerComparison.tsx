@@ -62,6 +62,33 @@ const verticalTabs = [
   { id: "ratings", label: "Ratings", icon: Star },
 ];
 
+function getLowestChargeWinner(brokers: BrokerData[], getCharge: (b: BrokerData) => number | string): string {
+  if (brokers.length === 0) return "";
+  const brokerValues = brokers.map(b => {
+    const charge = getCharge(b);
+    if (typeof charge === "string") {
+      const lowerCharge = charge.toLowerCase();
+      if (lowerCharge === "free" || lowerCharge.includes("free")) return { id: b.id, value: 0 };
+      
+      const percentMatch = charge.match(/([\d.]+)%/);
+      if (percentMatch) {
+        return { id: b.id, value: parseFloat(percentMatch[1]) };
+      }
+      
+      const rsMatch = charge.match(/rs\s*([\d.]+)/i);
+      if (rsMatch) {
+        return { id: b.id, value: parseFloat(rsMatch[1]) * 100 };
+      }
+      
+      const numMatch = charge.match(/[\d.]+/);
+      return { id: b.id, value: numMatch ? parseFloat(numMatch[0]) : Infinity };
+    }
+    return { id: b.id, value: charge };
+  });
+  const sorted = brokerValues.sort((a, b) => a.value - b.value);
+  return sorted[0].id;
+}
+
 function getBestForTag(broker: BrokerData): { tag: string; icon: typeof Trophy; color: string } {
   const scores = {
     beginners: 0,
@@ -391,6 +418,13 @@ function ClientsPanel({ brokers }: { brokers: BrokerData[] }) {
 }
 
 function ChargesPanel({ brokers }: { brokers: BrokerData[] }) {
+  const accountOpeningWinner = getLowestChargeWinner(brokers, b => b.charges.accountOpening);
+  const amcWinner = getLowestChargeWinner(brokers, b => b.charges.maintenance);
+  const deliveryWinner = getLowestChargeWinner(brokers, b => b.charges.equityDelivery);
+  const intradayWinner = getLowestChargeWinner(brokers, b => b.charges.equityIntraday);
+  const foWinner = getLowestChargeWinner(brokers, b => b.charges.futuresOptions);
+  const dpWinner = getLowestChargeWinner(brokers, b => b.charges.dpCharges);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 mb-4">
@@ -421,45 +455,87 @@ function ChargesPanel({ brokers }: { brokers: BrokerData[] }) {
           <tbody>
             <tr className="border-b">
               <td className="p-3 text-muted-foreground">Account Opening</td>
-              {brokers.map((b) => (
-                <td key={b.id} className={`p-3 text-center font-medium ${b.charges.accountOpening === 0 ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                  {b.charges.accountOpening === 0 ? "Free" : formatCurrency(b.charges.accountOpening)}
-                </td>
-              ))}
+              {brokers.map((b) => {
+                const isWinner = b.id === accountOpeningWinner;
+                return (
+                  <td key={b.id} className={`p-3 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                    <div className="flex items-center justify-center gap-1">
+                      {b.charges.accountOpening === 0 ? "Free" : formatCurrency(b.charges.accountOpening)}
+                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
             <tr className="border-b">
               <td className="p-3 text-muted-foreground">AMC</td>
-              {brokers.map((b) => (
-                <td key={b.id} className={`p-3 text-center font-medium ${b.charges.maintenance === 0 ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                  {b.charges.maintenance === 0 ? "Free" : formatCurrency(b.charges.maintenance)}
-                </td>
-              ))}
+              {brokers.map((b) => {
+                const isWinner = b.id === amcWinner;
+                return (
+                  <td key={b.id} className={`p-3 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                    <div className="flex items-center justify-center gap-1">
+                      {b.charges.maintenance === 0 ? "Free" : formatCurrency(b.charges.maintenance)}
+                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
             <tr className="border-b">
               <td className="p-3 text-muted-foreground">Equity Delivery</td>
-              {brokers.map((b) => (
-                <td key={b.id} className={`p-3 text-center font-medium ${b.charges.equityDelivery === "Free" ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                  {b.charges.equityDelivery}
-                </td>
-              ))}
+              {brokers.map((b) => {
+                const isWinner = b.id === deliveryWinner;
+                return (
+                  <td key={b.id} className={`p-3 text-center font-medium ${isWinner ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
+                    <div className="flex items-center justify-center gap-1">
+                      {b.charges.equityDelivery}
+                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
             <tr className="border-b">
               <td className="p-3 text-muted-foreground">Equity Intraday</td>
-              {brokers.map((b) => (
-                <td key={b.id} className="p-3 text-center">{b.charges.equityIntraday}</td>
-              ))}
+              {brokers.map((b) => {
+                const isWinner = b.id === intradayWinner;
+                return (
+                  <td key={b.id} className={`p-3 text-center ${isWinner ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}`}>
+                    <div className="flex items-center justify-center gap-1">
+                      {b.charges.equityIntraday}
+                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
             <tr className="border-b">
               <td className="p-3 text-muted-foreground">F&O</td>
-              {brokers.map((b) => (
-                <td key={b.id} className="p-3 text-center">{b.charges.futuresOptions}</td>
-              ))}
+              {brokers.map((b) => {
+                const isWinner = b.id === foWinner;
+                return (
+                  <td key={b.id} className={`p-3 text-center ${isWinner ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}`}>
+                    <div className="flex items-center justify-center gap-1">
+                      {b.charges.futuresOptions}
+                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
             <tr className="border-b">
               <td className="p-3 text-muted-foreground">DP Charges</td>
-              {brokers.map((b) => (
-                <td key={b.id} className="p-3 text-center">{formatCurrency(b.charges.dpCharges)}</td>
-              ))}
+              {brokers.map((b) => {
+                const isWinner = b.id === dpWinner;
+                return (
+                  <td key={b.id} className={`p-3 text-center ${isWinner ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}`}>
+                    <div className="flex items-center justify-center gap-1">
+                      {formatCurrency(b.charges.dpCharges)}
+                      {isWinner && <Trophy className="w-3 h-3 text-amber-500" />}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>
@@ -879,18 +955,22 @@ export default function BrokerComparison() {
                   </Sheet>
                 </div>
 
-                {/* Desktop Sidebar */}
-                <Card className="hidden lg:block w-64 flex-shrink-0 h-fit sticky top-32">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Categories</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <VerticalNav 
-                      activeTab={activeTab} 
-                      onTabChange={handleTabChange}
-                    />
-                  </CardContent>
-                </Card>
+                {/* Desktop Sidebar - Sticky */}
+                <div className="hidden lg:block w-64 flex-shrink-0">
+                  <div className="sticky top-32 z-40">
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-base">Categories</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <VerticalNav 
+                          activeTab={activeTab} 
+                          onTabChange={handleTabChange}
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
 
                 {/* Main Content */}
                 <Card className="flex-1 min-w-0">
