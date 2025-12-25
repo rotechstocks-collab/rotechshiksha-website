@@ -1,144 +1,204 @@
 # Rotech Shiksha - Design Guidelines
 
-## Design Approach
-**Hybrid System**: Material Design principles + Modern Indian Fintech aesthetics (Zerodha Varsity + Groww simplicity)
-- Professional, trustworthy interface for financial education
-- Clear information hierarchy for complex content
-- Data-dense layouts optimized for learning
+## Design Philosophy
+**Zerodha Varsity Inspired**: Clean, minimal, educational-first design with white-based layouts, cartoon illustrations, and card-based content organization.
 
-## Core Design Elements
+## Core Principles
+1. **Minimalist & Clean**: White backgrounds, ample whitespace, distraction-free
+2. **Card-Based Layout**: All content organized in rounded, shadowed cards
+3. **Educational Aesthetic**: Flat cartoon illustrations, soft colors
+4. **Mobile-First**: Responsive design prioritizing mobile experience
+5. **Fast Loading**: Lightweight assets, optimized performance
 
-### Typography
-- **Primary Font**: Inter (via Google Fonts) - clean, readable for educational content
-- **Headings**: 
-  - H1: 2.5rem (40px), font-weight: 700
-  - H2: 2rem (32px), font-weight: 600
-  - H3: 1.5rem (24px), font-weight: 600
-- **Body**: 1rem (16px), font-weight: 400, line-height: 1.6
-- **Small/Meta**: 0.875rem (14px), font-weight: 500
+## Color Palette
 
-### Layout System
-**Tailwind Spacing Units**: Consistently use 2, 4, 6, 8, 12, 16, 20 for spacing
-- **Container**: max-w-7xl with px-4 on mobile, px-8 on desktop
-- **Section Padding**: py-12 mobile, py-20 desktop
-- **Card Spacing**: p-6 internal padding, gap-6 between cards
-- **Grid Gaps**: gap-4 for tight layouts, gap-6 for standard, gap-8 for spacious
+### Primary Colors
+- **Background**: Pure white (#FFFFFF) / Very light gray (#FAFBFC)
+- **Surface/Cards**: White with subtle shadow
+- **Primary Accent**: Soft blue (#387ED1) - educational, trustworthy
+- **Secondary Accent**: Soft green (#10B981) - growth, success
 
-### Component Library
+### Text Colors
+- **Primary Text**: Dark charcoal (#1F2937)
+- **Secondary Text**: Medium gray (#6B7280)
+- **Muted Text**: Light gray (#9CA3AF)
 
-**Live Market Ticker (Top Bar)**
-- Fixed top position, full-width
-- Height: h-12, scrolling animation
-- Stock cards with price + change indicator (up/down arrows)
-- Sticky across all pages
+### Semantic Colors
+- **Success**: Soft green (#10B981)
+- **Warning**: Soft amber (#F59E0B)
+- **Error**: Soft red (#EF4444)
+- **Info**: Soft blue (#3B82F6)
 
-**Navigation**
-- Transparent header with backdrop blur
-- Mobile: Hamburger menu
-- Desktop: Horizontal nav with dropdown for course sections
-- CTA: "Login with Mobile" button (prominent)
+### Accent Backgrounds (for cards/sections)
+- **Blue tint**: #EFF6FF (very light blue)
+- **Green tint**: #ECFDF5 (very light green)
+- **Amber tint**: #FFFBEB (very light amber)
+- **Gray tint**: #F9FAFB (very light gray)
 
-**Hero Section**
-- NO large hero image - instead: Split layout
-- Left (60%): Headline + subtext + CTA
-- Right (40%): Animated chart/graph illustration OR TradingView mini widget
-- Height: 80vh desktop, auto mobile
+## Typography
 
-**Course Structure Cards**
-- Grid layout: grid-cols-1 md:grid-cols-2 lg:grid-cols-4
-- Cards with:
-  - Icon/number badge at top
-  - Title
-  - 4-5 bullet points
-  - "View Content" link
-- Hover: subtle lift effect (shadow increase)
+### Font Family
+- **Primary**: Inter (Google Fonts) - clean, highly readable
+- **Fallback**: system-ui, sans-serif
 
-**OTP Popup Modal**
-- Centered overlay with backdrop blur
-- Two-step form design:
-  - Step 1: Contact form (compact, single column)
-  - Step 2: OTP input (large digit boxes, 4 or 6 digits)
-- Progress indicator at top
-- Clean, minimal design with focus on form fields
+### Font Sizes
+- **H1 (Page Title)**: 2.25rem (36px), font-weight: 700
+- **H2 (Section Title)**: 1.75rem (28px), font-weight: 600
+- **H3 (Card Title)**: 1.25rem (20px), font-weight: 600
+- **H4 (Subsection)**: 1.125rem (18px), font-weight: 600
+- **Body**: 1rem (16px), font-weight: 400, line-height: 1.7
+- **Small**: 0.875rem (14px)
+- **Caption**: 0.75rem (12px)
 
-**Calculator Widgets**
-- Card-based layout with shadow
-- Input fields on left, results on right (desktop)
-- Stacked on mobile
-- Live calculation display
-- "Locked" state overlay before OTP verification
+## Card System (Varsity-Style)
 
-**Payment Plans**
-- 3-column grid (desktop), stacked (mobile)
-- Card design with:
-  - Plan name at top
-  - Large price display
-  - Feature list with checkmarks
-  - CTA button at bottom
-- Highlight ₹999 plan (scale slightly larger, border accent)
+### Standard Card
+```
+- Background: white
+- Border: none or very subtle (1px border-gray-100)
+- Border-radius: 12px (rounded-xl)
+- Shadow: subtle (shadow-sm) - 0 1px 3px rgba(0,0,0,0.1)
+- Padding: 24px (p-6)
+- Hover: slightly elevated shadow
+```
 
-**User Dashboard**
-- Sidebar navigation (desktop), bottom tabs (mobile)
-- Sections: Profile, My Learning, Resources, Payments
-- Card-based content display
-- Progress indicators for courses
+### Card Variants
+1. **Content Card**: Standard white card with title, description, optional icon
+2. **Module Card**: Card with numbered badge, icon, title, bullet points
+3. **Feature Card**: Icon + title + short description, center-aligned
+4. **Stat Card**: Large number/value + label, minimal design
 
-**Live Chat Button**
-- Fixed bottom-right position
-- Circular button with chat icon
-- Notification badge for unread
-- Chat window: 400px wide, 600px tall (desktop)
+### Card Spacing
+- Between cards: gap-6 (24px)
+- Internal padding: p-6 (24px)
+- Icon to title: mb-4 (16px)
+- Title to description: mb-2 (8px)
 
-### Spacing & Rhythm
-- Consistent 8px base grid
-- Section breaks: mb-20 between major sections
-- Card internal spacing: p-6
-- Form field spacing: space-y-4
+## Layout System
 
-### Interactive Elements
-**Buttons**
-- Primary: Solid fill, rounded-lg, px-6 py-3
-- Secondary: Outline style
-- Text buttons: Underline on hover
-- States: Clear hover (brightness/shadow), active (scale-95)
+### Container
+- Max width: max-w-7xl (1280px)
+- Padding: px-4 (mobile), px-6 (tablet), px-8 (desktop)
 
-**Inputs**
-- Border style with focus ring
-- Rounded-lg corners
-- Height: h-12
-- Padding: px-4
+### Section Spacing
+- Between sections: py-16 (64px) mobile, py-20 (80px) desktop
+- Section title margin: mb-12 (48px)
 
-**Links**
-- Underline on hover for text links
-- Arrow indicators for external/action links
+### Grid Layouts
+- 2 columns: grid-cols-1 md:grid-cols-2
+- 3 columns: grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+- 4 columns: grid-cols-1 md:grid-cols-2 lg:grid-cols-4
+- Gap: gap-6 (standard), gap-8 (spacious)
 
-### Animations
-**Minimal Approach** - Use sparingly:
-- Live ticker: smooth horizontal scroll
-- Card hover: subtle lift (translate-y)
-- Modal: fade in with scale
-- Transitions: 200-300ms duration
+## Component Styles
 
-## Images
+### Navigation
+- Background: white with subtle shadow
+- Height: h-16 (64px)
+- Logo: left-aligned
+- Links: center or right
+- Mobile: hamburger menu
 
-**Hero Section**: Small chart/graph illustration or animated market visualization (right side, ~400x400px) - NOT a large background image
+### Hero Section
+- Background: white or very light gradient
+- Layout: Content left (60%), Illustration right (40%)
+- Max-height: auto, content-driven
+- Illustration: Flat cartoon style, finance-themed
 
-**Course Icons**: Simple line icons for each course section level (Basic/Intermediate/Advanced/Algo)
+### Buttons
+- **Primary**: bg-primary text-white, rounded-lg, px-6 py-3
+- **Secondary**: bg-secondary/10 text-secondary, rounded-lg
+- **Outline**: border-2 border-primary text-primary
+- **Ghost**: transparent, text-primary, hover:bg-primary/5
+- Height: h-11 (44px) for touch-friendly
+- No harsh shadows, soft hover transitions
 
-**Trust Indicators**: Small logos/badges if partnerships exist (footer area)
+### Form Inputs
+- Background: white
+- Border: 1px border-gray-200
+- Border-radius: rounded-lg (8px)
+- Height: h-12 (48px)
+- Focus: ring-2 ring-primary/20 border-primary
 
-**NO large hero background image** - keep focus on clean, data-driven interface
+### Badges
+- Small, rounded-full
+- Soft background colors with matching text
+- Example: bg-blue-100 text-blue-700
 
-## Mobile Optimization
-- Stack all multi-column layouts to single column
-- Sticky live ticker remains at top
-- Bottom navigation for dashboard
-- Touch-friendly button sizes (min 44px height)
-- Simplified forms with larger inputs
+## Illustrations & Icons
 
-## Critical UX Patterns
-- **Gated Content**: Clear visual indicators (lock icons) before OTP
-- **Trust Signals**: Disclaimers visible, "100% Free" messaging prominent
-- **Progress Indicators**: For multi-step forms and course completion
-- **Loading States**: For live data and OTP verification
-- **Error States**: Clear error messages for form validation
+### Style Guidelines
+- **Type**: Flat, 2D vector illustrations
+- **Colors**: Soft, muted palette matching site colors
+- **Theme**: Finance, education, growth
+- **Characters**: Friendly, approachable cartoon people
+- **Placement**: Near headings, in cards, hero sections
+
+### Icon Usage
+- Use Lucide React icons
+- Size: w-5 h-5 (standard), w-6 h-6 (featured)
+- Color: text-primary or text-muted-foreground
+- Inside cards: w-10 h-10 with bg-primary/10 circle
+
+## Animation Guidelines
+
+### Principles
+- Subtle and purposeful
+- No distracting animations
+- Enhance user experience
+
+### Allowed Animations
+- Card hover: translate-y-1, shadow increase
+- Button hover: subtle brightness change
+- Page transitions: fade-in (300ms)
+- Loading states: gentle pulse or skeleton
+
+### Timing
+- Fast: 150ms (buttons, small elements)
+- Standard: 300ms (cards, modals)
+- Slow: 500ms (page transitions)
+
+## Page-Specific Guidelines
+
+### Home Page
+- Hero with headline + illustration
+- Module cards grid (4 columns on desktop)
+- Features section with icon cards
+- Testimonials (if any)
+- CTA section
+
+### Courses Page
+- Category filters (tabs or buttons)
+- Course module cards in grid
+- Each card: icon, title, description, level badge
+- Progress indicators for logged-in users
+
+### Calculator Pages
+- Calculator cards with input forms
+- Live results display
+- Clean, labeled inputs
+- Mobile: stacked layout
+
+### IPO Pages
+- IPO listing with filter tabs
+- IPO cards with key metrics
+- Detail page with organized sections
+- Timeline and subscription status
+
+## Responsive Breakpoints
+- **Mobile**: < 640px (sm)
+- **Tablet**: 640px - 1024px (md, lg)
+- **Desktop**: > 1024px (xl, 2xl)
+
+## Accessibility
+- Minimum touch target: 44x44px
+- Color contrast: WCAG AA compliant
+- Focus states: visible ring
+- Alt text for all images
+- Semantic HTML structure
+
+## Performance
+- Lazy load images below fold
+- Use SVG for icons and illustrations
+- Optimize images (WebP when possible)
+- Minimize CSS/JS bundle size
