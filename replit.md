@@ -38,12 +38,16 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
   - Loading skeletons, error states, stale data indicators
   - Navigation added in all 7 languages
 
-- **Dec 2024**: Multi-language support (7 Indian languages)
+- **Dec 2024**: Multi-language support (13 languages with RTL)
   - Language selector dropdown in header with globe icon
-  - Supported languages: English, Hindi, Marathi, Tamil, Kannada, Gujarati, Telugu
+  - Supported languages (13 total):
+    - **Indian Languages**: English, Hindi, Marathi, Tamil, Kannada, Gujarati, Telugu, Malayalam
+    - **International Languages**: French, Spanish, Arabic, German, Russian, Urdu
+  - RTL (Right-to-Left) support for Arabic and Urdu with automatic layout flipping
   - JSON-based translation files in `client/src/translations/`
-  - LanguageContext with `useLanguage()` hook and `t()` function
+  - LanguageContext with `useLanguage()` hook, `t()` function, and `isRTL` flag
   - Language preference saved to localStorage (persists across sessions)
+  - Auto-detection of RTL languages sets document.dir attribute
   - SEO hreflang tags dynamically added for each language
   - Home page and Hero component fully translated
   - Scalable architecture for adding more translations
@@ -174,23 +178,30 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Multi-Language System
 
-### Supported Languages
-| Code | Language | Native Name |
-|------|----------|-------------|
-| en | English | English |
-| hi | Hindi | हिन्दी |
-| mr | Marathi | मराठी |
-| ta | Tamil | தமிழ் |
-| kn | Kannada | ಕನ್ನಡ |
-| gu | Gujarati | ગુજરાતી |
-| te | Telugu | తెలుగు |
+### Supported Languages (13 Total)
+| Code | Language | Native Name | RTL |
+|------|----------|-------------|-----|
+| en | English | English | No |
+| hi | Hindi | हिन्दी | No |
+| mr | Marathi | मराठी | No |
+| ta | Tamil | தமிழ் | No |
+| kn | Kannada | ಕನ್ನಡ | No |
+| gu | Gujarati | ગુજરાતી | No |
+| te | Telugu | తెలుగు | No |
+| ml | Malayalam | മലയാളം | No |
+| fr | French | Français | No |
+| es | Spanish | Español | No |
+| ar | Arabic | العربية | Yes |
+| de | German | Deutsch | No |
+| ru | Russian | Русский | No |
+| ur | Urdu | اردو | Yes |
 
 ### Usage
 ```tsx
 import { useLanguage } from "@/context/LanguageContext";
 
 function MyComponent() {
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language, setLanguage, isRTL } = useLanguage();
   return <h1>{t("home.features.title")}</h1>;
 }
 ```
