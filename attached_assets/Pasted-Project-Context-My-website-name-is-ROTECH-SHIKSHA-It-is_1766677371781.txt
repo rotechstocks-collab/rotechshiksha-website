@@ -1,0 +1,121 @@
+Project Context
+My website name is ROTECH SHIKSHA.
+It is a share market education platform built on Replit.
+
+🎯 TASK
+
+Add a new option called “Paper Trade” inside the Tools section of the website.
+
+This feature must be a Paper Trading / Practice Trading system for educational purposes only, with no real money and no real broker integration.
+
+🧩 FUNCTIONAL REQUIREMENTS
+1️⃣ Navigation
+
+Add Tools → Paper Trade button on the home page
+
+Clicking it opens a Paper Trading dashboard
+
+2️⃣ Paper Trading Logic
+
+Give every user a virtual balance of ₹10,00,000
+
+Allow users to:
+
+Buy stocks
+
+Sell stocks
+
+Inputs:
+
+Stock symbol
+
+Quantity
+
+Market price (auto-fetched)
+
+Orders should be simulated, not real
+
+3️⃣ Market Data (FREE + LEGAL)
+
+Fetch stock prices using free APIs only, such as:
+
+Yahoo Finance
+
+Alpha Vantage (free tier)
+
+Finnhub (free tier)
+
+Handle API limits gracefully
+
+Delayed or near-real-time prices are acceptable
+
+4️⃣ Dashboard Features
+
+Portfolio holdings table
+
+Show:
+
+Invested amount
+
+Current value
+
+Profit / Loss (P&L)
+
+Trade history section
+
+Reset account option (reset virtual balance)
+
+5️⃣ UI / UX DESIGN
+
+Clean, modern, beginner-friendly UI
+
+Inspired by Zerodha Varsity / Groww
+
+Cards, tables, soft animations
+
+Mobile-responsive
+
+Highlight profit in green, loss in red
+
+6️⃣ Charts
+
+Show stock price charts (line / candlestick if possible)
+
+Use free chart libraries or TradingView free widgets
+
+7️⃣ DATA STORAGE
+
+Store:
+
+Virtual balance
+
+Trades
+
+Portfolio data
+
+Use Replit-compatible database (Replit DB / SQLite / JSON)
+
+8️⃣ LEGAL & SAFETY (VERY IMPORTANT)
+
+Clearly display this disclaimer on the page:
+
+“This is a paper trading simulator for educational purposes only.
+No real trading or investment advice is provided.”
+
+Do NOT connect to any real broker APIs
+
+Do NOT execute real orders
+
+🛠 TECH STACK
+
+Replit compatible
+
+HTML / CSS / JavaScript or React
+
+Node.js backend if required
+
+No paid APIs
+
+✅ FINAL GOAL
+
+Build a fully functional Paper Trade (Practice Trading) tool under the Tools section of ROTECH SHIKSHA, helping beginners learn trading safely and legally.

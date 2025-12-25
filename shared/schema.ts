@@ -127,6 +127,41 @@ export const investorInterests = pgTable("investor_interests", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Paper Trading - Virtual trading accounts
+export const paperTradingAccounts = pgTable("paper_trading_accounts", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("user_id", { length: 36 }).notNull(),
+  virtualBalance: integer("virtual_balance").notNull().default(1000000), // ₹10,00,000 in paise
+  initialBalance: integer("initial_balance").notNull().default(1000000),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Paper Trading - Trade records
+export const paperTrades = pgTable("paper_trades", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  accountId: varchar("account_id", { length: 36 }).notNull(),
+  symbol: text("symbol").notNull(),
+  stockName: text("stock_name").notNull(),
+  type: text("type").notNull(), // buy, sell
+  quantity: integer("quantity").notNull(),
+  price: integer("price").notNull(), // price in paise
+  totalValue: integer("total_value").notNull(), // quantity * price
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Paper Trading - Current holdings
+export const paperHoldings = pgTable("paper_holdings", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  accountId: varchar("account_id", { length: 36 }).notNull(),
+  symbol: text("symbol").notNull(),
+  stockName: text("stock_name").notNull(),
+  quantity: integer("quantity").notNull(),
+  avgBuyPrice: integer("avg_buy_price").notNull(), // in paise
+  investedValue: integer("invested_value").notNull(), // total invested in paise
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
 export const insertOtpSchema = createInsertSchema(otps).omit({ id: true });
@@ -138,6 +173,9 @@ export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({ i
 export const insertStartupSchema = createInsertSchema(startups).omit({ id: true, createdAt: true });
 export const insertInvestorSchema = createInsertSchema(investors).omit({ id: true, createdAt: true });
 export const insertInvestorInterestSchema = createInsertSchema(investorInterests).omit({ id: true, createdAt: true });
+export const insertPaperTradingAccountSchema = createInsertSchema(paperTradingAccounts).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertPaperTradeSchema = createInsertSchema(paperTrades).omit({ id: true, createdAt: true });
+export const insertPaperHoldingSchema = createInsertSchema(paperHoldings).omit({ id: true, updatedAt: true });
 
 // Types
 export type User = typeof users.$inferSelect;
@@ -160,6 +198,12 @@ export type Investor = typeof investors.$inferSelect;
 export type InsertInvestor = z.infer<typeof insertInvestorSchema>;
 export type InvestorInterest = typeof investorInterests.$inferSelect;
 export type InsertInvestorInterest = z.infer<typeof insertInvestorInterestSchema>;
+export type PaperTradingAccount = typeof paperTradingAccounts.$inferSelect;
+export type InsertPaperTradingAccount = z.infer<typeof insertPaperTradingAccountSchema>;
+export type PaperTrade = typeof paperTrades.$inferSelect;
+export type InsertPaperTrade = z.infer<typeof insertPaperTradeSchema>;
+export type PaperHolding = typeof paperHoldings.$inferSelect;
+export type InsertPaperHolding = z.infer<typeof insertPaperHoldingSchema>;
 
 // Lead capture form schema with validation
 export const leadFormSchema = z.object({

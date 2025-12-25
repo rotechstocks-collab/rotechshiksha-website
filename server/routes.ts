@@ -1869,5 +1869,271 @@ export async function registerRoutes(
   // Start economic calendar refresh job
   startCalendarRefreshJob();
 
+  // ==================== PAPER TRADING ROUTES ====================
+  
+  // Get or create paper trading account
+  app.get("/api/paper-trade/account", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Please login to access paper trading" });
+      }
+
+      let account = await storage.getPaperTradingAccount(req.session.userId);
+      
+      if (!account) {
+        account = await storage.createPaperTradingAccount(req.session.userId);
+      }
+
+      const holdings = await storage.getPaperHoldings(account.id);
+      const trades = await storage.getPaperTrades(account.id);
+
+      res.json({
+        account,
+        holdings,
+        trades: trades.slice(0, 50)
+      });
+    } catch (error) {
+      console.error("Paper trading account error:", error);
+      res.status(500).json({ message: "Failed to fetch paper trading account" });
+    }
+  });
+
+  // Execute a paper trade (buy/sell)
+  app.post("/api/paper-trade/execute", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Please login to trade" });
+      }
+
+      const { symbol, stockName, type, quantity, price } = req.body;
+
+      if (!symbol || !stockName || !type || !quantity || !price) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      if (!["buy", "sell"].includes(type)) {
+        return res.status(400).json({ message: "Invalid trade type" });
+      }
+
+      if (quantity <= 0 || price <= 0) {
+        return res.status(400).json({ message: "Invalid quantity or price" });
+      }
+
+      let account = await storage.getPaperTradingAccount(req.session.userId);
+      if (!account) {
+        account = await storage.createPaperTradingAccount(req.session.userId);
+      }
+
+      const totalValue = Math.round(quantity * price * 100); // Convert to paise
+      const priceInPaise = Math.round(price * 100);
+
+      if (type === "buy") {
+        if (account.virtualBalance < totalValue) {
+          return res.status(400).json({ message: "Insufficient balance" });
+        }
+
+        // Deduct balance
+        await storage.updatePaperTradingBalance(account.id, account.virtualBalance - totalValue);
+
+        // Add to holdings
+        await storage.addOrUpdateHolding(account.id, symbol, stockName, quantity, priceInPaise);
+
+        // Record trade
+        await storage.recordPaperTrade(account.id, symbol, stockName, "buy", quantity, priceInPaise, totalValue);
+
+      } else if (type === "sell") {
+        const holding = await storage.getHoldingBySymbol(account.id, symbol);
+        
+        if (!holding || holding.quantity < quantity) {
+          return res.status(400).json({ message: "Insufficient shares to sell" });
+        }
+
+        // Add balance
+        await storage.updatePaperTradingBalance(account.id, account.virtualBalance + totalValue);
+
+        // Reduce holdings
+        await storage.reduceHolding(account.id, symbol, quantity, priceInPaise);
+
+        // Record trade
+        await storage.recordPaperTrade(account.id, symbol, stockName, "sell", quantity, priceInPaise, totalValue);
+      }
+
+      // Get updated account
+      const updatedAccount = await storage.getPaperTradingAccount(req.session.userId);
+      const holdings = await storage.getPaperHoldings(account.id);
+
+      res.json({
+        success: true,
+        account: updatedAccount,
+        holdings,
+        message: `${type === "buy" ? "Bought" : "Sold"} ${quantity} shares of ${symbol}`
+      });
+    } catch (error) {
+      console.error("Paper trade execution error:", error);
+      res.status(500).json({ message: "Trade execution failed" });
+    }
+  });
+
+  // Reset paper trading account
+  app.post("/api/paper-trade/reset", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Please login" });
+      }
+
+      await storage.resetPaperTradingAccount(req.session.userId);
+
+      res.json({
+        success: true,
+        message: "Account reset to ₹10,00,000"
+      });
+    } catch (error) {
+      console.error("Paper trading reset error:", error);
+      res.status(500).json({ message: "Failed to reset account" });
+    }
+  });
+
+  // Get stock quote for paper trading
+  app.get("/api/paper-trade/quote/:symbol", async (req: Request, res: Response) => {
+    try {
+      const symbol = req.params.symbol.toUpperCase();
+      
+      // Try Alpha Vantage first
+      if (ALPHAVANTAGE_API_KEY) {
+        try {
+          const response = await axios.get(ALPHAVANTAGE_BASE_URL, {
+            params: {
+              function: "GLOBAL_QUOTE",
+              symbol: `${symbol}.BSE`,
+              apikey: ALPHAVANTAGE_API_KEY
+            },
+            timeout: 5000
+          });
+
+          if (response.data["Global Quote"] && response.data["Global Quote"]["05. price"]) {
+            const quote = response.data["Global Quote"];
+            return res.json({
+              symbol,
+              price: parseFloat(quote["05. price"]),
+              change: parseFloat(quote["09. change"] || 0),
+              changePercent: parseFloat((quote["10. change percent"] || "0").replace("%", "")),
+              high: parseFloat(quote["03. high"] || 0),
+              low: parseFloat(quote["04. low"] || 0),
+              volume: parseInt(quote["06. volume"] || 0),
+              source: "Alpha Vantage"
+            });
+          }
+        } catch (avError) {
+          console.log("Alpha Vantage quote failed, using simulated data");
+        }
+      }
+
+      // Simulated price data for popular Indian stocks
+      const mockPrices: Record<string, { price: number; name: string }> = {
+        "RELIANCE": { price: 2435.50, name: "Reliance Industries Ltd" },
+        "TCS": { price: 3890.25, name: "Tata Consultancy Services" },
+        "HDFCBANK": { price: 1678.90, name: "HDFC Bank Ltd" },
+        "INFY": { price: 1456.75, name: "Infosys Ltd" },
+        "ICICIBANK": { price: 1234.60, name: "ICICI Bank Ltd" },
+        "HINDUNILVR": { price: 2567.80, name: "Hindustan Unilever Ltd" },
+        "SBIN": { price: 756.45, name: "State Bank of India" },
+        "BHARTIARTL": { price: 1543.20, name: "Bharti Airtel Ltd" },
+        "ITC": { price: 467.35, name: "ITC Ltd" },
+        "KOTAKBANK": { price: 1823.90, name: "Kotak Mahindra Bank" },
+        "LT": { price: 3456.80, name: "Larsen & Toubro Ltd" },
+        "AXISBANK": { price: 1098.45, name: "Axis Bank Ltd" },
+        "WIPRO": { price: 456.70, name: "Wipro Ltd" },
+        "ASIANPAINT": { price: 2890.50, name: "Asian Paints Ltd" },
+        "MARUTI": { price: 10234.60, name: "Maruti Suzuki India" },
+        "TATAMOTORS": { price: 876.90, name: "Tata Motors Ltd" },
+        "SUNPHARMA": { price: 1234.50, name: "Sun Pharmaceutical" },
+        "NESTLEIND": { price: 24567.80, name: "Nestle India Ltd" },
+        "TATASTEEL": { price: 134.50, name: "Tata Steel Ltd" },
+        "POWERGRID": { price: 287.60, name: "Power Grid Corporation" }
+      };
+
+      const stockData = mockPrices[symbol];
+      if (stockData) {
+        const randomChange = (Math.random() - 0.5) * 4;
+        const adjustedPrice = stockData.price * (1 + randomChange / 100);
+        
+        return res.json({
+          symbol,
+          name: stockData.name,
+          price: Math.round(adjustedPrice * 100) / 100,
+          change: Math.round(randomChange * stockData.price) / 100,
+          changePercent: Math.round(randomChange * 100) / 100,
+          high: Math.round(adjustedPrice * 1.02 * 100) / 100,
+          low: Math.round(adjustedPrice * 0.98 * 100) / 100,
+          volume: Math.floor(Math.random() * 1000000) + 100000,
+          source: "Simulated"
+        });
+      }
+
+      // Default for unknown symbols
+      res.json({
+        symbol,
+        name: symbol,
+        price: Math.round((100 + Math.random() * 500) * 100) / 100,
+        change: 0,
+        changePercent: 0,
+        source: "Simulated"
+      });
+    } catch (error) {
+      console.error("Quote fetch error:", error);
+      res.status(500).json({ message: "Failed to fetch quote" });
+    }
+  });
+
+  // Search stocks for paper trading
+  app.get("/api/paper-trade/search", async (req: Request, res: Response) => {
+    try {
+      const query = ((req.query.q as string) || "").toUpperCase();
+      
+      if (!query || query.length < 2) {
+        return res.json({ results: [] });
+      }
+
+      // Popular Indian stocks list
+      const stocks = [
+        { symbol: "RELIANCE", name: "Reliance Industries Ltd", sector: "Oil & Gas" },
+        { symbol: "TCS", name: "Tata Consultancy Services", sector: "IT" },
+        { symbol: "HDFCBANK", name: "HDFC Bank Ltd", sector: "Banking" },
+        { symbol: "INFY", name: "Infosys Ltd", sector: "IT" },
+        { symbol: "ICICIBANK", name: "ICICI Bank Ltd", sector: "Banking" },
+        { symbol: "HINDUNILVR", name: "Hindustan Unilever Ltd", sector: "FMCG" },
+        { symbol: "SBIN", name: "State Bank of India", sector: "Banking" },
+        { symbol: "BHARTIARTL", name: "Bharti Airtel Ltd", sector: "Telecom" },
+        { symbol: "ITC", name: "ITC Ltd", sector: "FMCG" },
+        { symbol: "KOTAKBANK", name: "Kotak Mahindra Bank", sector: "Banking" },
+        { symbol: "LT", name: "Larsen & Toubro Ltd", sector: "Infrastructure" },
+        { symbol: "AXISBANK", name: "Axis Bank Ltd", sector: "Banking" },
+        { symbol: "WIPRO", name: "Wipro Ltd", sector: "IT" },
+        { symbol: "ASIANPAINT", name: "Asian Paints Ltd", sector: "Paints" },
+        { symbol: "MARUTI", name: "Maruti Suzuki India", sector: "Auto" },
+        { symbol: "TATAMOTORS", name: "Tata Motors Ltd", sector: "Auto" },
+        { symbol: "SUNPHARMA", name: "Sun Pharmaceutical", sector: "Pharma" },
+        { symbol: "NESTLEIND", name: "Nestle India Ltd", sector: "FMCG" },
+        { symbol: "TATASTEEL", name: "Tata Steel Ltd", sector: "Steel" },
+        { symbol: "POWERGRID", name: "Power Grid Corporation", sector: "Power" },
+        { symbol: "HCLTECH", name: "HCL Technologies", sector: "IT" },
+        { symbol: "BAJFINANCE", name: "Bajaj Finance Ltd", sector: "Finance" },
+        { symbol: "TITAN", name: "Titan Company Ltd", sector: "Consumer" },
+        { symbol: "ULTRACEMCO", name: "UltraTech Cement", sector: "Cement" },
+        { symbol: "TECHM", name: "Tech Mahindra Ltd", sector: "IT" }
+      ];
+
+      const results = stocks.filter(s => 
+        s.symbol.includes(query) || 
+        s.name.toUpperCase().includes(query)
+      ).slice(0, 10);
+
+      res.json({ results });
+    } catch (error) {
+      console.error("Stock search error:", error);
+      res.status(500).json({ results: [] });
+    }
+  });
+
   return httpServer;
 }

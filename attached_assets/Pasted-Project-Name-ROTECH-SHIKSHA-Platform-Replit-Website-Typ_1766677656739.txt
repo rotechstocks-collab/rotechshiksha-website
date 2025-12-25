@@ -1,0 +1,201 @@
+Project Name: ROTECH SHIKSHA
+Platform: Replit
+Website Type: Stock Market Education Platform
+
+🎯 OBJECTIVE
+
+Create a Tools section on the website and add the following educational tools, fully free, legal, and automated:
+
+Live News
+
+Paper Trade (Practice Trading)
+
+🔹 TOOL 1: LIVE NEWS
+📍 Navigation
+
+Add Tools → Live News option on the home page.
+
+📰 Live Market News (Text + Images)
+
+Show latest / near real-time Business & Share Market news (India + Global).
+
+Use a combined legal approach:
+
+RSS feeds for breaking news.
+
+Free News API (NewsAPI / GNews / Mediastack) for news with images.
+
+Always show latest news first (sorted by publish time).
+
+Fetch only recent news (last 1–2 hours when available).
+
+Auto-refresh news every 5–10 minutes without page reload.
+
+🖱 Click Behavior (IMPORTANT)
+
+Remove “Read Full Article” buttons completely.
+
+Make the entire news card clickable.
+
+Clicking on:
+
+Image
+
+Headline
+
+Anywhere on the card
+→ Directly open the original source website in a new tab.
+
+📰 News Card Must Show
+
+Image thumbnail
+
+Headline
+
+Short summary
+
+Source name
+
+Published time (e.g., “5 min ago”)
+
+🎥 Market News Videos (LEGAL ONLY)
+
+Add “Market News Videos” section.
+
+Show only official YouTube embeds from verified sources:
+
+Reuters Business
+
+Bloomberg
+
+Yahoo Finance
+
+Do NOT re-stream TV channels.
+
+Videos should auto-update via playlists or live embeds.
+
+Always show source branding.
+
+🔹 TOOL 2: PAPER TRADE (PRACTICE TRADING)
+📍 Navigation
+
+Add Tools → Paper Trade option.
+
+💰 Core Logic
+
+Provide every user with ₹10,00,000 virtual balance.
+
+Allow:
+
+Buy & Sell stocks
+
+Quantity-based orders
+
+Orders must be simulated only (no real execution).
+
+📈 Market Data
+
+Use free & legal APIs only:
+
+Yahoo Finance
+
+Alpha Vantage (free tier)
+
+Finnhub (free tier)
+
+Delayed or near real-time prices are acceptable.
+
+Handle API limits safely.
+
+📊 Dashboard Features
+
+Portfolio holdings
+
+Invested amount
+
+Current value
+
+Profit / Loss (P&L)
+
+Trade history
+
+Reset account option
+
+⏱ Intraday Mode (Educational)
+
+Delivery & Intraday toggle
+
+Intraday trades auto square-off at market close
+
+Separate intraday P&L
+
+🧠 Strategy Testing (Basic)
+
+Pre-built strategies:
+
+Moving Average crossover
+
+RSI-based signals
+
+Show:
+
+Win ratio
+
+Total trades
+
+Net P&L
+
+Use free historical data only.
+
+🏆 Leaderboard (Optional)
+
+Rank users based on virtual profit
+
+Weekly / monthly reset
+
+Nickname-based (no real identity)
+
+🎨 UI / UX REQUIREMENTS
+
+Clean, modern fintech design (Zerodha Varsity / Groww inspired)
+
+Card-based layout
+
+Hover & micro-interactions
+
+Mobile & desktop responsive
+
+Profit shown in green, loss in red
+
+🗃 DATA STORAGE
+
+Store trades, balances, and results using:
+
+Replit DB / SQLite / JSON
+
+Ensure fast loading & reliability.
+
+⚠ LEGAL & DISCLAIMER (MANDATORY)
+
+Display clearly on Paper Trade pages:
+
+“This is a paper trading simulator for educational purposes only.
+No real trading, brokerage execution, or investment advice is provided.”
+
+No broker API integration
+
+No real money transactions
+
+🛠 TECH STACK
+
+Replit compatible
+
+HTML, CSS, JavaScript or React
+
+Node.js backend if required
+
+Free APIs only
+
+✅ FINAL GOAL
+
+Build a professional, real-time Live News system and a fully functional Paper Trading learning platform under the Tools section of ROTECH SHIKSHA, fully free, legal, educational, and scalable.

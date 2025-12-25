@@ -7,6 +7,9 @@ import {
   startups,
   investors,
   investorInterests,
+  paperTradingAccounts,
+  paperTrades,
+  paperHoldings,
   type User,
   type InsertUser,
   type Lead,
@@ -23,6 +26,9 @@ import {
   type InsertInvestor,
   type InvestorInterest,
   type InsertInvestorInterest,
+  type PaperTradingAccount,
+  type PaperTrade,
+  type PaperHolding,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -78,6 +84,18 @@ export interface IStorage {
   createInvestorInterest(interest: InsertInvestorInterest): Promise<InvestorInterest>;
   getInterestsByStartup(startupId: string): Promise<InvestorInterest[]>;
   getInterestsByInvestor(investorId: string): Promise<InvestorInterest[]>;
+
+  // Paper Trading
+  getPaperTradingAccount(userId: string): Promise<PaperTradingAccount | undefined>;
+  createPaperTradingAccount(userId: string): Promise<PaperTradingAccount>;
+  updatePaperTradingBalance(accountId: string, newBalance: number): Promise<void>;
+  resetPaperTradingAccount(userId: string): Promise<void>;
+  getPaperHoldings(accountId: string): Promise<PaperHolding[]>;
+  getHoldingBySymbol(accountId: string, symbol: string): Promise<PaperHolding | undefined>;
+  addOrUpdateHolding(accountId: string, symbol: string, stockName: string, quantity: number, priceInPaise: number): Promise<void>;
+  reduceHolding(accountId: string, symbol: string, quantity: number, priceInPaise: number): Promise<void>;
+  getPaperTrades(accountId: string): Promise<PaperTrade[]>;
+  recordPaperTrade(accountId: string, symbol: string, stockName: string, type: string, quantity: number, price: number, totalValue: number): Promise<PaperTrade>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -300,6 +318,125 @@ export class DatabaseStorage implements IStorage {
 
   async getInterestsByInvestor(investorId: string): Promise<InvestorInterest[]> {
     return db.select().from(investorInterests).where(eq(investorInterests.investorId, investorId));
+  }
+
+  // Paper Trading
+  async getPaperTradingAccount(userId: string): Promise<PaperTradingAccount | undefined> {
+    const [account] = await db.select().from(paperTradingAccounts).where(eq(paperTradingAccounts.userId, userId));
+    return account || undefined;
+  }
+
+  async createPaperTradingAccount(userId: string): Promise<PaperTradingAccount> {
+    const id = randomUUID();
+    const initialBalance = 1000000 * 100; // ₹10,00,000 in paise
+    const [account] = await db
+      .insert(paperTradingAccounts)
+      .values({ id, userId, virtualBalance: initialBalance, initialBalance })
+      .returning();
+    return account;
+  }
+
+  async updatePaperTradingBalance(accountId: string, newBalance: number): Promise<void> {
+    await db
+      .update(paperTradingAccounts)
+      .set({ virtualBalance: newBalance, updatedAt: new Date() })
+      .where(eq(paperTradingAccounts.id, accountId));
+  }
+
+  async resetPaperTradingAccount(userId: string): Promise<void> {
+    const account = await this.getPaperTradingAccount(userId);
+    if (account) {
+      const initialBalance = 1000000 * 100; // ₹10,00,000 in paise
+      await db.update(paperTradingAccounts)
+        .set({ virtualBalance: initialBalance, updatedAt: new Date() })
+        .where(eq(paperTradingAccounts.id, account.id));
+      await db.delete(paperHoldings).where(eq(paperHoldings.accountId, account.id));
+      await db.delete(paperTrades).where(eq(paperTrades.accountId, account.id));
+    }
+  }
+
+  async getPaperHoldings(accountId: string): Promise<PaperHolding[]> {
+    return db.select().from(paperHoldings).where(eq(paperHoldings.accountId, accountId));
+  }
+
+  async getHoldingBySymbol(accountId: string, symbol: string): Promise<PaperHolding | undefined> {
+    const holdings = await db.select().from(paperHoldings)
+      .where(eq(paperHoldings.accountId, accountId));
+    return holdings.find(h => h.symbol === symbol);
+  }
+
+  async addOrUpdateHolding(accountId: string, symbol: string, stockName: string, quantity: number, priceInPaise: number): Promise<void> {
+    const existing = await this.getHoldingBySymbol(accountId, symbol);
+    
+    if (existing) {
+      const newQuantity = existing.quantity + quantity;
+      const newInvested = existing.investedValue + (quantity * priceInPaise);
+      const newAvgPrice = Math.round(newInvested / newQuantity);
+      
+      await db.update(paperHoldings)
+        .set({ 
+          quantity: newQuantity, 
+          avgBuyPrice: newAvgPrice, 
+          investedValue: newInvested,
+          updatedAt: new Date() 
+        })
+        .where(eq(paperHoldings.id, existing.id));
+    } else {
+      const id = randomUUID();
+      await db.insert(paperHoldings).values({
+        id,
+        accountId,
+        symbol,
+        stockName,
+        quantity,
+        avgBuyPrice: priceInPaise,
+        investedValue: quantity * priceInPaise
+      });
+    }
+  }
+
+  async reduceHolding(accountId: string, symbol: string, quantity: number, priceInPaise: number): Promise<void> {
+    const existing = await this.getHoldingBySymbol(accountId, symbol);
+    
+    if (existing) {
+      const newQuantity = existing.quantity - quantity;
+      
+      if (newQuantity <= 0) {
+        await db.delete(paperHoldings).where(eq(paperHoldings.id, existing.id));
+      } else {
+        const soldValue = quantity * existing.avgBuyPrice;
+        const newInvested = existing.investedValue - soldValue;
+        
+        await db.update(paperHoldings)
+          .set({ 
+            quantity: newQuantity, 
+            investedValue: newInvested,
+            updatedAt: new Date() 
+          })
+          .where(eq(paperHoldings.id, existing.id));
+      }
+    }
+  }
+
+  async getPaperTrades(accountId: string): Promise<PaperTrade[]> {
+    return db.select().from(paperTrades)
+      .where(eq(paperTrades.accountId, accountId))
+      .orderBy(desc(paperTrades.createdAt));
+  }
+
+  async recordPaperTrade(accountId: string, symbol: string, stockName: string, type: string, quantity: number, price: number, totalValue: number): Promise<PaperTrade> {
+    const id = randomUUID();
+    const [trade] = await db.insert(paperTrades).values({
+      id,
+      accountId,
+      symbol,
+      stockName,
+      type,
+      quantity,
+      price,
+      totalValue
+    }).returning();
+    return trade;
   }
 }
 
