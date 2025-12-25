@@ -145,11 +145,16 @@ const indiaNewsVideos: VideoChannel[] = [
 export default function LiveNews() {
   const [newsLanguage, setNewsLanguage] = useState<"en" | "hi">("en");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<VideoChannel | null>(null);
   const [activeTab, setActiveTab] = useState<"news" | "videos">("news");
   const queryClient = useQueryClient();
   const { t, language: appLanguage } = useLanguage();
+
+  const openArticle = (url: string) => {
+    if (url && url !== "#") {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   const { data: categoriesData } = useQuery<{ categories: NewsCategory[] }>({
     queryKey: ["/api/news/categories"],
@@ -163,7 +168,7 @@ export default function LiveNews() {
       if (!res.ok) throw new Error("Failed to fetch news");
       return res.json();
     },
-    refetchInterval: 60000,
+    refetchInterval: 300000,
   });
 
   const { data: featuredData, isLoading: isLoadingFeatured } = useQuery<{ featured: NewsArticle; topStories: NewsArticle[]; language: string }>({
@@ -173,7 +178,7 @@ export default function LiveNews() {
       if (!res.ok) throw new Error("Failed to fetch featured news");
       return res.json();
     },
-    refetchInterval: 60000,
+    refetchInterval: 300000,
   });
 
   const categories = categoriesData?.categories || [];
@@ -333,7 +338,7 @@ export default function LiveNews() {
                   <Card 
                     className="lg:col-span-2 overflow-hidden group cursor-pointer hover-elevate" 
                     data-testid="featured-news"
-                    onClick={() => setSelectedArticle(featuredNews)}
+                    onClick={() => openArticle(featuredNews.url)}
                   >
                     <div className="relative h-64 lg:h-80">
                       <img
@@ -382,7 +387,7 @@ export default function LiveNews() {
                         <Card 
                           className="cursor-pointer hover-elevate" 
                           data-testid={`top-story-${story.id}`}
-                          onClick={() => setSelectedArticle(story)}
+                          onClick={() => openArticle(story.url)}
                         >
                           <CardContent className="p-4">
                             <Badge variant="secondary" className="mb-2 text-xs">
@@ -434,7 +439,7 @@ export default function LiveNews() {
                           <Card 
                             className="cursor-pointer group border transition-all duration-200 hover:border-primary/50 hover:shadow-md" 
                             data-testid={`news-card-${article.id}`}
-                            onClick={() => setSelectedArticle(article)}
+                            onClick={() => openArticle(article.url)}
                           >
                             <div className="relative h-40 overflow-hidden rounded-t-md">
                               <img
@@ -660,56 +665,6 @@ export default function LiveNews() {
           </CardContent>
         </Card>
       </div>
-
-      <Dialog open={!!selectedArticle} onOpenChange={(open) => !open && setSelectedArticle(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          {selectedArticle && (
-            <>
-              <DialogHeader>
-                <div className="space-y-4 w-full">
-                  <img
-                    src={selectedArticle.imageUrl}
-                    alt={selectedArticle.title}
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge className="bg-primary/90 text-primary-foreground border-0">
-                        {selectedArticle.tag}
-                      </Badge>
-                      <Badge variant="secondary">{selectedArticle.category}</Badge>
-                    </div>
-                    <DialogTitle className="text-xl">
-                      {selectedArticle.title}
-                    </DialogTitle>
-                    <DialogDescription className="text-base text-foreground/80">
-                      {selectedArticle.summary}
-                    </DialogDescription>
-                  </div>
-                </div>
-              </DialogHeader>
-
-              <div className="space-y-4 pt-4 border-t">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span className="font-medium">{selectedArticle.source}</span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    {formatTime(selectedArticle.publishedAt)}
-                  </span>
-                </div>
-                {selectedArticle.url && selectedArticle.url !== "#" && (
-                  <Button asChild className="w-full" data-testid="button-read-more">
-                    <a href={selectedArticle.url} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      {newsLanguage === "hi" ? "पूरा लेख पढ़ें" : "Read Full Article"}
-                    </a>
-                  </Button>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
 
       <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
