@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -8,15 +7,13 @@ import {
   TrendingUp,
   Zap,
   Bot,
-  ChevronRight,
-  Lock,
-  Play,
+  ArrowRight,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { LearnerCharacter, BookLearning } from "@/components/Illustrations";
 
 interface CourseLevel {
   id: string;
+  number: number;
   title: string;
   description: string;
   icon: React.ReactNode;
@@ -29,9 +26,10 @@ interface CourseLevel {
 const courseLevels: CourseLevel[] = [
   {
     id: "basic",
-    title: "Basic Level",
-    description: "Start your stock market journey with fundamentals",
-    icon: <BookOpen className="w-6 h-6" />,
+    number: 1,
+    title: "Stock Market Basics",
+    description: "Start your journey with fundamentals of stock market investing",
+    icon: <BookOpen className="w-7 h-7" />,
     topics: [
       "What is Stock Market",
       "NSE & BSE Explained",
@@ -41,13 +39,14 @@ const courseLevels: CourseLevel[] = [
     ],
     color: "emerald",
     href: "/courses/basic",
-    badge: "Beginner Friendly",
+    badge: "Beginner",
   },
   {
     id: "intermediate",
-    title: "Intermediate",
-    description: "Master technical analysis and chart patterns",
-    icon: <TrendingUp className="w-6 h-6" />,
+    number: 2,
+    title: "Technical Analysis",
+    description: "Master chart patterns and technical indicators",
+    icon: <TrendingUp className="w-7 h-7" />,
     topics: [
       "Chart Patterns",
       "Support & Resistance",
@@ -60,9 +59,10 @@ const courseLevels: CourseLevel[] = [
   },
   {
     id: "advanced",
-    title: "Advanced Level",
-    description: "Dive deep into options and pro strategies",
-    icon: <Zap className="w-6 h-6" />,
+    number: 3,
+    title: "Options & Strategies",
+    description: "Advanced options trading and professional strategies",
+    icon: <Zap className="w-7 h-7" />,
     topics: [
       "Option Chain Analysis",
       "Open Interest",
@@ -72,13 +72,14 @@ const courseLevels: CourseLevel[] = [
     ],
     color: "purple",
     href: "/courses/advanced",
-    badge: "Pro Level",
+    badge: "Advanced",
   },
   {
     id: "algo",
+    number: 4,
     title: "Algo Trading",
-    description: "Automate your trading with algorithms",
-    icon: <Bot className="w-6 h-6" />,
+    description: "Automate your trading with algorithms and backtesting",
+    icon: <Bot className="w-7 h-7" />,
     topics: [
       "What is Algo Trading",
       "Strategy Creation",
@@ -92,30 +93,34 @@ const courseLevels: CourseLevel[] = [
   },
 ];
 
-const colorClasses = {
+const colorConfig = {
   emerald: {
-    bg: "bg-emerald-500/10",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-500/20",
-    badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    bg: "bg-emerald-50 dark:bg-emerald-950/20",
+    icon: "text-emerald-600 dark:text-emerald-400",
+    badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+    bullet: "bg-emerald-500",
+    number: "bg-emerald-500",
   },
   blue: {
-    bg: "bg-blue-500/10",
-    text: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-500/20",
-    badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    bg: "bg-blue-50 dark:bg-blue-950/20",
+    icon: "text-blue-600 dark:text-blue-400",
+    badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+    bullet: "bg-blue-500",
+    number: "bg-blue-500",
   },
   purple: {
-    bg: "bg-purple-500/10",
-    text: "text-purple-600 dark:text-purple-400",
-    border: "border-purple-500/20",
-    badge: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    bg: "bg-purple-50 dark:bg-purple-950/20",
+    icon: "text-purple-600 dark:text-purple-400",
+    badge: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+    bullet: "bg-purple-500",
+    number: "bg-purple-500",
   },
   amber: {
-    bg: "bg-amber-500/10",
-    text: "text-amber-600 dark:text-amber-400",
-    border: "border-amber-500/20",
-    badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    bg: "bg-amber-50 dark:bg-amber-950/20",
+    icon: "text-amber-600 dark:text-amber-400",
+    badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+    bullet: "bg-amber-500",
+    number: "bg-amber-500",
   },
 };
 
@@ -131,108 +136,103 @@ export function CourseCards() {
   };
 
   return (
-    <section className="py-16 lg:py-24 bg-card/50">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-3 gap-8 items-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="hidden lg:flex justify-center"
-          >
-            <div className="relative">
-              <LearnerCharacter size={180} />
-              <motion.div
-                className="absolute -top-4 -right-4"
-                animate={{ rotate: [0, 5, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <BookLearning size={80} />
-              </motion.div>
-            </div>
-          </motion.div>
-          <div className="lg:col-span-2 text-center lg:text-left space-y-4">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Complete Learning Path
-            </h2>
-            <p className="text-muted-foreground max-w-xl">
-              From stock market basics to advanced algo trading - learn everything step by step
-            </p>
-          </div>
-        </div>
+    <section className="py-16 lg:py-24 bg-muted/30">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+            Learning Modules
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Structured courses from basics to advanced algo trading - learn step by step
+          </p>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {courseLevels.map((course, index) => {
-            const colors = colorClasses[course.color as keyof typeof colorClasses];
+            const colors = colorConfig[course.color as keyof typeof colorConfig];
             return (
-              <Card
+              <motion.div
                 key={course.id}
-                className="group relative hover-elevate transition-all duration-300"
-                data-testid={`card-course-${course.id}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
               >
-                <CardHeader className="pt-6">
-                  <div className="flex items-start justify-between gap-2 mb-4">
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${colors.bg} ${colors.text} font-bold text-sm`}
-                    >
-                      {index + 1}
-                    </div>
-                    {course.badge && (
-                      <Badge
-                        className={`${colors.badge} border-0`}
-                        variant="outline"
-                      >
-                        {course.badge}
-                      </Badge>
-                    )}
+                <div
+                  className="bg-white dark:bg-card rounded-xl border border-border/50 p-6 h-full flex flex-col relative transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5"
+                  data-testid={`card-course-${course.id}`}
+                >
+                  <div className={`absolute -top-3 -left-2 w-8 h-8 rounded-full ${colors.number} text-white flex items-center justify-center text-sm font-bold shadow-md`}>
+                    {course.number}
                   </div>
-                  <div
-                    className={`w-12 h-12 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center mb-4`}
-                  >
+                  
+                  <div className={`w-14 h-14 rounded-xl ${colors.bg} ${colors.icon} flex items-center justify-center mb-4`}>
                     {course.icon}
                   </div>
-                  <CardTitle className="text-lg">{course.title}</CardTitle>
-                  <CardDescription>{course.description}</CardDescription>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  <ul className="space-y-2">
-                    {course.topics.map((topic, i) => (
-                      <li
-                        key={i}
-                        className="text-sm text-muted-foreground flex items-center gap-2"
-                      >
-                        <div
-                          className={`w-1.5 h-1.5 rounded-full ${colors.bg.replace("/10", "")}`}
-                        />
-                        {topic}
+                  
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="text-lg font-semibold text-foreground">{course.title}</h3>
+                  </div>
+                  
+                  {course.badge && (
+                    <Badge className={`${colors.badge} border-0 w-fit mb-3`} variant="outline">
+                      {course.badge}
+                    </Badge>
+                  )}
+                  
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    {course.description}
+                  </p>
+                  
+                  <ul className="space-y-2 mb-6 flex-1">
+                    {course.topics.slice(0, 4).map((topic, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
+                        <div className={`w-1.5 h-1.5 rounded-full ${colors.bullet}`} />
+                        <span className="line-clamp-1">{topic}</span>
                       </li>
                     ))}
+                    {course.topics.length > 4 && (
+                      <li className="text-xs text-primary font-medium">
+                        +{course.topics.length - 4} more topics
+                      </li>
+                    )}
                   </ul>
 
                   <Link href={course.href}>
                     <Button
-                      className={`w-full justify-between group/btn bg-gradient-to-r ${
-                        course.color === "emerald" ? "from-emerald-500 to-emerald-600" :
-                        course.color === "blue" ? "from-blue-500 to-blue-600" :
-                        course.color === "purple" ? "from-purple-500 to-purple-600" :
-                        "from-amber-500 to-orange-500"
-                      } text-white shadow-md`}
+                      variant="outline"
+                      className="w-full justify-between"
                       onClick={(e) => handleViewContent(e, course.title)}
                       data-testid={`button-view-${course.id}`}
                     >
-                      <span className="flex items-center gap-2">
-                        {!isAuthenticated ? <Lock className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                        {isAuthenticated ? "Watch Now" : "Access Free Content"}
-                      </span>
-                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                      <span>Start Learning</span>
+                      <ArrowRight className="w-4 h-4" />
                     </Button>
                   </Link>
-                </CardContent>
-              </Card>
+                </div>
+              </motion.div>
             );
           })}
         </div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-10"
+        >
+          <Link href="/courses">
+            <Button variant="outline" size="lg" className="gap-2">
+              View All Courses
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

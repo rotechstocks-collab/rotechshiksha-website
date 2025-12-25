@@ -1,6 +1,6 @@
 import { Link } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
   Calculator,
@@ -18,8 +18,8 @@ import {
   Percent,
   LineChart,
   Landmark,
+  ArrowRight,
 } from "lucide-react";
-import { CalculatorIllustration, CoinStack, GrowthChart } from "@/components/Illustrations";
 
 interface CalculatorItem {
   id: string;
@@ -188,109 +188,131 @@ const categoryLabels = {
 };
 
 const categoryColors = {
-  investment: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  tax: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
-  government: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  banking: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
-  loan: "bg-red-500/10 text-red-600 dark:text-red-400",
+  investment: {
+    bg: "bg-emerald-50 dark:bg-emerald-950/20",
+    icon: "text-emerald-600 dark:text-emerald-400",
+    badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400",
+  },
+  tax: {
+    bg: "bg-orange-50 dark:bg-orange-950/20",
+    icon: "text-orange-600 dark:text-orange-400",
+    badge: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400",
+  },
+  government: {
+    bg: "bg-blue-50 dark:bg-blue-950/20",
+    icon: "text-blue-600 dark:text-blue-400",
+    badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400",
+  },
+  banking: {
+    bg: "bg-purple-50 dark:bg-purple-950/20",
+    icon: "text-purple-600 dark:text-purple-400",
+    badge: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400",
+  },
+  loan: {
+    bg: "bg-rose-50 dark:bg-rose-950/20",
+    icon: "text-rose-600 dark:text-rose-400",
+    badge: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400",
+  },
 };
 
 export default function CalculatorHub() {
   const categories = ["investment", "tax", "government", "banking", "loan"] as const;
+  const popularCalcs = calculators.filter(c => c.popular);
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center lg:text-left"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              <Calculator className="w-4 h-4" />
-              Financial Calculators
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Free Financial Calculators
-            </h1>
-            <p className="text-muted-foreground max-w-xl">
-              Plan your investments, calculate taxes, and make informed financial decisions
-              with our comprehensive suite of calculators.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="hidden lg:flex justify-center relative"
-          >
-            <CalculatorIllustration size={180} />
-            <motion.div
-              className="absolute -top-4 -right-4"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            >
-              <GrowthChart size={120} />
-            </motion.div>
-            <motion.div
-              className="absolute -bottom-4 -left-8"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
-              <CoinStack size={80} />
-            </motion.div>
-          </motion.div>
-        </div>
+    <div className="min-h-screen pt-20 pb-16 bg-white dark:bg-background">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            <Calculator className="w-4 h-4" />
+            20+ Free Tools
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+            Financial Calculators
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Plan investments, calculate taxes, and make informed financial decisions
+          </p>
+        </motion.div>
+
+        <section className="mb-16">
+          <h2 className="text-xl font-semibold text-foreground mb-6">Popular Calculators</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {popularCalcs.map((calc, index) => {
+              const colors = categoryColors[calc.category];
+              return (
+                <motion.div
+                  key={calc.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <Link href={`/calculators/${calc.id}`}>
+                    <div
+                      className="bg-white dark:bg-card rounded-xl border border-border/50 p-4 h-full flex flex-col items-center text-center transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 cursor-pointer"
+                      data-testid={`card-calc-${calc.id}`}
+                    >
+                      <div className={`w-12 h-12 rounded-xl ${colors.bg} ${colors.icon} flex items-center justify-center mb-3`}>
+                        {calc.icon}
+                      </div>
+                      <h3 className="text-sm font-medium text-foreground">{calc.name}</h3>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
 
         {categories.map((category) => {
-          const categoryCalcs = calculators.filter((c) => c.category === category);
-          if (categoryCalcs.length === 0) return null;
-
+          const categoryCalcs = calculators.filter(c => c.category === category);
+          const colors = categoryColors[category];
+          
           return (
             <section key={category} className="mb-12">
-              <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
-                <span className={`p-1.5 rounded-lg ${categoryColors[category]}`}>
-                  {category === "investment" && <TrendingUp className="w-4 h-4" />}
-                  {category === "tax" && <Receipt className="w-4 h-4" />}
-                  {category === "government" && <Shield className="w-4 h-4" />}
-                  {category === "banking" && <Landmark className="w-4 h-4" />}
-                  {category === "loan" && <CreditCard className="w-4 h-4" />}
-                </span>
-                {categoryLabels[category]} Calculators
-              </h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {categoryCalcs.map((calc) => (
-                  <Link key={calc.id} href={`/calculators/${calc.id}`}>
-                    <Card
-                      className="h-full hover-elevate cursor-pointer transition-all group"
-                      data-testid={`card-calculator-${calc.id}`}
-                    >
-                      <CardContent className="p-5">
-                        <div className="flex items-start gap-4">
-                          <div className={`p-2.5 rounded-xl ${categoryColors[calc.category]}`}>
-                            {calc.icon}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap mb-1">
-                              <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                                {calc.name}
-                              </h3>
-                              {calc.popular && (
-                                <Badge variant="secondary" className="text-xs">
-                                  Popular
-                                </Badge>
-                              )}
-                            </div>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {calc.description}
-                            </p>
-                          </div>
+              <div className="flex items-center gap-3 mb-6">
+                <h2 className="text-xl font-semibold text-foreground">
+                  {categoryLabels[category]}
+                </h2>
+                <Badge className={`${colors.badge} border-0`} variant="outline">
+                  {categoryCalcs.length} tools
+                </Badge>
+              </div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {categoryCalcs.map((calc, index) => (
+                  <motion.div
+                    key={calc.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link href={`/calculators/${calc.id}`}>
+                      <div
+                        className="bg-white dark:bg-card rounded-xl border border-border/50 p-5 h-full flex items-start gap-4 transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 cursor-pointer group"
+                        data-testid={`card-calc-${calc.id}`}
+                      >
+                        <div className={`w-12 h-12 rounded-xl ${colors.bg} ${colors.icon} flex items-center justify-center shrink-0`}>
+                          {calc.icon}
                         </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors mb-1">
+                            {calc.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {calc.description}
+                          </p>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1" />
+                      </div>
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             </section>
