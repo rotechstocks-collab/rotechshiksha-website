@@ -12,6 +12,7 @@ import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { HreflangTags } from "@/components/HreflangTags";
+import { LiveTicker } from "@/components/LiveTicker";
 
 import Home from "@/pages/Home";
 import About from "@/pages/About";
@@ -57,7 +58,8 @@ function App() {
           <AuthProvider>
             <TooltipProvider>
               <HreflangTags />
-              <div className="min-h-screen bg-background">
+              <LiveTicker />
+              <div className="min-h-screen bg-background pt-11">
                 <Header />
                 <main className="pt-0">
                   <Router />

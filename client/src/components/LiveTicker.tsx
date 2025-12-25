@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { StockDetailModal } from "./StockDetailModal";
 
 interface MarketData {
@@ -33,8 +34,6 @@ const defaultData: MarketData[] = [
   { name: "Wipro", symbol: "WIPRO", price: 505.80, change: 3.25, changePercent: 0.65, open: 502.55, high: 508.00, low: 500.00, prevClose: 502.55 },
   { name: "Maruti", symbol: "MARUTI", price: 12045.50, change: -125.80, changePercent: -1.03, open: 12171.30, high: 12200.00, low: 12010.00, prevClose: 12171.30 },
   { name: "Tata Motors", symbol: "TATAMOTORS", price: 812.35, change: 9.45, changePercent: 1.18, open: 802.90, high: 818.00, low: 798.00, prevClose: 802.90 },
-  { name: "Adani Ent", symbol: "ADANIENT", price: 3025.60, change: -45.80, changePercent: -1.49, open: 3071.40, high: 3085.00, low: 3008.00, prevClose: 3071.40 },
-  { name: "Asian Paints", symbol: "ASIANPAINT", price: 2925.40, change: 18.65, changePercent: 0.64, open: 2906.75, high: 2935.00, low: 2898.00, prevClose: 2906.75 },
 ];
 
 export function LiveTicker() {
@@ -42,6 +41,8 @@ export function LiveTicker() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedStock, setSelectedStock] = useState<MarketData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const fetchMarketData = useCallback(async () => {
     try {
@@ -50,6 +51,7 @@ export function LiveTicker() {
         const data = await response.json();
         if (data.length > 0) {
           setMarketData(data);
+          setLastUpdated(new Date());
         }
       }
     } catch (error) {
@@ -61,7 +63,7 @@ export function LiveTicker() {
 
   useEffect(() => {
     fetchMarketData();
-    const interval = setInterval(fetchMarketData, 10000);
+    const interval = setInterval(fetchMarketData, 15000);
     return () => clearInterval(interval);
   }, [fetchMarketData]);
 
@@ -75,26 +77,41 @@ export function LiveTicker() {
     setSelectedStock(null);
   };
 
+  const tripleData = [...marketData, ...marketData, ...marketData];
+
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 bg-slate-900 dark:bg-slate-950 border-b border-slate-700 h-11 overflow-hidden">
-        <div className="ticker-track flex items-center h-full gap-1 px-2 whitespace-nowrap">
-          {[...marketData, ...marketData, ...marketData].map((stock, index) => (
-            <button
+      <motion.div 
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="fixed top-0 left-0 right-0 z-[100] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-700/50 h-11 overflow-hidden shadow-lg"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-teal-500/5 to-blue-500/5" />
+        
+        <div 
+          className={`ticker-track flex items-center h-full gap-1 px-2 whitespace-nowrap ${isHovered ? 'paused' : ''}`}
+        >
+          {tripleData.map((stock, index) => (
+            <motion.button
               key={`${stock.symbol}-${index}`}
-              className="ticker-item flex items-center gap-2 px-3 py-1.5 cursor-pointer rounded transition-colors"
+              className="ticker-item flex items-center gap-2 px-3 py-1.5 cursor-pointer rounded-lg transition-all duration-150 relative group"
               onClick={() => handleStockClick(stock)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               data-testid={`ticker-${stock.symbol.toLowerCase()}-${index}`}
             >
-              <span className="font-semibold text-slate-100 text-sm">{stock.name}</span>
-              <span className="font-mono text-slate-100 font-medium text-sm">
+              <span className="font-semibold text-slate-100 text-sm tracking-wide">{stock.name}</span>
+              <span className="font-mono text-white font-medium text-sm">
                 {stock.price.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
               </span>
               <span
-                className={`flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded ${
+                className={`flex items-center gap-0.5 text-xs font-bold px-2 py-0.5 rounded-full ${
                   stock.change >= 0 
-                    ? "text-emerald-400 bg-emerald-500/20" 
-                    : "text-red-400 bg-red-500/20"
+                    ? "text-emerald-300 bg-emerald-500/25 border border-emerald-500/30" 
+                    : "text-red-300 bg-red-500/25 border border-red-500/30"
                 }`}
               >
                 {stock.change >= 0 ? (
@@ -105,32 +122,42 @@ export function LiveTicker() {
                 {stock.change >= 0 ? "+" : ""}
                 {stock.changePercent.toFixed(2)}%
               </span>
-            </button>
+              
+              <div className="absolute inset-0 rounded-lg bg-white/0 group-hover:bg-white/10 transition-colors duration-150" />
+            </motion.button>
           ))}
         </div>
+
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <RefreshCw className="w-4 h-4 text-slate-400 animate-spin" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
         <style>{`
           @keyframes ticker-scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-33.33%); }
           }
           .ticker-track {
-            animation: ticker-scroll 90s linear infinite;
+            animation: ticker-scroll 120s linear infinite;
             width: max-content;
           }
-          .ticker-track:hover {
+          .ticker-track.paused {
             animation-play-state: paused;
           }
           .ticker-item {
-            transition: background-color 0.15s ease;
-          }
-          .ticker-item:hover {
-            background-color: rgba(148, 163, 184, 0.15);
-          }
-          .ticker-item:active {
-            background-color: rgba(148, 163, 184, 0.25);
+            transition: background-color 0.15s ease, transform 0.15s ease;
           }
         `}</style>
-      </div>
+      </motion.div>
 
       <StockDetailModal
         stock={selectedStock}

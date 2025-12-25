@@ -53,7 +53,7 @@ export function Header() {
 
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-background/90 backdrop-blur-md border-b border-slate-100 dark:border-border shadow-sm"
+      className="fixed top-11 left-0 right-0 z-40 bg-white/95 dark:bg-background/95 backdrop-blur-md border-b border-slate-100 dark:border-border shadow-sm"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}

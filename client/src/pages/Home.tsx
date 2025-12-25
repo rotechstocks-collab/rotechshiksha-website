@@ -48,6 +48,7 @@ import {
   FloatingCoins,
 } from "@/components/SmallcaseIllustrations";
 import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem, HoverLift } from "@/components/AnimationWrappers";
+import { MarketNewsSection } from "@/components/MarketNewsSection";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIPOList, formatDate as formatIPODate, type IPOData } from "@/lib/ipoApi";
 
@@ -487,6 +488,16 @@ export default function Home() {
               </Button>
             </Link>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white/50 dark:bg-background relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-10 right-20 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-72 h-72 bg-blue-400/15 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative">
+          <MarketNewsSection limit={6} showTitle={true} />
         </div>
       </section>
 
