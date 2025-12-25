@@ -40,6 +40,7 @@ const navItemsConfig: NavItem[] = [
     labelKey: "nav.tools",
     href: "/tools",
     children: [
+      { labelKey: "nav.liveNews", href: "/live-news" },
       { labelKey: "nav.calculators", href: "/calculators" },
       { labelKey: "nav.brokers", href: "/compare-brokers" },
       { labelKey: "nav.ipo", href: "/ipo" },
