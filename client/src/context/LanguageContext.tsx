@@ -38,14 +38,50 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const STORAGE_KEY = "rotech-language";
+const USER_SELECTED_KEY = "rotech-language-user-selected";
+
+// Detect browser language and map to supported languages
+function detectBrowserLanguage(): Language {
+  if (typeof window === "undefined") return "en";
+  
+  const browserLang = navigator.language || (navigator as any).userLanguage || "en";
+  const langCode = browserLang.split("-")[0].toLowerCase();
+  
+  // Map browser language codes to our supported languages
+  const languageMap: Record<string, Language> = {
+    en: "en",
+    hi: "hi",
+    mr: "mr",
+    ta: "ta",
+    kn: "kn",
+    gu: "gu",
+    te: "te",
+    ml: "ml",
+    fr: "fr",
+    es: "es",
+    ar: "ar",
+    de: "de",
+    ru: "ru",
+    ur: "ur"
+  };
+  
+  return languageMap[langCode] || "en";
+}
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== "undefined") {
+      // Check if user has manually selected a language before
+      const userSelected = localStorage.getItem(USER_SELECTED_KEY);
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && languages.some(l => l.code === saved)) {
+      
+      if (userSelected === "true" && saved && languages.some(l => l.code === saved)) {
         return saved as Language;
       }
+      
+      // Auto-detect from browser on first visit
+      const detected = detectBrowserLanguage();
+      return detected;
     }
     return "en";
   });
@@ -80,11 +116,28 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [language, isRTL]);
 
   const setLanguage = (lang: Language) => {
+    // Mark that user has manually selected a language
+    localStorage.setItem(USER_SELECTED_KEY, "true");
     setLanguageState(lang);
   };
 
   const t = (key: string): string => {
-    return translations[key] || enTranslations[key as keyof typeof enTranslations] || key;
+    const translation = translations[key];
+    if (translation) return translation;
+    
+    // Fallback to English
+    const englishFallback = enTranslations[key as keyof typeof enTranslations];
+    if (englishFallback) {
+      // Log warning for missing translation in development
+      if (process.env.NODE_ENV === "development" && language !== "en") {
+        console.warn(`[i18n] Missing translation for key "${key}" in language "${language}"`);
+      }
+      return englishFallback;
+    }
+    
+    // Return key if no translation found
+    console.warn(`[i18n] Translation key not found: "${key}"`);
+    return key;
   };
 
   const getLanguageInfo = (): LanguageOption => {

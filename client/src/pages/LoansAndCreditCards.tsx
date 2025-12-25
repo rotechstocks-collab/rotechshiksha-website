@@ -321,16 +321,17 @@ const providers: Provider[] = [
   }
 ];
 
-const categories = [
-  { id: "home", label: "Home Loan", icon: Home },
-  { id: "personal", label: "Personal Loan", icon: User },
-  { id: "business", label: "Business Loan", icon: Briefcase },
-  { id: "gold", label: "Gold Loan", icon: Coins },
-  { id: "education", label: "Education Loan", icon: GraduationCap },
-  { id: "creditcard", label: "Credit Cards", icon: CreditCard }
+const categoryConfig = [
+  { id: "home", labelKey: "loans.tabs.home", icon: Home },
+  { id: "personal", labelKey: "loans.tabs.personal", icon: User },
+  { id: "business", labelKey: "loans.tabs.business", icon: Briefcase },
+  { id: "gold", labelKey: "loans.tabs.gold", icon: Coins },
+  { id: "education", labelKey: "loans.tabs.education", icon: GraduationCap },
+  { id: "creditcard", labelKey: "loans.tabs.creditcard", icon: CreditCard }
 ];
 
 function EMICalculator() {
+  const { t } = useLanguage();
   const [loanAmount, setLoanAmount] = useState(1000000);
   const [interestRate, setInterestRate] = useState(10);
   const [tenure, setTenure] = useState(12);
@@ -362,15 +363,15 @@ function EMICalculator() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Calculator className="w-5 h-5 text-primary" />
-          EMI Calculator
+          {t("loans.emiCalculator")}
         </CardTitle>
-        <CardDescription>Calculate your monthly EMI for any loan type</CardDescription>
+        <CardDescription>{t("loans.emiCalculatorDesc")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid md:grid-cols-3 gap-6">
           <div className="space-y-3">
             <Label className="flex justify-between">
-              Loan Amount
+              {t("loans.loanAmount")}
               <span className="text-primary font-semibold">{formatCurrency(loanAmount)}</span>
             </Label>
             <Slider
@@ -392,7 +393,7 @@ function EMICalculator() {
 
           <div className="space-y-3">
             <Label className="flex justify-between">
-              Interest Rate (% p.a.)
+              {t("loans.interestRateLabel")}
               <span className="text-primary font-semibold">{interestRate}%</span>
             </Label>
             <Slider
@@ -415,8 +416,8 @@ function EMICalculator() {
 
           <div className="space-y-3">
             <Label className="flex justify-between">
-              Tenure (Months)
-              <span className="text-primary font-semibold">{tenure} months</span>
+              {t("loans.tenureMonths")}
+              <span className="text-primary font-semibold">{tenure}</span>
             </Label>
             <Slider
               value={[tenure]}
@@ -438,19 +439,19 @@ function EMICalculator() {
 
         <div className="grid md:grid-cols-3 gap-4 pt-4 border-t">
           <div className="bg-white dark:bg-slate-800 rounded-lg p-4 text-center">
-            <p className="text-sm text-muted-foreground">Monthly EMI</p>
+            <p className="text-sm text-muted-foreground">{t("loans.monthlyEmi")}</p>
             <p className="text-2xl font-bold text-primary" data-testid="text-monthly-emi">
               {formatCurrency(calculations.emi)}
             </p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-lg p-4 text-center">
-            <p className="text-sm text-muted-foreground">Total Interest</p>
+            <p className="text-sm text-muted-foreground">{t("loans.totalInterest")}</p>
             <p className="text-2xl font-bold text-orange-500" data-testid="text-total-interest">
               {formatCurrency(calculations.totalInterest)}
             </p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-lg p-4 text-center">
-            <p className="text-sm text-muted-foreground">Total Amount</p>
+            <p className="text-sm text-muted-foreground">{t("loans.totalAmount")}</p>
             <p className="text-2xl font-bold text-green-600" data-testid="text-total-amount">
               {formatCurrency(calculations.totalAmount)}
             </p>
@@ -466,6 +467,7 @@ function ProviderCard({ provider, isSelected, onToggleCompare }: {
   isSelected: boolean;
   onToggleCompare: (id: string) => void;
 }) {
+  const { t } = useLanguage();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -495,7 +497,7 @@ function ProviderCard({ provider, isSelected, onToggleCompare }: {
                 data-testid={`checkbox-compare-${provider.id}`}
               />
               <Label htmlFor={`compare-${provider.id}`} className="text-xs text-muted-foreground cursor-pointer">
-                Compare
+                {t("loans.compare")}
               </Label>
             </div>
           </div>
@@ -542,7 +544,7 @@ function ProviderCard({ provider, isSelected, onToggleCompare }: {
               rel="noopener noreferrer"
               data-testid={`button-apply-${provider.id}`}
             >
-              Apply Now
+              {t("loans.applyNow")}
               <ExternalLink className="w-4 h-4" />
             </a>
           </Button>
@@ -557,12 +559,13 @@ function ProviderCard({ provider, isSelected, onToggleCompare }: {
 }
 
 function ComparisonTable({ selectedProviders }: { selectedProviders: Provider[] }) {
+  const { t } = useLanguage();
   if (selectedProviders.length < 2) {
     return (
       <Card className="bg-muted/30">
         <CardContent className="py-8 text-center">
           <Scale className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">Select at least 2 providers to compare</p>
+          <p className="text-muted-foreground">{t("loans.selectAtLeast2")}</p>
         </CardContent>
       </Card>
     );
@@ -573,14 +576,14 @@ function ComparisonTable({ selectedProviders }: { selectedProviders: Provider[] 
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Scale className="w-5 h-5" />
-          Comparison ({selectedProviders.length} providers)
+          {t("loans.comparison")} ({selectedProviders.length})
         </CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b">
-              <th className="text-left p-3 font-medium">Feature</th>
+              <th className="text-left p-3 font-medium">{t("loans.feature")}</th>
               {selectedProviders.map(p => (
                 <th key={p.id} className="text-center p-3 font-medium min-w-[180px]">
                   <div className="flex flex-col items-center gap-2">
@@ -593,31 +596,31 @@ function ComparisonTable({ selectedProviders }: { selectedProviders: Provider[] 
           </thead>
           <tbody>
             <tr className="border-b">
-              <td className="p-3 font-medium">Interest Rate</td>
+              <td className="p-3 font-medium">{t("loans.interestRate")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="text-center p-3">{p.interestRate}</td>
               ))}
             </tr>
             <tr className="border-b">
-              <td className="p-3 font-medium">Processing Fee</td>
+              <td className="p-3 font-medium">{t("loans.processingFee")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="text-center p-3">{p.processingFee}</td>
               ))}
             </tr>
             <tr className="border-b">
-              <td className="p-3 font-medium">Tenure</td>
+              <td className="p-3 font-medium">{t("loans.tenure")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="text-center p-3">{p.tenure}</td>
               ))}
             </tr>
             <tr className="border-b">
-              <td className="p-3 font-medium">Processing Time</td>
+              <td className="p-3 font-medium">{t("loans.processingTime")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="text-center p-3">{p.processingTime}</td>
               ))}
             </tr>
             <tr className="border-b bg-green-50 dark:bg-green-900/20">
-              <td className="p-3 font-medium text-green-700 dark:text-green-300">Pros</td>
+              <td className="p-3 font-medium text-green-700 dark:text-green-300">{t("loans.pros")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="p-3">
                   <ul className="space-y-1">
@@ -632,7 +635,7 @@ function ComparisonTable({ selectedProviders }: { selectedProviders: Provider[] 
               ))}
             </tr>
             <tr className="bg-red-50 dark:bg-red-900/20">
-              <td className="p-3 font-medium text-red-700 dark:text-red-300">Cons</td>
+              <td className="p-3 font-medium text-red-700 dark:text-red-300">{t("loans.cons")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="p-3">
                   <ul className="space-y-1">
@@ -647,12 +650,12 @@ function ComparisonTable({ selectedProviders }: { selectedProviders: Provider[] 
               ))}
             </tr>
             <tr>
-              <td className="p-3 font-medium">Apply</td>
+              <td className="p-3 font-medium">{t("loans.applyNow")}</td>
               {selectedProviders.map(p => (
                 <td key={p.id} className="text-center p-3">
                   <Button asChild size="sm">
                     <a href={p.applyUrl} target="_blank" rel="noopener noreferrer">
-                      Apply <ExternalLink className="w-3 h-3 ml-1" />
+                      {t("loans.applyNow")} <ExternalLink className="w-3 h-3 ml-1" />
                     </a>
                   </Button>
                 </td>
@@ -692,20 +695,19 @@ export default function LoansAndCreditCards() {
           className="text-center mb-8"
         >
           <Badge variant="outline" className="mb-4">
-            Financial Tools
+            {t("nav.tools")}
           </Badge>
           <h1 className="text-3xl md:text-4xl font-bold mb-4" data-testid="heading-loans-creditcards">
-            {t("nav.loansAndCreditCards") || "Loans & Credit Cards"}
+            {t("loans.title")}
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Compare and apply for loans and credit cards from India's top financial institutions. 
-            We redirect you to official websites for safe and secure applications.
+            {t("loans.subtitle")}
           </p>
         </motion.div>
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8">
           <TabsList className="flex flex-wrap justify-center gap-2 h-auto bg-transparent">
-            {categories.map((cat) => {
+            {categoryConfig.map((cat) => {
               const Icon = cat.icon;
               return (
                 <TabsTrigger
@@ -715,13 +717,13 @@ export default function LoansAndCreditCards() {
                   data-testid={`tab-${cat.id}`}
                 >
                   <Icon className="w-4 h-4" />
-                  {cat.label}
+                  {t(cat.labelKey)}
                 </TabsTrigger>
               );
             })}
           </TabsList>
 
-          {categories.map((cat) => (
+          {categoryConfig.map((cat) => (
             <TabsContent key={cat.id} value={cat.id} className="mt-6">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProviders.map((provider) => (
@@ -743,10 +745,10 @@ export default function LoansAndCreditCards() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Compare Selected</h2>
+            <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <h2 className="text-xl font-semibold">{t("loans.compareSelected")}</h2>
               <Button variant="outline" size="sm" onClick={clearComparison}>
-                Clear Selection
+                {t("common.close")}
               </Button>
             </div>
             <ComparisonTable selectedProviders={selectedProviders} />
@@ -762,13 +764,9 @@ export default function LoansAndCreditCards() {
             <div className="flex items-start gap-4">
               <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
               <div className="space-y-2">
-                <h3 className="font-semibold text-amber-800 dark:text-amber-200">Important Disclaimer</h3>
+                <h3 className="font-semibold text-amber-800 dark:text-amber-200">{t("loans.disclaimer")}</h3>
                 <p className="text-sm text-amber-700 dark:text-amber-300">
-                  <strong>ROTECH SHIKSHA is NOT a lender, bank, or credit card issuer.</strong> We are an educational platform 
-                  that provides information about financial products for educational purposes only. When you click "Apply Now", 
-                  you will be redirected to the official website of the respective financial institution. All loan/credit card 
-                  applications, approvals, and terms are subject to the policies of the respective banks and NBFCs. 
-                  We do not guarantee approval or specific terms. Please read all terms and conditions carefully before applying.
+                  {t("loans.disclaimerText")}
                 </p>
               </div>
             </div>
