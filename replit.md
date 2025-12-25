@@ -6,6 +6,20 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Loans & Credit Cards Module
+  - Comprehensive financial products comparison page under Tools menu
+  - 6 sections: Home Loan, Personal Loan, Business Loan, Gold Loan, Education Loan, Credit Cards
+  - 16 provider cards with logos, benefits, rates, processing fees, and direct apply links
+  - Providers: SBI, HDFC, ICICI, Bajaj Finserv, Muthoot, Manappuram, American Express, Axis Bank
+  - Comparison feature with checkbox selection and side-by-side comparison table
+  - EMI Calculator with real-time calculations (sliders for loan amount, interest rate, tenure)
+  - Shows Monthly EMI, Total Interest, Total Amount Payable
+  - Legal disclaimer: Platform is NOT a lender, redirects to official websites only
+  - Premium card-based UI with hover animations using Framer Motion
+  - Fully responsive design for mobile and desktop
+  - Translations added for all 13 languages
+  - Route: /loans-credit-cards
+
 - **Dec 2024**: Advanced Economic Calendar (Premium Upgrade)
   - Backend service with Finnhub API integration (optional FINNHUB_API_KEY)
   - 15-minute caching with auto-refresh background job
