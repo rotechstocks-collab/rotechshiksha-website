@@ -183,18 +183,35 @@ export default function LiveNews() {
                     <Badge className="mb-3 bg-red-600 text-white border-0">
                       {featuredNews.tag}
                     </Badge>
-                    <h2 className="text-xl lg:text-2xl font-bold text-white mb-2 line-clamp-2">
+                    <h2 className="text-xl lg:text-2xl font-bold text-white mb-2 line-clamp-2" itemProp="headline">
                       {featuredNews.title}
                     </h2>
-                    <p className="text-white/80 text-sm line-clamp-2 mb-3">
+                    <p className="text-white/80 text-sm line-clamp-2 mb-3" itemProp="description">
                       {featuredNews.summary}
                     </p>
                     <div className="flex items-center gap-3 text-white/60 text-xs">
-                      <span>{featuredNews.source}</span>
-                      <span>{formatTime(featuredNews.publishedAt)}</span>
+                      <span itemProp="publisher" itemScope itemType="https://schema.org/Organization">
+                        <span itemProp="name">{featuredNews.source}</span>
+                      </span>
+                      <time dateTime={featuredNews.publishedAt} itemProp="datePublished">
+                        {formatTime(featuredNews.publishedAt)}
+                      </time>
                     </div>
                   </div>
                 </div>
+                <script type="application/ld+json">
+                  {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "NewsArticle",
+                    "headline": featuredNews.title,
+                    "image": [featuredNews.imageUrl],
+                    "datePublished": featuredNews.publishedAt,
+                    "author": {
+                      "@type": "Organization",
+                      "name": featuredNews.source
+                    }
+                  })}
+                </script>
               </Card>
 
               <div className="space-y-4">
@@ -274,20 +291,25 @@ export default function LiveNews() {
                           </Badge>
                         </div>
                       </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-semibold text-sm line-clamp-2 mb-2" data-testid={`news-title-${article.id}`}>
+                      <CardContent className="p-4" itemScope itemType="https://schema.org/NewsArticle">
+                        <h3 className="font-semibold text-sm line-clamp-2 mb-2" data-testid={`news-title-${article.id}`} itemProp="headline">
                           {article.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                        <p className="text-sm text-muted-foreground line-clamp-2 mb-3" itemProp="description">
                           {article.summary}
                         </p>
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span>{article.source}</span>
+                          <span itemProp="publisher" itemScope itemType="https://schema.org/Organization">
+                            <span itemProp="name">{article.source}</span>
+                          </span>
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
-                            {formatTime(article.publishedAt)}
+                            <time dateTime={article.publishedAt} itemProp="datePublished">
+                              {formatTime(article.publishedAt)}
+                            </time>
                           </span>
                         </div>
+                        <meta itemProp="image" content={article.imageUrl} />
                       </CardContent>
                     </Card>
                   ))

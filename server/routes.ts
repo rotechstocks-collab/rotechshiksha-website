@@ -32,6 +32,56 @@ interface CachedNews {
 let newsCache: Record<string, CachedNews> = {};
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
+// Fetch financial news from GNews API
+async function fetchNewsFromGNews(language: string = "en"): Promise<any[]> {
+  const GNEWS_API_KEY = process.env.GNEWS_API_KEY;
+  if (!GNEWS_API_KEY) {
+    console.log("GNews API key not configured, falling back to MoneyControl");
+    return await fetchNewsFromMoneyControl(language);
+  }
+
+  try {
+    const cacheKey = `gnews-${language}`;
+    const cached = newsCache[cacheKey];
+    
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached.data;
+    }
+
+    const langParam = language === "hi" ? "hi" : "en";
+    const url = `https://gnews.io/api/v4/top-headlines?category=business&lang=${langParam}&country=in&apikey=${GNEWS_API_KEY}`;
+
+    console.log(`Fetching news from GNews (${language})`);
+    const response = await axios.get(url, { timeout: 8000 });
+    
+    if (response.data && response.data.articles) {
+      const articles = response.data.articles.map((item: any, index: number) => ({
+        id: `gn-${language}-${index}`,
+        title: item.title,
+        summary: item.description || item.content || "Financial news article",
+        category: categorizeNews(item.title),
+        tag: item.source.name || "News",
+        imageUrl: item.image || "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format",
+        source: item.source.name || "GNews",
+        publishedAt: item.publishedAt,
+        url: item.url
+      }));
+
+      newsCache[cacheKey] = {
+        data: articles,
+        timestamp: Date.now()
+      };
+
+      return articles;
+    }
+    
+    return await fetchNewsFromMoneyControl(language);
+  } catch (error) {
+    console.error("GNews fetch error:", error);
+    return await fetchNewsFromMoneyControl(language);
+  }
+}
+
 // Fetch financial news from MoneyControl
 async function fetchNewsFromMoneyControl(language: string = "en"): Promise<any[]> {
   try {
@@ -1065,8 +1115,8 @@ export async function registerRoutes(
 
       const query = categoryQueryMap[category] || "stock market India";
       
-      // Fetch from MoneyControl (with Alpha Vantage fallback)
-      let news = await fetchNewsFromMoneyControl(language);
+      // Fetch from GNews (with MoneyControl fallback)
+      let news = await fetchNewsFromGNews(language);
       
       // If no news from API or cache issues, use fallback sample data
       if (news.length === 0) {
@@ -1089,8 +1139,8 @@ export async function registerRoutes(
     try {
       const language = (req.query.lang as string) || "en";
       
-      // Fetch featured news from MoneyControl
-      let news = await fetchNewsFromMoneyControl(language);
+      // Fetch featured news from GNews
+      let news = await fetchNewsFromGNews(language);
       
       // Fallback to sample data if API fails
       if (news.length === 0) {
