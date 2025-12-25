@@ -3,19 +3,16 @@ import { useRoute, Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import {
   Calendar,
   TrendingUp,
-  Building2,
   IndianRupee,
-  Clock,
-  CheckCircle,
   ArrowRight,
   Info,
-  FileText,
   Users,
   Briefcase,
   ChevronLeft,
@@ -23,9 +20,13 @@ import {
   Landmark,
   BarChart3,
   AlertCircle,
+  RefreshCw,
+  CheckCircle,
+  Clock,
+  ExternalLink,
 } from "lucide-react";
-import { ipoData, getIPOById, formatCurrency, formatDate, getDaysRemaining, type IPO } from "@/lib/ipoData";
-import { RocketGrowth, GrowthChart, CoinStack, ChartAnalysis } from "@/components/Illustrations";
+import { useIPOList, useIPONews, formatCurrency, formatDate, getDaysRemaining, getTimeAgo, type IPOData } from "@/lib/ipoApi";
+import { RocketGrowth, GrowthChart, CoinStack } from "@/components/Illustrations";
 
 const statusColors = {
   upcoming: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
@@ -41,7 +42,31 @@ const statusLabels = {
   listed: "Listed"
 };
 
-function IPOCard({ ipo }: { ipo: IPO }) {
+function IPOCardSkeleton() {
+  return (
+    <Card className="h-full">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <Skeleton className="w-12 h-12 rounded-xl" />
+          <Skeleton className="w-20 h-5" />
+        </div>
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-4 w-1/2 mt-1" />
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+        </div>
+        <Skeleton className="h-8 w-full" />
+      </CardContent>
+    </Card>
+  );
+}
+
+function IPOCard({ ipo }: { ipo: IPOData }) {
   const daysRemaining = getDaysRemaining(ipo.status === "upcoming" ? ipo.openDate : ipo.closeDate);
   
   return (
@@ -61,7 +86,7 @@ function IPOCard({ ipo }: { ipo: IPO }) {
           </CardTitle>
           <CardDescription className="flex items-center gap-2">
             <Briefcase className="w-3 h-3" />
-            {ipo.industry}
+            {ipo.industry || "General"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -74,15 +99,17 @@ function IPOCard({ ipo }: { ipo: IPO }) {
             </div>
             <div>
               <p className="text-muted-foreground text-xs">Issue Size</p>
-              <p className="font-semibold text-foreground">{formatCurrency(ipo.issueSize * 10000000)}</p>
+              <p className="font-semibold text-foreground">
+                {ipo.issueSize ? formatCurrency(ipo.issueSize * 10000000) : "TBA"}
+              </p>
             </div>
             <div>
               <p className="text-muted-foreground text-xs">Lot Size</p>
-              <p className="font-semibold text-foreground">{ipo.lotSize} Shares</p>
+              <p className="font-semibold text-foreground">{ipo.lotSize ? `${ipo.lotSize} Shares` : "TBA"}</p>
             </div>
             <div>
               <p className="text-muted-foreground text-xs">Min. Investment</p>
-              <p className="font-semibold text-foreground">Rs {ipo.minInvestment.toLocaleString("en-IN")}</p>
+              <p className="font-semibold text-foreground">{ipo.minInvestment ? `Rs ${ipo.minInvestment.toLocaleString("en-IN")}` : "TBA"}</p>
             </div>
           </div>
 
@@ -118,7 +145,7 @@ function IPOCard({ ipo }: { ipo: IPO }) {
             </div>
           )}
 
-          {ipo.gmp && (
+          {ipo.gmp !== undefined && ipo.gmp > 0 && (
             <div className="flex items-center gap-2 text-sm">
               <TrendingUp className="w-4 h-4 text-emerald-500" />
               <span className="text-muted-foreground">GMP:</span>
@@ -138,13 +165,16 @@ function IPOCard({ ipo }: { ipo: IPO }) {
 
 function IPOListing() {
   const [activeTab, setActiveTab] = useState("all");
+  const { data, isLoading, isError, refetch, isFetching } = useIPOList();
+  const { data: newsData } = useIPONews();
 
-  const ongoingIPOs = ipoData.filter(ipo => ipo.status === "ongoing");
-  const upcomingIPOs = ipoData.filter(ipo => ipo.status === "upcoming");
-  const closedIPOs = ipoData.filter(ipo => ipo.status === "closed" || ipo.status === "listed");
+  const ipos = data?.ipos || [];
+  const ongoingIPOs = ipos.filter(ipo => ipo.status === "ongoing");
+  const upcomingIPOs = ipos.filter(ipo => ipo.status === "upcoming");
+  const closedIPOs = ipos.filter(ipo => ipo.status === "closed" || ipo.status === "listed");
 
   const filteredIPOs = activeTab === "all" 
-    ? ipoData 
+    ? ipos 
     : activeTab === "ongoing" 
       ? ongoingIPOs 
       : activeTab === "upcoming" 
@@ -169,25 +199,53 @@ function IPOListing() {
               Upcoming & Ongoing IPOs
             </h1>
             <p className="text-muted-foreground max-w-xl">
-              Track all upcoming and ongoing IPOs, view subscription status, GMP, and apply directly through your broker.
+              Track all upcoming and ongoing IPOs with real-time subscription status, GMP, and verified data from trusted sources.
             </p>
 
+            {data?.lastUpdated && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="w-4 h-4" />
+                <span>Last updated: {getTimeAgo(data.lastUpdated)}</span>
+                {data.isStale && (
+                  <Badge variant="outline" className="text-amber-600 border-amber-500/30 text-xs">
+                    Data may be stale
+                  </Badge>
+                )}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => refetch()} 
+                  disabled={isFetching}
+                  className="h-7 px-2"
+                  data-testid="button-refresh-ipos"
+                >
+                  <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
+                </Button>
+              </div>
+            )}
+
             <div className="grid grid-cols-3 gap-4 pt-4">
-              <Card className="text-center">
+              <Card className="text-center" data-testid="stat-ongoing">
                 <CardContent className="pt-4 pb-3">
-                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{ongoingIPOs.length}</div>
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : ongoingIPOs.length}
+                  </div>
                   <div className="text-xs text-muted-foreground">Open Now</div>
                 </CardContent>
               </Card>
-              <Card className="text-center">
+              <Card className="text-center" data-testid="stat-upcoming">
                 <CardContent className="pt-4 pb-3">
-                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{upcomingIPOs.length}</div>
+                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : upcomingIPOs.length}
+                  </div>
                   <div className="text-xs text-muted-foreground">Upcoming</div>
                 </CardContent>
               </Card>
-              <Card className="text-center">
+              <Card className="text-center" data-testid="stat-closed">
                 <CardContent className="pt-4 pb-3">
-                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{closedIPOs.length}</div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    {isLoading ? <Skeleton className="h-8 w-8 mx-auto" /> : closedIPOs.length}
+                  </div>
                   <div className="text-xs text-muted-foreground">Recently Listed</div>
                 </CardContent>
               </Card>
@@ -220,31 +278,104 @@ function IPOListing() {
 
         <Tabs defaultValue="all" className="mb-8" onValueChange={setActiveTab}>
           <TabsList className="grid w-full max-w-md grid-cols-4">
-            <TabsTrigger value="all" data-testid="tab-all-ipos">All ({ipoData.length})</TabsTrigger>
+            <TabsTrigger value="all" data-testid="tab-all-ipos">All ({ipos.length})</TabsTrigger>
             <TabsTrigger value="ongoing" data-testid="tab-ongoing-ipos">Open ({ongoingIPOs.length})</TabsTrigger>
             <TabsTrigger value="upcoming" data-testid="tab-upcoming-ipos">Upcoming ({upcomingIPOs.length})</TabsTrigger>
             <TabsTrigger value="closed" data-testid="tab-closed-ipos">Closed ({closedIPOs.length})</TabsTrigger>
           </TabsList>
         </Tabs>
 
+        {isError && (
+          <Card className="mb-8 border-amber-500/30">
+            <CardContent className="pt-6 flex items-center gap-4">
+              <AlertCircle className="w-8 h-8 text-amber-500" />
+              <div>
+                <p className="font-medium text-foreground">Unable to fetch live IPO data</p>
+                <p className="text-sm text-muted-foreground">Showing cached data. Please try again later.</p>
+              </div>
+              <Button variant="outline" onClick={() => refetch()} className="ml-auto" data-testid="button-retry">
+                Retry
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredIPOs.map((ipo, index) => (
-            <motion.div
-              key={ipo.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <IPOCard ipo={ipo} />
-            </motion.div>
-          ))}
+          {isLoading ? (
+            [...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <IPOCardSkeleton />
+              </motion.div>
+            ))
+          ) : filteredIPOs.length > 0 ? (
+            filteredIPOs.map((ipo, index) => (
+              <motion.div
+                key={ipo.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <IPOCard ipo={ipo} />
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">No IPOs found in this category</p>
+            </div>
+          )}
         </div>
 
-        {filteredIPOs.length === 0 && (
-          <div className="text-center py-12">
-            <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No IPOs found in this category</p>
-          </div>
+        {newsData && newsData.articles.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-16"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">IPO News</h2>
+                <p className="text-sm text-muted-foreground">
+                  Latest updates from verified sources
+                  {newsData.lastUpdated && (
+                    <span className="ml-2">- Updated {getTimeAgo(newsData.lastUpdated)}</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {newsData.articles.slice(0, 6).map((article, index) => (
+                <a
+                  key={article.id}
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid={`link-news-${index}`}
+                >
+                  <Card className="h-full hover-elevate cursor-pointer">
+                    <CardContent className="pt-4 space-y-2">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Badge variant="secondary" className="text-xs">{article.source}</Badge>
+                        <span>{getTimeAgo(article.publishedAt)}</span>
+                      </div>
+                      <h3 className="font-medium text-foreground line-clamp-2">{article.title}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{article.summary}</p>
+                      <div className="flex items-center gap-1 text-xs text-primary pt-2">
+                        <span>Read more</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </a>
+              ))}
+            </div>
+          </motion.div>
         )}
       </div>
     </div>
@@ -252,15 +383,70 @@ function IPOListing() {
 }
 
 function IPODetail({ id }: { id: string }) {
-  const ipo = getIPOById(id);
+  const { data: listData, isLoading, isError } = useIPOList();
+  const ipo = listData?.ipos.find(i => i.id === id);
 
-  if (!ipo) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <Skeleton className="h-10 w-32 mb-6" />
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-6">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-start gap-4">
+                    <Skeleton className="w-16 h-16 rounded-xl" />
+                    <div className="space-y-2 flex-1">
+                      <Skeleton className="h-8 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-20 w-full" />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Skeleton className="h-6 w-32" />
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-4">
+                    {[...Array(6)].map((_, i) => (
+                      <Skeleton key={i} className="h-16" />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <Card>
+                <CardHeader>
+                  <Skeleton className="h-6 w-32" />
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[...Array(4)].map((_, i) => (
+                      <Skeleton key={i} className="h-8" />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !ipo) {
     return (
       <div className="min-h-screen pt-28 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-foreground mb-2">IPO Not Found</h2>
-          <p className="text-muted-foreground mb-4">The IPO you're looking for doesn't exist.</p>
+          <p className="text-muted-foreground mb-4">The IPO you're looking for doesn't exist or data is unavailable.</p>
           <Link href="/ipo">
             <Button data-testid="button-view-all-ipos-404">View All IPOs</Button>
           </Link>
@@ -281,6 +467,18 @@ function IPODetail({ id }: { id: string }) {
           </Button>
         </Link>
 
+        {listData?.lastUpdated && (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+            <Clock className="w-4 h-4" />
+            <span>Data updated: {getTimeAgo(listData.lastUpdated)}</span>
+            {listData.isStale && (
+              <Badge variant="outline" className="text-amber-600 border-amber-500/30 text-xs">
+                Data may be stale
+              </Badge>
+            )}
+          </div>
+        )}
+
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <motion.div
@@ -298,19 +496,19 @@ function IPODetail({ id }: { id: string }) {
                         <CardTitle className="text-2xl">{ipo.companyName}</CardTitle>
                         <CardDescription className="flex items-center gap-2 mt-1">
                           <Briefcase className="w-4 h-4" />
-                          {ipo.industry}
+                          {ipo.industry || "General"}
                         </CardDescription>
                         <div className="flex items-center gap-2 mt-2 flex-wrap">
                           <Badge variant="outline" className={statusColors[ipo.status]}>
                             {statusLabels[ipo.status]}
                           </Badge>
-                          {ipo.exchange.map(ex => (
+                          {ipo.exchange?.map(ex => (
                             <Badge key={ex} variant="secondary" className="text-xs">{ex}</Badge>
                           ))}
                         </div>
                       </div>
                     </div>
-                    {ipo.gmp && (
+                    {ipo.gmp !== undefined && ipo.gmp > 0 && (
                       <div className="text-right">
                         <p className="text-xs text-muted-foreground">GMP</p>
                         <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">+Rs {ipo.gmp}</p>
@@ -319,7 +517,9 @@ function IPODetail({ id }: { id: string }) {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{ipo.about}</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {ipo.about || `${ipo.companyName} is preparing for its initial public offering on the Indian stock exchanges.`}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -346,15 +546,17 @@ function IPODetail({ id }: { id: string }) {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Issue Size</p>
-                      <p className="font-semibold text-lg text-foreground">{formatCurrency(ipo.issueSize * 10000000)}</p>
+                      <p className="font-semibold text-lg text-foreground">
+                        {ipo.issueSize ? formatCurrency(ipo.issueSize * 10000000) : "TBA"}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Lot Size</p>
-                      <p className="font-semibold text-lg text-foreground">{ipo.lotSize} Shares</p>
+                      <p className="font-semibold text-lg text-foreground">{ipo.lotSize ? `${ipo.lotSize} Shares` : "TBA"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Minimum Investment</p>
-                      <p className="font-semibold text-lg text-foreground">Rs {ipo.minInvestment.toLocaleString("en-IN")}</p>
+                      <p className="font-semibold text-lg text-foreground">{ipo.minInvestment ? `Rs ${ipo.minInvestment.toLocaleString("en-IN")}` : "TBA"}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Face Value</p>
@@ -362,7 +564,7 @@ function IPODetail({ id }: { id: string }) {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Listing At</p>
-                      <p className="font-semibold text-lg text-foreground">{ipo.exchange.join(", ")}</p>
+                      <p className="font-semibold text-lg text-foreground">{ipo.exchange?.join(", ") || "NSE, BSE"}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -410,65 +612,77 @@ function IPODetail({ id }: { id: string }) {
               </motion.div>
             )}
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-primary" />
-                    Key Highlights
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {ipo.highlights.map((highlight, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
-                        <span className="text-muted-foreground">{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
+            {ipo.highlights && ipo.highlights.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-primary" />
+                      Key Highlights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {ipo.highlights.map((highlight, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
+                          <span className="text-muted-foreground">{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-primary" />
-                    Financial Highlights
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Revenue</p>
-                      <p className="font-semibold text-foreground">{ipo.financials.revenue}</p>
+            {ipo.financials && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="w-5 h-5 text-primary" />
+                      Financial Highlights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+                      {ipo.financials.revenue && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Revenue</p>
+                          <p className="font-semibold text-foreground">{ipo.financials.revenue}</p>
+                        </div>
+                      )}
+                      {ipo.financials.profit && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Profit</p>
+                          <p className="font-semibold text-foreground">{ipo.financials.profit}</p>
+                        </div>
+                      )}
+                      {ipo.financials.assets && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Total Assets</p>
+                          <p className="font-semibold text-foreground">{ipo.financials.assets}</p>
+                        </div>
+                      )}
+                      {ipo.financials.netWorth && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Net Worth</p>
+                          <p className="font-semibold text-foreground">{ipo.financials.netWorth}</p>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Profit</p>
-                      <p className="font-semibold text-foreground">{ipo.financials.profit}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Total Assets</p>
-                      <p className="font-semibold text-foreground">{ipo.financials.assets}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Net Worth</p>
-                      <p className="font-semibold text-foreground">{ipo.financials.netWorth}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
           </div>
 
           <div className="space-y-6">
@@ -487,21 +701,25 @@ function IPODetail({ id }: { id: string }) {
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Bidding Period</span>
-                      <span className="font-medium text-foreground">{ipo.keyDates.bidding}</span>
+                      <span className="text-sm text-muted-foreground">Open Date</span>
+                      <span className="font-medium text-foreground">{formatDate(ipo.openDate)}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Allotment Date</span>
-                      <span className="font-medium text-foreground">{ipo.keyDates.allotment}</span>
+                      <span className="text-sm text-muted-foreground">Close Date</span>
+                      <span className="font-medium text-foreground">{formatDate(ipo.closeDate)}</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Refund Initiation</span>
-                      <span className="font-medium text-foreground">{ipo.keyDates.refund}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Listing Date</span>
-                      <span className="font-medium text-foreground">{ipo.keyDates.listing}</span>
-                    </div>
+                    {ipo.allotmentDate && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Allotment Date</span>
+                        <span className="font-medium text-foreground">{formatDate(ipo.allotmentDate)}</span>
+                      </div>
+                    )}
+                    {ipo.listingDate && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Listing Date</span>
+                        <span className="font-medium text-foreground">{formatDate(ipo.listingDate)}</span>
+                      </div>
+                    )}
                   </div>
 
                   {(ipo.status === "upcoming" || ipo.status === "ongoing") && daysRemaining > 0 && (
@@ -521,6 +739,15 @@ function IPODetail({ id }: { id: string }) {
                       Apply via Broker
                     </Button>
                   )}
+
+                  {ipo.documentUrl && (
+                    <a href={ipo.documentUrl} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className="w-full mt-2" data-testid="button-view-rhp">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        View RHP Document
+                      </Button>
+                    </a>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -538,14 +765,18 @@ function IPODetail({ id }: { id: string }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div>
-                    <p className="text-xs text-muted-foreground">Registrar</p>
-                    <p className="text-sm font-medium text-foreground">{ipo.registrar}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Lead Manager</p>
-                    <p className="text-sm font-medium text-foreground">{ipo.leadManager}</p>
-                  </div>
+                  {ipo.registrar && (
+                    <div>
+                      <p className="text-xs text-muted-foreground">Registrar</p>
+                      <p className="text-sm font-medium text-foreground">{ipo.registrar}</p>
+                    </div>
+                  )}
+                  {ipo.leadManager && (
+                    <div>
+                      <p className="text-xs text-muted-foreground">Lead Manager</p>
+                      <p className="text-sm font-medium text-foreground">{ipo.leadManager}</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

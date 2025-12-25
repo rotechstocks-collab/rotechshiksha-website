@@ -5,6 +5,7 @@ import { storage } from "./storage";
 import { leadFormSchema, otpVerifySchema } from "@shared/schema";
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { fetchIPOData, getIPOById, startIPORefreshJob, clearIPOCache } from "./services/ipoService";
 
 declare module "express-session" {
   interface SessionData {
@@ -1684,6 +1685,148 @@ export async function registerRoutes(
       res.status(500).json({ message: "Failed to get interests" });
     }
   });
+
+  // IPO Routes - Real-time IPO data from verified sources
+  // IMPORTANT: Specific routes must come before parameterized routes
+  app.get("/api/ipo", async (req: Request, res: Response) => {
+    try {
+      const forceRefresh = req.query.refresh === "true";
+      const ipoData = await fetchIPOData(forceRefresh);
+      res.json(ipoData);
+    } catch (error) {
+      console.error("IPO fetch error:", error);
+      res.status(503).json({ 
+        message: "IPO data temporarily unavailable",
+        isStale: true,
+        ipos: [],
+        lastUpdated: null
+      });
+    }
+  });
+
+  app.post("/api/ipo/refresh", async (req: Request, res: Response) => {
+    try {
+      if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+
+      clearIPOCache();
+      const ipoData = await fetchIPOData(true);
+      res.json({ 
+        message: "IPO data refreshed successfully",
+        count: ipoData.ipos.length,
+        source: ipoData.source
+      });
+    } catch (error) {
+      console.error("IPO refresh error:", error);
+      res.status(500).json({ message: "Failed to refresh IPO data" });
+    }
+  });
+
+  // IPO News - Using existing news infrastructure with IPO focus
+  app.get("/api/ipo/news", async (req: Request, res: Response) => {
+    try {
+      const cacheKey = "ipo-news";
+      const cached = newsCache[cacheKey];
+      
+      if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+        return res.json({
+          articles: cached.data,
+          lastUpdated: new Date(cached.timestamp).toISOString()
+        });
+      }
+
+      // Fetch IPO-specific news using GNews with IPO keyword
+      const GNEWS_API_KEY = process.env.GNEWS_API_KEY;
+      let articles: any[] = [];
+
+      if (GNEWS_API_KEY) {
+        try {
+          const url = `https://gnews.io/api/v4/search?q=IPO+India&lang=en&country=in&max=10&apikey=${GNEWS_API_KEY}`;
+          const response = await axios.get(url, { timeout: 8000 });
+          
+          if (response.data?.articles) {
+            articles = response.data.articles.map((item: any, index: number) => ({
+              id: `ipo-news-${index}`,
+              title: item.title,
+              summary: item.description || "IPO news article",
+              source: item.source.name,
+              publishedAt: item.publishedAt,
+              url: item.url,
+              imageUrl: item.image
+            }));
+          }
+        } catch (gnewsError) {
+          console.log("GNews IPO search failed, using MoneyControl fallback");
+        }
+      }
+
+      // Fallback to MoneyControl IPO section
+      if (articles.length === 0) {
+        try {
+          const mcResponse = await axios.get("https://www.moneycontrol.com/ipo/", {
+            headers: { "User-Agent": "Mozilla/5.0" },
+            timeout: 8000
+          });
+          const $ = cheerio.load(mcResponse.data);
+          
+          $("div.newslist a, article a, .news-item a").slice(0, 8).each((i, el) => {
+            const title = $(el).text().trim();
+            if (title && title.length > 20) {
+              articles.push({
+                id: `mc-ipo-${i}`,
+                title,
+                summary: "IPO news from MoneyControl",
+                source: "MoneyControl",
+                publishedAt: new Date().toISOString(),
+                url: $(el).attr("href") || "#"
+              });
+            }
+          });
+        } catch (mcError) {
+          console.log("MoneyControl IPO scraping failed");
+        }
+      }
+
+      newsCache[cacheKey] = { data: articles, timestamp: Date.now() };
+      
+      res.json({
+        articles,
+        lastUpdated: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("IPO news fetch error:", error);
+      res.status(500).json({ message: "Failed to fetch IPO news", articles: [] });
+    }
+  });
+
+  // IPO Detail route - MUST come after all specific /api/ipo/* routes
+  app.get("/api/ipo/:id", async (req: Request, res: Response) => {
+    try {
+      const ipoData = await fetchIPOData();
+      const ipo = ipoData.ipos.find(i => i.id === req.params.id);
+      
+      if (!ipo) {
+        return res.status(404).json({ message: "IPO not found" });
+      }
+      
+      res.json({
+        ...ipo,
+        lastUpdated: ipoData.lastUpdated,
+        isStale: ipoData.isStale
+      });
+    } catch (error) {
+      console.error("IPO detail fetch error:", error);
+      res.status(503).json({ message: "IPO data temporarily unavailable" });
+    }
+  });
+
+  // Start IPO refresh background job
+  startIPORefreshJob();
 
   return httpServer;
 }

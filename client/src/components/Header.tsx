@@ -35,6 +35,7 @@ const navItemsConfig: NavItem[] = [
     ],
   },
   { labelKey: "nav.calculators", href: "/calculators" },
+  { labelKey: "nav.ipo", href: "/ipo" },
   { labelKey: "nav.pricing", href: "/pricing" },
 ];
 

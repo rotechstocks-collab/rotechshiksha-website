@@ -6,6 +6,17 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: IPO Tracking System
+  - Backend IPO service with multi-tier fallback (ipoalerts.in → NSE → sample data)
+  - 15-minute caching with auto-refresh background job
+  - IPO API routes (/api/ipo, /api/ipo/:id, /api/ipo/news, /api/ipo/refresh)
+  - Real-time IPO news from GNews API with MoneyControl fallback
+  - Frontend React Query integration with 5-minute auto-refetch
+  - IPO listing page with status tabs (All, Open, Upcoming, Closed)
+  - IPO detail page with financials, subscription status, key dates
+  - Loading skeletons, error states, stale data indicators
+  - Navigation added in all 7 languages
+
 - **Dec 2024**: Multi-language support (7 Indian languages)
   - Language selector dropdown in header with globe icon
   - Supported languages: English, Hindi, Marathi, Tamil, Kannada, Gujarati, Telugu
@@ -69,6 +80,8 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 | `/courses` | Course listing (4 levels) |
 | `/courses/:level` | Course details with modules/topics |
 | `/live-news` | Financial news (English/Hindi) |
+| `/ipo` | IPO listing with status tabs |
+| `/ipo/:id` | IPO detail with financials |
 | `/calculators` | Trading calculators |
 | `/pricing` | Pricing plans with FAQ |
 | `/payment/:planId` | Payment with screenshot upload |

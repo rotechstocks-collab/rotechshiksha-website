@@ -38,9 +38,8 @@ import {
   ChartAnalysis,
   GrowthChart,
 } from "@/components/Illustrations";
-import { ipoData, formatDate, type IPO } from "@/lib/ipoData";
-
-const featuredIPOs = ipoData.filter(ipo => ipo.status === "ongoing" || ipo.status === "upcoming").slice(0, 3);
+import { Skeleton } from "@/components/ui/skeleton";
+import { useIPOList, formatDate as formatIPODate, type IPOData } from "@/lib/ipoApi";
 
 const statusColors = {
   upcoming: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
@@ -140,9 +139,36 @@ const testimonials = [
   },
 ];
 
+function IPOCardSkeleton() {
+  return (
+    <Card className="h-full">
+      <CardContent className="pt-5 space-y-4">
+        <div className="flex items-start justify-between gap-2">
+          <Skeleton className="w-12 h-12 rounded-xl" />
+          <Skeleton className="w-20 h-5" />
+        </div>
+        <div>
+          <Skeleton className="h-5 w-3/4" />
+          <Skeleton className="h-4 w-1/2 mt-1" />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+        </div>
+        <Skeleton className="h-8 w-full" />
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function Home() {
   const { isAuthenticated, setShowAuthPopup, setPendingAction } = useAuth();
   const { t } = useLanguage();
+  const { data: ipoData, isLoading: isIPOLoading } = useIPOList();
+  
+  const featuredIPOs = (ipoData?.ipos || [])
+    .filter((ipo: IPOData) => ipo.status === "ongoing" || ipo.status === "upcoming")
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen">
@@ -359,7 +385,20 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {featuredIPOs.map((ipo, index) => (
+            {isIPOLoading ? (
+              [...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <IPOCardSkeleton />
+                </motion.div>
+              ))
+            ) : featuredIPOs.length > 0 ? (
+              featuredIPOs.map((ipo: IPOData, index: number) => (
               <motion.div
                 key={ipo.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -384,7 +423,7 @@ export default function Home() {
                         </h3>
                         <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                           <Briefcase className="w-3 h-3" />
-                          {ipo.industry}
+                          {ipo.industry || "General"}
                         </p>
                       </div>
                       <div className="grid grid-cols-2 gap-3 text-sm">
@@ -404,9 +443,9 @@ export default function Home() {
                       <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
                         <Calendar className="w-4 h-4" />
                         {ipo.status === "upcoming" ? (
-                          <span>Opens: {formatDate(ipo.openDate)}</span>
+                          <span>Opens: {formatIPODate(ipo.openDate)}</span>
                         ) : (
-                          <span>Closes: {formatDate(ipo.closeDate)}</span>
+                          <span>Closes: {formatIPODate(ipo.closeDate)}</span>
                         )}
                       </div>
                       {ipo.gmp && (
@@ -420,7 +459,12 @@ export default function Home() {
                   </Card>
                 </Link>
               </motion.div>
-            ))}
+            ))
+            ) : (
+              <div className="col-span-3 text-center py-8">
+                <p className="text-muted-foreground">No active IPOs at the moment. Check back soon!</p>
+              </div>
+            )}
           </div>
 
           <motion.div {...fadeInUp} className="text-center">
