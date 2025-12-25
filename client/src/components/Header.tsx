@@ -47,6 +47,7 @@ const navItemsConfig: NavItem[] = [
       { labelKey: "nav.ipo", href: "/ipo" },
       { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
       { labelKey: "nav.paperTrade", href: "/paper-trade" },
+      { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
     ],
   },
   { labelKey: "nav.pricing", href: "/pricing" },

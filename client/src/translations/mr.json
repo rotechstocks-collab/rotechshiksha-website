@@ -130,5 +130,7 @@
   "common.save": "सेव्ह करा",
   "common.close": "बंद करा",
   "common.search": "शोधा",
-  "common.selectLanguage": "भाषा निवडा"
+  "common.selectLanguage": "भाषा निवडा",
+
+  "nav.loansAndCreditCards": "कर्ज आणि क्रेडिट कार्ड"
 }

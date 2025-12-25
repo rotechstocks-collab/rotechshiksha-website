@@ -130,5 +130,7 @@
   "common.save": "محفوظ کریں",
   "common.close": "بند کریں",
   "common.search": "تلاش کریں",
-  "common.selectLanguage": "زبان منتخب کریں"
+  "common.selectLanguage": "زبان منتخب کریں",
+
+  "nav.loansAndCreditCards": "قرض اور کریڈٹ کارڈ"
 }

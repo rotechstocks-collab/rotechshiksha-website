@@ -130,5 +130,7 @@
   "common.save": "حفظ",
   "common.close": "إغلاق",
   "common.search": "بحث",
-  "common.selectLanguage": "اختر اللغة"
+  "common.selectLanguage": "اختر اللغة",
+
+  "nav.loansAndCreditCards": "القروض وبطاقات الائتمان"
 }

@@ -130,5 +130,7 @@
   "common.save": "Speichern",
   "common.close": "Schliesen",
   "common.search": "Suchen",
-  "common.selectLanguage": "Sprache wahlen"
+  "common.selectLanguage": "Sprache wahlen",
+
+  "nav.loansAndCreditCards": "Kredite & Kreditkarten"
 }

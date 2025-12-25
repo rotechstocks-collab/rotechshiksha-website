@@ -130,5 +130,7 @@
   "common.save": "સેવ કરો",
   "common.close": "બંધ કરો",
   "common.search": "શોધો",
-  "common.selectLanguage": "ભાષા પસંદ કરો"
+  "common.selectLanguage": "ભાષા પસંદ કરો",
+
+  "nav.loansAndCreditCards": "લોન અને ક્રેડિટ કાર્ડ"
 }

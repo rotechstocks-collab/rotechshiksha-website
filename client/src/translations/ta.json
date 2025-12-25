@@ -130,5 +130,7 @@
   "common.save": "சேமி",
   "common.close": "மூடு",
   "common.search": "தேடு",
-  "common.selectLanguage": "மொழியைத் தேர்ந்தெடுக்கவும்"
+  "common.selectLanguage": "மொழியைத் தேர்ந்தெடுக்கவும்",
+
+  "nav.loansAndCreditCards": "கடன் & கிரெடிட் கார்டுகள்"
 }

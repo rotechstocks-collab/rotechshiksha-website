@@ -130,5 +130,7 @@
   "common.save": "സേവ് ചെയ്യുക",
   "common.close": "അടയ്ക്കുക",
   "common.search": "തിരയുക",
-  "common.selectLanguage": "ഭാഷ തിരഞ്ഞെടുക്കുക"
+  "common.selectLanguage": "ഭാഷ തിരഞ്ഞെടുക്കുക",
+
+  "nav.loansAndCreditCards": "ലോണുകൾ & ക്രെഡിറ്റ് കാർഡുകൾ"
 }

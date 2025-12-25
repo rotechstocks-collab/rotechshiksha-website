@@ -130,5 +130,7 @@
   "common.save": "ಉಳಿಸಿ",
   "common.close": "ಮುಚ್ಚಿ",
   "common.search": "ಹುಡುಕಿ",
-  "common.selectLanguage": "ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+  "common.selectLanguage": "ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+
+  "nav.loansAndCreditCards": "ಸಾಲಗಳು & ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್‌ಗಳು"
 }

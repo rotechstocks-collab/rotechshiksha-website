@@ -130,5 +130,7 @@
   "common.save": "Сохранить",
   "common.close": "Закрыть",
   "common.search": "Поиск",
-  "common.selectLanguage": "Выбрать язык"
+  "common.selectLanguage": "Выбрать язык",
+
+  "nav.loansAndCreditCards": "Кредиты и кредитные карты"
 }

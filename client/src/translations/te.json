@@ -130,5 +130,7 @@
   "common.save": "సేవ్ చేయండి",
   "common.close": "మూసివేయండి",
   "common.search": "వెతకండి",
-  "common.selectLanguage": "భాష ఎంచుకోండి"
+  "common.selectLanguage": "భాష ఎంచుకోండి",
+
+  "nav.loansAndCreditCards": "రుణాలు & క్రెడిట్ కార్డులు"
 }
