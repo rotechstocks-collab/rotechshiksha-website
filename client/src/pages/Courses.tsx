@@ -21,8 +21,8 @@ import {
   Zap,
   Bot,
 } from "lucide-react";
-import { LearnerCharacter, BookLearning, GrowthChart } from "@/components/Illustrations";
-import { InvestingCharacter, PortfolioCard, PhoneWithChart } from "@/components/SmallcaseIllustrations";
+import { BookLearning, GrowthChart } from "@/components/Illustrations";
+import { PortfolioCard, PhoneWithChart } from "@/components/SmallcaseIllustrations";
 import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem, HoverLift } from "@/components/AnimationWrappers";
 
 interface Topic {
@@ -258,7 +258,7 @@ export default function Courses() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="hidden lg:flex justify-center relative"
               >
-                <LearnerCharacter size={200} />
+                <GrowthChart size={200} />
                 <motion.div
                   className="absolute -top-4 -right-8"
                   animate={{ y: [0, -8, 0] }}

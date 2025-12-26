@@ -30,6 +30,7 @@ import EconomicCalendar from "@/pages/EconomicCalendar";
 import PaperTrade from "@/pages/PaperTrade";
 import EducationalVideos from "@/pages/EducationalVideos";
 import LoansAndCreditCards from "@/pages/LoansAndCreditCards";
+import Level1Lesson from "@/pages/lessons/Level1Lesson";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
+      <Route path="/learn/level-1" component={Level1Lesson} />
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/economic-calendar" component={EconomicCalendar} />
       <Route path="/paper-trade" component={PaperTrade} />

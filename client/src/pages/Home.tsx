@@ -93,7 +93,7 @@ export default function Home() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/courses/basic" data-testid="link-start-learning">
+                <Link href="/learn/level-1" data-testid="link-start-learning">
                   <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-start-learning">
                     <Play className="w-4 h-4" />
                     Start Learning – Level 1
@@ -250,7 +250,7 @@ export default function Home() {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <Link href="/courses/basic" data-testid="link-start-level-1">
+                    <Link href="/learn/level-1" data-testid="link-start-level-1">
                       <Button className="gap-2 w-full sm:w-auto" data-testid="button-start-level-1">
                         <Play className="w-4 h-4" />
                         Start Learning – Level 1
@@ -432,7 +432,7 @@ export default function Home() {
               Agar aap bhi Rohit jaise confused ho ya Priya ki tarah smart decision lena chahte ho, toh aaj hi shuru karo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Link href="/courses/basic" data-testid="link-start-journey">
+              <Link href="/learn/level-1" data-testid="link-start-journey">
                 <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-start-journey">
                   <GraduationCap className="w-4 h-4" />
                   Start Learning – Level 1
