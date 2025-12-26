@@ -23,8 +23,8 @@ import {
 } from "lucide-react";
 import {
   CalculatorIllustration,
-  LearnerCharacter,
-  MentorCharacter,
+  GrowthChart,
+  BookLearning,
 } from "@/components/Illustrations";
 
 const fadeInUp = {
@@ -130,7 +130,9 @@ export default function Home() {
               className="hidden lg:flex justify-center relative"
             >
               <div className="relative">
-                <LearnerCharacter size={320} />
+                <div className="w-80 h-80 bg-gradient-to-br from-primary/10 via-blue-500/5 to-emerald-500/10 rounded-3xl flex items-center justify-center">
+                  <GrowthChart size={280} />
+                </div>
                 <motion.div
                   className="absolute -top-4 -right-8 bg-card rounded-lg p-3 shadow-lg border"
                   animate={{ y: [0, -8, 0] }}
@@ -139,6 +141,16 @@ export default function Home() {
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-emerald-500" />
                     <span className="text-sm font-medium">10,000+ Students</span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="absolute bottom-8 -left-6 bg-card rounded-lg p-3 shadow-lg border"
+                  animate={{ y: [0, 5, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+                >
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-blue-500" />
+                    <span className="text-sm font-medium">8 Learning Levels</span>
                   </div>
                 </motion.div>
               </div>
@@ -223,26 +235,34 @@ export default function Home() {
                   <div className="flex gap-8">
                     <div className="text-center">
                       <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-2">
-                        <LearnerCharacter size={40} />
+                        <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                       </div>
                       <p className="text-sm font-medium">Rohit</p>
                       <p className="text-xs text-muted-foreground">The Learner</p>
                     </div>
                     <div className="text-center">
                       <div className="w-16 h-16 rounded-full bg-purple-500/10 flex items-center justify-center mx-auto mb-2">
-                        <MentorCharacter size={40} />
+                        <Lightbulb className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                       </div>
                       <p className="text-sm font-medium">Priya</p>
                       <p className="text-xs text-muted-foreground">The Mentor</p>
                     </div>
                   </div>
                   
-                  <Link href="/courses/basic" data-testid="link-learn-with-stories">
-                    <Button className="gap-2" data-testid="button-learn-with-stories">
-                      <Play className="w-4 h-4" />
-                      Learn with Stories
-                    </Button>
-                  </Link>
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <Link href="/courses/basic" data-testid="link-start-level-1">
+                      <Button className="gap-2 w-full sm:w-auto" data-testid="button-start-level-1">
+                        <Play className="w-4 h-4" />
+                        Start Learning – Level 1
+                      </Button>
+                    </Link>
+                    <Link href="/courses" data-testid="link-explore-path">
+                      <Button variant="outline" className="gap-2 w-full sm:w-auto" data-testid="button-explore-path">
+                        <GraduationCap className="w-4 h-4" />
+                        Explore Learning Path
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
