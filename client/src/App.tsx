@@ -17,7 +17,6 @@ import { LiveTicker } from "@/components/LiveTicker";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Courses from "@/pages/Courses";
-import LiveNews from "@/pages/LiveNews";
 import CalculatorHub from "@/pages/CalculatorHub";
 import GenericCalculator from "@/pages/GenericCalculator";
 import BrokerageCalculatorPage from "@/pages/BrokerageCalculatorPage";
@@ -26,7 +25,6 @@ import Payment from "@/pages/Payment";
 import Dashboard from "@/pages/Dashboard";
 import Admin from "@/pages/Admin";
 import Login from "@/pages/Login";
-import IPO from "@/pages/IPO";
 import BrokerComparison from "@/pages/BrokerComparison";
 import EconomicCalendar from "@/pages/EconomicCalendar";
 import PaperTrade from "@/pages/PaperTrade";
@@ -41,9 +39,6 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
-      <Route path="/live-news" component={LiveNews} />
-      <Route path="/ipo" component={IPO} />
-      <Route path="/ipo/:id" component={IPO} />
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/economic-calendar" component={EconomicCalendar} />
       <Route path="/paper-trade" component={PaperTrade} />

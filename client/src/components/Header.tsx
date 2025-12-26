@@ -40,11 +40,9 @@ const navItemsConfig: NavItem[] = [
     labelKey: "nav.tools",
     href: "/tools",
     children: [
-      { labelKey: "nav.liveNews", href: "/live-news" },
       { labelKey: "nav.educationalVideos", href: "/educational-videos" },
       { labelKey: "nav.calculators", href: "/calculators" },
       { labelKey: "nav.brokers", href: "/compare-brokers" },
-      { labelKey: "nav.ipo", href: "/ipo" },
       { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
       { labelKey: "nav.paperTrade", href: "/paper-trade" },
       { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
