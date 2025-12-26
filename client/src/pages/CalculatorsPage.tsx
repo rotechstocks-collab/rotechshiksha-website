@@ -1,82 +1,85 @@
 import { AllCalculators } from "@/components/Calculators";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calculator, Info, Sparkles } from "lucide-react";
+import { Calculator, Sparkles, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { FadeInUp, ScaleIn } from "@/components/AnimationWrappers";
-import { FloatingCoins } from "@/components/SmallcaseIllustrations";
 
 export default function CalculatorsPage() {
   return (
-    <div className="min-h-screen pt-28">
-      <section className="relative py-12 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
-        <motion.div
-          className="absolute top-10 right-20 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-10 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, delay: 2 }}
-        />
-        
+    <div className="min-h-screen pt-28 bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background">
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative py-16 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-teal-50 to-white dark:from-background dark:via-background dark:to-background" />
+
         <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <FadeInUp className="flex items-center gap-4">
-              <motion.div 
-                className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#4A90E2] to-[#4ECDC4] text-white flex items-center justify-center shadow-lg"
+          <FadeInUp>
+            <div className="flex flex-col items-center text-center gap-4">
+              <motion.div
+                className="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-600 to-teal-500 text-white flex items-center justify-center shadow-xl"
                 whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
               >
-                <Calculator className="w-8 h-8" />
+                <Calculator className="w-10 h-10" />
               </motion.div>
-              <div>
-                <Badge variant="outline" className="mb-2 bg-white/80 dark:bg-card/80 backdrop-blur-sm border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  Free Tools
-                </Badge>
-                <h1 className="text-3xl font-bold text-slate-800 dark:text-foreground">Trading Calculators</h1>
-                <p className="text-slate-600 dark:text-muted-foreground">Essential tools for smarter trading decisions</p>
-              </div>
-            </FadeInUp>
-            
-            <ScaleIn delay={0.2} className="hidden md:block">
-              <FloatingCoins size={120} />
-            </ScaleIn>
-          </div>
+
+              <Badge className="bg-white shadow border text-blue-600">
+                <Sparkles className="w-4 h-4 mr-1" /> Free Financial Tools
+              </Badge>
+
+              <h1 className="text-4xl font-bold text-slate-800 dark:text-foreground">
+                Smart Financial Calculators
+              </h1>
+
+              <p className="max-w-2xl text-slate-600 dark:text-muted-foreground">
+                SIP, Tax, Loan, Mutual Fund & Trading calculators – sab kuch ek
+                jagah, easy aur accurate.
+              </p>
+            </div>
+          </FadeInUp>
         </div>
       </section>
 
-      <section className="py-12 bg-white/50 dark:bg-background">
+      {/* ===== CALCULATORS GRID ===== */}
+      <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <FadeInUp delay={0.1}>
-            <AllCalculators />
-          </FadeInUp>
-
-          <FadeInUp delay={0.3}>
-            <Card className="mt-8 bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-500/10 dark:to-teal-500/10 border-blue-100 dark:border-blue-500/20">
-              <CardContent className="p-5 flex items-start gap-4">
-                <motion.div
-                  className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0"
-                  whileHover={{ rotate: 10 }}
-                >
-                  <Info className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </motion.div>
-                <div className="text-sm">
-                  <p className="font-semibold text-blue-800 dark:text-blue-300 mb-1">How to use these calculators</p>
-                  <p className="text-blue-700/80 dark:text-blue-400/80 leading-relaxed">
-                    These calculators help you make informed trading decisions. The SIP calculator shows
-                    how your investments can grow over time. Use the Risk-Reward calculator to evaluate
-                    trade setups. Position sizing helps determine how much to invest per trade based on
-                    your risk tolerance. The brokerage calculator shows all trading costs including STT,
-                    GST, and exchange charges.
-                  </p>
+            <Card className="border-0 shadow-xl bg-white/80 dark:bg-card/80 backdrop-blur">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-semibold text-slate-800 dark:text-foreground">
+                    All Calculators
+                  </h2>
+                  <span className="text-sm text-muted-foreground">
+                    Click to open calculator
+                  </span>
                 </div>
+
+                {/* Existing Calculators Component */}
+                <AllCalculators />
               </CardContent>
             </Card>
           </FadeInUp>
+
+          {/* ===== INFO STRIP ===== */}
+          <ScaleIn delay={0.3}>
+            <Card className="mt-10 border border-dashed border-blue-200 dark:border-blue-500/30 bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-500/10 dark:to-teal-500/10">
+              <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-slate-700 dark:text-muted-foreground max-w-2xl">
+                  💡 Ye calculators beginners se leke advanced traders ke liye
+                  banaye gaye hain. Har tool real-world logic par based hai
+                  taaki aap better financial decisions le sako.
+                </p>
+
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-2 text-blue-600 font-semibold cursor-pointer"
+                >
+                  Learn how to use
+                  <ArrowRight className="w-4 h-4" />
+                </motion.div>
+              </CardContent>
+            </Card>
+          </ScaleIn>
         </div>
       </section>
     </div>
