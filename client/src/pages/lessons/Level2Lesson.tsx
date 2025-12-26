@@ -12,14 +12,15 @@ import {
   Globe,
   ArrowRight,
   MessageCircle,
+  TrendingUp,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { level1Content, level1Labels } from "@/content/lessons/level1";
+import { level2Content, level2Labels } from "@/content/lessons/level2";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 
-export default function Level1Lesson() {
-  const { title, subtitle, scenes } = level1Content;
-  const labels = level1Labels;
+export default function Level2Lesson() {
+  const { title, subtitle, scenes } = level2Content;
+  const labels = level2Labels;
 
   const getSceneIcon = (type: string) => {
     switch (type) {
@@ -67,7 +68,7 @@ export default function Level1Lesson() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
-      <div className="bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 text-white">
+      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
         <div className="container mx-auto px-4 py-8 md:py-12">
           <FadeInUp>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -80,7 +81,7 @@ export default function Level1Lesson() {
                 </Link>
                 <div className="flex items-center gap-3 mb-3">
                   <Badge className="bg-white/20 text-white border-0">{labels.levelBadge}</Badge>
-                  <Badge variant="secondary" className="bg-emerald-400/20 text-emerald-100 border-0">
+                  <Badge variant="secondary" className="bg-blue-400/20 text-blue-100 border-0">
                     {labels.freeLabel}
                   </Badge>
                   <span className="flex items-center gap-1 text-sm text-white/70">
@@ -185,28 +186,41 @@ export default function Level1Lesson() {
             ))}
           </StaggerContainer>
 
-          {/* Next Level CTA */}
+          {/* Navigation between levels */}
           <FadeInUp delay={0.5}>
-            <div className="mt-12 text-center">
-              <Link href="/learn/level-2" data-testid="link-next-level">
-                <Card className="hover-elevate cursor-pointer bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-2 border-blue-200 dark:border-blue-800">
-                  <CardContent className="py-8">
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/50">
-                        <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="mt-12 grid md:grid-cols-2 gap-4">
+              {/* Previous Level */}
+              <Link href="/learn/level-1" data-testid="link-previous-level">
+                <Card className="hover-elevate cursor-pointer h-full">
+                  <CardContent className="py-6">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-full bg-emerald-100 dark:bg-emerald-900/50">
+                        <ChevronLeft className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-1">Level 2: Stock, Index aur IPO kya hote hain?</h3>
-                        <p className="text-sm text-muted-foreground">Agle level par jaayein</p>
+                        <p className="text-sm text-muted-foreground">{labels.previousLevel}</p>
+                        <h3 className="font-semibold">Level 1: Stock Market ki Shuruaat</h3>
                       </div>
-                      <Button className="mt-2" data-testid="button-next-level">
-                        {labels.nextLevel}
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>
               </Link>
+
+              {/* Next Level - Coming Soon */}
+              <Card className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700">
+                <CardContent className="py-6">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-full bg-slate-200 dark:bg-slate-700">
+                      <TrendingUp className="w-5 h-5 text-slate-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">{labels.nextLevel}</p>
+                      <h3 className="font-semibold text-muted-foreground">Level 3: Investment ka plan kaise banate hain?</h3>
+                      <Badge variant="secondary" className="mt-1 text-xs">{labels.comingSoon}</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </FadeInUp>
 
