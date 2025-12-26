@@ -35,14 +35,14 @@ const fadeInUp = {
 };
 
 const learningLevels = [
-  { level: 1, title: "Stock Market Basics", description: "What is stock market, how it works", color: "from-blue-500 to-blue-600" },
-  { level: 2, title: "Understanding Stocks", description: "Types of stocks, buying & selling", color: "from-cyan-500 to-cyan-600" },
-  { level: 3, title: "Investment Planning", description: "Goals, risk, and portfolio basics", color: "from-teal-500 to-teal-600" },
-  { level: 4, title: "Fundamental Analysis", description: "How to analyze companies", color: "from-emerald-500 to-emerald-600" },
-  { level: 5, title: "Technical Analysis", description: "Charts, patterns, and indicators", color: "from-amber-500 to-amber-600" },
-  { level: 6, title: "Trading Strategies", description: "Different trading approaches", color: "from-orange-500 to-orange-600" },
-  { level: 7, title: "Risk Management", description: "Protecting your investments", color: "from-rose-500 to-rose-600" },
-  { level: 8, title: "Advanced Topics", description: "Derivatives, options & more", color: "from-purple-500 to-purple-600" },
+  { level: 1, title: "Stock Market Basics", description: "Share market kya hai aur kaise kaam karta hai", color: "from-blue-500 to-blue-600" },
+  { level: 2, title: "Stocks, Index & IPO", description: "IPO, stocks, index aur mutual funds ka real meaning", color: "from-cyan-500 to-cyan-600" },
+  { level: 3, title: "Investment Planning", description: "Risk kya hota hai aur use kaise control kare", color: "from-teal-500 to-teal-600" },
+  { level: 4, title: "Mutual Funds & SIP", description: "Long-term investing vs short-term trading", color: "from-emerald-500 to-emerald-600" },
+  { level: 5, title: "Technical Analysis", description: "Charts aur indicators ko beginner-friendly tarike se samajhna", color: "from-amber-500 to-amber-600" },
+  { level: 6, title: "Fundamental Analysis", description: "Companies ko analyze karna seekhein", color: "from-orange-500 to-orange-600" },
+  { level: 7, title: "Risk Management", description: "Apne investments ko protect karna", color: "from-rose-500 to-rose-600" },
+  { level: 8, title: "Beginner to Confident Investor", description: "Rohit aur Priya ke real-life decisions ke through", color: "from-purple-500 to-purple-600" },
 ];
 
 const popularCalculators = [
@@ -55,10 +55,10 @@ const popularCalculators = [
 ];
 
 const trustPoints = [
-  { icon: <BookOpen className="w-6 h-6" />, title: "Free Education", description: "All courses and materials are 100% free" },
-  { icon: <GraduationCap className="w-6 h-6" />, title: "Beginner Friendly", description: "Start from zero, no prior knowledge needed" },
-  { icon: <Target className="w-6 h-6" />, title: "Practical Learning", description: "Real examples and step-by-step guidance" },
-  { icon: <Users className="w-6 h-6" />, title: "Community Support", description: "Learn together with 10,000+ students" },
+  { icon: <BookOpen className="w-6 h-6" />, title: "Beginner-friendly language", description: "No boring theory, simple Hindi explanations" },
+  { icon: <GraduationCap className="w-6 h-6" />, title: "Story-based learning", description: "Learn through Rohit & Priya's journey" },
+  { icon: <Target className="w-6 h-6" />, title: "Indian market focused", description: "Examples from NSE, BSE & Indian companies" },
+  { icon: <Calculator className="w-6 h-6" />, title: "Free calculators", description: "Quick decisions ke liye financial tools" },
 ];
 
 export default function Home() {
@@ -80,24 +80,23 @@ export default function Home() {
             >
               <Badge className="bg-primary/10 text-primary border-primary/20">
                 <Star className="w-3 h-3 mr-1" />
-                India's Trusted Learning Platform
+                Rotech Shiksha
               </Badge>
               
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
-                Learn Stock Market <br />
-                <span className="text-primary">from Zero</span>
+                Stock Market Seekho Zero Se <br />
+                <span className="text-primary">Bina Dar, Bina Confusion</span>
               </h1>
               
               <p className="text-lg text-muted-foreground max-w-lg">
-                Start your stock market journey with our beginner-friendly courses. 
-                No jargon, no confusion - just simple, step-by-step learning in Hindi and English.
+                Rohit aur Priya jaise hazaaro beginners ke liye banaya gaya ek simple, story-based learning platform jahan aap share market ko step-by-step samajh sakte ho — bilkul basics se.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/courses/basic" data-testid="link-start-learning">
                   <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-start-learning">
                     <Play className="w-4 h-4" />
-                    Start Learning - Level 1
+                    Start Learning – Level 1
                   </Button>
                 </Link>
                 <Link href="/courses" data-testid="link-view-courses">
@@ -108,18 +107,18 @@ export default function Home() {
                 </Link>
               </div>
               
-              <div className="flex items-center gap-6 pt-4">
+              <div className="flex flex-wrap items-center gap-6 pt-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-sm text-muted-foreground">Hindi first</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-sm text-muted-foreground">Soon all Indian languages</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
                   <span className="text-sm text-muted-foreground">100% Free</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-sm text-muted-foreground">Hindi & English</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-sm text-muted-foreground">No Experience Needed</span>
                 </div>
               </div>
             </motion.div>
@@ -156,10 +155,10 @@ export default function Home() {
               Structured Learning Path
             </Badge>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              8 Levels to Master Stock Market
+              8 Simple Levels
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Follow our step-by-step learning path from complete beginner to confident investor
+              Humne learning ko 8 simple levels me divide kiya hai, taaki aap bina pressure ke aage badh sakein
             </p>
           </motion.div>
 
@@ -204,17 +203,21 @@ export default function Home() {
                 <CardContent className="p-8 space-y-6">
                   <Badge className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20">
                     <BookOpen className="w-3 h-3 mr-1" />
-                    Story-Based Learning
+                    Story Introduction
                   </Badge>
                   
                   <h3 className="text-2xl font-bold text-foreground">
-                    Learn with Rohit & Priya
+                    Rohit aur Priya ki Kahani
                   </h3>
                   
                   <p className="text-muted-foreground">
-                    Follow the journey of <strong>Rohit</strong>, a curious beginner, and his mentor 
-                    <strong> Priya</strong>, an experienced investor. Through their conversations, 
-                    you'll understand complex concepts in the simplest way possible.
+                    <strong>Rohit</strong> ek normal job karta tha. Usne suna tha "stock market me paisa banta hai", lekin charts, terms aur risk dekh kar wo hamesha confused ho jata tha.
+                  </p>
+                  <p className="text-muted-foreground">
+                    <strong>Priya</strong>, jo thodi research karti thi, usne ek baat kahi: "Market mushkil nahi hai, bas sahi tarike se seekhne ki zarurat hai."
+                  </p>
+                  <p className="text-muted-foreground">
+                    Isi soch se Rotech Shiksha shuru hui — jahan har concept ko story aur real-life examples ke through samjhaya jata hai.
                   </p>
                   
                   <div className="flex gap-8">
@@ -251,11 +254,10 @@ export default function Home() {
               className="order-1 lg:order-2 space-y-4"
             >
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-                Learning Made <span className="text-primary">Simple</span>
+                What You Will <span className="text-primary">Learn</span>
               </h2>
               <p className="text-muted-foreground">
-                We believe everyone can learn about investing. Our story-based approach 
-                makes complex topics easy to understand and remember.
+                Yahan aap seekhenge:
               </p>
               
               <div className="space-y-4 pt-4">
@@ -264,8 +266,8 @@ export default function Home() {
                     <Lightbulb className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">Real-Life Examples</h4>
-                    <p className="text-sm text-muted-foreground">Every concept explained with examples you can relate to</p>
+                    <h4 className="font-semibold text-foreground">Share market kya hai aur kaise kaam karta hai</h4>
+                    <p className="text-sm text-muted-foreground">IPO, stocks, index aur mutual funds ka real meaning</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -273,8 +275,8 @@ export default function Home() {
                     <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">Practice Questions</h4>
-                    <p className="text-sm text-muted-foreground">Test your understanding after each lesson</p>
+                    <h4 className="font-semibold text-foreground">Risk kya hota hai aur use kaise control kare</h4>
+                    <p className="text-sm text-muted-foreground">Long-term investing vs short-term trading</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -282,8 +284,8 @@ export default function Home() {
                     <GraduationCap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">Certificate on Completion</h4>
-                    <p className="text-sm text-muted-foreground">Earn certificates as you progress through levels</p>
+                    <h4 className="font-semibold text-foreground">Charts aur indicators ko beginner-friendly tarike se samajhna</h4>
+                    <p className="text-sm text-muted-foreground">Real examples aur step-by-step guidance</p>
                   </div>
                 </div>
               </div>
@@ -309,7 +311,7 @@ export default function Home() {
                 Popular Calculators
               </h2>
               <p className="text-muted-foreground max-w-xl">
-                Plan your investments and calculate returns with our easy-to-use financial calculators
+                Quick decisions ke liye free financial tools
               </p>
             </motion.div>
             <motion.div
@@ -364,13 +366,13 @@ export default function Home() {
           <motion.div {...fadeInUp} className="text-center mb-12 space-y-4">
             <Badge className="bg-primary/10 text-primary border-primary/20">
               <Shield className="w-3 h-3 mr-1" />
-              Why Choose Us
+              Why Rotech Shiksha
             </Badge>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Trusted by 10,000+ Learners
+              Kyun Chunein Rotech Shiksha?
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of beginners who started their investing journey with us
+              Hindi first, soon all Indian languages
             </p>
           </motion.div>
 
@@ -404,17 +406,16 @@ export default function Home() {
             className="space-y-6"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Ready to Start Your Journey?
+              Aaj Hi Shuru Karo
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of learners who are building their financial future. 
-              Start with Level 1 today - it's completely free!
+              Agar aap bhi Rohit jaise confused ho ya Priya ki tarah smart decision lena chahte ho, toh aaj hi shuru karo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link href="/courses/basic" data-testid="link-start-journey">
                 <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-start-journey">
                   <GraduationCap className="w-4 h-4" />
-                  Start Learning Now
+                  Start Learning – Level 1
                 </Button>
               </Link>
               <Link href="/calculators" data-testid="link-try-calculators">
