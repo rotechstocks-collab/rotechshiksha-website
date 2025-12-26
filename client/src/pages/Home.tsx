@@ -184,7 +184,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link href={level.level <= 7 ? `/learn/level-${level.level}` : `/courses/algo`} data-testid={`link-level-${level.level}`}>
+                <Link href={level.level <= 8 ? `/learn/level-${level.level}` : `/courses/algo`} data-testid={`link-level-${level.level}`}>
                   <Card className={`h-full hover-elevate cursor-pointer group ${level.recommended ? 'ring-2 ring-emerald-500/50' : ''}`} data-testid={`card-level-${level.level}`}>
                     <CardContent className="p-4 space-y-3">
                       <div className="flex items-start justify-between gap-2">

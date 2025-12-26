@@ -38,6 +38,7 @@ import Level4Lesson from "@/pages/lessons/Level4Lesson";
 import Level5Lesson from "@/pages/lessons/Level5Lesson";
 import Level6Lesson from "@/pages/lessons/Level6Lesson";
 import Level7Lesson from "@/pages/lessons/Level7Lesson";
+import Level8Lesson from "@/pages/lessons/Level8Lesson";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -54,6 +55,7 @@ function Router() {
       <Route path="/learn/level-5" component={Level5Lesson} />
       <Route path="/learn/level-6" component={Level6Lesson} />
       <Route path="/learn/level-7" component={Level7Lesson} />
+      <Route path="/learn/level-8" component={Level8Lesson} />
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/economic-calendar" component={EconomicCalendar} />
       <Route path="/paper-trade" component={PaperTrade} />
