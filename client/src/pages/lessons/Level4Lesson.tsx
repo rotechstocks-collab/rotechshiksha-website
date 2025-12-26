@@ -17,18 +17,18 @@ import {
   Languages,
   Calculator,
   RotateCcw,
-  Target,
   Shield,
+  AlertTriangle,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { level3Bilingual } from "@/content/lessons/level3-bilingual";
+import { level4Bilingual } from "@/content/lessons/level4-bilingual";
 import { useLessonLanguage } from "@/context/LessonLanguageContext";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { LessonScene } from "@/content/lessons/types";
 
-export default function Level3Lesson() {
+export default function Level4Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
-  const content = level3Bilingual[lessonLang];
+  const content = level4Bilingual[lessonLang];
   const { title, subtitle, scenes } = content;
 
   const getSceneIcon = (type: string, speaker?: string) => {
@@ -120,7 +120,7 @@ export default function Level3Lesson() {
             <CardContent>
               <div className="space-y-2">
                 {scene.content.map((line, i) => (
-                  <p key={i} className="text-foreground/90">{line}</p>
+                  <p key={i} className={`text-foreground/90 ${line === "" ? "h-2" : ""}`}>{line}</p>
                 ))}
               </div>
             </CardContent>
@@ -161,14 +161,14 @@ export default function Level3Lesson() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700 text-white">
+      <div className="bg-gradient-to-br from-rose-600 via-red-600 to-orange-600 text-white">
         <div className="container mx-auto px-4 py-8 md:py-12">
           <FadeInUp>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 max-w-3xl mx-auto">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-                    Level 3
+                    Level 4
                   </Badge>
                   <div className="flex items-center gap-1 text-sm text-white/80">
                     <Clock className="w-4 h-4" />
@@ -224,13 +224,13 @@ export default function Level3Lesson() {
           </StaggerContainer>
 
           <FadeInUp delay={0.3}>
-            <Card className="mt-10 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 border-purple-200 dark:border-purple-800">
+            <Card className="mt-10 bg-gradient-to-br from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30 border-rose-200 dark:border-rose-800">
               <CardContent className="py-6 text-center">
-                <Shield className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-3" />
+                <Shield className="w-8 h-8 text-rose-600 dark:text-rose-400 mx-auto mb-3" />
                 <p className="text-lg font-medium text-foreground">
                   {lessonLang === "hi" 
-                    ? "\"Ab tum investor ki tarah soch rahe ho, gambler ki tarah nahi.\""
-                    : "\"Now you're thinking like an investor, not a gambler.\""}
+                    ? "\"Ab tum sirf investor nahi, disciplined investor ban rahe ho.\""
+                    : "\"Now you're not just an investor, you're becoming a disciplined investor.\""}
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   — Priya
@@ -246,37 +246,34 @@ export default function Level3Lesson() {
               </h3>
               
               <div className="grid md:grid-cols-3 gap-4">
-                <Link href="/learn/level-4" data-testid="link-next-level">
-                  <Card className="h-full hover-elevate cursor-pointer border-2 border-rose-200 dark:border-rose-800 bg-gradient-to-br from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30">
-                    <CardContent className="py-6 text-center">
-                      <div className="p-3 rounded-full bg-rose-100 dark:bg-rose-900/50 inline-block mb-3">
-                        <ArrowRight className="w-6 h-6 text-rose-600 dark:text-rose-400" />
-                      </div>
-                      <h4 className="font-semibold mb-1">
-                        {lessonLang === "hi" ? "Level 4 par Jaayein" : "Go to Level 4"}
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        {lessonLang === "hi" ? "Risk Management seekhein" : "Learn Risk Management"}
-                      </p>
-                      <Button size="sm" className="mt-3" data-testid="button-next-level">
-                        {labels.nextLevel}
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Link>
+                <Card className="h-full border-2 border-dashed border-slate-300 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+                  <CardContent className="py-6 text-center">
+                    <div className="p-3 rounded-full bg-slate-200 dark:bg-slate-700 inline-block mb-3">
+                      <TrendingUp className="w-6 h-6 text-slate-500" />
+                    </div>
+                    <h4 className="font-semibold mb-1 text-muted-foreground">
+                      {lessonLang === "hi" ? "Level 5 par Jaayein" : "Go to Level 5"}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      {lessonLang === "hi" ? "Mutual Funds & SIP" : "Mutual Funds & SIP"}
+                    </p>
+                    <Badge variant="secondary" className="mt-3 text-xs">
+                      {lessonLang === "hi" ? "Jaldi Aayega" : "Coming Soon"}
+                    </Badge>
+                  </CardContent>
+                </Card>
 
-                <Link href="/learn/level-3" data-testid="link-revise-level-3">
+                <Link href="/learn/level-4" data-testid="link-revise-level-4">
                   <Card className="h-full hover-elevate cursor-pointer">
                     <CardContent className="py-6 text-center">
                       <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/50 inline-block mb-3">
                         <RotateCcw className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                       </div>
                       <h4 className="font-semibold mb-1">
-                        {lessonLang === "hi" ? "Level 3 Dobara Padhein" : "Revise Level 3"}
+                        {lessonLang === "hi" ? "Level 4 Dobara Padhein" : "Revise Level 4"}
                       </h4>
                       <p className="text-xs text-muted-foreground">
-                        {lessonLang === "hi" ? "Plan concepts clear karein" : "Clear your planning concepts"}
+                        {lessonLang === "hi" ? "Risk rules yaad karein" : "Remember the risk rules"}
                       </p>
                       <Button size="sm" variant="outline" className="mt-3" data-testid="button-revise">
                         {lessonLang === "hi" ? "Revise" : "Revise"}

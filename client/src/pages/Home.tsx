@@ -38,10 +38,10 @@ const learningLevels = [
   { level: 1, title: "Stock Market ki Shuruaat", description: "Dar se samajh tak – Stock Market kya hai", color: "from-emerald-500 to-emerald-600", recommended: true },
   { level: 2, title: "Stock, Index & IPO", description: "Nifty, Sensex, aur IPO ka meaning", color: "from-blue-500 to-blue-600", recommended: false },
   { level: 3, title: "Investment Planning", description: "Paisa kahaan lagaye – Goals se shuru", color: "from-teal-500 to-teal-600", recommended: false },
-  { level: 4, title: "Mutual Funds & SIP", description: "Smart investing without stock picking", color: "from-cyan-500 to-cyan-600", recommended: false },
-  { level: 5, title: "Technical Analysis", description: "Charts aur price patterns samjhein", color: "from-amber-500 to-amber-600", recommended: false },
-  { level: 6, title: "Fundamental Analysis", description: "Companies ki value kaise nikalein", color: "from-orange-500 to-orange-600", recommended: false },
-  { level: 7, title: "Risk Management", description: "Apne investments ko protect karna", color: "from-rose-500 to-rose-600", recommended: false },
+  { level: 4, title: "Risk Management", description: "Loss se kaise bachein – Panic se door", color: "from-rose-500 to-rose-600", recommended: false },
+  { level: 5, title: "Mutual Funds & SIP", description: "Smart investing without stock picking", color: "from-cyan-500 to-cyan-600", recommended: false },
+  { level: 6, title: "Technical Analysis", description: "Charts aur price patterns samjhein", color: "from-amber-500 to-amber-600", recommended: false },
+  { level: 7, title: "Fundamental Analysis", description: "Companies ki value kaise nikalein", color: "from-orange-500 to-orange-600", recommended: false },
   { level: 8, title: "Confident Investor", description: "Real decisions through Rohit & Priya", color: "from-purple-500 to-purple-600", recommended: false },
 ];
 
@@ -184,7 +184,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link href={level.level <= 3 ? `/learn/level-${level.level}` : `/courses/${level.level <= 4 ? 'intermediate' : level.level <= 6 ? 'advanced' : 'algo'}`} data-testid={`link-level-${level.level}`}>
+                <Link href={level.level <= 4 ? `/learn/level-${level.level}` : `/courses/${level.level <= 6 ? 'advanced' : 'algo'}`} data-testid={`link-level-${level.level}`}>
                   <Card className={`h-full hover-elevate cursor-pointer group ${level.recommended ? 'ring-2 ring-emerald-500/50' : ''}`} data-testid={`card-level-${level.level}`}>
                     <CardContent className="p-4 space-y-3">
                       <div className="flex items-start justify-between gap-2">
