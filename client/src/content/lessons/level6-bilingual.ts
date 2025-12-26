@@ -282,9 +282,9 @@ export const level6Bilingual: BilingualLessonContent = {
         speaker: "narrator",
         content: [
           "Strategy toh aa gayi, lekin jab loss hota hai tab emotions kabu me kaise rakhein?",
-          "Fear aur greed ko kaise manage karein?",
+          "Fear, greed, FOMO, revenge trading – ye sab kaise handle karein?",
           "",
-          "Level 7 me jaano: Risk Control & Trader Psychology",
+          "Level 7 me jaano: Trader Psychology – Dimaag Jeetna Seekho",
         ],
       },
     ],
@@ -567,9 +567,9 @@ export const level6Bilingual: BilingualLessonContent = {
         speaker: "narrator",
         content: [
           "Strategy is in place, but how do you control emotions when you lose?",
-          "How do you manage fear and greed?",
+          "Fear, greed, FOMO, revenge trading – how do you handle all this?",
           "",
-          "Find out in Level 7: Risk Control & Trader Psychology",
+          "Find out in Level 7: Trader Psychology – Learn to Win Your Mind",
         ],
       },
     ],
