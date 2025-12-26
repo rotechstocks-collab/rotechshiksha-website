@@ -48,110 +48,59 @@ import {
   StockBasket,
   FloatingCoins,
 } from "@/components/SmallcaseIllustrations";
-import {
-  FadeInUp,
-  ScaleIn,
-  StaggerContainer,
-  StaggerItem,
-  HoverLift,
-} from "@/components/AnimationWrappers";
+import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem, HoverLift } from "@/components/AnimationWrappers";
+import { MarketNewsSection } from "@/components/MarketNewsSection";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  useIPOList,
-  formatDate as formatIPODate,
-  type IPOData,
-} from "@/lib/ipoApi";
+import { useIPOList, formatDate as formatIPODate, type IPOData } from "@/lib/ipoApi";
 
 const statusColors = {
-  upcoming:
-    "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-  ongoing:
-    "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-  closed:
-    "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-  listed:
-    "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
+  upcoming: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  ongoing: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  closed: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  listed: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
 };
 
 const statusLabels = {
   upcoming: "Upcoming",
   ongoing: "Open Now",
   closed: "Closed",
-  listed: "Listed",
+  listed: "Listed"
 };
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.6 },
+  transition: { duration: 0.6 }
 };
 
 const popularCalculators = [
-  {
-    id: "sip",
-    name: "SIP Calculator",
-    icon: <PiggyBank className="w-6 h-6" />,
-    color: "from-emerald-500 to-teal-500",
-  },
-  {
-    id: "lumpsum",
-    name: "Lumpsum",
-    icon: <Wallet className="w-6 h-6" />,
-    color: "from-blue-500 to-indigo-500",
-  },
-  {
-    id: "income-tax",
-    name: "Income Tax",
-    icon: <BarChart3 className="w-6 h-6" />,
-    color: "from-purple-500 to-pink-500",
-  },
-  {
-    id: "ppf",
-    name: "PPF Calculator",
-    icon: <Shield className="w-6 h-6" />,
-    color: "from-cyan-500 to-blue-500",
-  },
-  {
-    id: "fd",
-    name: "FD Calculator",
-    icon: <Banknote className="w-6 h-6" />,
-    color: "from-amber-500 to-orange-500",
-  },
-  {
-    id: "emi",
-    name: "EMI Calculator",
-    icon: <IndianRupee className="w-6 h-6" />,
-    color: "from-rose-500 to-red-500",
-  },
-  {
-    id: "brokerage",
-    name: "Brokerage",
-    icon: <TrendingUp className="w-6 h-6" />,
-    color: "from-teal-500 to-cyan-500",
-  },
+  { id: "sip", name: "SIP Calculator", icon: <PiggyBank className="w-6 h-6" />, color: "from-emerald-500 to-teal-500" },
+  { id: "lumpsum", name: "Lumpsum", icon: <Wallet className="w-6 h-6" />, color: "from-blue-500 to-indigo-500" },
+  { id: "income-tax", name: "Income Tax", icon: <BarChart3 className="w-6 h-6" />, color: "from-purple-500 to-pink-500" },
+  { id: "ppf", name: "PPF Calculator", icon: <Shield className="w-6 h-6" />, color: "from-cyan-500 to-blue-500" },
+  { id: "fd", name: "FD Calculator", icon: <Banknote className="w-6 h-6" />, color: "from-amber-500 to-orange-500" },
+  { id: "emi", name: "EMI Calculator", icon: <IndianRupee className="w-6 h-6" />, color: "from-rose-500 to-red-500" },
+  { id: "brokerage", name: "Brokerage", icon: <TrendingUp className="w-6 h-6" />, color: "from-teal-500 to-cyan-500" },
 ];
 
 const learningFeatures = [
   {
     icon: <BookOpen className="w-7 h-7" />,
     title: "Comprehensive Ebooks",
-    description:
-      "50+ ebooks covering basics to advanced trading strategies in easy language",
+    description: "50+ ebooks covering basics to advanced trading strategies in easy language",
     color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   {
     icon: <Video className="w-7 h-7" />,
     title: "Video Tutorials",
-    description:
-      "100+ video lessons with practical examples and real case studies",
+    description: "100+ video lessons with practical examples and real case studies",
     color: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
   },
   {
     icon: <Calculator className="w-7 h-7" />,
     title: "20+ Calculators",
-    description:
-      "SIP, EMI, Tax, PPF and more calculators to plan your finances",
+    description: "SIP, EMI, Tax, PPF and more calculators to plan your finances",
     color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   },
   {
@@ -189,20 +138,17 @@ const testimonials = [
   {
     name: "Rahul Sharma",
     role: "Software Engineer",
-    content:
-      "Finally understood technical analysis after going through the intermediate course. The charts make so much sense now!",
+    content: "Finally understood technical analysis after going through the intermediate course. The charts make so much sense now!",
   },
   {
     name: "Priya Patel",
     role: "Business Owner",
-    content:
-      "Started as a complete beginner. The step-by-step approach helped me build confidence in the stock market.",
+    content: "Started as a complete beginner. The step-by-step approach helped me build confidence in the stock market.",
   },
   {
     name: "Amit Kumar",
     role: "College Student",
-    content:
-      "The algo trading section opened my eyes to systematic trading. Great introduction without overwhelming jargon.",
+    content: "The algo trading section opened my eyes to systematic trading. Great introduction without overwhelming jargon.",
   },
 ];
 
@@ -232,11 +178,9 @@ export default function Home() {
   const { isAuthenticated, setShowAuthPopup, setPendingAction } = useAuth();
   const { t } = useLanguage();
   const { data: ipoData, isLoading: isIPOLoading } = useIPOList();
-
+  
   const featuredIPOs = (ipoData?.ipos || [])
-    .filter(
-      (ipo: IPOData) => ipo.status === "ongoing" || ipo.status === "upcoming",
-    )
+    .filter((ipo: IPOData) => ipo.status === "ongoing" || ipo.status === "upcoming")
     .slice(0, 3);
 
   return (
@@ -250,7 +194,7 @@ export default function Home() {
           <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl" />
         </div>
-
+        
         <div className="max-w-7xl mx-auto px-4 lg:px-8 relative">
           <div className="grid lg:grid-cols-3 gap-8 items-center mb-12">
             <motion.div {...fadeInUp} className="lg:col-span-2 space-y-4">
@@ -262,8 +206,7 @@ export default function Home() {
                 Financial Calculators
               </h2>
               <p className="text-muted-foreground max-w-xl">
-                Plan your investments, calculate returns, and make informed
-                financial decisions
+                Plan your investments, calculate returns, and make informed financial decisions
               </p>
             </motion.div>
             <motion.div
@@ -286,19 +229,12 @@ export default function Home() {
                 transition={{ delay: index * 0.1, duration: 0.4 }}
               >
                 <Link href={`/calculators/${calc.id}`}>
-                  <Card
-                    className="hover-elevate cursor-pointer group h-full"
-                    data-testid={`card-calc-${calc.id}`}
-                  >
+                  <Card className="hover-elevate cursor-pointer group h-full" data-testid={`card-calc-${calc.id}`}>
                     <CardContent className="p-4 text-center space-y-3">
-                      <div
-                        className={`w-12 h-12 mx-auto rounded-xl bg-gradient-to-br ${calc.color} text-white flex items-center justify-center transform group-hover:scale-110 transition-transform`}
-                      >
+                      <div className={`w-12 h-12 mx-auto rounded-xl bg-gradient-to-br ${calc.color} text-white flex items-center justify-center transform group-hover:scale-110 transition-transform`}>
                         {calc.icon}
                       </div>
-                      <h3 className="text-sm font-medium text-foreground">
-                        {calc.name}
-                      </h3>
+                      <h3 className="text-sm font-medium text-foreground">{calc.name}</h3>
                     </CardContent>
                   </Card>
                 </Link>
@@ -308,12 +244,7 @@ export default function Home() {
 
           <motion.div {...fadeInUp} className="text-center">
             <Link href="/calculators">
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2"
-                data-testid="button-view-all-calculators"
-              >
+              <Button size="lg" variant="outline" className="gap-2" data-testid="button-view-all-calculators">
                 View All 20 Calculators
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -361,22 +292,13 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
-                <Card
-                  className="h-full hover-elevate"
-                  data-testid={`card-feature-${index}`}
-                >
+                <Card className="h-full hover-elevate" data-testid={`card-feature-${index}`}>
                   <CardContent className="pt-6 space-y-4">
-                    <div
-                      className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center`}
-                    >
+                    <div className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center`}>
                       {feature.icon}
                     </div>
-                    <h3 className="font-semibold text-lg text-foreground">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {feature.description}
-                    </p>
+                    <h3 className="font-semibold text-lg text-foreground">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -393,8 +315,7 @@ export default function Home() {
                 Why Choose Us?
               </h2>
               <p className="text-muted-foreground max-w-xl">
-                Join thousands of learners who trust us for their financial
-                education journey
+                Join thousands of learners who trust us for their financial education journey
               </p>
             </motion.div>
             <motion.div
@@ -430,9 +351,7 @@ export default function Home() {
                   {item.icon}
                 </div>
                 <h3 className="font-semibold text-foreground">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {item.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -458,8 +377,7 @@ export default function Home() {
                 Upcoming & Ongoing IPOs
               </h2>
               <p className="text-muted-foreground max-w-xl">
-                Track the latest IPO opportunities, view subscription status,
-                and stay updated with new listings
+                Track the latest IPO opportunities, view subscription status, and stay updated with new listings
               </p>
             </motion.div>
             <motion.div
@@ -496,99 +414,77 @@ export default function Home() {
               ))
             ) : featuredIPOs.length > 0 ? (
               featuredIPOs.map((ipo: IPOData, index: number) => (
-                <motion.div
-                  key={ipo.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Link
-                    href={`/ipo/${ipo.id}`}
-                    data-testid={`link-ipo-home-${ipo.id}`}
-                  >
-                    <Card
-                      className="h-full hover-elevate cursor-pointer group"
-                      data-testid={`card-ipo-home-${ipo.id}`}
-                    >
-                      <CardContent className="pt-5 space-y-4">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                            {ipo.companyName.charAt(0)}
-                          </div>
-                          <Badge
-                            variant="outline"
-                            className={statusColors[ipo.status]}
-                          >
-                            {statusLabels[ipo.status]}
-                          </Badge>
+              <motion.div
+                key={ipo.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Link href={`/ipo/${ipo.id}`} data-testid={`link-ipo-home-${ipo.id}`}>
+                  <Card className="h-full hover-elevate cursor-pointer group" data-testid={`card-ipo-home-${ipo.id}`}>
+                    <CardContent className="pt-5 space-y-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                          {ipo.companyName.charAt(0)}
                         </div>
+                        <Badge variant="outline" className={statusColors[ipo.status]}>
+                          {statusLabels[ipo.status]}
+                        </Badge>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                          {ipo.companyName}
+                        </h3>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                          <Briefcase className="w-3 h-3" />
+                          {ipo.industry || "General"}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                          <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                            {ipo.companyName}
-                          </h3>
-                          <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                            <Briefcase className="w-3 h-3" />
-                            {ipo.industry || "General"}
+                          <p className="text-muted-foreground text-xs">Price Band</p>
+                          <p className="font-semibold text-foreground">
+                            Rs {ipo.issuePrice.min} - {ipo.issuePrice.max}
                           </p>
                         </div>
-                        <div className="grid grid-cols-2 gap-3 text-sm">
-                          <div>
-                            <p className="text-muted-foreground text-xs">
-                              Price Band
-                            </p>
-                            <p className="font-semibold text-foreground">
-                              Rs {ipo.issuePrice.min} - {ipo.issuePrice.max}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-muted-foreground text-xs">
-                              Min. Investment
-                            </p>
-                            <p className="font-semibold text-foreground">
-                              Rs {ipo.minInvestment.toLocaleString("en-IN")}
-                            </p>
-                          </div>
+                        <div>
+                          <p className="text-muted-foreground text-xs">Min. Investment</p>
+                          <p className="font-semibold text-foreground">
+                            Rs {ipo.minInvestment.toLocaleString("en-IN")}
+                          </p>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
-                          <Calendar className="w-4 h-4" />
-                          {ipo.status === "upcoming" ? (
-                            <span>Opens: {formatIPODate(ipo.openDate)}</span>
-                          ) : (
-                            <span>Closes: {formatIPODate(ipo.closeDate)}</span>
-                          )}
-                        </div>
-                        {ipo.gmp && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <TrendingUp className="w-4 h-4 text-emerald-500" />
-                            <span className="text-muted-foreground">GMP:</span>
-                            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                              +Rs {ipo.gmp}
-                            </span>
-                          </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
+                        <Calendar className="w-4 h-4" />
+                        {ipo.status === "upcoming" ? (
+                          <span>Opens: {formatIPODate(ipo.openDate)}</span>
+                        ) : (
+                          <span>Closes: {formatIPODate(ipo.closeDate)}</span>
                         )}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </motion.div>
-              ))
+                      </div>
+                      {ipo.gmp && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <TrendingUp className="w-4 h-4 text-emerald-500" />
+                          <span className="text-muted-foreground">GMP:</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">+Rs {ipo.gmp}</span>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))
             ) : (
               <div className="col-span-3 text-center py-8">
-                <p className="text-muted-foreground">
-                  No active IPOs at the moment. Check back soon!
-                </p>
+                <p className="text-muted-foreground">No active IPOs at the moment. Check back soon!</p>
               </div>
             )}
           </div>
 
           <motion.div {...fadeInUp} className="text-center">
             <Link href="/ipo">
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2"
-                data-testid="button-view-all-ipos"
-              >
+              <Button size="lg" variant="outline" className="gap-2" data-testid="button-view-all-ipos">
                 View All IPOs
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -637,32 +533,19 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.15, duration: 0.5 }}
               >
-                <Card
-                  className="h-full"
-                  data-testid={`card-testimonial-${index}`}
-                >
+                <Card className="h-full" data-testid={`card-testimonial-${index}`}>
                   <CardContent className="pt-6 space-y-4">
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className="w-4 h-4 text-amber-400 fill-current"
-                          viewBox="0 0 20 20"
-                        >
+                        <svg key={i} className="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 20 20">
                           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                         </svg>
                       ))}
                     </div>
-                    <p className="text-muted-foreground italic">
-                      "{testimonial.content}"
-                    </p>
+                    <p className="text-muted-foreground italic">"{testimonial.content}"</p>
                     <div className="pt-2 border-t border-border">
-                      <p className="font-semibold text-foreground">
-                        {testimonial.name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {testimonial.role}
-                      </p>
+                      <p className="font-semibold text-foreground">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -685,10 +568,7 @@ export default function Home() {
             >
               <ChartAnalysis size={200} />
             </motion.div>
-            <motion.div
-              {...fadeInUp}
-              className="text-center lg:text-left space-y-6"
-            >
+            <motion.div {...fadeInUp} className="text-center lg:text-left space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
                 {t("home.community.title")}
               </h2>
@@ -746,13 +626,10 @@ export default function Home() {
             transition={{ duration: 25, repeat: Infinity }}
           />
         </div>
-
+        
         <div className="max-w-7xl mx-auto px-4 lg:px-8 relative">
           <div className="grid lg:grid-cols-3 gap-8 items-center">
-            <motion.div
-              {...fadeInUp}
-              className="lg:col-span-2 text-center lg:text-left space-y-6"
-            >
+            <motion.div {...fadeInUp} className="lg:col-span-2 text-center lg:text-left space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
                 {t("home.cta.title")}
               </h2>
@@ -761,24 +638,14 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link href="/calculators">
-                  <Button
-                    size="lg"
-                    variant="secondary"
-                    className="shadow-lg"
-                    data-testid="button-cta-calculators"
-                  >
+                  <Button size="lg" variant="secondary" className="shadow-lg" data-testid="button-cta-calculators">
                     <Calculator className="w-4 h-4 mr-2" />
                     Explore Calculators
                   </Button>
                 </Link>
                 {isAuthenticated ? (
                   <Link href="/courses">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-white/30 text-white hover:bg-white/10"
-                      data-testid="button-cta-explore"
-                    >
+                    <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" data-testid="button-cta-explore">
                       {t("hero.cta.explore")}
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
