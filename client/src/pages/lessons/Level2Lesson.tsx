@@ -9,20 +9,27 @@ import {
   ChevronLeft,
   Clock,
   CheckCircle,
-  Globe,
   ArrowRight,
   MessageCircle,
   TrendingUp,
+  User,
+  GraduationCap,
+  Languages,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { level2Content, level2Labels } from "@/content/lessons/level2";
+import { level2Bilingual } from "@/content/lessons/level2-bilingual";
+import { useLessonLanguage } from "@/context/LessonLanguageContext";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
+import { LessonScene } from "@/content/lessons/types";
 
 export default function Level2Lesson() {
-  const { title, subtitle, scenes } = level2Content;
-  const labels = level2Labels;
+  const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
+  const content = level2Bilingual[lessonLang];
+  const { title, subtitle, scenes } = content;
 
-  const getSceneIcon = (type: string) => {
+  const getSceneIcon = (type: string, speaker?: string) => {
+    if (speaker === "rohit") return <User className="w-5 h-5" />;
+    if (speaker === "priya") return <GraduationCap className="w-5 h-5" />;
     switch (type) {
       case "scene":
         return <MessageCircle className="w-5 h-5" />;
@@ -37,23 +44,36 @@ export default function Level2Lesson() {
     }
   };
 
-  const getSceneLabel = (type: string) => {
-    switch (type) {
-      case "scene":
-        return labels.storyLabel;
-      case "concept":
-        return labels.conceptLabel;
-      case "summary":
-        return labels.summaryLabel;
-      default:
-        return "";
+  const getSpeakerStyles = (speaker?: string) => {
+    if (speaker === "rohit") {
+      return {
+        border: "border-l-4 border-l-sky-500",
+        bg: "bg-sky-50/50 dark:bg-sky-950/20",
+        iconBg: "bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-400",
+        label: labels.rohitSays,
+        labelColor: "text-sky-600 dark:text-sky-400",
+      };
     }
+    if (speaker === "priya") {
+      return {
+        border: "border-l-4 border-l-violet-500",
+        bg: "bg-violet-50/50 dark:bg-violet-950/20",
+        iconBg: "bg-violet-100 text-violet-600 dark:bg-violet-900/50 dark:text-violet-400",
+        label: labels.priyaSays,
+        labelColor: "text-violet-600 dark:text-violet-400",
+      };
+    }
+    return null;
   };
 
-  const getSceneStyles = (type: string) => {
+  const getSceneStyles = (type: string, speaker?: string) => {
+    const speakerStyles = getSpeakerStyles(speaker);
+    if (speakerStyles) {
+      return `${speakerStyles.border} ${speakerStyles.bg}`;
+    }
     switch (type) {
       case "scene":
-        return "border-l-4 border-l-blue-500 bg-blue-50/50 dark:bg-blue-950/20";
+        return "border-l-4 border-l-slate-400 bg-slate-50/50 dark:bg-slate-950/20";
       case "concept":
         return "border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20";
       case "summary":
@@ -63,6 +83,87 @@ export default function Level2Lesson() {
       default:
         return "";
     }
+  };
+
+  const getIconBg = (type: string, speaker?: string) => {
+    const speakerStyles = getSpeakerStyles(speaker);
+    if (speakerStyles) return speakerStyles.iconBg;
+    switch (type) {
+      case "scene":
+        return "bg-slate-100 text-slate-600 dark:bg-slate-900/50 dark:text-slate-400";
+      case "concept":
+        return "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400";
+      case "summary":
+        return "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400";
+      default:
+        return "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400";
+    }
+  };
+
+  const renderScene = (scene: LessonScene, index: number) => {
+    const speakerStyles = getSpeakerStyles(scene.speaker);
+
+    return (
+      <StaggerItem key={scene.id}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.08 }}
+        >
+          <Card
+            className={`overflow-visible ${getSceneStyles(scene.type, scene.speaker)}`}
+            data-testid={`card-scene-${scene.id}`}
+          >
+            {(scene.title || speakerStyles) && (
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-md ${getIconBg(scene.type, scene.speaker)}`}>
+                    {getSceneIcon(scene.type, scene.speaker)}
+                  </div>
+                  <div>
+                    {speakerStyles && (
+                      <span className={`text-sm font-semibold ${speakerStyles.labelColor}`}>
+                        {speakerStyles.label}
+                      </span>
+                    )}
+                    {scene.title && (
+                      <CardTitle className="text-lg md:text-xl">{scene.title}</CardTitle>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+            )}
+            <CardContent className={!scene.title && !speakerStyles ? "pt-4" : ""}>
+              {scene.type === "summary" ? (
+                <ul className="space-y-2">
+                  {scene.content.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 mt-1 flex-shrink-0" />
+                      <span className="text-muted-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="space-y-3">
+                  {scene.content.map((paragraph, idx) => (
+                    <p
+                      key={idx}
+                      className={`leading-relaxed ${
+                        paragraph.startsWith('"') || paragraph.startsWith("\"")
+                          ? "italic font-medium text-foreground pl-4 border-l-2 border-muted-foreground/30"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      </StaggerItem>
+    );
   };
 
   return (
@@ -79,14 +180,14 @@ export default function Level2Lesson() {
                     {labels.backToCourses}
                   </Button>
                 </Link>
-                <div className="flex items-center gap-3 mb-3">
-                  <Badge className="bg-white/20 text-white border-0">{labels.levelBadge}</Badge>
+                <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  <Badge className="bg-white/20 text-white border-0">{labels.levelBadge} 2</Badge>
                   <Badge variant="secondary" className="bg-blue-400/20 text-blue-100 border-0">
                     {labels.freeLabel}
                   </Badge>
                   <span className="flex items-center gap-1 text-sm text-white/70">
                     <Clock className="w-4 h-4" />
-                    {labels.readingTime}
+                    7 {labels.readingTime}
                   </span>
                 </div>
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2" data-testid="text-lesson-title">
@@ -97,20 +198,17 @@ export default function Level2Lesson() {
                 )}
               </div>
 
-              {/* Language Switcher Placeholder */}
+              {/* Language Switcher */}
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  disabled
-                  className="bg-white/10 border-white/30 text-white/70 cursor-not-allowed"
-                  data-testid="button-language-placeholder"
+                  onClick={toggleLanguage}
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                  data-testid="button-language-switcher"
                 >
-                  <Globe className="w-4 h-4 mr-2" />
-                  {labels.languagePlaceholder}
-                  <Badge variant="secondary" className="ml-2 text-xs bg-white/20 text-white/70 border-0">
-                    {labels.comingSoon}
-                  </Badge>
+                  <Languages className="w-4 h-4 mr-2" />
+                  {lessonLang === "hi" ? "हिन्दी" : "English"}
                 </Button>
               </div>
             </div>
@@ -118,72 +216,31 @@ export default function Level2Lesson() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      {/* Character Legend */}
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-3xl mx-auto">
-          <StaggerContainer className="space-y-6">
-            {scenes.map((scene, index) => (
-              <StaggerItem key={scene.id}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card
-                    className={`overflow-visible ${getSceneStyles(scene.type)}`}
-                    data-testid={`card-scene-${scene.id}`}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-md ${
-                          scene.type === "scene" ? "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" :
-                          scene.type === "concept" ? "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400" :
-                          scene.type === "summary" ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400" :
-                          "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400"
-                        }`}>
-                          {getSceneIcon(scene.type)}
-                        </div>
-                        <div>
-                          {getSceneLabel(scene.type) && (
-                            <Badge variant="outline" className="text-xs mb-1">
-                              {getSceneLabel(scene.type)}
-                            </Badge>
-                          )}
-                          {scene.title && (
-                            <CardTitle className="text-lg md:text-xl">{scene.title}</CardTitle>
-                          )}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      {scene.type === "summary" ? (
-                        <ul className="space-y-2">
-                          {scene.content.map((item, idx) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <CheckCircle className="w-4 h-4 text-emerald-500 mt-1 flex-shrink-0" />
-                              <span className="text-muted-foreground">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <div className="space-y-3">
-                          {scene.content.map((paragraph, idx) => (
-                            <p
-                              key={idx}
-                              className={`text-muted-foreground leading-relaxed ${
-                                paragraph.startsWith('"') ? "italic font-medium text-foreground" : ""
-                              }`}
-                            >
-                              {paragraph}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </StaggerItem>
-            ))}
+          <div className="flex flex-wrap gap-4 justify-center text-sm">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-md bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-400">
+                <User className="w-4 h-4" />
+              </div>
+              <span className="text-muted-foreground">Rohit ({lessonLang === "hi" ? "Learner" : "Learner"})</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-md bg-violet-100 text-violet-600 dark:bg-violet-900/50 dark:text-violet-400">
+                <GraduationCap className="w-4 h-4" />
+              </div>
+              <span className="text-muted-foreground">Priya ({lessonLang === "hi" ? "Mentor" : "Mentor"})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-4 md:py-8">
+        <div className="max-w-3xl mx-auto">
+          <StaggerContainer className="space-y-4">
+            {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
 
           {/* Navigation between levels */}
@@ -199,7 +256,11 @@ export default function Level2Lesson() {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">{labels.previousLevel}</p>
-                        <h3 className="font-semibold">Level 1: Stock Market ki Shuruaat</h3>
+                        <h3 className="font-semibold">
+                          {lessonLang === "hi" 
+                            ? "Level 1: Stock Market ki Shuruaat" 
+                            : "Level 1: Getting Started with Stock Market"}
+                        </h3>
                       </div>
                     </div>
                   </CardContent>
@@ -215,8 +276,14 @@ export default function Level2Lesson() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">{labels.nextLevel}</p>
-                      <h3 className="font-semibold text-muted-foreground">Level 3: Investment ka plan kaise banate hain?</h3>
-                      <Badge variant="secondary" className="mt-1 text-xs">{labels.comingSoon}</Badge>
+                      <h3 className="font-semibold text-muted-foreground">
+                        {lessonLang === "hi" 
+                          ? "Level 3: Investment ka plan kaise banate hain?" 
+                          : "Level 3: How to make an investment plan?"}
+                      </h3>
+                      <Badge variant="secondary" className="mt-1 text-xs">
+                        {lessonLang === "hi" ? "Jaldi Aayega" : "Coming Soon"}
+                      </Badge>
                     </div>
                   </div>
                 </CardContent>

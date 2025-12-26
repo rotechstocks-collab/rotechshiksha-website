@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { LessonLanguageProvider } from "@/context/LessonLanguageContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AuthModal } from "@/components/AuthModal";
@@ -66,7 +67,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
-          <AuthProvider>
+          <LessonLanguageProvider>
+            <AuthProvider>
             <TooltipProvider>
               <HreflangTags />
               <LiveTicker />
@@ -84,6 +86,7 @@ function App() {
               <Toaster />
             </TooltipProvider>
           </AuthProvider>
+          </LessonLanguageProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>

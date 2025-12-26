@@ -238,6 +238,103 @@ export default function Courses() {
   if (!params?.level) {
     return (
       <div className="min-h-screen pt-28">
+        {/* Featured Story-Based Lessons */}
+        <section className="py-12 bg-gradient-to-br from-emerald-50 via-blue-50 to-violet-50 dark:from-emerald-950/30 dark:via-blue-950/30 dark:to-violet-950/30">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8">
+            <FadeInUp>
+              <div className="text-center mb-8">
+                <Badge className="mb-3 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-0">
+                  Story-Based Learning
+                </Badge>
+                <h2 className="text-3xl font-bold mb-2">Rohit aur Priya ke Saath Seekhein</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Simple Hindi stories ke through stock market ki basics samjhein. Aasaan bhasha, clear concepts.
+                </p>
+              </div>
+            </FadeInUp>
+
+            <StaggerContainer className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Level 1 */}
+              <StaggerItem>
+                <Link href="/learn/level-1" data-testid="link-featured-level-1">
+                  <Card className="h-full hover-elevate cursor-pointer border-2 border-emerald-200 dark:border-emerald-800 bg-white dark:bg-card">
+                    <CardHeader>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-lg">
+                          1
+                        </div>
+                        <div>
+                          <Badge variant="secondary" className="text-xs">Free</Badge>
+                          <span className="text-xs text-muted-foreground ml-2">5 min</span>
+                        </div>
+                      </div>
+                      <CardTitle className="text-xl">Stock Market ki Shuruaat</CardTitle>
+                      <CardDescription>
+                        Dar se samajh tak – Stock Market kya hai, Share kya hai, Risk ka real meaning
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <BookOpen className="w-4 h-4" />
+                          <span>Story + Concepts</span>
+                        </div>
+                        <Button size="sm" data-testid="button-start-level-1">
+                          Shuru Karein
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </StaggerItem>
+
+              {/* Level 2 */}
+              <StaggerItem>
+                <Link href="/learn/level-2" data-testid="link-featured-level-2">
+                  <Card className="h-full hover-elevate cursor-pointer border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-card">
+                    <CardHeader>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+                          2
+                        </div>
+                        <div>
+                          <Badge variant="secondary" className="text-xs">Free</Badge>
+                          <span className="text-xs text-muted-foreground ml-2">7 min</span>
+                        </div>
+                      </div>
+                      <CardTitle className="text-xl">Stock, Index aur IPO</CardTitle>
+                      <CardDescription>
+                        Market ki asli tasveer – Nifty, Sensex, IPO basics aur market news ka matlab
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <TrendingUp className="w-4 h-4" />
+                          <span>Story + Concepts</span>
+                        </div>
+                        <Button size="sm" data-testid="button-start-level-2">
+                          Shuru Karein
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </StaggerItem>
+            </StaggerContainer>
+
+            {/* More levels coming */}
+            <div className="text-center mt-6">
+              <p className="text-sm text-muted-foreground">
+                Level 3-8 jaldi aa rahe hain
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Traditional Course Structure */}
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
@@ -247,9 +344,9 @@ export default function Courses() {
                 transition={{ duration: 0.6 }}
                 className="text-center lg:text-left space-y-4"
               >
-                <h1 className="text-4xl font-bold text-foreground">Our Courses</h1>
+                <h2 className="text-3xl font-bold text-foreground">Advanced Topics</h2>
                 <p className="text-muted-foreground max-w-xl">
-                  Choose your learning path and master the stock market step by step
+                  In-depth courses for those who want to go beyond basics
                 </p>
               </motion.div>
               <motion.div
@@ -274,7 +371,7 @@ export default function Courses() {
                 const cl = colorClasses[c.color];
                 const totalTopics = c.modules.reduce((acc, m) => acc + m.topics.length, 0);
                 return (
-                  <Link key={c.id} href={`/courses/${c.id}`}>
+                  <Link key={c.id} href={`/courses/${c.id}`} data-testid={`link-course-${c.id}`}>
                     <Card className="h-full hover-elevate cursor-pointer" data-testid={`card-course-list-${c.id}`}>
                       <CardHeader>
                         <div className={`w-12 h-12 rounded-lg ${cl.bg} ${cl.text} flex items-center justify-center mb-4`}>
