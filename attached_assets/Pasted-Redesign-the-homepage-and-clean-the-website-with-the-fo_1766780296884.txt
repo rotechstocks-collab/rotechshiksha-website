@@ -1,0 +1,57 @@
+Redesign the homepage and clean the website with the following requirements:
+
+1. Remove Market News completely
+   - Remove all market news APIs
+   - Remove UI sections showing market news or related errors
+   - Ensure no external news dependency remains
+
+2. Remove IPO features completely from the entire website
+   - Delete all IPO-related pages, routes, components, and services
+   - Remove IPO links from navbar, footer, menus, and internal content
+   - Ensure no broken links remain after removal
+
+3. Homepage Redesign (Education-first)
+   Design a clean, beginner-friendly homepage focused on stock market learning.
+
+   Homepage sections should include:
+   - Hero section:
+     * Clear headline: "Learn Stock Market from Zero"
+     * Short subtitle explaining beginner-friendly learning
+     * Call-to-action button: "Start Learning – Level 1"
+
+   - Learning Path Section:
+     * Display Levels 1 to 8 as cards or steps
+     * Show simple progression from basics to advanced
+     * No trading tips, only education
+
+   - Story-Based Learning Intro:
+     * Introduce two characters:
+       - Rohit (male beginner)
+       - Priya (female mentor)
+     * Short text explaining learning through storytelling
+     * Button: "Learn with Stories"
+
+   - Popular Calculators Section (KEEP THIS):
+     * Keep only useful calculators for beginners
+     * Clean layout with cards
+     * Example: SIP Calculator, CAGR Calculator, Lumpsum Calculator
+     * No IPO-related calculators
+
+   - Trust & Value Section:
+     * Why this platform is helpful for beginners
+     * Simple language, no jargon
+
+4. Design & UX Improvements:
+   - Mobile-first responsive layout
+   - Fast loading homepage
+   - Clean spacing and readable typography
+   - Beginner-friendly colors and icons
+
+5. Cleanup:
+   - Remove unused components, imports, and routes
+   - Ensure site runs without errors
+   - Keep existing working calculators untouched
+
+Goal:
+Create a simple, clean, and beginner-focused stock market education homepage
+inspired by platforms like Zerodha Varsity, but with original content and design.
