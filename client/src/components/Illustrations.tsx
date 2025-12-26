@@ -17,28 +17,72 @@ export function InvestorCharacter({ className = "", size = 200 }: IllustrationPr
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <circle cx="100" cy="180" rx="60" ry="15" fill="#E8F5E9" />
-      <rect x="75" y="95" width="50" height="70" rx="8" fill="#4CAF50" />
-      <rect x="78" y="98" width="44" height="64" rx="6" fill="#66BB6A" />
-      <circle cx="100" cy="55" r="35" fill="#FFCC80" />
-      <circle cx="100" cy="55" r="32" fill="#FFE0B2" />
-      <ellipse cx="88" cy="52" rx="4" ry="5" fill="#5D4037" />
-      <ellipse cx="112" cy="52" rx="4" ry="5" fill="#5D4037" />
-      <path d="M92 68 Q100 75 108 68" stroke="#5D4037" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M65 35 Q80 15 100 20 Q120 15 135 35" stroke="#5D4037" strokeWidth="8" fill="none" strokeLinecap="round" />
-      <rect x="55" y="110" width="20" height="45" rx="8" fill="#FFE0B2" />
-      <rect x="125" y="110" width="20" height="45" rx="8" fill="#FFE0B2" />
+      {/* Shadow */}
+      <ellipse cx="100" cy="188" rx="35" ry="8" fill="currentColor" opacity="0.08" />
+      
+      {/* Legs */}
+      <path d="M85 148 L82 185 L92 185 L94 148" fill="#1F2937" />
+      <path d="M106 148 L108 185 L118 185 L116 148" fill="#374151" />
+      
+      {/* Shoes */}
+      <ellipse cx="87" cy="187" rx="7" ry="3" fill="#111827" />
+      <ellipse cx="113" cy="187" rx="7" ry="3" fill="#111827" />
+      
+      {/* Body - Professional suit */}
+      <path d="M72 92 L68 152 L132 152 L128 92 Q100 87 72 92" fill="#059669" />
+      <path d="M76 94 L72 148 L128 148 L124 94 Q100 90 76 94" fill="#10B981" />
+      
+      {/* Tie */}
+      <path d="M97 94 L100 120 L103 94" fill="#F59E0B" />
+      <path d="M98 94 L100 115 L102 94" fill="#FBBF24" />
+      
+      {/* Collar/shirt */}
+      <path d="M92 92 L100 100 L108 92" fill="#F8FAFC" />
+      
+      {/* Neck */}
+      <rect x="94" y="78" width="12" height="15" rx="2" fill="#D4A574" />
+      
+      {/* Head */}
+      <ellipse cx="100" cy="55" rx="28" ry="30" fill="#D4A574" />
+      
+      {/* Hair - Professional short hair */}
+      <path d="M72 45 Q72 22 100 20 Q128 22 128 45 L128 38 Q125 28 100 26 Q75 28 72 38 Z" fill="#1A1A2E" />
+      <path d="M74 42 Q74 30 100 28 Q126 30 126 42 L126 35 Q122 25 100 24 Q78 25 74 35 Z" fill="#2D2D44" />
+      
+      {/* Ears */}
+      <ellipse cx="72" cy="55" rx="4" ry="6" fill="#C9A66B" />
+      <ellipse cx="128" cy="55" rx="4" ry="6" fill="#C9A66B" />
+      
+      {/* Face features - Minimal */}
+      <ellipse cx="90" cy="52" rx="2.5" ry="3" fill="#4A3728" />
+      <ellipse cx="110" cy="52" rx="2.5" ry="3" fill="#4A3728" />
+      
+      {/* Eyebrows */}
+      <path d="M85 46 Q90 44 95 46" stroke="#3D2914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M105 46 Q110 44 115 46" stroke="#3D2914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      
+      {/* Smile */}
+      <path d="M94 68 Q100 72 106 68" stroke="#8B6914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      
+      {/* Nose */}
+      <path d="M100 58 L100 62" stroke="#C9A66B" strokeWidth="1.5" strokeLinecap="round" />
+      
+      {/* Arms */}
+      <path d="M68 98 L52 135 L58 138 L72 105" fill="#D4A574" />
+      <path d="M132 98 L148 135 L142 138 L128 105" fill="#D4A574" />
+      
+      {/* Phone/tablet with chart */}
       <motion.g
-        animate={{ rotate: [0, 5, -5, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        style={{ transformOrigin: "140px 130px" }}
+        animate={{ rotate: [0, 3, -3, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ transformOrigin: "145px 130px" }}
       >
-        <rect x="130" y="105" width="35" height="50" rx="4" fill="#2196F3" />
-        <rect x="135" y="115" width="25" height="20" rx="2" fill="#BBDEFB" />
-        <path d="M138 125 L145 135 L155 120" stroke="#4CAF50" strokeWidth="2" fill="none" />
+        <rect x="135" y="115" width="28" height="40" rx="3" fill="#1E293B" />
+        <rect x="137" y="118" width="24" height="32" rx="2" fill="#0F172A" />
+        <path d="M140 138 L146 132 L152 140 L158 125" stroke="#10B981" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="140" y="142" width="10" height="2" rx="1" fill="#64748B" />
+        <rect x="140" y="146" width="14" height="2" rx="1" fill="#64748B" />
       </motion.g>
-      <rect x="80" y="165" width="18" height="25" rx="4" fill="#5D4037" />
-      <rect x="102" y="165" width="18" height="25" rx="4" fill="#5D4037" />
     </motion.svg>
   );
 }
@@ -55,30 +99,68 @@ export function LearnerCharacter({ className = "", size = 200 }: IllustrationPro
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <circle cx="100" cy="180" rx="55" ry="12" fill="#E3F2FD" />
-      <rect x="70" y="90" width="60" height="75" rx="10" fill="#1976D2" />
-      <rect x="74" y="94" width="52" height="67" rx="8" fill="#42A5F5" />
-      <circle cx="100" cy="50" r="35" fill="#FFCC80" />
-      <circle cx="100" cy="50" r="32" fill="#FFE0B2" />
-      <ellipse cx="88" cy="47" rx="4" ry="5" fill="#5D4037" />
-      <ellipse cx="112" cy="47" rx="4" ry="5" fill="#5D4037" />
-      <path d="M95 62 Q100 67 105 62" stroke="#5D4037" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <ellipse cx="100" cy="25" rx="35" ry="12" fill="#5D4037" />
-      <rect x="85" y="13" width="30" height="20" fill="#5D4037" />
-      <rect x="50" y="105" width="20" height="50" rx="8" fill="#FFE0B2" />
-      <rect x="130" y="105" width="20" height="50" rx="8" fill="#FFE0B2" />
+      {/* Shadow */}
+      <ellipse cx="100" cy="188" rx="35" ry="8" fill="currentColor" opacity="0.08" />
+      
+      {/* Legs - Dark formal pants */}
+      <path d="M85 145 L80 185 L92 185 L95 145" fill="#2D3748" />
+      <path d="M105 145 L108 185 L120 185 L115 145" fill="#374151" />
+      
+      {/* Shoes */}
+      <ellipse cx="86" cy="187" rx="8" ry="4" fill="#1A202C" />
+      <ellipse cx="114" cy="187" rx="8" ry="4" fill="#1A202C" />
+      
+      {/* Body - Casual blazer over shirt */}
+      <path d="M70 90 L65 150 L135 150 L130 90 Q100 85 70 90" fill="#3B82F6" />
+      <path d="M75 92 L70 145 L130 145 L125 92 Q100 88 75 92" fill="#60A5FA" />
+      
+      {/* Inner shirt / collar */}
+      <path d="M92 90 L100 110 L108 90" fill="#F8FAFC" />
+      <path d="M95 92 L100 105 L105 92" fill="#E2E8F0" />
+      
+      {/* Neck */}
+      <rect x="94" y="78" width="12" height="14" rx="2" fill="#D4A574" />
+      
+      {/* Head - Warm skin tone */}
+      <ellipse cx="100" cy="55" rx="28" ry="30" fill="#D4A574" />
+      
+      {/* Hair - Modern styled dark hair */}
+      <path d="M72 45 Q72 25 100 22 Q128 25 128 45 L128 40 Q125 30 100 28 Q75 30 72 40 Z" fill="#1A1A2E" />
+      <path d="M72 45 L72 50 Q72 35 85 33 L100 32 L115 33 Q128 35 128 50 L128 45 Q128 38 100 35 Q72 38 72 45" fill="#2D2D44" />
+      
+      {/* Ears */}
+      <ellipse cx="72" cy="55" rx="4" ry="6" fill="#C9A66B" />
+      <ellipse cx="128" cy="55" rx="4" ry="6" fill="#C9A66B" />
+      
+      {/* Face features - Minimal and clean */}
+      <ellipse cx="90" cy="52" rx="2.5" ry="3" fill="#4A3728" />
+      <ellipse cx="110" cy="52" rx="2.5" ry="3" fill="#4A3728" />
+      
+      {/* Eyebrows */}
+      <path d="M85 46 Q90 44 95 46" stroke="#3D2914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M105 46 Q110 44 115 46" stroke="#3D2914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      
+      {/* Subtle smile */}
+      <path d="M94 68 Q100 72 106 68" stroke="#8B6914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      
+      {/* Nose hint */}
+      <path d="M100 58 L100 62" stroke="#C9A66B" strokeWidth="1.5" strokeLinecap="round" />
+      
+      {/* Arms */}
+      <path d="M65 95 L50 130 L55 132 L68 100" fill="#D4A574" />
+      <path d="M135 95 L150 130 L145 132 L132 100" fill="#D4A574" />
+      
+      {/* Laptop/Device in hand */}
       <motion.g
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+        animate={{ y: [0, -2, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <rect x="35" y="100" width="45" height="60" rx="4" fill="#FFF9C4" />
-        <rect x="40" y="108" width="35" height="3" rx="1" fill="#BDBDBD" />
-        <rect x="40" y="116" width="30" height="3" rx="1" fill="#BDBDBD" />
-        <rect x="40" y="124" width="32" height="3" rx="1" fill="#BDBDBD" />
-        <rect x="40" y="132" width="28" height="3" rx="1" fill="#BDBDBD" />
+        <rect x="40" y="120" width="32" height="22" rx="2" fill="#1E293B" />
+        <rect x="42" y="122" width="28" height="16" rx="1" fill="#60A5FA" />
+        <rect x="44" y="124" width="10" height="2" rx="1" fill="#93C5FD" />
+        <rect x="44" y="128" width="8" height="2" rx="1" fill="#93C5FD" />
+        <rect x="44" y="132" width="12" height="2" rx="1" fill="#93C5FD" />
       </motion.g>
-      <rect x="80" y="165" width="18" height="22" rx="4" fill="#424242" />
-      <rect x="102" y="165" width="18" height="22" rx="4" fill="#424242" />
     </motion.svg>
   );
 }
@@ -398,32 +480,79 @@ export function MentorCharacter({ className = "", size = 180 }: IllustrationProp
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <circle cx="90" cy="165" rx="50" ry="12" fill="#E8F5E9" />
-      <rect x="65" y="85" width="50" height="65" rx="8" fill="#1565C0" />
-      <rect x="68" y="88" width="44" height="59" rx="6" fill="#1976D2" />
-      <path d="M75 88 L90 75 L105 88" fill="#FFC107" stroke="#FFC107" strokeWidth="2" />
-      <circle cx="90" cy="50" r="32" fill="#FFCC80" />
-      <circle cx="90" cy="50" r="29" fill="#FFE0B2" />
-      <ellipse cx="80" cy="47" rx="3" ry="4" fill="#5D4037" />
-      <ellipse cx="100" cy="47" rx="3" ry="4" fill="#5D4037" />
-      <rect x="72" cy="42" width="36" height="2" rx="1" fill="#5D4037" />
-      <path d="M85 60 Q90 65 95 60" stroke="#5D4037" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <ellipse cx="90" cy="25" rx="30" ry="10" fill="#424242" />
-      <rect x="75" y="15" width="30" height="15" fill="#424242" />
-      <rect x="50" y="100" width="18" height="40" rx="6" fill="#FFE0B2" />
-      <rect x="112" y="100" width="18" height="40" rx="6" fill="#FFE0B2" />
+      {/* Shadow */}
+      <ellipse cx="90" cy="172" rx="30" ry="6" fill="currentColor" opacity="0.08" />
+      
+      {/* Legs - Professional pants */}
+      <path d="M78 135 L75 168 L85 168 L87 135" fill="#374151" />
+      <path d="M93 135 L95 168 L105 168 L103 135" fill="#4B5563" />
+      
+      {/* Shoes - Heels */}
+      <ellipse cx="80" cy="170" rx="6" ry="3" fill="#1F2937" />
+      <ellipse cx="100" cy="170" rx="6" ry="3" fill="#1F2937" />
+      
+      {/* Body - Professional kurta/blazer */}
+      <path d="M65 82 L60 140 L120 140 L115 82 Q90 78 65 82" fill="#7C3AED" />
+      <path d="M68 84 L64 136 L116 136 L112 84 Q90 80 68 84" fill="#8B5CF6" />
+      
+      {/* Dupatta/Scarf accent */}
+      <path d="M85 84 L80 120 L82 120 L88 84" fill="#F59E0B" opacity="0.9" />
+      <path d="M95 84 L100 120 L98 120 L92 84" fill="#F59E0B" opacity="0.9" />
+      
+      {/* Neck */}
+      <rect x="84" y="70" width="12" height="14" rx="2" fill="#D4A574" />
+      
+      {/* Earrings */}
+      <circle cx="66" cy="52" r="3" fill="#F59E0B" />
+      <circle cx="114" cy="52" r="3" fill="#F59E0B" />
+      
+      {/* Head - Warm skin tone */}
+      <ellipse cx="90" cy="48" rx="25" ry="27" fill="#D4A574" />
+      
+      {/* Hair - Long dark hair styled professionally */}
+      <path d="M65 42 Q65 20 90 18 Q115 20 115 42 L118 65 Q118 75 110 80 L90 82 L70 80 Q62 75 62 65 Z" fill="#1A1A2E" />
+      <path d="M68 45 Q68 28 90 25 Q112 28 112 45 L112 55 Q110 48 90 46 Q70 48 68 55 Z" fill="#2D2D44" />
+      
+      {/* Face area (clear) */}
+      <ellipse cx="90" cy="50" rx="22" ry="23" fill="#D4A574" />
+      
+      {/* Side hair framing face */}
+      <path d="M65 42 Q62 55 65 70 L68 70 Q66 55 68 45 Z" fill="#1A1A2E" />
+      <path d="M115 42 Q118 55 115 70 L112 70 Q114 55 112 45 Z" fill="#1A1A2E" />
+      
+      {/* Bindi */}
+      <circle cx="90" cy="38" r="2" fill="#DC2626" />
+      
+      {/* Eyes - Clean minimal */}
+      <ellipse cx="82" cy="48" rx="2.5" ry="3" fill="#4A3728" />
+      <ellipse cx="98" cy="48" rx="2.5" ry="3" fill="#4A3728" />
+      
+      {/* Eyebrows */}
+      <path d="M77 42 Q82 40 87 42" stroke="#3D2914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M93 42 Q98 40 103 42" stroke="#3D2914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      
+      {/* Confident smile */}
+      <path d="M85 62 Q90 66 95 62" stroke="#8B6914" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      
+      {/* Nose hint */}
+      <path d="M90 52 L90 56" stroke="#C9A66B" strokeWidth="1.5" strokeLinecap="round" />
+      
+      {/* Arms */}
+      <path d="M60 88 L48 118 L52 120 L62 92" fill="#D4A574" />
+      <path d="M120 88 L132 118 L128 120 L118 92" fill="#D4A574" />
+      
+      {/* Chart/Document in hand - representing expertise */}
       <motion.g
-        animate={{ rotate: [0, 5, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        style={{ transformOrigin: "135px 110px" }}
+        animate={{ rotate: [0, 3, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ transformOrigin: "140px 115px" }}
       >
-        <rect x="120" y="95" width="30" height="40" rx="3" fill="#4CAF50" />
-        <rect x="125" y="102" width="20" height="3" rx="1" fill="white" />
-        <rect x="125" y="110" width="15" height="3" rx="1" fill="white" />
-        <rect x="125" y="118" width="18" height="3" rx="1" fill="white" />
+        <rect x="125" y="105" width="28" height="36" rx="2" fill="#F8FAFC" />
+        <rect x="128" y="108" width="22" height="4" rx="1" fill="#7C3AED" />
+        <path d="M130 118 L135 125 L140 120 L145 128 L150 115" stroke="#10B981" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="128" y="132" width="12" height="2" rx="1" fill="#CBD5E1" />
+        <rect x="128" y="136" width="16" height="2" rx="1" fill="#CBD5E1" />
       </motion.g>
-      <rect x="72" y="150" width="16" height="22" rx="4" fill="#5D4037" />
-      <rect x="92" y="150" width="16" height="22" rx="4" fill="#5D4037" />
     </motion.svg>
   );
 }
