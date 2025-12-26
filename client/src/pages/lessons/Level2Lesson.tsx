@@ -15,6 +15,8 @@ import {
   User,
   GraduationCap,
   Languages,
+  Calculator,
+  RotateCcw,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { level2Bilingual } from "@/content/lessons/level2-bilingual";
@@ -243,58 +245,96 @@ export default function Level2Lesson() {
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
 
-          {/* Navigation between levels */}
+          {/* Confidence Message */}
+          <FadeInUp delay={0.3}>
+            <Card className="mt-10 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
+              <CardContent className="py-6 text-center">
+                <CheckCircle className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
+                <p className="text-lg font-medium text-foreground">
+                  {lessonLang === "hi" 
+                    ? "\"Ab Rohit ko market ke basic building blocks samajh aa gaye hain.\""
+                    : "\"Now Rohit understands the basic building blocks of the market.\""}
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  — Priya
+                </p>
+              </CardContent>
+            </Card>
+          </FadeInUp>
+
+          {/* What Should You Do Next? */}
           <FadeInUp delay={0.5}>
-            <div className="mt-12 grid md:grid-cols-2 gap-4">
-              {/* Previous Level */}
-              <Link href="/learn/level-1" data-testid="link-previous-level">
-                <Card className="hover-elevate cursor-pointer h-full">
-                  <CardContent className="py-6">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-emerald-100 dark:bg-emerald-900/50">
-                        <ChevronLeft className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">{labels.previousLevel}</p>
-                        <h3 className="font-semibold">
-                          {lessonLang === "hi" 
-                            ? "Level 1: Stock Market ki Shuruaat" 
-                            : "Level 1: Getting Started with Stock Market"}
-                        </h3>
-                      </div>
+            <div className="mt-12">
+              <h3 className="text-xl font-bold text-center mb-6">
+                {lessonLang === "hi" ? "Ab Aage Kya Karein?" : "What Should You Do Next?"}
+              </h3>
+              
+              <div className="grid md:grid-cols-3 gap-4">
+                {/* Action 1: Level 3 Coming Soon */}
+                <Card className="h-full border-2 border-dashed border-slate-300 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+                  <CardContent className="py-6 text-center">
+                    <div className="p-3 rounded-full bg-slate-200 dark:bg-slate-700 inline-block mb-3">
+                      <TrendingUp className="w-6 h-6 text-slate-500" />
                     </div>
+                    <h4 className="font-semibold mb-1 text-muted-foreground">
+                      {lessonLang === "hi" ? "Level 3 par Jaayein" : "Go to Level 3"}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      {lessonLang === "hi" ? "Investment Planning" : "Investment Planning"}
+                    </p>
+                    <Badge variant="secondary" className="mt-3 text-xs">
+                      {lessonLang === "hi" ? "Jaldi Aayega" : "Coming Soon"}
+                    </Badge>
                   </CardContent>
                 </Card>
-              </Link>
 
-              {/* Next Level - Coming Soon */}
-              <Card className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700">
-                <CardContent className="py-6">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 rounded-full bg-slate-200 dark:bg-slate-700">
-                      <TrendingUp className="w-5 h-5 text-slate-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{labels.nextLevel}</p>
-                      <h3 className="font-semibold text-muted-foreground">
-                        {lessonLang === "hi" 
-                          ? "Level 3: Investment ka plan kaise banate hain?" 
-                          : "Level 3: How to make an investment plan?"}
-                      </h3>
-                      <Badge variant="secondary" className="mt-1 text-xs">
-                        {lessonLang === "hi" ? "Jaldi Aayega" : "Coming Soon"}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                {/* Action 2: Revise Level 2 */}
+                <Link href="/learn/level-2" data-testid="link-revise-level-2">
+                  <Card className="h-full hover-elevate cursor-pointer">
+                    <CardContent className="py-6 text-center">
+                      <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/50 inline-block mb-3">
+                        <RotateCcw className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                      </div>
+                      <h4 className="font-semibold mb-1">
+                        {lessonLang === "hi" ? "Level 2 Dobara Padhein" : "Revise Level 2"}
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        {lessonLang === "hi" ? "Concepts clear karein" : "Clear your concepts"}
+                      </p>
+                      <Button size="sm" variant="outline" className="mt-3" data-testid="button-revise">
+                        {lessonLang === "hi" ? "Revise" : "Revise"}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
+
+                {/* Action 3: Try Calculators */}
+                <Link href="/calculators" data-testid="link-try-calculators">
+                  <Card className="h-full hover-elevate cursor-pointer">
+                    <CardContent className="py-6 text-center">
+                      <div className="p-3 rounded-full bg-emerald-100 dark:bg-emerald-900/50 inline-block mb-3">
+                        <Calculator className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <h4 className="font-semibold mb-1">
+                        {lessonLang === "hi" ? "Calculators Try Karein" : "Try Calculators"}
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        {lessonLang === "hi" ? "SIP, EMI, CAGR & more" : "SIP, EMI, CAGR & more"}
+                      </p>
+                      <Button size="sm" variant="outline" className="mt-3" data-testid="button-calculators">
+                        {lessonLang === "hi" ? "Explore" : "Explore"}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
             </div>
           </FadeInUp>
 
           {/* Back to Courses */}
           <div className="mt-8 text-center">
             <Link href="/courses" data-testid="link-explore-courses">
-              <Button variant="outline">
+              <Button variant="ghost" size="sm">
                 <ChevronLeft className="w-4 h-4 mr-1" />
                 {labels.backToCourses}
               </Button>

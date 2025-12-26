@@ -35,14 +35,14 @@ const fadeInUp = {
 };
 
 const learningLevels = [
-  { level: 1, title: "Stock Market Basics", description: "Share market kya hai aur kaise kaam karta hai", color: "from-blue-500 to-blue-600" },
-  { level: 2, title: "Stocks, Index & IPO", description: "IPO, stocks, index aur mutual funds ka real meaning", color: "from-cyan-500 to-cyan-600" },
-  { level: 3, title: "Investment Planning", description: "Risk kya hota hai aur use kaise control kare", color: "from-teal-500 to-teal-600" },
-  { level: 4, title: "Mutual Funds & SIP", description: "Long-term investing vs short-term trading", color: "from-emerald-500 to-emerald-600" },
-  { level: 5, title: "Technical Analysis", description: "Charts aur indicators ko beginner-friendly tarike se samajhna", color: "from-amber-500 to-amber-600" },
-  { level: 6, title: "Fundamental Analysis", description: "Companies ko analyze karna seekhein", color: "from-orange-500 to-orange-600" },
-  { level: 7, title: "Risk Management", description: "Apne investments ko protect karna", color: "from-rose-500 to-rose-600" },
-  { level: 8, title: "Beginner to Confident Investor", description: "Rohit aur Priya ke real-life decisions ke through", color: "from-purple-500 to-purple-600" },
+  { level: 1, title: "Stock Market ki Shuruaat", description: "Dar se samajh tak – Stock Market kya hai", color: "from-emerald-500 to-emerald-600", recommended: true },
+  { level: 2, title: "Stock, Index & IPO", description: "Nifty, Sensex, aur IPO ka meaning", color: "from-blue-500 to-blue-600", recommended: false },
+  { level: 3, title: "Investment Planning", description: "Paisa kahaan lagaye – Goals se shuru", color: "from-teal-500 to-teal-600", recommended: false },
+  { level: 4, title: "Mutual Funds & SIP", description: "Smart investing without stock picking", color: "from-cyan-500 to-cyan-600", recommended: false },
+  { level: 5, title: "Technical Analysis", description: "Charts aur price patterns samjhein", color: "from-amber-500 to-amber-600", recommended: false },
+  { level: 6, title: "Fundamental Analysis", description: "Companies ki value kaise nikalein", color: "from-orange-500 to-orange-600", recommended: false },
+  { level: 7, title: "Risk Management", description: "Apne investments ko protect karna", color: "from-rose-500 to-rose-600", recommended: false },
+  { level: 8, title: "Confident Investor", description: "Real decisions through Rohit & Priya", color: "from-purple-500 to-purple-600", recommended: false },
 ];
 
 const popularCalculators = [
@@ -55,10 +55,11 @@ const popularCalculators = [
 ];
 
 const trustPoints = [
-  { icon: <BookOpen className="w-6 h-6" />, title: "Beginner-friendly language", description: "No boring theory, simple Hindi explanations" },
-  { icon: <GraduationCap className="w-6 h-6" />, title: "Story-based learning", description: "Learn through Rohit & Priya's journey" },
-  { icon: <Target className="w-6 h-6" />, title: "Indian market focused", description: "Examples from NSE, BSE & Indian companies" },
-  { icon: <Calculator className="w-6 h-6" />, title: "Free calculators", description: "Quick decisions ke liye financial tools" },
+  { icon: <BookOpen className="w-6 h-6" />, title: "Beginner-friendly Hindi", description: "Simple language, no confusing terms" },
+  { icon: <Users className="w-6 h-6" />, title: "Story-based learning", description: "Learn through Rohit & Priya's journey" },
+  { icon: <Target className="w-6 h-6" />, title: "Indian market focused", description: "NSE/BSE examples only" },
+  { icon: <Calculator className="w-6 h-6" />, title: "Free practical calculators", description: "SIP, EMI, CAGR & more" },
+  { icon: <GraduationCap className="w-6 h-6" />, title: "Structured 8-level path", description: "Zero se confident investor tak" },
 ];
 
 export default function Home() {
@@ -89,7 +90,7 @@ export default function Home() {
               </h1>
               
               <p className="text-lg text-muted-foreground max-w-lg">
-                Rohit aur Priya jaise hazaaro beginners ke liye banaya gaya ek simple, story-based learning platform jahan aap share market ko step-by-step samajh sakte ho — bilkul basics se.
+                Rohit aur Priya ke saath step-by-step story-based learning, bilkul basics se.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -101,7 +102,7 @@ export default function Home() {
                 </Link>
                 <Link href="/courses" data-testid="link-view-courses">
                   <Button size="lg" variant="outline" className="gap-2 w-full sm:w-auto" data-testid="button-view-courses">
-                    View All Courses
+                    Explore Learning Path
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
@@ -183,11 +184,18 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link href={`/courses/${level.level === 1 ? 'basic' : level.level <= 4 ? 'intermediate' : level.level <= 6 ? 'advanced' : 'algo'}`} data-testid={`link-level-${level.level}`}>
-                  <Card className="h-full hover-elevate cursor-pointer group" data-testid={`card-level-${level.level}`}>
+                <Link href={level.level <= 2 ? `/learn/level-${level.level}` : `/courses/${level.level <= 4 ? 'intermediate' : level.level <= 6 ? 'advanced' : 'algo'}`} data-testid={`link-level-${level.level}`}>
+                  <Card className={`h-full hover-elevate cursor-pointer group ${level.recommended ? 'ring-2 ring-emerald-500/50' : ''}`} data-testid={`card-level-${level.level}`}>
                     <CardContent className="p-4 space-y-3">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${level.color} text-white flex items-center justify-center font-bold text-lg transform group-hover:scale-110 transition-transform`}>
-                        {level.level}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${level.color} text-white flex items-center justify-center font-bold text-lg transform group-hover:scale-110 transition-transform`}>
+                          {level.level}
+                        </div>
+                        {level.recommended && (
+                          <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-0 text-xs">
+                            Start Here
+                          </Badge>
+                        )}
                       </div>
                       <div>
                         <h3 className="font-semibold text-foreground text-sm">{level.title}</h3>
@@ -219,17 +227,20 @@ export default function Home() {
                   </Badge>
                   
                   <h3 className="text-2xl font-bold text-foreground">
-                    Rohit aur Priya ki Kahani
+                    Rohit aur Priya ki Journey
                   </h3>
                   
                   <p className="text-muted-foreground">
-                    <strong>Rohit</strong> ek normal job karta tha. Usne suna tha "stock market me paisa banta hai", lekin charts, terms aur risk dekh kar wo hamesha confused ho jata tha.
+                    Rohit ek normal job karta hai.
                   </p>
                   <p className="text-muted-foreground">
-                    <strong>Priya</strong>, jo thodi research karti thi, usne ek baat kahi: "Market mushkil nahi hai, bas sahi tarike se seekhne ki zarurat hai."
+                    Usne suna stock market me paisa banta hai, lekin terms aur risk se wo confuse ho jata hai.
                   </p>
                   <p className="text-muted-foreground">
-                    Isi soch se Rotech Shiksha shuru hui — jahan har concept ko story aur real-life examples ke through samjhaya jata hai.
+                    <strong>Priya</strong>, ek calm aur practical mentor, use basics se samjhana shuru karti hai.
+                  </p>
+                  <p className="text-muted-foreground">
+                    Ye platform usi journey par based hai.
                   </p>
                   
                   <div className="flex gap-8">
@@ -249,20 +260,12 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <Link href="/learn/level-1" data-testid="link-start-level-1">
-                      <Button className="gap-2 w-full sm:w-auto" data-testid="button-start-level-1">
-                        <Play className="w-4 h-4" />
-                        Start Learning – Level 1
-                      </Button>
-                    </Link>
-                    <Link href="/courses" data-testid="link-explore-path">
-                      <Button variant="outline" className="gap-2 w-full sm:w-auto" data-testid="button-explore-path">
-                        <GraduationCap className="w-4 h-4" />
-                        Explore Learning Path
-                      </Button>
-                    </Link>
-                  </div>
+                  <Link href="/learn/level-1" data-testid="link-start-level-1">
+                    <Button className="gap-2 w-full" data-testid="button-start-level-1">
+                      <ArrowRight className="w-4 h-4" />
+                      Rohit ki Journey Shuru Karo (Level 1)
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </motion.div>
@@ -331,7 +334,7 @@ export default function Home() {
                 Popular Calculators
               </h2>
               <p className="text-muted-foreground max-w-xl">
-                Quick decisions ke liye free financial tools
+                Learning ke saath practical tools – bilkul free
               </p>
             </motion.div>
             <motion.div
@@ -396,7 +399,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {trustPoints.map((point, index) => (
               <motion.div
                 key={index}

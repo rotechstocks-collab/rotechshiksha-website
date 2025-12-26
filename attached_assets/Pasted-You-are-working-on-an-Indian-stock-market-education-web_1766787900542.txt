@@ -1,0 +1,170 @@
+You are working on an Indian stock market education website named Rotech Shiksha.
+Your task is to improve UX, content clarity, and learning flow for:
+	1.	Homepage
+	2.	Level 1
+	3.	Level 2
+
+⚠️ Important Rules:
+	•	Do NOT remove calculators
+	•	Do NOT add market news or IPO news sections on homepage
+	•	Keep content beginner-friendly, Hindi-first
+	•	No cartoon-style characters or childish illustrations
+	•	Use clean icons + text-based storytelling
+	•	Keep Rohit (Learner) & Priya (Mentor) as recurring characters
+
+⸻
+
+🏠 HOMEPAGE IMPROVEMENTS
+
+1️⃣ Hero Section (Above the Fold)
+	•	Keep headline clear and trust-focused:
+“Stock Market Seekho Zero Se – Bina Dar, Bina Confusion”
+	•	Subheading should explain value clearly:
+“Rohit aur Priya ke saath step-by-step story-based learning, bilkul basics se.”
+	•	Primary CTA:
+Start Learning – Level 1
+	•	Secondary CTA:
+Explore Learning Path
+
+⸻
+
+2️⃣ Story Teaser Section (NEW – Add this after Levels grid)
+
+Add a short emotional hook (no cartoons):
+
+Title: Rohit aur Priya ki Journey
+Content:
+
+Rohit ek normal job karta hai.
+Usne suna stock market me paisa banta hai, lekin terms aur risk se wo confuse ho jata hai.
+Priya, ek calm aur practical mentor, use basics se samjhana shuru karti hai.
+Ye platform usi journey par based hai.
+
+CTA Button:
+👉 Rohit ki Journey Shuru Karo (Level 1)
+
+⸻
+
+3️⃣ Levels Section (Keep but refine)
+	•	Show all 8 levels clearly
+	•	Each level should have:
+	•	Simple title
+	•	One-line beginner explanation
+	•	Highlight Level 1 as “Recommended to Start”
+
+⸻
+
+4️⃣ Popular Calculators (KEEP AS IS)
+	•	Do NOT remove
+	•	Add one line above:
+“Learning ke saath practical tools – bilkul free”
+
+⸻
+
+5️⃣ Why Choose Rotech Shiksha (Refine Copy)
+
+Use these points:
+	•	Beginner-friendly Hindi language
+	•	Story-based learning (Rohit & Priya)
+	•	Indian market focused (NSE/BSE examples)
+	•	Free & practical calculators
+	•	Structured 8-level path
+
+⸻
+
+📘 LEVEL 1 IMPROVEMENTS
+
+Level 1: Stock Market ki Shuruaat – Dar se Samajh Tak
+
+Content Structure (IMPORTANT – Follow strictly):
+
+Each section must follow this pattern:
+
+1️⃣ Story Moment (Rohit)
+2️⃣ Question (Rohit)
+3️⃣ Simple Explanation (Priya)
+4️⃣ Concept Box (Definition)
+5️⃣ Short Example
+6️⃣ Key Takeaway
+
+⸻
+
+Visual Rules:
+	•	Remove cartoon characters
+	•	Use:
+	•	🧑‍💼 Rohit – Learner
+	•	👩‍🏫 Priya – Mentor
+	•	Highlight only key dialogues
+	•	Keep explanations clean and readable
+
+⸻
+
+End of Level 1 (VERY IMPORTANT)
+
+Add a “What Should You Do Next?” section with 3 clear action cards:
+
+1️⃣ Go to Level 2 (Primary CTA)
+2️⃣ Revise Level 1
+3️⃣ Try Calculators
+
+Also keep:
+	•	“Is Level me Aapne Seekha” summary
+	•	Clear confidence-building message
+
+⸻
+
+📘 LEVEL 2 IMPROVEMENTS
+
+Level 2: Stock, Index aur IPO – Market ki Asli Tasveer
+
+Content Fixes:
+	•	Maintain same structure as Level 1 (consistency)
+	•	Clarify:
+	•	Stock vs Company
+	•	Index = Market direction (Nifty, Sensex)
+	•	IPO as concept only (no news, no promotions)
+	•	IPO section should focus on:
+	•	Meaning
+	•	Risk awareness
+	•	Learning purpose only
+
+⸻
+
+End of Level 2
+
+Add:
+	•	Summary checklist
+	•	Confidence message:
+“Ab Rohit ko market ke basic building blocks samajh aa gaye hain.”
+	•	CTA:
+👉 Continue to Level 3 – Investment Planning
+
+⸻
+
+🌐 MULTI-LANGUAGE READY STRUCTURE (IMPORTANT)
+
+Prepare content so it can be translated easily later:
+	•	Short paragraphs (2–3 lines max)
+	•	No slang
+	•	Simple Hindi
+	•	Each concept in separate blocks
+	•	Avoid long combined explanations
+
+⸻
+
+🎯 OVERALL UX & TRUST IMPROVEMENTS
+	•	Maintain consistent headings
+	•	Improve spacing for mobile users
+	•	Keep learning flow obvious at every step
+	•	User should never think: “Ab kya karna hai?”
+
+⸻
+
+✅ FINAL GOAL
+
+After these changes:
+	•	Homepage should emotionally connect + clearly guide
+	•	Level 1 & 2 should feel confident, clean, and professional
+	•	Beginners should feel “Stock market mushkil nahi hai”
+
+Implement all changes cleanly without breaking existing functionality
