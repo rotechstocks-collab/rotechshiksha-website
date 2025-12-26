@@ -270,23 +270,26 @@ export default function Level2Lesson() {
               </h3>
               
               <div className="grid md:grid-cols-3 gap-4">
-                {/* Action 1: Level 3 Coming Soon */}
-                <Card className="h-full border-2 border-dashed border-slate-300 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-                  <CardContent className="py-6 text-center">
-                    <div className="p-3 rounded-full bg-slate-200 dark:bg-slate-700 inline-block mb-3">
-                      <TrendingUp className="w-6 h-6 text-slate-500" />
-                    </div>
-                    <h4 className="font-semibold mb-1 text-muted-foreground">
-                      {lessonLang === "hi" ? "Level 3 par Jaayein" : "Go to Level 3"}
-                    </h4>
-                    <p className="text-xs text-muted-foreground">
-                      {lessonLang === "hi" ? "Investment Planning" : "Investment Planning"}
-                    </p>
-                    <Badge variant="secondary" className="mt-3 text-xs">
-                      {lessonLang === "hi" ? "Jaldi Aayega" : "Coming Soon"}
-                    </Badge>
-                  </CardContent>
-                </Card>
+                {/* Action 1: Go to Level 3 */}
+                <Link href="/learn/level-3" data-testid="link-next-level">
+                  <Card className="h-full hover-elevate cursor-pointer border-2 border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30">
+                    <CardContent className="py-6 text-center">
+                      <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900/50 inline-block mb-3">
+                        <ArrowRight className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <h4 className="font-semibold mb-1">
+                        {lessonLang === "hi" ? "Level 3 par Jaayein" : "Go to Level 3"}
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        {lessonLang === "hi" ? "Investment Planning seekhein" : "Learn Investment Planning"}
+                      </p>
+                      <Button size="sm" className="mt-3" data-testid="button-next-level">
+                        {labels.nextLevel}
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
 
                 {/* Action 2: Revise Level 2 */}
                 <Link href="/learn/level-2" data-testid="link-revise-level-2">

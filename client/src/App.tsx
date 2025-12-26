@@ -33,6 +33,7 @@ import EducationalVideos from "@/pages/EducationalVideos";
 import LoansAndCreditCards from "@/pages/LoansAndCreditCards";
 import Level1Lesson from "@/pages/lessons/Level1Lesson";
 import Level2Lesson from "@/pages/lessons/Level2Lesson";
+import Level3Lesson from "@/pages/lessons/Level3Lesson";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -44,6 +45,7 @@ function Router() {
       <Route path="/courses/:level" component={Courses} />
       <Route path="/learn/level-1" component={Level1Lesson} />
       <Route path="/learn/level-2" component={Level2Lesson} />
+      <Route path="/learn/level-3" component={Level3Lesson} />
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/economic-calendar" component={EconomicCalendar} />
       <Route path="/paper-trade" component={PaperTrade} />
