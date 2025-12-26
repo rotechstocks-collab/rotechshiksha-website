@@ -1,5 +1,4 @@
 import { Switch, Route } from "wouter";
-import Wealth from "@/pages/start-learning/Wealth";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -33,24 +32,15 @@ import EconomicCalendar from "@/pages/EconomicCalendar";
 import PaperTrade from "@/pages/PaperTrade";
 import EducationalVideos from "@/pages/EducationalVideos";
 import LoansAndCreditCards from "@/pages/LoansAndCreditCards";
-import StartLearning from "@/pages/StartLearning";
-import Basics from "@/pages/start-learning/Basics";
-import Investing from "@/pages/start-learning/Investing";
-
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/start-learning/wealth" component={Wealth} />
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
-      <Route path="/start-learning" component={StartLearning} />
-      <Route path="/start-learning/basics" component={Basics} />
-      <Route path="/start-learning/investing" component={Investing} />
-
       <Route path="/live-news" component={LiveNews} />
       <Route path="/ipo" component={IPO} />
       <Route path="/ipo/:id" component={IPO} />
@@ -60,10 +50,7 @@ function Router() {
       <Route path="/educational-videos" component={EducationalVideos} />
       <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
       <Route path="/calculators" component={CalculatorHub} />
-      <Route
-        path="/calculators/brokerage"
-        component={BrokerageCalculatorPage}
-      />
+      <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
       <Route path="/calculators/:id" component={GenericCalculator} />
       <Route path="/pricing" component={PricingPage} />
       <Route path="/payment/:planId" component={Payment} />
