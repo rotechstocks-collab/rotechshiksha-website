@@ -140,7 +140,11 @@ function TradingViewWidget({ symbol }: { symbol: string }) {
     }
     
     if (containerRef.current) {
-      containerRef.current.innerHTML = `<div id="${containerId.current}" style="height: 100%;"></div>`;
+      containerRef.current.textContent = '';
+      const chartDiv = document.createElement('div');
+      chartDiv.id = containerId.current;
+      chartDiv.style.height = '100%';
+      containerRef.current.appendChild(chartDiv);
     }
 
     loadTradingViewScript()
