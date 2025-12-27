@@ -655,7 +655,7 @@ export const beginnerLessons: Record<string, LessonData> = {
     title: "Sensex aur Nifty simple samjhaav",
     duration: "8 min",
     prevLesson: { slug: "stock-market-kya-hai", title: "Stock market kya hota hai?" },
-    nextLesson: { slug: "demat-account", title: "Demat Account kya hota hai?" },
+    nextLesson: { slug: "risk-types", title: "Stock market me risk kya hai?" },
     scenes: [
       {
         id: "m1l4-intro",
@@ -781,7 +781,7 @@ export const beginnerLessons: Record<string, LessonData> = {
           "Sensex = Top 30 companies ka group (BSE). Nifty = Top 50 companies ka group (NSE).",
           "Dono market ke overall mood batate hain – thermometer jaisa.",
           "Points ke saath percentage bhi dekho – wo zyada meaningful hai.",
-          "Ab basic market indicators samajh gaye! Agle lesson me dekhenge ki actually trading kaise hoti hai.",
+          "Ab basic market indicators samajh gaye! Agle lesson me dekhenge ki stock market me risk kya hai aur kaise manage hota hai.",
         ],
       },
       {
@@ -799,13 +799,450 @@ export const beginnerLessons: Record<string, LessonData> = {
     ],
   },
 
+  // Lesson 6: Stock Market Me Risk Kya Hai?
+  "risk-types": {
+    slug: "risk-types",
+    moduleNumber: 1,
+    lessonNumber: 6,
+    title: "Stock market me risk kya hai?",
+    duration: "8 min",
+    prevLesson: { slug: "sensex-nifty", title: "Sensex aur Nifty simple samjhaav" },
+    nextLesson: { slug: "investor-vs-trader", title: "Investor aur Trader me farak" },
+    scenes: [
+      {
+        id: "l6-intro",
+        type: "concept",
+        title: "Aaj Ka Topic – Risk Ko Samjho",
+        content: [
+          "Stock market ka naam sunte hi bahut logon ko ek word yaad aata hai – 'Risk'. Aur sach bhi hai, risk hota hai.",
+          "Par risk ka matlab ye nahi ki paisa doobna pakka hai. Risk matlab uncertainty – kya hoga pata nahi.",
+          "Aaj hum samjhenge ki risk exactly kya hai, kaise hota hai, aur sabse important – kaise manage kar sakte hain.",
+        ],
+      },
+      {
+        id: "l6-s1",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Priya, sab kehte hain stock market risky hai. Kya sach me paisa doob jaata hai? Main dar jaata hun sochke.",
+        ],
+      },
+      {
+        id: "l6-s2",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Rohit, darr normal hai. Par chal samajhte hain risk ka asli matlab.",
+          "Risk matlab 'uncertainty' – future me kya hoga, ye kisi ko pata nahi. Par iska ye matlab nahi ki hamesha bura hota hai.",
+          "Risk manage kiya jaa sakta hai. Jaise tu bike chalate waqt helmet pehenta hai – crash nahi rukti, par tujhe protect karti hai.",
+        ],
+      },
+      {
+        id: "l6-s3",
+        type: "concept",
+        title: "Risk Ka Simple Matlab",
+        content: [
+          "Risk matlab uncertainty. Jab tu share khareedte hai, tujhe nahi pata ki kal uski price badhegi ya giregi.",
+          "Ye uncertainty hai – par ye hamesha negative nahi hoti. Price badh bhi sakti hai!",
+          "Risk tab problem banti hai jab tu bina samjhe paisa lagata hai. Agar samajh ke, soch ke invest karo – toh risk kam ho jaata hai.",
+          "Yaad rakh: 100% safe kuch nahi hota. Bank me bhi risk hai (inflation). Par har jagah risk ka level alag hota hai.",
+        ],
+      },
+      {
+        id: "l6-s4",
+        type: "example",
+        title: "Chotu Ki Bike Ka Example",
+        content: [
+          "Chotu ne nayi bike li. Usko pata hai bike chalana risky hai – accident ho sakta hai.",
+          "Par Chotu ne kya kiya? License liya, helmet pehenta hai, rules follow karta hai, speed limit me chalta hai.",
+          "Kya risk khatam ho gaya? Nahi. Par kam ho gaya. Ab wo confidently bike chala sakta hai.",
+          "Stock market bhi aisi hi hai. Risk hai, par samajh ke, rules follow karke – wo manageable ho jaata hai.",
+        ],
+      },
+      {
+        id: "l6-s5",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Accha! Toh risk khatam nahi hota, par control me aa sakta hai. Par stock market me kaun kaun se risks hote hain?",
+        ],
+      },
+      {
+        id: "l6-s6",
+        type: "concept",
+        title: "Stock Market Me Common Risks",
+        content: [
+          "1. Market Risk: Puri market gir sakti hai – jaise COVID time me hui thi. Tab sab shares gir gaye the.",
+          "2. Company Risk: Specific company ka kuch galat ho sakta hai – fraud, bad management, competition se haarna.",
+          "3. Timing Risk: Galat time pe kharidna ya bechna – jaise bahut upar jaakar kharidna aur phir price girna.",
+          "4. Emotional Risk: Darr ya greed me aake galat decision lena – ye sabse bada risk hai actually.",
+          "In sab risks ko samajhna aur accept karna zaroori hai. Tab hi tum smart investor ban sakte ho.",
+        ],
+      },
+      {
+        id: "l6-s7",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Rohit, sabse interesting baat ye hai ki risk aur reward connected hain.",
+          "Jahan zyada risk hai, wahan zyada return bhi possible hai. Jahan kam risk hai, wahan return bhi kam hota hai.",
+          "FD me risk kam hai, par return bhi 6-7% hai. Stocks me risk zyada hai, par return 12-15% bhi ho sakta hai long term me.",
+        ],
+      },
+      {
+        id: "l6-s8",
+        type: "concept",
+        title: "Risk Ko Manage Kaise Karein?",
+        content: [
+          "1. Seekho Pehle, Invest Baad Me: Bina samjhe paisa mat lagao. Yehi is course ka goal hai.",
+          "2. Diversify Karo: Sab paisa ek jagah mat lagao. Multiple companies me invest karo.",
+          "3. Long Term Socho: Short term me market up-down hota hai. Long term me usually grow karta hai.",
+          "4. Utna Hi Lagao Jitna Afford Kar Sako: Emergency fund mat lagao stock market me.",
+          "5. Emotions Control Karo: Darr aur greed se bachke, logic se decision lo.",
+        ],
+      },
+      {
+        id: "l6-s9",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Samajh gaya! Risk hamesha rahega, par agar main samajhdar hun toh wo handle ho sakta hai. Darna nahi, samajhna hai!",
+        ],
+      },
+      {
+        id: "l6-s10",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Exactly Rohit! Ye hi smart investor ki pehchaan hai – wo risk se darta nahi, wo risk samajhta hai.",
+          "Aur yaad rakh – har successful investor ne bhi kabhi na kabhi loss dekha hai. Loss se seekho, daro mat.",
+        ],
+      },
+      {
+        id: "l6-conclusion",
+        type: "concept",
+        title: "Aaj Ka Takeaway",
+        content: [
+          "Risk = Uncertainty, not guaranteed loss. Ye manage ho sakta hai.",
+          "Risk aur reward connected hain – zyada return chahiye toh thoda risk lena padega.",
+          "Diversification, learning, patience – ye sab risk management ke tools hain.",
+          "Emotional decisions sabse bada risk hai. Logic se chalo, darr se nahi.",
+          "Agle lesson me dekhenge Investor aur Trader me kya farak hota hai.",
+        ],
+      },
+      {
+        id: "l6-summary",
+        type: "summary",
+        title: "Is Lesson Se Seekha",
+        content: [
+          "Risk = Uncertainty, guaranteed loss nahi",
+          "Market risk, company risk, timing risk, emotional risk – ye main types hain",
+          "Risk aur reward connected hain – high risk = high potential return",
+          "Diversification aur patience se risk manage hota hai",
+          "Seekho pehle, invest baad me – ye sabse badi risk management hai",
+        ],
+      },
+    ],
+  },
+
+  // Lesson 7: Investor aur Trader Me Farak
+  "investor-vs-trader": {
+    slug: "investor-vs-trader",
+    moduleNumber: 1,
+    lessonNumber: 7,
+    title: "Investor aur Trader me farak",
+    duration: "8 min",
+    prevLesson: { slug: "risk-types", title: "Stock market me risk kya hai?" },
+    nextLesson: { slug: "level1-conclusion", title: "Level 1 Complete – Ab aage kya?" },
+    scenes: [
+      {
+        id: "l7-intro",
+        type: "concept",
+        title: "Aaj Ka Topic – Investor vs Trader",
+        content: [
+          "Stock market me do tarike ke log hote hain – Investors aur Traders. Dono paise kamate hain, par tarika bilkul alag hai.",
+          "Ye samajhna bahut zaroori hai – taaki tu decide kar sake ki tere liye kya suitable hai.",
+          "Spoiler: Beginners ke liye Investing zyada safe aur practical hai. Par pehle dono samajh le.",
+        ],
+      },
+      {
+        id: "l7-s1",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Priya, main confuse hun. Kuch log kehte hain 'Trading karo, jaldi paisa banao'. Kuch kehte hain 'Invest karo, patience rakho'. Kya farak hai?",
+        ],
+      },
+      {
+        id: "l7-s2",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Bahut accha sawaal Rohit. Chal simple example se samajhte hain.",
+          "Soch tu ek ghar khareedte hai. Agar tu us ghar me 20 saal rehne ka plan hai – tu Investor hai.",
+          "Agar tu wo ghar 6 mahine baad zyada price me bechne ke liye khareed raha hai – tu Trader hai.",
+        ],
+      },
+      {
+        id: "l7-s3",
+        type: "concept",
+        title: "Investor Kaun Hai?",
+        content: [
+          "Investor wo hai jo shares khareedte hai LONG TERM ke liye – years, sometimes decades.",
+          "Investor company ko dekhta hai – 'Ye company acchi hai? Grow karegi? Future hai?'",
+          "Investor daily price check nahi karta. Wo jaanta hai ki short term me market up-down hoga, par long term me acchi companies grow karti hain.",
+          "Warren Buffett, Rakesh Jhunjhunwala – ye sab famous investors the. Inhone years tak shares hold kiye.",
+        ],
+      },
+      {
+        id: "l7-s4",
+        type: "concept",
+        title: "Trader Kaun Hai?",
+        content: [
+          "Trader wo hai jo shares SHORT TERM me khareedte aur bechte hai – din, hafta, ya kuch mahine.",
+          "Trader price movement dekhta hai – 'Abhi price badh raha hai ya gir raha hai? Kab kharidun, kab bechun?'",
+          "Trading me bahut zyada time lagta hai – daily market dekhna padta hai, charts analyze karne padte hain.",
+          "Trading bahut risky hai. Statistics batate hain ki 90% traders paisa gawa dete hain. Sirf 10% profit kamate hain.",
+        ],
+      },
+      {
+        id: "l7-s5",
+        type: "example",
+        title: "Aam Ka Mausam",
+        content: [
+          "Soch aam ka season hai. Ek uncle ne aam ka ped lagaya 10 saal pehle. Ab har saal unhe free me aam milte hain. Wo INVESTOR hai.",
+          "Doosre uncle roz mandi jaate hain. Subah saste aam khareedte hain, shaam ko thoda mehenga bechte hain. Wo TRADER hai.",
+          "Pehle uncle ko patience lagti thi, par ab passive income hai. Doosre uncle ko roz mehnat karni padti hai.",
+          "Dono tarike kaam karte hain – par effort aur risk dono me bahut farak hai.",
+        ],
+      },
+      {
+        id: "l7-s6",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Hmm, toh trading me jaldi paisa bhi ban sakta hai, par jaldi jaana bhi sakta hai? Aur investing me slow hai par safe?",
+        ],
+      },
+      {
+        id: "l7-s7",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Bilkul sahi samjhe! Trading high risk, high reward hai. Investing relatively lower risk, steady growth hai.",
+          "Aur ek important baat – Trading ek FULL TIME JOB hai. Tujhe daily market dekhna padega.",
+          "Investing PASSIVE hai. Tu apni regular job karte hue bhi kar sakta hai. Monthly invest karo, bhool jao.",
+        ],
+      },
+      {
+        id: "l7-s8",
+        type: "concept",
+        title: "Beginners Ke Liye Kya Better Hai?",
+        content: [
+          "Seedhi baat – INVESTING. Reasons:",
+          "1. Kam risk hai. Agar galti ho bhi gayi toh time hai recover karne ka.",
+          "2. Kam time lagta hai. Tu apni job/studies ke saath kar sakta hai.",
+          "3. Seekhne ka time milta hai. Slowly slowly market samajh aa jaata hai.",
+          "4. Emotions kam aate hain. Tu daily price dekh ke panic nahi karta.",
+          "Trading tab try karo jab tumhe market ki bahut acchi samajh ho – years baad.",
+        ],
+      },
+      {
+        id: "l7-s9",
+        type: "concept",
+        title: "Ek Warning",
+        content: [
+          "Social media pe bahut log dikhate hain – 'Maine 1 lakh se 10 lakh banaye trading se!'",
+          "Ye mostly fake hai ya bahut rare cases hain. Wo apne losses nahi dikhate.",
+          "Real data ye hai: 90% retail traders paisa gawa dete hain. SEBI ki official report hai ye.",
+          "Isliye beginners ke liye investing hi sahi hai. Trading mat karo abhi. Pehle basics strong karo.",
+        ],
+      },
+      {
+        id: "l7-s10",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Samajh gaya Priya! Main investor banuga – patience rakhuga, long term sochuga. Trading ke chakkar me nahi padunga.",
+        ],
+      },
+      {
+        id: "l7-s11",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Bahut smart decision Rohit! Investing me bhi accha paisa banta hai – bas thoda time lagta hai.",
+          "Remember: Slow and steady wins the race. Stock market me patience sabse badi skill hai.",
+        ],
+      },
+      {
+        id: "l7-conclusion",
+        type: "concept",
+        title: "Aaj Ka Takeaway",
+        content: [
+          "Investor = Long term, company focus, patience, low maintenance.",
+          "Trader = Short term, price focus, daily effort, high risk.",
+          "90% traders lose money. Beginners ke liye investing safer hai.",
+          "Social media pe jo dikhta hai wo sach nahi hota. Real data dekho.",
+          "Agle lesson me Level 1 summarize karenge aur Level 2 ka preview milega!",
+        ],
+      },
+      {
+        id: "l7-summary",
+        type: "summary",
+        title: "Is Lesson Se Seekha",
+        content: [
+          "Investor = Long term hold, company analysis, patience",
+          "Trader = Short term buy-sell, price analysis, daily effort",
+          "90% retail traders lose money – SEBI data",
+          "Beginners ke liye investing recommended hai",
+          "Patience is the most important skill in stock market",
+        ],
+      },
+    ],
+  },
+
+  // Lesson 8: Level 1 Complete - Ab Aage Kya?
+  "level1-conclusion": {
+    slug: "level1-conclusion",
+    moduleNumber: 1,
+    lessonNumber: 8,
+    title: "Level 1 Complete – Ab aage kya?",
+    duration: "5 min",
+    prevLesson: { slug: "investor-vs-trader", title: "Investor aur Trader me farak" },
+    nextLesson: { slug: "demat-account", title: "Demat Account kya hota hai?" },
+    scenes: [
+      {
+        id: "l8-intro",
+        type: "concept",
+        title: "Congratulations – Level 1 Complete!",
+        content: [
+          "Bahut badhiya! Tune Level 1 complete kar liya. Ye ek bada step hai tere financial learning journey me.",
+          "Bahut logon me ye himmat nahi hoti – wo sochte hain 'ye mere bas ka nahi'. Tu alag hai. Tu seekh raha hai.",
+          "Ab chal ek baar dekhte hain tune kya seekha Level 1 me, aur aage kya hoga Level 2 me.",
+        ],
+      },
+      {
+        id: "l8-s1",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Priya, main bahut khush hun! Pehle stock market ka naam sunte hi darr lagta tha. Ab lagta hai main bhi samajh sakta hun.",
+        ],
+      },
+      {
+        id: "l8-s2",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Rohit, yehi toh goal tha Level 1 ka – tera darr kam karna aur confidence build karna.",
+          "Ab tu jaanta hai ki stock market koi monster nahi hai. Ye ek organized marketplace hai jahan tu bhi participate kar sakta hai.",
+          "Chal ek baar recap karte hain kya kya seekha tune.",
+        ],
+      },
+      {
+        id: "l8-s3",
+        type: "concept",
+        title: "Level 1 Me Kya Seekha?",
+        content: [
+          "Lesson 1: Stock market darr ki jagah nahi hai. Myths clear kiye – ye jua nahi hai.",
+          "Lesson 2: Share kya hai – company ka chhota hissa. Share khareedna = thoda owner banna.",
+          "Lesson 3: Investing kyu zaroori hai – inflation teri purchasing power kha jaata hai.",
+          "Lesson 4: Stock market ek bazaar hai – jahan shares bikte hain. NSE, BSE exchanges.",
+          "Lesson 5: Sensex/Nifty = Market ka health indicator. Top 30/50 companies ka average.",
+          "Lesson 6: Risk = Uncertainty, guaranteed loss nahi. Risk manage ho sakta hai.",
+          "Lesson 7: Investor vs Trader – Beginners ke liye investing better hai. Patience important.",
+        ],
+      },
+      {
+        id: "l8-s4",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Wow, itna sab seekh liya! Ab main confidently bata sakta hun ki stock market kya hai.",
+        ],
+      },
+      {
+        id: "l8-s5",
+        type: "concept",
+        title: "Ab Tu Kya Jaanta Hai",
+        content: [
+          "Tu ab jaanta hai ki share kya hota hai aur kaise khareedte hain (conceptually).",
+          "Tu samajhta hai ki investing kyu important hai – inflation beat karna.",
+          "Tu jaanta hai ki risk hota hai par manageable hai – darr mat, samajh.",
+          "Tu jaanta hai ki trading vs investing me beginners ke liye investing better hai.",
+          "Ye foundation bahut strong hai. Ab tu ready hai practical cheezein seekhne ke liye!",
+        ],
+      },
+      {
+        id: "l8-s6",
+        type: "concept",
+        title: "Level 2 Me Kya Hoga?",
+        content: [
+          "Level 2 me hum PRACTICAL cheezein sikhenge:",
+          "1. Demat Account kya hai aur kaise open karte hain",
+          "2. Broker kaise choose karein – Zerodha, Groww, etc.",
+          "3. Apna pehla share kaise kharidein – step by step",
+          "4. Beginners ki common mistakes aur unse bachna",
+          "5. Acchi company kaise identify karein – basic analysis",
+          "Level 2 ke baad tu actually trading app use karne laayak ho jayega!",
+        ],
+      },
+      {
+        id: "l8-s7",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Rohit, bahut accha progress hai tera. Par yaad rakh – jaldi mat kar.",
+          "Level 2 start karne se pehle Level 1 concepts clear hone chahiye. Agar koi doubt ho toh peeche jaake phir padh.",
+          "Strong foundation = long term success. Ye market patience reward karta hai.",
+        ],
+      },
+      {
+        id: "l8-s8",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Haan Priya, main dhire dhire chalna chahta hun. Jaldi ameer banne ke chakkar me nahi padunga. Sahi se seekhna hai.",
+        ],
+      },
+      {
+        id: "l8-s9",
+        type: "concept",
+        title: "Ek Final Message",
+        content: [
+          "Stock market teri financial freedom ka ek powerful tool hai. Par tool tabhi kaam aata hai jab use karna aata ho.",
+          "Tu seekh raha hai – ye already 90% logon se aage hai jo sirf sochte hain par kuch nahi karte.",
+          "Patience rakh. Consistent reh. Har din thoda seekh. Dheere dheere sab clear ho jayega.",
+          "Tere paas ye course hai, ye guidance hai. Ab bas practice aur patience chahiye.",
+          "Level 2 me milte hain! All the best, future investor!",
+        ],
+      },
+      {
+        id: "l8-summary",
+        type: "summary",
+        title: "Level 1 Complete – Key Takeaways",
+        content: [
+          "Stock market = Organized marketplace, not gambling",
+          "Share = Company ka chhota hissa",
+          "Investing fights inflation – sirf bachana kaafi nahi",
+          "Risk is manageable – seekho aur samjho",
+          "Investing > Trading for beginners",
+          "Patience is the superpower in stock market",
+          "Ready for Level 2 – Practical learning starts!",
+        ],
+      },
+    ],
+  },
+
+  // MODULE 2: Investing Seekho
   "demat-account": {
     slug: "demat-account",
     moduleNumber: 2,
-    lessonNumber: 6,
+    lessonNumber: 1,
     title: "Demat Account kya hota hai?",
     duration: "8 min",
-    prevLesson: { slug: "sensex-nifty", title: "Sensex aur Nifty simple samjhaav" },
+    prevLesson: { slug: "level1-conclusion", title: "Level 1 Complete – Ab aage kya?" },
     nextLesson: { slug: "broker-selection", title: "Broker kaise choose karein?" },
     scenes: [
       {
@@ -1860,6 +2297,9 @@ export const moduleStructure = [
       "paise-invest-kyu",
       "stock-market-kya-hai",
       "sensex-nifty",
+      "risk-types",
+      "investor-vs-trader",
+      "level1-conclusion",
     ],
   },
   {
