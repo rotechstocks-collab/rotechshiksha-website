@@ -23,6 +23,8 @@ import { level2Bilingual } from "@/content/lessons/level2-bilingual";
 import { useLessonLanguage } from "@/context/LessonLanguageContext";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { LessonScene } from "@/content/lessons/types";
+import LessonQuiz from "@/components/LessonQuiz";
+import { level2Quiz } from "@/content/quizzes/quiz-data";
 
 export default function Level2Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
@@ -245,8 +247,15 @@ export default function Level2Lesson() {
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
 
-          {/* Confidence Message */}
+          {/* Quiz Section */}
           <FadeInUp delay={0.3}>
+            <div className="mt-10">
+              <LessonQuiz quizData={level2Quiz} />
+            </div>
+          </FadeInUp>
+
+          {/* Confidence Message */}
+          <FadeInUp delay={0.4}>
             <Card className="mt-10 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
               <CardContent className="py-6 text-center">
                 <CheckCircle className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
