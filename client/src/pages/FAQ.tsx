@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, HelpCircle, ChevronDown, BookOpen } from "lucide-react";
+import { ArrowRight, HelpCircle, ChevronDown, BookOpen, GraduationCap } from "lucide-react";
 import { useState } from "react";
 import { SEOHead } from "@/components/SEOHead";
 import { faqData, disclaimerText } from "@/content/faq-data";
@@ -101,27 +101,22 @@ export default function FAQ() {
             </CardContent>
           </Card>
 
-          <div className="mt-10 p-8 bg-slate-100 dark:bg-card/30 rounded-lg text-center">
-            <h3 className="text-lg font-semibold mb-2">
-              Aur sawaal hain?
-            </h3>
-            <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-              Humari learning levels me detailed explanations milenge. Step-by-step seekho.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/learn/level-1">
-                <Button className="gap-2" data-testid="button-start-level1-faq">
-                  Level 1 se Shuru Karo
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/blog">
-                <Button variant="outline" className="gap-2" data-testid="button-read-blog-faq">
-                  Blog Padhein
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+          <div className="mt-10 p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800 text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-900/50 mb-4">
+              <GraduationCap className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
             </div>
+            <h3 className="text-xl font-bold text-foreground mb-2">
+              Ready to Start Learning?
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              Beginner Stock Market Course mein 13 lessons hain jo aapko zero se stock market samjhayenge.
+            </p>
+            <Link href="/beginner-course">
+              <Button size="lg" className="gap-2 min-h-[48px] text-base font-semibold" data-testid="button-start-beginner-course-faq">
+                Start Beginner Stock Market Course
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

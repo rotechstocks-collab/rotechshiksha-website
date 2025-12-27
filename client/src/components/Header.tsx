@@ -25,40 +25,9 @@ interface NavItem {
 
 const navItemsConfig: NavItem[] = [
   { labelKey: "nav.home", href: "/" },
-  { labelKey: "nav.about", href: "/about" },
-  {
-    labelKey: "nav.courses",
-    href: "/courses",
-    children: [
-      { labelKey: "nav.courses.basic", href: "/courses/basic" },
-      { labelKey: "nav.courses.intermediate", href: "/courses/intermediate" },
-      { labelKey: "nav.courses.advanced", href: "/courses/advanced" },
-      { labelKey: "nav.courses.algo", href: "/courses/algo" },
-    ],
-  },
-  {
-    labelKey: "nav.tools",
-    href: "/tools",
-    children: [
-      { labelKey: "nav.educationalVideos", href: "/educational-videos" },
-      { labelKey: "nav.calculators", href: "/calculators" },
-      { labelKey: "nav.brokers", href: "/compare-brokers" },
-      { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
-      { labelKey: "nav.paperTrade", href: "/paper-trade" },
-      { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
-    ],
-  },
-  {
-    labelKey: "nav.blog",
-    href: "/blog",
-    children: [
-      { labelKey: "nav.blog.beginner", href: "/blog?category=beginner" },
-      { labelKey: "nav.blog.basics", href: "/blog?category=basics" },
-      { labelKey: "nav.blog.faqs", href: "/blog?category=faqs" },
-    ],
-  },
+  { labelKey: "nav.courses", href: "/courses" },
+  { labelKey: "nav.lessons", href: "/beginner-course" },
   { labelKey: "nav.faq", href: "/faq" },
-  { labelKey: "nav.pricing", href: "/pricing" },
 ];
 
 export function Header() {
