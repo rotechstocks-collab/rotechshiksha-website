@@ -448,6 +448,11 @@ export default function LiveNews() {
 
   const { data, isLoading, error, refetch, isFetching } = useQuery<{ news: NewsArticle[] }>({
     queryKey: ["/api/news", newsLang, selectedCategory],
+    queryFn: async () => {
+      const res = await fetch(`/api/news?lang=${newsLang}&category=${selectedCategory}`);
+      if (!res.ok) throw new Error("Failed to fetch news");
+      return res.json();
+    },
     refetchInterval: 5 * 60 * 1000,
   });
 
