@@ -93,11 +93,51 @@ export default function BlogPost() {
             <Card className="mb-8">
               <CardContent className="py-6">
                 <div className="prose prose-slate dark:prose-invert max-w-none">
-                  {post.content.split("\n\n").map((paragraph, index) => (
-                    <p key={index} className="text-foreground leading-relaxed mb-4 last:mb-0">
-                      {paragraph}
-                    </p>
-                  ))}
+                  {post.content.split("\n\n").map((block, index) => {
+                    if (block.startsWith("## ")) {
+                      return (
+                        <h2 key={index} className="text-xl font-bold text-foreground mt-6 mb-3">
+                          {block.replace("## ", "")}
+                        </h2>
+                      );
+                    }
+                    if (block.startsWith("### ")) {
+                      return (
+                        <h3 key={index} className="text-lg font-semibold text-foreground mt-4 mb-2">
+                          {block.replace("### ", "")}
+                        </h3>
+                      );
+                    }
+                    if (block.includes("\n- ") || block.startsWith("- ")) {
+                      const lines = block.split("\n");
+                      return (
+                        <ul key={index} className="list-disc list-inside mb-4 space-y-1">
+                          {lines.map((line, i) => (
+                            <li key={i} className="text-foreground leading-relaxed">
+                              {line.replace(/^- /, "")}
+                            </li>
+                          ))}
+                        </ul>
+                      );
+                    }
+                    if (block.includes("\n1. ") || block.startsWith("1. ")) {
+                      const lines = block.split("\n");
+                      return (
+                        <ol key={index} className="list-decimal list-inside mb-4 space-y-1">
+                          {lines.map((line, i) => (
+                            <li key={i} className="text-foreground leading-relaxed">
+                              {line.replace(/^\d+\. /, "")}
+                            </li>
+                          ))}
+                        </ol>
+                      );
+                    }
+                    return (
+                      <p key={index} className="text-foreground leading-relaxed mb-4">
+                        {block}
+                      </p>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

@@ -301,6 +301,98 @@ Important: Ye educational perspective hai. Personal decision aap khud lo.`,
     publishedDate: "2024-12-27",
     category: "stock-faqs",
   },
+  {
+    id: "10",
+    slug: "stock-market-kya-hota-hai-beginner-guide",
+    title: "Stock Market kya hota hai? (Bilkul Beginner Guide)",
+    shortDescription: "Stock market ko zero se samjho. Bilkul simple Hindi me, bina kisi confusion ke. Complete beginner guide.",
+    content: `Stock Market kya hota hai? Ye sawaal har us insaan ke mann me aata hai jo pehli baar investing ke baare me sunta hai. Aur ye sawaal puchne me koi sharm nahi hai – humme se zyada log isi sawaal se shuru karte hain.
+
+Is article me hum stock market ko bilkul simple Hindi me samjhenge. Koi complicated terms nahi, koi confusing jargon nahi. Bas seedhi baat.
+
+## Stock Market ka Matlab kya hai?
+
+Stock market ek aisi jagah hai jahan companies apna hissa (ownership) bechti hain aur log wo hissa kharidte hain. Jab aap kisi company ka stock ya share kharidte ho, toh aap us company ke chhote se hisse ke maalik ban jaate ho.
+
+Isko aise samjho: Maan lo aapke mohalle me ek chai ki dukaan hai jo bahut achhi chal rahi hai. Dukaan ka maalik sochta hai ki agar 100 logon ko dukaan me partner banau, toh zyada paisa aa jayega aur dukaan aur badi ho jayegi. Toh wo 100 "shares" ya "hisse" banaata hai aur logon ko bechta hai.
+
+Agar aap 1 share kharidte ho, toh aap us dukaan ke 1% maalik ban gaye. Agar dukaan ka profit hoga, toh aapko bhi profit milega. Agar loss hoga, toh aapka paisa bhi kam ho sakta hai.
+
+Stock market me bhi yehi hota hai – bas yahan chai ki dukaan ki jagah Reliance, TCS, Infosys jaise bade companies hote hain.
+
+## Stock Market Kaise Kaam Karta Hai?
+
+### Buyers aur Sellers
+
+Stock market me do tarah ke log hote hain:
+- Buyers: Jo shares kharidna chahte hain
+- Sellers: Jo apne shares bechna chahte hain
+
+Jab buyer aur seller ek price pe agree karte hain, toh transaction ho jata hai. Ye sab online hota hai, seconds me.
+
+### Stock Exchanges
+
+India me do main stock exchanges hain:
+
+1. BSE (Bombay Stock Exchange) – Ye Asia ka sabse purana stock exchange hai, 1875 me shuru hua. Yahan pe Sensex index hai.
+
+2. NSE (National Stock Exchange) – Ye 1992 me shuru hua aur abhi India ka sabse bada exchange hai. Yahan pe Nifty index hai.
+
+In exchanges pe companies "listed" hoti hain, matlab unke shares yahan trade ho sakte hain.
+
+### SEBI ka Role
+
+SEBI (Securities and Exchange Board of India) ek government body hai jo stock market ko regulate karti hai. Ye investors ko protect karti hai aur ensure karti hai ki koi fraud na ho. Isliye Indian stock market trusted hai.
+
+## Ek Simple Example se Samjho
+
+Maan lo Ramesh uncle ne Rs. 100 me ek company ka 1 share khareeda. Ek saal baad wo company achha perform karti hai aur us share ki value Rs. 120 ho jaati hai. Agar Ramesh uncle ab bechte hain, toh unhe Rs. 20 ka profit hoga.
+
+Par agar company ka business kharab hota aur share ki value Rs. 80 ho jaati, toh Ramesh uncle ko Rs. 20 ka loss hota.
+
+Isliye stock market me profit bhi ho sakta hai aur loss bhi. Koi guarantee nahi hoti.
+
+## Beginners ki Common Galti
+
+Bahut saare beginners ye galti karte hain: Wo bina samjhe invest kar dete hain kyunki kisi ne "tip" di thi ya WhatsApp group me kisi ne kaha tha.
+
+Ye approach galat hai. Stock market me paisa lagane se pehle samajhna zaroori hai ki:
+- Aap kya khareed rahe ho
+- Company kya karti hai
+- Risk kya hai
+
+Bina knowledge ke investing gambling jaisa hai. Pehle seekho, phir lagao.
+
+## Stock Market = Gambling Nahi Hai
+
+Bahut log sochte hain ki stock market sirf "satta" hai ya jua hai. Ye galat hai.
+
+Gambling me aap luck pe depend karte ho. Stock market me aap companies me invest karte ho jo real products banati hain, real services deti hain, aur real employees ko salary deti hain.
+
+Jab aap Infosys ka share kharidte ho, toh aap ek IT company me invest kar rahe ho jo duniya bhar me software services deti hai. Ye gambling nahi hai – ye business me participation hai.
+
+Haan, risk hai. Par informed decisions lene se risk manage ho sakta hai.
+
+## Aage ka Raasta
+
+Stock market seekhna ek journey hai, ek destination nahi. Ek din me sab kuch nahi samajh aata. Par agar aap step-by-step seekhte ho, toh dheere dheere clarity aa jayegi.
+
+Important baatein yaad rakho:
+- Jaldi ameer banne ki soch mat rakho
+- Pehle education, phir investment
+- Chhoti amount se shuru karo
+- Patience rakho
+
+Disclaimer: Ye article sirf educational purpose ke liye hai. Hum koi investment advice nahi de rahe. Koi bhi financial decision lene se pehle apni research karein.
+
+Agar aap bilkul beginner ho, to 'Start Learning – Level 1' se shuru karein.`,
+    rohitPriyaStory: `Rohit ne pehli baar "stock market" ke baare me tab suna jab uske office me colleague profit ki baat kar raha tha. Ghar aakar Priya se pucha, "Ye stock market kya cheez hai?" Priya ne simple example diya – "Soch, agar tu apni favourite chai ki dukaan me partner ban sake, toh kaisa lage?" Rohit samjha ki stock market basically companies me chhota sa maalik banna hai.`,
+    ctaText: "Step-by-step learning ke liye Level 1 se shuru karo",
+    ctaLink: "/learn/level-1",
+    relatedLevel: 1,
+    publishedDate: "2024-12-27",
+    category: "beginner-articles",
+  },
 ];
 
 export function getPostsByCategory(category: BlogCategory): BlogPost[] {
