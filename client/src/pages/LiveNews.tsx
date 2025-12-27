@@ -179,34 +179,53 @@ const breakingKeywords = [
 function getNewsAgeInMinutes(dateString: string): number {
   try {
     const date = parseISO(dateString);
-    if (!isValid(date)) return Infinity;
+    if (!isValid(date)) return 999999;
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
+    if (diffMs < 0) return 0;
     return Math.floor(diffMs / (1000 * 60));
   } catch {
-    return Infinity;
+    return 999999;
   }
 }
 
 function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
   try {
     const date = parseISO(dateString);
-    if (!isValid(date)) return "";
+    if (!isValid(date)) {
+      return isHindi ? "हाल ही में" : "Recently published";
+    }
     
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
+    
+    if (diffMs < 0) {
+      return isHindi ? "हाल ही में" : "Recently published";
+    }
+    
     const diffSecs = Math.floor(diffMs / 1000);
     const diffMins = Math.floor(diffSecs / 60);
+    const diffHours = Math.floor(diffMins / 60);
 
     if (diffSecs < 60) {
       return isHindi ? "अभी" : "Just now";
     }
     
-    const cappedMins = Math.min(diffMins, 90);
-    const minText = cappedMins === 1 ? "min" : "mins";
-    return isHindi ? `${cappedMins} मिनट पहले` : `${cappedMins} ${minText} ago`;
+    if (diffMins < 60) {
+      const minText = diffMins === 1 ? "min" : "mins";
+      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
+    }
+    
+    if (diffHours < 24) {
+      const hrText = diffHours === 1 ? "hr" : "hrs";
+      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours} ${hrText} ago`;
+    }
+    
+    const diffDays = Math.floor(diffHours / 24);
+    const dayText = diffDays === 1 ? "day" : "days";
+    return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
   } catch {
-    return "";
+    return isHindi ? "हाल ही में" : "Recently published";
   }
 }
 
@@ -712,18 +731,45 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
   
   const showFallbackNotice = data?.fallbackToEnglish && videoLang !== "en" && videoLang !== "all";
   
-  const freshVideos = useMemo(() => {
-    if (!data?.videos) return [];
-    return data.videos
-      .filter(v => {
-        const ageInMins = getVideoAgeInMinutes(v.publishedAt);
-        return ageInMins >= 0 && ageInMins <= VIDEO_MAX_AGE_MINS && v.duration !== "LIVE";
-      })
+  const { displayVideos, apiCount, freshCount, usedFallback } = useMemo(() => {
+    if (!data?.videos) return { displayVideos: [], apiCount: 0, freshCount: 0, usedFallback: false };
+    
+    const apiVideoCount = data.videos.length;
+    
+    const sortedVideos = [...data.videos]
+      .filter(v => v.duration !== "LIVE")
       .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    
+    const freshVideosFiltered = sortedVideos.filter(v => {
+      const ageInMins = getVideoAgeInMinutes(v.publishedAt);
+      return ageInMins >= 0 && ageInMins <= VIDEO_MAX_AGE_MINS;
+    });
+    
+    let finalVideos = freshVideosFiltered;
+    let fallbackUsed = false;
+    
+    if (freshVideosFiltered.length === 0 && sortedVideos.length > 0) {
+      finalVideos = sortedVideos.slice(0, 6);
+      fallbackUsed = true;
+      if (process.env.NODE_ENV === "development") {
+        console.log(`[Video Debug] Fresh filter returned 0, falling back to ${finalVideos.length} latest videos`);
+      }
+    }
+    
+    if (process.env.NODE_ENV === "development") {
+      console.log(`[Video Debug] API items: ${apiVideoCount}, Fresh: ${freshVideosFiltered.length}, Displaying: ${finalVideos.length}, Fallback: ${fallbackUsed}`);
+    }
+    
+    return { 
+      displayVideos: finalVideos, 
+      apiCount: apiVideoCount, 
+      freshCount: freshVideosFiltered.length,
+      usedFallback: fallbackUsed
+    };
   }, [data?.videos]);
   
-  const veryRecentVideos = freshVideos.filter(v => getVideoAgeInMinutes(v.publishedAt) <= VIDEO_LIVE_BADGE_MAX_AGE_MINS);
-  const hasVeryRecentVideos = veryRecentVideos.length > 0;
+  const veryRecentVideos = displayVideos.filter(v => getVideoAgeInMinutes(v.publishedAt) <= VIDEO_LIVE_BADGE_MAX_AGE_MINS);
+  const hasVeryRecentVideos = veryRecentVideos.length > 0 && !usedFallback;
   
   return (
     <div className="space-y-4">
@@ -775,16 +821,20 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
       ) : error ? (
         <Card>
           <CardContent className="py-8 text-center">
-            <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">
+            <AlertCircle className="w-12 h-12 mx-auto text-destructive mb-4" />
+            <p className="text-muted-foreground mb-2">
               {isHindi ? "वीडियो लोड करने में समस्या" : "Error loading videos"}
             </p>
-            <Button variant="outline" size="sm" className="mt-4" onClick={() => refetch()}>
+            <p className="text-sm text-muted-foreground mb-4">
+              {isHindi ? "कृपया इंटरनेट चेक करें" : "Please check your connection"}
+            </p>
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+              <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
               {isHindi ? "फिर से कोशिश करें" : "Try Again"}
             </Button>
           </CardContent>
         </Card>
-      ) : freshVideos.length === 0 ? (
+      ) : apiCount === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-12 text-center">
             <div className="relative inline-block mb-4">
@@ -794,10 +844,10 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
               <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
             </div>
             <p className="text-lg font-medium mb-2">
-              {isHindi ? "वेरिफाइड बिज़नेस वीडियो अपडेट हो रहे हैं" : "Latest verified business videos are being updated"}
+              {isHindi ? "वीडियो लोड हो रहे हैं..." : "Loading videos..."}
             </p>
             <p className="text-sm text-muted-foreground mb-4">
-              {isHindi ? "रिफ्रेश करें या थोड़ी देर बाद देखें" : "Tap refresh or check back shortly"}
+              {isHindi ? "कृपया कुछ सेकंड प्रतीक्षा करें" : "Please wait a few seconds"}
             </p>
             <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
               <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
@@ -819,16 +869,21 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
             ) : (
               <>
                 <Video className="w-4 h-4" />
-                {isHindi ? "हाल के बिज़नेस वीडियो" : "Recent Business Videos"}
+                {isHindi ? "बिज़नेस वीडियो" : "Business Videos"}
               </>
             )}
+            {usedFallback && (
+              <Badge variant="outline" className="text-xs text-amber-600 border-amber-300 dark:text-amber-400 dark:border-amber-700">
+                {isHindi ? "हाल के" : "Latest"}
+              </Badge>
+            )}
             <Badge variant="outline" className="text-xs ml-auto">
-              {isHindi ? "पिछले 60 मिनट" : "Last 60 mins"}
+              {displayVideos.length} {isHindi ? "वीडियो" : "videos"}
             </Badge>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence>
-              {freshVideos.slice(0, 6).map((video) => (
+              {displayVideos.slice(0, 12).map((video) => (
                 <VideoCard key={video.id} video={video} isHindi={isHindi} />
               ))}
             </AnimatePresence>
@@ -845,10 +900,27 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
   );
 }
 
-const BREAKING_NEWS_MAX_AGE_MINS = 15;
-const RECENT_NEWS_MAX_AGE_MINS = 90;
+const FRESH_NEWS_MAX_AGE_MINS = 90;
+const RECENT_NEWS_MAX_AGE_MINS = 180;
 const LIVE_BADGE_MAX_AGE_MINS = 5;
 const REFRESH_INTERVAL_SECS = 120;
+
+type FreshnessLevel = "fresh" | "recent" | "earlier";
+
+function getNewsFreshnessLevel(ageInMins: number): FreshnessLevel {
+  if (ageInMins <= FRESH_NEWS_MAX_AGE_MINS) return "fresh";
+  if (ageInMins <= RECENT_NEWS_MAX_AGE_MINS) return "recent";
+  return "earlier";
+}
+
+function getFreshnessLabel(level: FreshnessLevel, isHindi: boolean): string {
+  const labels = {
+    fresh: isHindi ? "ताज़ा" : "Fresh",
+    recent: isHindi ? "हाल का" : "Recent",
+    earlier: isHindi ? "पहले का" : "Earlier"
+  };
+  return labels[level];
+}
 
 export default function LiveNews() {
   const { language } = useLanguage();
@@ -895,29 +967,42 @@ export default function LiveNews() {
       });
   }, [data?.news, isHindi, currentTime]);
 
-  const { breakingNow, recentUpdates, hasAnyFreshNews } = useMemo(() => {
+  const { freshNews, recentNews, earlierNews, totalNewsCount, apiItemCount } = useMemo(() => {
     const categoryFiltered = enhancedNews.filter(article => 
       selectedCategory === "all" || article.category === selectedCategory
     );
     
-    const breaking: EnhancedNewsArticle[] = [];
+    const fresh: EnhancedNewsArticle[] = [];
     const recent: EnhancedNewsArticle[] = [];
+    const earlier: EnhancedNewsArticle[] = [];
     
     categoryFiltered.forEach(article => {
       const ageInMins = getNewsAgeInMinutes(article.publishedAt);
-      if (ageInMins <= BREAKING_NEWS_MAX_AGE_MINS) {
-        breaking.push(article);
-      } else if (ageInMins <= RECENT_NEWS_MAX_AGE_MINS) {
+      const level = getNewsFreshnessLevel(ageInMins);
+      if (level === "fresh") {
+        fresh.push(article);
+      } else if (level === "recent") {
         recent.push(article);
+      } else {
+        earlier.push(article);
       }
     });
     
+    const apiCount = data?.news?.length || 0;
+    const renderedCount = fresh.length + recent.length + earlier.length;
+    
+    if (process.env.NODE_ENV === "development") {
+      console.log(`[News Debug] API items: ${apiCount}, Rendered: ${renderedCount}, Fresh: ${fresh.length}, Recent: ${recent.length}, Earlier: ${earlier.length}`);
+    }
+    
     return { 
-      breakingNow: breaking, 
-      recentUpdates: recent,
-      hasAnyFreshNews: breaking.length > 0 || recent.length > 0
+      freshNews: fresh, 
+      recentNews: recent,
+      earlierNews: earlier,
+      totalNewsCount: renderedCount,
+      apiItemCount: apiCount
     };
-  }, [enhancedNews, selectedCategory, currentTime]);
+  }, [enhancedNews, selectedCategory, currentTime, data?.news?.length]);
 
   const showLiveBadge = (article: EnhancedNewsArticle) => {
     const ageInMins = getNewsAgeInMinutes(article.publishedAt);
@@ -1068,17 +1153,24 @@ export default function LiveNews() {
             ) : error ? (
               <Card>
                 <CardContent className="py-8 text-center">
-                  <p className="text-muted-foreground">
+                  <AlertCircle className="w-12 h-12 mx-auto text-destructive mb-4" />
+                  <p className="text-muted-foreground mb-2">
                     {isHindi 
-                      ? "समाचार लोड करने में त्रुटि। कृपया पुनः प्रयास करें।" 
-                      : "Error loading news. Please try again."}
+                      ? "समाचार लोड करने में त्रुटि हुई" 
+                      : "Error loading news"}
                   </p>
-                  <Button variant="outline" className="mt-4" onClick={() => refetch()}>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {isHindi 
+                      ? "कृपया इंटरनेट कनेक्शन चेक करें और पुनः प्रयास करें" 
+                      : "Please check your connection and try again"}
+                  </p>
+                  <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
+                    <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
                     {isHindi ? "पुनः प्रयास करें" : "Try Again"}
                   </Button>
                 </CardContent>
               </Card>
-            ) : !hasAnyFreshNews ? (
+            ) : apiItemCount === 0 ? (
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <div className="relative inline-block mb-4">
@@ -1089,13 +1181,13 @@ export default function LiveNews() {
                   </div>
                   <p className="text-lg font-medium mb-2">
                     {isHindi 
-                      ? "लाइव अपडेट्स रिफ्रेश हो रहे हैं" 
-                      : "Live updates are refreshing"}
+                      ? "समाचार लोड हो रहे हैं..." 
+                      : "Loading news..."}
                   </p>
                   <p className="text-sm text-muted-foreground mb-4">
                     {isHindi 
-                      ? "वेरिफाइड बिज़नेस न्यूज़ जल्द ही यहाँ दिखेगी" 
-                      : "Latest verified business news will appear here shortly"}
+                      ? "कृपया कुछ सेकंड प्रतीक्षा करें" 
+                      : "Please wait a few seconds"}
                   </p>
                   <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
                     <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
@@ -1103,28 +1195,47 @@ export default function LiveNews() {
                   </Button>
                 </CardContent>
               </Card>
+            ) : totalNewsCount === 0 && apiItemCount > 0 ? (
+              <Card className="border-dashed">
+                <CardContent className="py-8 text-center">
+                  <Newspaper className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground mb-2">
+                    {isHindi 
+                      ? `"${categories.find(c => c.id === selectedCategory)?.labelHi || selectedCategory}" में कोई खबर नहीं मिली` 
+                      : `No news found for "${categories.find(c => c.id === selectedCategory)?.labelEn || selectedCategory}"`}
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {isHindi 
+                      ? "दूसरी category देखें या 'All News' चुनें" 
+                      : "Try another category or select 'All News'"}
+                  </p>
+                  <Button variant="outline" size="sm" onClick={() => setSelectedCategory("all")}>
+                    {isHindi ? "सभी समाचार देखें" : "View All News"}
+                  </Button>
+                </CardContent>
+              </Card>
             ) : (
               <>
-                {breakingNow.length > 0 && (
+                {freshNews.length > 0 && (
                   <div className="mb-6">
                     <div className="flex items-center gap-2 mb-4">
                       <div className="relative">
-                        <Radio className="w-5 h-5 text-red-500" />
-                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                        <Zap className="w-5 h-5 text-green-500" />
+                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                       </div>
-                      <h3 className="text-base font-semibold text-red-600 dark:text-red-400">
-                        {isHindi ? "ब्रेकिंग नाउ" : "Breaking Now"}
+                      <h3 className="text-base font-semibold text-green-600 dark:text-green-400">
+                        {isHindi ? "ताज़ा खबरें" : "Fresh News"}
                       </h3>
-                      <Badge className="bg-red-600 text-white">
-                        {breakingNow.length}
+                      <Badge className="bg-green-600 text-white">
+                        {freshNews.length}
                       </Badge>
                       <span className="text-xs text-muted-foreground ml-auto">
-                        {isHindi ? "पिछले 15 मिनट" : "Last 15 minutes"}
+                        {isHindi ? "पिछले 90 मिनट" : "Last 90 mins"}
                       </span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       <AnimatePresence>
-                        {breakingNow.slice(0, 3).map((article) => (
+                        {freshNews.map((article) => (
                           <NewsCard
                             key={article.id}
                             article={article}
@@ -1138,23 +1249,50 @@ export default function LiveNews() {
                   </div>
                 )}
 
-                {recentUpdates.length > 0 && (
-                  <div className={breakingNow.length > 0 ? "mt-8 pt-6 border-t" : ""}>
+                {recentNews.length > 0 && (
+                  <div className={freshNews.length > 0 ? "mt-8 pt-6 border-t" : ""}>
                     <div className="flex items-center gap-2 mb-4">
-                      <Newspaper className="w-4 h-4 text-muted-foreground" />
-                      <h3 className="text-sm font-medium text-muted-foreground">
-                        {isHindi ? "हाल के अपडेट्स" : "Recent Updates"}
+                      <Clock className="w-4 h-4 text-blue-500" />
+                      <h3 className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                        {isHindi ? "हाल की खबरें" : "Recent News"}
                       </h3>
-                      <Badge variant="outline" className="text-xs">
-                        {recentUpdates.length}
+                      <Badge variant="outline" className="text-xs border-blue-300 text-blue-600 dark:border-blue-700 dark:text-blue-400">
+                        {recentNews.length}
                       </Badge>
                       <span className="text-xs text-muted-foreground ml-auto">
-                        {isHindi ? "15-90 मिनट पहले" : "15-90 mins ago"}
+                        {isHindi ? "90-180 मिनट पहले" : "90-180 mins ago"}
                       </span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       <AnimatePresence>
-                        {recentUpdates.slice(0, 6).map((article) => (
+                        {recentNews.map((article) => (
+                          <NewsCard
+                            key={article.id}
+                            article={article}
+                            isHindi={isHindi}
+                            showLive={false}
+                            isBreakingSection={false}
+                          />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                )}
+
+                {earlierNews.length > 0 && (
+                  <div className={(freshNews.length > 0 || recentNews.length > 0) ? "mt-8 pt-6 border-t border-dashed" : ""}>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Newspaper className="w-4 h-4 text-muted-foreground" />
+                      <h3 className="text-sm font-medium text-muted-foreground">
+                        {isHindi ? "पहले के अपडेट्स (संदर्भ के लिए)" : "Earlier Updates (for context)"}
+                      </h3>
+                      <Badge variant="outline" className="text-xs">
+                        {earlierNews.length}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-80">
+                      <AnimatePresence>
+                        {earlierNews.map((article) => (
                           <NewsCard
                             key={article.id}
                             article={article}
