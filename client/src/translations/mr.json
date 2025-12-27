@@ -19,7 +19,10 @@
   "nav.dashboard": "डॅशबोर्ड",
   "nav.adminPanel": "अॅडमिन पॅनेल",
   "nav.logout": "लॉगआउट",
-  "nav.login": "मोबाइलने लॉगिन करा",
+  "nav.login": "मोबाईलने लॉगिन करा",
+  "nav.blog": "मार्केट ज्ञान",
+  "nav.faq": "प्रश्न-उत्तर",
+  "nav.loansAndCreditCards": "कर्ज आणि क्रेडिट कार्ड",
 
   "hero.title": "आर्थिकदृष्ट्या जागरूक",
   "hero.subtitle": "आणि आत्मविश्वासू भारताची निर्मिती।",

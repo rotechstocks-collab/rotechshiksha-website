@@ -39,6 +39,9 @@ import Level5Lesson from "@/pages/lessons/Level5Lesson";
 import Level6Lesson from "@/pages/lessons/Level6Lesson";
 import Level7Lesson from "@/pages/lessons/Level7Lesson";
 import Level8Lesson from "@/pages/lessons/Level8Lesson";
+import Blog from "@/pages/Blog";
+import BlogPost from "@/pages/BlogPost";
+import FAQ from "@/pages/FAQ";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -69,6 +72,9 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/admin" component={Admin} />
       <Route path="/login" component={Login} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/blog/:slug" component={BlogPost} />
+      <Route path="/faq" component={FAQ} />
       <Route component={NotFound} />
     </Switch>
   );

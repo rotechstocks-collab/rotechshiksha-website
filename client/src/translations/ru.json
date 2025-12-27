@@ -19,7 +19,10 @@
   "nav.dashboard": "Панель управления",
   "nav.adminPanel": "Панель администратора",
   "nav.logout": "Выйти",
-  "nav.login": "Войти по телефону",
+  "nav.login": "Вход с мобильного",
+  "nav.blog": "Знания о рынке",
+  "nav.faq": "Частые вопросы",
+  "nav.loansAndCreditCards": "Кредиты и карты",
 
   "hero.title": "Строим финансово",
   "hero.subtitle": "грамотную и уверенную Индию.",

@@ -19,7 +19,10 @@
   "nav.dashboard": "Tableau de bord",
   "nav.adminPanel": "Panneau d'administration",
   "nav.logout": "Deconnexion",
-  "nav.login": "Connexion par mobile",
+  "nav.login": "Connexion mobile",
+  "nav.blog": "Savoir du Marche",
+  "nav.faq": "FAQ",
+  "nav.loansAndCreditCards": "Prets et Cartes",
 
   "hero.title": "Construire une Inde",
   "hero.subtitle": "financierement consciente et confiante.",

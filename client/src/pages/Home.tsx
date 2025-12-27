@@ -26,6 +26,8 @@ import {
   GrowthChart,
   BookLearning,
 } from "@/components/Illustrations";
+import { FAQSection } from "@/components/FAQSection";
+import { SEOHead } from "@/components/SEOHead";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -65,6 +67,11 @@ const trustPoints = [
 export default function Home() {
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Share Market Basics for Beginners | Rotech Shiksha"
+        description="Learn share market from zero with story-based lessons, quizzes, and practice. Beginner friendly & educational. Hindi first, soon all Indian languages."
+        keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
+      />
       <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
@@ -451,6 +458,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <FAQSection limit={5} showTitle={true} showViewAllLink={true} />
     </div>
   );
 }

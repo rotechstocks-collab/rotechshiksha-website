@@ -103,8 +103,8 @@ export function Footer() {
             <nav className="flex flex-col gap-2">
               {[
                 { href: "/calculators", label: "Calculators", testId: "footer-link-calculators" },
-                { href: "/live-market", label: "Live Market", testId: "footer-link-live-market" },
-                { href: "/startup-connect", label: "Startup Connect", testId: "footer-link-startup-connect" },
+                { href: "/blog", label: "Market Gyaan (Blog)", testId: "footer-link-blog" },
+                { href: "/faq", label: "FAQ", testId: "footer-link-faq" },
                 { href: "/pricing", label: "Pricing Plans", testId: "footer-link-pricing" },
                 { href: "/about", label: "About Us", testId: "footer-link-about" },
               ].map((link, index) => (
@@ -177,9 +177,9 @@ export function Footer() {
             >
               <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-amber-700 dark:text-amber-300 leading-relaxed">
-                <strong>Disclaimer:</strong> Stock market investments are subject to market risks.
-                This platform is for educational purposes only. We do not provide any buy/sell recommendations.
-                No guaranteed returns. Past performance is not indicative of future results.
+                <strong>Disclaimer:</strong> This website is for educational purpose only. We do not provide investment advice. 
+                Invest at your own risk after proper research. No guaranteed returns. Past performance is not indicative of future results.
+                Consult a SEBI registered advisor before making investment decisions.
               </p>
             </motion.div>
             <p className="text-sm text-slate-500 dark:text-muted-foreground">
