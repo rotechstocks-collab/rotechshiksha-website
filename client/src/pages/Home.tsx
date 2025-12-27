@@ -18,6 +18,9 @@ import {
   HelpCircle,
   Lock,
   Clock,
+  Target,
+  Lightbulb,
+  Users,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 
@@ -101,6 +104,27 @@ const popularCalculators = [
   { id: "emi", name: "EMI", icon: <IndianRupee className="w-5 h-5" />, color: "from-rose-500 to-red-500", description: "Loan EMI nikalo" },
 ];
 
+const learningOutcomes = [
+  {
+    icon: <Lightbulb className="w-6 h-6" />,
+    title: "Stock Market Samjhenge",
+    titleHindi: "शेयर बाज़ार समझेंगे",
+    description: "Sensex, Nifty, shares – sab kuch simple Hindi mein",
+  },
+  {
+    icon: <Shield className="w-6 h-6" />,
+    title: "Safe Investing Seekhenge",
+    titleHindi: "सुरक्षित निवेश सीखेंगे",
+    description: "Beginner mistakes se bachna aur smart decisions lena",
+  },
+  {
+    icon: <Target className="w-6 h-6" />,
+    title: "Confident Banenge",
+    titleHindi: "आत्मविश्वासी बनेंगे",
+    description: "Apni pehli investment ke liye ready ho jaoge",
+  },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
@@ -110,56 +134,104 @@ export default function Home() {
         keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
       />
       
-      <section className="py-20 lg:py-28 bg-slate-50 dark:bg-card/30">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <Badge className="bg-primary/10 text-primary border-primary/20 mb-6">
-            Rotech Shiksha
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-slate-50 to-white dark:from-card/50 dark:to-background">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 mb-4">
+            100% Free | Hindi Mein
           </Badge>
           
-          <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight mb-4">
-            Stock Market Seekho <br />
-            <span className="text-primary">Zero Se</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-3">
+            Share Market Seekho,
+            <br />
+            <span className="text-primary">Bilkul Simple Hindi Mein</span>
           </h1>
           
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-6">
-            Bina dar, bina confusion – simple Hindi me step-by-step learning.
+          <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto mb-6">
+            Koi confusion nahi, koi dar nahi – step-by-step seekho aur confident investor bano.
           </p>
           
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm text-muted-foreground">Hindi first</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm text-muted-foreground">Beginner friendly</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm text-muted-foreground">100% Free</span>
-            </div>
-          </div>
-          
-          <Link href="/beginner-course" data-testid="link-start-learning">
-            <Button size="lg" className="gap-2" data-testid="button-start-learning">
-              <Play className="w-4 h-4" />
-              Start Beginner Course
+          <Link href="/beginner-course" data-testid="link-start-learning-hero">
+            <Button size="lg" className="gap-2 min-h-[48px] text-base" data-testid="button-start-learning-hero">
+              <Play className="w-5 h-5" />
+              Seekhna Shuru Karein (Free)
             </Button>
           </Link>
+          
+          <p className="text-xs text-muted-foreground mt-3">
+            13 lessons | 3 hours | Simple Hinglish
+          </p>
         </div>
       </section>
 
-      <section className="py-16 lg:py-20">
+      <section className="py-8 sm:py-10 border-b border-border/50">
+        <div className="max-w-3xl mx-auto px-4">
+          <Card className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200/50 dark:border-amber-700/30">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center flex-shrink-0">
+                  <Users className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground text-sm sm:text-base mb-1">
+                    Rohit ki Kahaani – Shayad Aapki Bhi
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <span className="font-medium text-foreground">Rohit</span> ek aam aadmi hai – job karta hai, savings hai, lekin stock market se darta tha. 
+                    Phir uski mulaqaat hui <span className="font-medium text-foreground">Priya</span> se, jo simple Hindi mein samjhati hai. 
+                    Ab Rohit confident hai aur aap bhi ban sakte ho.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="py-10 sm:py-12">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+              Aap Kya Seekhenge?
+            </h2>
+            <p className="text-sm text-muted-foreground">Beginner course complete karne ke baad</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {learningOutcomes.map((outcome, index) => (
+              <Card key={index} className="text-center" data-testid={`card-outcome-${index}`}>
+                <CardContent className="p-5">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3 text-primary">
+                    {outcome.icon}
+                  </div>
+                  <h3 className="font-semibold text-foreground text-sm mb-1">{outcome.title}</h3>
+                  <p className="text-xs text-muted-foreground">{outcome.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-6">
+            <Link href="/beginner-course" data-testid="link-start-learning-outcomes">
+              <Button className="gap-2" data-testid="button-start-learning-outcomes">
+                <Play className="w-4 h-4" />
+                Abhi Shuru Karein
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10 sm:py-12 bg-slate-50 dark:bg-card/30">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 mb-3">
               <GraduationCap className="w-3 h-3 mr-1" />
-              Our Courses
+              Structured Courses
             </Badge>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
-              Structured Learning for Every Level
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
+              Har Level Ke Liye Course
             </h2>
-            <p className="text-sm text-muted-foreground">(Simple Hindi mein, step-by-step)</p>
+            <p className="text-sm text-muted-foreground">Simple Hindi mein, step-by-step</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -183,8 +255,8 @@ export default function Home() {
                 )}
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className={`w-12 h-12 rounded-xl ${course.bgColor} flex items-center justify-center`}>
-                      <GraduationCap className={`w-6 h-6 ${course.color}`} />
+                    <div className={`w-10 h-10 rounded-lg ${course.bgColor} flex items-center justify-center`}>
+                      <GraduationCap className={`w-5 h-5 ${course.color}`} />
                     </div>
                     {course.isActive && (
                       <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-0 text-xs">
@@ -192,17 +264,17 @@ export default function Home() {
                       </Badge>
                     )}
                   </div>
-                  <CardTitle className="text-lg">{course.title}</CardTitle>
+                  <CardTitle className="text-base">{course.title}</CardTitle>
                   <p className="text-xs text-muted-foreground">{course.titleHindi}</p>
-                  <CardDescription className="text-sm mt-2">
+                  <CardDescription className="text-sm mt-1">
                     {course.description}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="pt-0 space-y-4">
-                  <ul className="space-y-1.5">
-                    {course.benefits.map((benefit, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <CardContent className="pt-0 space-y-3">
+                  <ul className="space-y-1">
+                    {course.benefits.slice(0, 3).map((benefit, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
                         {benefit}
                       </li>
                     ))}
@@ -240,10 +312,10 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-8">
+          <div className="text-center mt-6">
             <Link href="/courses" data-testid="link-view-all-courses">
               <Button variant="outline" className="gap-2" data-testid="button-view-all-courses">
-                View All Learning Levels
+                Saare Learning Levels
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -251,30 +323,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-20 bg-slate-50 dark:bg-card/30">
+      <section className="py-10 sm:py-12">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 mb-3">
+          <div className="text-center mb-8">
+            <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 mb-3">
               <Calculator className="w-3 h-3 mr-1" />
               Free Tools
             </Badge>
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
               Financial Calculators
             </h2>
-            <p className="text-sm text-muted-foreground">(SIP, EMI, FD – sabka hisaab free me)</p>
+            <p className="text-sm text-muted-foreground">SIP, EMI, FD – sabka hisaab free mein</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
             {popularCalculators.map((calc) => (
               <Link key={calc.id} href={`/calculators/${calc.id}`} data-testid={`link-calc-${calc.id}`}>
                 <Card className="hover-elevate cursor-pointer group h-full" data-testid={`card-calc-${calc.id}`}>
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${calc.color} text-white flex items-center justify-center flex-shrink-0`}>
+                  <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${calc.color} text-white flex items-center justify-center flex-shrink-0`}>
                       {calc.icon}
                     </div>
-                    <div>
-                      <h3 className="font-medium text-foreground text-sm">{calc.name}</h3>
-                      <p className="text-xs text-muted-foreground">{calc.description}</p>
+                    <div className="min-w-0">
+                      <h3 className="font-medium text-foreground text-sm truncate">{calc.name}</h3>
+                      <p className="text-xs text-muted-foreground truncate">{calc.description}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -293,31 +365,31 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-12 lg:py-16">
+      <section className="py-8 sm:py-10 bg-slate-50 dark:bg-card/30">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-3">
             <Link href="/blog" data-testid="link-blog-home">
               <Card className="hover-elevate cursor-pointer h-full" data-testid="card-blog-home">
-                <CardContent className="p-5 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground">Market Gyaan (Blog)</h3>
-                    <p className="text-sm text-muted-foreground">Simple articles for beginners</p>
+                    <h3 className="font-semibold text-foreground text-sm">Market Gyaan (Blog)</h3>
+                    <p className="text-xs text-muted-foreground">Simple articles for beginners</p>
                   </div>
                 </CardContent>
               </Card>
             </Link>
             <Link href="/faq" data-testid="link-faq-home">
               <Card className="hover-elevate cursor-pointer h-full" data-testid="card-faq-home">
-                <CardContent className="p-5 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
-                    <HelpCircle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                    <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground">Beginner FAQ</h3>
-                    <p className="text-sm text-muted-foreground">Common questions answered</p>
+                    <h3 className="font-semibold text-foreground text-sm">Beginner FAQ</h3>
+                    <p className="text-xs text-muted-foreground">Common questions answered</p>
                   </div>
                 </CardContent>
               </Card>
@@ -326,7 +398,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-12 bg-slate-100 dark:bg-card/50">
+      <section className="py-6 sm:py-8 bg-slate-100 dark:bg-card/50">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-xs text-muted-foreground">
             <strong>Disclaimer:</strong> Ye website sirf educational purpose ke liye hai. 
