@@ -18,7 +18,8 @@ import {
   LayoutDashboard,
   MoreVertical,
   Globe,
-  Palette
+  Palette,
+  Wrench
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
@@ -42,16 +43,19 @@ const primaryNavItems: NavItem[] = [
   { labelKey: "nav.faq", href: "/faq" },
 ];
 
+const toolsNavItems: NavItem[] = [
+  { labelKey: "nav.liveBusinessNews", href: "/live-news" },
+  { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
+  { labelKey: "nav.brokers", href: "/compare-brokers" },
+  { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
+  { labelKey: "nav.paperTrade", href: "/paper-trade" },
+];
+
 const moreNavItems: NavItem[] = [
   { labelKey: "nav.pricing", href: "/pricing" },
   { labelKey: "nav.lessons", href: "/beginner-course" },
   { labelKey: "nav.learningLevels", href: "/level-1" },
-  { labelKey: "nav.liveBusinessNews", href: "/live-news" },
-  { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
   { labelKey: "nav.educationalVideos", href: "/educational-videos" },
-  { labelKey: "nav.brokers", href: "/compare-brokers" },
-  { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
-  { labelKey: "nav.paperTrade", href: "/paper-trade" },
 ];
 
 export function Header() {
@@ -92,7 +96,7 @@ export function Header() {
   };
 
   const mobileVisibleItems = primaryNavItems.slice(0, visibleItems);
-  const mobileOverflowItems = [...primaryNavItems.slice(visibleItems), ...moreNavItems];
+  const mobileOverflowItems = [...primaryNavItems.slice(visibleItems), ...toolsNavItems, ...moreNavItems];
 
   return (
     <motion.header 
@@ -167,6 +171,26 @@ export function Header() {
                 </Link>
               )
             )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="gap-1" data-testid="nav-tools-desktop">
+                  <Wrench className="w-4 h-4" />
+                  {t("nav.tools") || "Tools"}
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                {toolsNavItems.map((item) => (
+                  <DropdownMenuItem key={item.href} asChild>
+                    <Link href={item.href}>
+                      <span className="w-full cursor-pointer" data-testid={`nav-${item.labelKey}`}>
+                        {t(item.labelKey)}
+                      </span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             {moreNavItems.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
