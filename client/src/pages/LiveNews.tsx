@@ -5,15 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { 
   Newspaper, 
-  Clock, 
   RefreshCw,
   TrendingUp,
   TrendingDown,
@@ -22,14 +15,9 @@ import {
   Landmark,
   Briefcase,
   Globe,
-  ChevronDown,
-  ChevronUp,
   Radio,
   BookOpen,
   AlertCircle,
-  Tv,
-  Video,
-  Zap,
   ExternalLink
 } from "lucide-react";
 import { parseISO, isValid } from "date-fns";
@@ -52,37 +40,7 @@ interface EnhancedNewsArticle extends NewsArticle {
   marketImpact: "positive" | "negative" | "neutral";
   impactReason: string;
   isBreaking: boolean;
-  timeAgoIST: string;
 }
-
-interface BusinessVideo {
-  id: string;
-  videoId: string;
-  title: string;
-  thumbnail: string;
-  channelName: string;
-  channelId: string;
-  publishedAt: string;
-  viewCount: string;
-  duration: string;
-  category: string;
-  language: string;
-  languageCode: string;
-  type: "news" | "analysis" | "live" | "educational";
-}
-
-const videoLanguages = [
-  { code: "all", labelEn: "All", labelHi: "सभी" },
-  { code: "en", labelEn: "English", labelHi: "English", badge: "EN" },
-  { code: "hi", labelEn: "Hindi", labelHi: "हिंदी", badge: "HI" },
-  { code: "gu", labelEn: "Gujarati", labelHi: "ગુજરાતી", badge: "GU" },
-  { code: "mr", labelEn: "Marathi", labelHi: "मराठी", badge: "MR" },
-  { code: "ta", labelEn: "Tamil", labelHi: "தமிழ்", badge: "TA" },
-  { code: "te", labelEn: "Telugu", labelHi: "తెలుగు", badge: "TE" },
-  { code: "bn", labelEn: "Bengali", labelHi: "বাংলা", badge: "BN" },
-  { code: "kn", labelEn: "Kannada", labelHi: "ಕನ್ನಡ", badge: "KN" },
-  { code: "ml", labelEn: "Malayalam", labelHi: "മലയാളം", badge: "ML" },
-];
 
 const categoryIcons: Record<string, typeof TrendingUp> = {
   markets: TrendingUp,
@@ -103,72 +61,6 @@ const categories = [
   { id: "mutualfunds", labelEn: "Mutual Funds", labelHi: "म्यूचुअल फंड" },
 ];
 
-const globalVideoSources = [
-  {
-    id: "reuters",
-    name: "Reuters Business",
-    channelUrl: "https://www.youtube.com/@Reuters",
-    description: "Global business news from Reuters"
-  },
-  {
-    id: "bloomberg",
-    name: "Bloomberg",
-    channelUrl: "https://www.youtube.com/@Bloomberg",
-    description: "Bloomberg Markets & Finance"
-  },
-  {
-    id: "yahoo",
-    name: "Yahoo Finance",
-    channelUrl: "https://www.youtube.com/@YahooFinance",
-    description: "Yahoo Finance latest coverage"
-  },
-  {
-    id: "cnbc",
-    name: "CNBC",
-    channelUrl: "https://www.youtube.com/@CNBC",
-    description: "CNBC business news"
-  },
-];
-
-const indiaVideoSources = [
-  {
-    id: "cnbc-tv18",
-    name: "CNBC TV18",
-    channelUrl: "https://www.youtube.com/@CNBC-TV18",
-    description: "Live business news from India"
-  },
-  {
-    id: "et-now",
-    name: "ET Now",
-    channelUrl: "https://www.youtube.com/@ETNOWlive",
-    description: "Economic Times coverage"
-  },
-  {
-    id: "zee-business",
-    name: "Zee Business",
-    channelUrl: "https://www.youtube.com/@ZeeBusiness",
-    description: "Hindi business news"
-  },
-  {
-    id: "moneycontrol",
-    name: "MoneyControl",
-    channelUrl: "https://www.youtube.com/@MoneycontrolCom",
-    description: "MoneyControl market updates"
-  },
-  {
-    id: "ndtv-profit",
-    name: "NDTV Profit",
-    channelUrl: "https://www.youtube.com/@NDTVProfitIndia",
-    description: "NDTV Profit news"
-  },
-  {
-    id: "bq-prime",
-    name: "BQ Prime",
-    channelUrl: "https://www.youtube.com/@BQPrime",
-    description: "Bloomberg Quint India"
-  },
-];
-
 const breakingKeywords = [
   "crash", "रिजर्व बैंक", "rbi", "fed", "federal reserve", "interest rate",
   "ipo", "results", "quarterly", "sensex", "nifty", "market crash",
@@ -186,46 +78,6 @@ function getNewsAgeInMinutes(dateString: string): number {
     return Math.floor(diffMs / (1000 * 60));
   } catch {
     return 999999;
-  }
-}
-
-function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
-  try {
-    const date = parseISO(dateString);
-    if (!isValid(date)) {
-      return isHindi ? "हाल ही में" : "Recently published";
-    }
-    
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    
-    if (diffMs < 0) {
-      return isHindi ? "हाल ही में" : "Recently published";
-    }
-    
-    const diffSecs = Math.floor(diffMs / 1000);
-    const diffMins = Math.floor(diffSecs / 60);
-    const diffHours = Math.floor(diffMins / 60);
-
-    if (diffSecs < 60) {
-      return isHindi ? "अभी" : "Just now";
-    }
-    
-    if (diffMins < 60) {
-      const minText = diffMins === 1 ? "min" : "mins";
-      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
-    }
-    
-    if (diffHours < 24) {
-      const hrText = diffHours === 1 ? "hr" : "hrs";
-      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours} ${hrText} ago`;
-    }
-    
-    const diffDays = Math.floor(diffHours / 24);
-    const dayText = diffDays === 1 ? "day" : "days";
-    return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
-  } catch {
-    return isHindi ? "हाल ही में" : "Recently published";
   }
 }
 
@@ -271,7 +123,6 @@ function enhanceNewsArticle(article: NewsArticle, isHindi: boolean): EnhancedNew
     marketImpact: impact,
     impactReason: reason,
     isBreaking: detectBreakingNews(article.title, article.summary),
-    timeAgoIST: formatTimeAgoIST(article.publishedAt, isHindi),
   };
 }
 
@@ -279,12 +130,12 @@ function MarketImpactBadge({ impact, isHindi }: { impact: "positive" | "negative
   const config = {
     positive: { 
       icon: TrendingUp, 
-      label: isHindi ? "सकारात्मक" : "Positive",
+      label: isHindi ? "सकारात्मक" : "Bullish",
       className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800"
     },
     negative: { 
       icon: TrendingDown, 
-      label: isHindi ? "नकारात्मक" : "Negative",
+      label: isHindi ? "नकारात्मक" : "Bearish",
       className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800"
     },
     neutral: { 
@@ -308,12 +159,12 @@ function NewsCard({
   article,
   isHindi,
   showLive = false,
-  isBreakingSection = false
+  isFeatured = false
 }: { 
   article: EnhancedNewsArticle;
   isHindi: boolean;
   showLive?: boolean;
-  isBreakingSection?: boolean;
+  isFeatured?: boolean;
 }) {
   const handleClick = () => {
     if (article.url) {
@@ -323,17 +174,88 @@ function NewsCard({
 
   const CategoryIcon = categoryIcons[article.category] || Newspaper;
 
+  if (isFeatured) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
+        className="col-span-full lg:col-span-2"
+      >
+        <Card 
+          className="cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-xl bg-card border"
+          onClick={handleClick}
+          data-testid={`news-card-featured-${article.id}`}
+        >
+          <div className="md:flex">
+            <div className="md:w-1/2 relative">
+              {showLive && (
+                <div className="absolute top-3 left-3 z-10">
+                  <Badge className="bg-red-600 text-white animate-pulse">
+                    <Radio className="w-3 h-3 mr-1" />
+                    LIVE
+                  </Badge>
+                </div>
+              )}
+              <div className="aspect-video md:aspect-auto md:h-full relative overflow-hidden">
+                <img
+                  src={article.imageUrl}
+                  alt=""
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute bottom-3 left-3">
+                  <Badge variant="secondary" className="bg-white/90 text-gray-800 dark:bg-gray-900/90 dark:text-white text-sm font-medium">
+                    {article.source}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+            
+            <CardContent className="md:w-1/2 p-6 flex flex-col justify-center space-y-4">
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge variant="outline" className="text-xs">
+                  <CategoryIcon className="w-3 h-3 mr-1" />
+                  {article.category}
+                </Badge>
+                <MarketImpactBadge impact={article.marketImpact} isHindi={isHindi} />
+              </div>
+              
+              <h2 className="font-bold text-xl md:text-2xl leading-tight line-clamp-3">
+                {article.title}
+              </h2>
+              
+              <p className="text-base text-muted-foreground leading-relaxed line-clamp-3">
+                {article.aiSummary}
+              </p>
+              
+              <div className="flex items-center justify-between pt-3 border-t">
+                <span className="text-sm text-muted-foreground">
+                  {isHindi ? "पूरी खबर पढ़ें" : "Read full story"}
+                </span>
+                <ExternalLink className="w-5 h-5 text-primary" />
+              </div>
+            </CardContent>
+          </div>
+        </Card>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -3 }}
       transition={{ duration: 0.2 }}
     >
       <Card 
-        className={`cursor-pointer overflow-hidden h-full transition-shadow hover:shadow-lg ${
-          isBreakingSection ? "ring-2 ring-red-500 dark:ring-red-400" : ""
-        }`}
+        className="cursor-pointer overflow-hidden h-full transition-all duration-300 hover:shadow-lg bg-card border group"
         onClick={handleClick}
         data-testid={`news-card-${article.id}`}
       >
@@ -346,19 +268,19 @@ function NewsCard({
               </Badge>
             </div>
           )}
-          <div className="aspect-video relative overflow-hidden">
+          <div className="aspect-[16/10] relative overflow-hidden">
             <img
               src={article.imageUrl}
               alt=""
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&auto=format";
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <div className="absolute bottom-2 left-2">
-              <Badge variant="secondary" className="bg-black/60 text-white text-xs">
+              <Badge variant="secondary" className="bg-white/90 text-gray-800 dark:bg-gray-900/90 dark:text-white text-xs font-medium">
                 {article.source}
               </Badge>
             </div>
@@ -374,19 +296,16 @@ function NewsCard({
             <MarketImpactBadge impact={article.marketImpact} isHindi={isHindi} />
           </div>
           
-          <h3 className="font-semibold text-base line-clamp-2 leading-tight">
+          <h3 className="font-semibold text-lg leading-snug line-clamp-2 group-hover:text-primary transition-colors">
             {article.title}
           </h3>
           
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
             {article.aiSummary}
           </p>
           
-          <div className="flex items-center justify-between pt-2 border-t">
-            <span className="text-xs text-muted-foreground">
-              {isHindi ? "मार्केट इम्पैक्ट:" : "Market Impact:"} {article.impactReason.slice(0, 30)}...
-            </span>
-            <ExternalLink className="w-4 h-4 text-muted-foreground" />
+          <div className="flex items-center justify-end pt-2">
+            <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
           </div>
         </CardContent>
       </Card>
@@ -394,116 +313,17 @@ function NewsCard({
   );
 }
 
-function LiveVideoSection({ isHindi }: { isHindi: boolean }) {
-  const [isOpen, setIsOpen] = useState(true);
-  const [videoType, setVideoType] = useState<"india" | "global">("india");
-
-  const currentSources = videoType === "india" ? indiaVideoSources : globalVideoSources;
-
-  return (
-    <Card className="mb-6">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer hover-elevate py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <Tv className="w-5 h-5 text-red-500" />
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                </div>
-                <CardTitle className="text-base">
-                  {isHindi ? "लाइव मार्केट चैनल" : "Live Market Channels"}
-                </CardTitle>
-                <Badge variant="outline" className="text-xs text-red-500 border-red-200">
-                  <Radio className="w-3 h-3 mr-1" />
-                  LIVE
-                </Badge>
-              </div>
-              {isOpen ? (
-                <ChevronUp className="w-5 h-5 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-muted-foreground" />
-              )}
-            </div>
-          </CardHeader>
-        </CollapsibleTrigger>
-        
-        <CollapsibleContent>
-          <CardContent className="pt-0">
-            <div className="flex gap-2 mb-4">
-              <Button
-                variant={videoType === "india" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setVideoType("india")}
-                data-testid="video-type-india"
-              >
-                {isHindi ? "भारत" : "India"}
-              </Button>
-              <Button
-                variant={videoType === "global" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setVideoType("global")}
-                data-testid="video-type-global"
-              >
-                {isHindi ? "ग्लोबल" : "Global"}
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {currentSources.map((source) => (
-                <a
-                  key={source.id}
-                  href={source.channelUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                  data-testid={`live-channel-${source.id}`}
-                >
-                  <Card className="hover-elevate overflow-visible h-full">
-                    <CardContent className="p-3 flex flex-col items-center text-center gap-2">
-                      <div className="relative">
-                        <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                          <Tv className="w-6 h-6 text-red-500" />
-                        </div>
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse border-2 border-background" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm line-clamp-1">{source.name}</p>
-                        <p className="text-xs text-muted-foreground line-clamp-1">{source.description}</p>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        <ExternalLink className="w-3 h-3 mr-1" />
-                        {isHindi ? "देखें" : "Watch"}
-                      </Badge>
-                    </CardContent>
-                  </Card>
-                </a>
-              ))}
-            </div>
-            
-            <p className="text-xs text-muted-foreground mt-3 text-center">
-              {isHindi 
-                ? "क्लिक करें और YouTube पर लाइव देखें"
-                : "Click to watch live on YouTube"}
-            </p>
-          </CardContent>
-        </CollapsibleContent>
-      </Collapsible>
-    </Card>
-  );
-}
-
 function NewsCardSkeleton() {
   return (
     <Card className="overflow-hidden">
-      <Skeleton className="aspect-video w-full" />
+      <Skeleton className="aspect-[16/10] w-full" />
       <CardContent className="p-4 space-y-3">
         <div className="flex gap-2">
           <Skeleton className="h-5 w-16" />
           <Skeleton className="h-5 w-20" />
         </div>
-        <Skeleton className="h-5 w-full" />
-        <Skeleton className="h-5 w-3/4" />
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-3/4" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-2/3" />
       </CardContent>
@@ -511,388 +331,23 @@ function NewsCardSkeleton() {
   );
 }
 
-function VideoCardSkeleton() {
+function FeaturedSkeleton() {
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-video w-full bg-gradient-to-br from-muted to-muted-foreground/10 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-2">
-          <Video className="w-10 h-10 text-muted-foreground/30" />
-          <div className="w-16 h-1 bg-muted-foreground/20 rounded-full overflow-hidden">
-            <div className="h-full bg-primary/30 animate-pulse" style={{ width: '60%' }} />
+    <Card className="overflow-hidden col-span-full lg:col-span-2">
+      <div className="md:flex">
+        <Skeleton className="md:w-1/2 aspect-video md:aspect-auto md:h-64" />
+        <CardContent className="md:w-1/2 p-6 space-y-4">
+          <div className="flex gap-2">
+            <Skeleton className="h-5 w-20" />
+            <Skeleton className="h-5 w-24" />
           </div>
-        </div>
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-3/4" />
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-2/3" />
+        </CardContent>
       </div>
-      <CardContent className="p-3 space-y-3">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-5 w-5 rounded-full" />
-          <Skeleton className="h-3 w-24" />
-        </div>
-        <Skeleton className="h-8 w-full rounded-md" />
-      </CardContent>
     </Card>
-  );
-}
-
-const VIDEO_MAX_AGE_MINS = 60;
-const VIDEO_LIVE_BADGE_MAX_AGE_MINS = 5;
-
-function getVideoAgeInMinutes(dateString: string): number {
-  try {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    if (diffMs < 0) return Infinity;
-    return Math.floor(diffMs / (1000 * 60));
-  } catch {
-    return Infinity;
-  }
-}
-
-function formatVideoTimeAgo(dateString: string, isHindi: boolean): string {
-  try {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    
-    if (diffMs < 0) return "";
-    
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    
-    if (diffMins < 1) {
-      return isHindi ? "अभी" : "Just now";
-    }
-    
-    const cappedMins = Math.min(diffMins, 60);
-    const minText = cappedMins === 1 ? "min" : "mins";
-    return isHindi ? `${cappedMins} मिनट पहले` : `${cappedMins} ${minText} ago`;
-  } catch {
-    return "";
-  }
-}
-
-const verifiedChannels = [
-  "cnbc awaaz", "cnbc-tv18", "cnbc tv18", "zee business", "et now", 
-  "bloomberg quint", "moneycontrol", "ndtv profit", "bq prime",
-  "reuters", "bloomberg", "yahoo finance", "cnbc"
-];
-
-function isVerifiedChannel(channelName: string): boolean {
-  return verifiedChannels.some(vc => channelName.toLowerCase().includes(vc));
-}
-
-function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean }) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const isLive = video.duration === "LIVE";
-  const isVerified = isVerifiedChannel(video.channelName);
-  
-  const getYouTubeUrl = () => {
-    if (video.videoId === "live_stream") {
-      return `https://www.youtube.com/channel/${video.channelId}/live`;
-    }
-    return `https://www.youtube.com/watch?v=${video.videoId}`;
-  };
-  
-  const langBadge = videoLanguages.find(l => l.code === video.languageCode)?.badge || video.languageCode.toUpperCase();
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Card className="overflow-hidden hover-elevate group" data-testid={`video-card-${video.id}`}>
-        <a 
-          href={getYouTubeUrl()} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="block"
-        >
-          <div className="relative aspect-video overflow-hidden bg-muted">
-            {!imageLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/10">
-                <div className="flex flex-col items-center gap-2">
-                  <Video className="w-10 h-10 text-muted-foreground/50" />
-                  <div className="w-16 h-1 bg-muted-foreground/20 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary/50 animate-pulse" style={{ width: '60%' }} />
-                  </div>
-                </div>
-              </div>
-            )}
-            <img
-              src={video.thumbnail}
-              alt=""
-              className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-              loading="lazy"
-              onLoad={() => setImageLoaded(true)}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&auto=format";
-                setImageLoaded(true);
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-            
-            <div className="absolute top-2 left-2 flex gap-1">
-              <Badge variant="secondary" className="text-xs bg-black/70 text-white border-0">
-                {langBadge}
-              </Badge>
-              {isLive && (
-                <Badge variant="destructive" className="text-xs animate-pulse">
-                  <Radio className="w-3 h-3 mr-1" />
-                  LIVE
-                </Badge>
-              )}
-            </div>
-            
-            {!isLive && video.duration && (
-              <div className="absolute bottom-2 right-2">
-                <Badge variant="secondary" className="text-xs bg-black/80 text-white border-0">
-                  {video.duration}
-                </Badge>
-              </div>
-            )}
-            
-            <div className="absolute bottom-2 left-2">
-              <span className="text-white/90 text-xs flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {formatVideoTimeAgo(video.publishedAt, isHindi)}
-              </span>
-            </div>
-            
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg">
-                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-          
-          <CardContent className="p-3 space-y-2">
-            <h3 className="font-medium text-sm line-clamp-2 leading-tight group-hover:text-primary transition-colors">
-              {video.title}
-            </h3>
-            
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1 text-xs text-muted-foreground min-w-0">
-                <div className="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
-                  <Tv className="w-3 h-3 text-red-500" />
-                </div>
-                <span className="truncate">{video.channelName}</span>
-                {isVerified && (
-                  <svg className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                  </svg>
-                )}
-              </div>
-              {video.viewCount && (
-                <span className="text-xs text-muted-foreground flex-shrink-0">{video.viewCount}</span>
-              )}
-            </div>
-            
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full mt-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
-              data-testid={`video-watch-${video.id}`}
-            >
-              <ExternalLink className="w-3 h-3 mr-2" />
-              {isHindi ? "YouTube पर देखें" : "Watch on YouTube"}
-            </Button>
-          </CardContent>
-        </a>
-      </Card>
-    </motion.div>
-  );
-}
-
-function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
-  const [videoLang, setVideoLang] = useState("all");
-  
-  const { data, isLoading, error, refetch, isFetching } = useQuery<{ 
-    videos: BusinessVideo[]; 
-    fallbackToEnglish?: boolean;
-    availableLanguages?: string[];
-  }>({
-    queryKey: ["/api/youtube/videos", videoLang],
-    queryFn: async () => {
-      const res = await fetch(`/api/youtube/videos?lang=${videoLang}`);
-      if (!res.ok) throw new Error("Failed to fetch videos");
-      return res.json();
-    },
-    refetchInterval: 5 * 60 * 1000,
-  });
-  
-  const showFallbackNotice = data?.fallbackToEnglish && videoLang !== "en" && videoLang !== "all";
-  
-  const { displayVideos, apiCount, freshCount, usedFallback } = useMemo(() => {
-    if (!data?.videos) return { displayVideos: [], apiCount: 0, freshCount: 0, usedFallback: false };
-    
-    const apiVideoCount = data.videos.length;
-    
-    const sortedVideos = [...data.videos]
-      .filter(v => v.duration !== "LIVE")
-      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-    
-    const freshVideosFiltered = sortedVideos.filter(v => {
-      const ageInMins = getVideoAgeInMinutes(v.publishedAt);
-      return ageInMins >= 0 && ageInMins <= VIDEO_MAX_AGE_MINS;
-    });
-    
-    let finalVideos = freshVideosFiltered;
-    let fallbackUsed = false;
-    
-    if (freshVideosFiltered.length === 0 && sortedVideos.length > 0) {
-      finalVideos = sortedVideos.slice(0, 6);
-      fallbackUsed = true;
-      if (process.env.NODE_ENV === "development") {
-        console.log(`[Video Debug] Fresh filter returned 0, falling back to ${finalVideos.length} latest videos`);
-      }
-    }
-    
-    if (process.env.NODE_ENV === "development") {
-      console.log(`[Video Debug] API items: ${apiVideoCount}, Fresh: ${freshVideosFiltered.length}, Displaying: ${finalVideos.length}, Fallback: ${fallbackUsed}`);
-    }
-    
-    return { 
-      displayVideos: finalVideos, 
-      apiCount: apiVideoCount, 
-      freshCount: freshVideosFiltered.length,
-      usedFallback: fallbackUsed
-    };
-  }, [data?.videos]);
-  
-  const veryRecentVideos = displayVideos.filter(v => getVideoAgeInMinutes(v.publishedAt) <= VIDEO_LIVE_BADGE_MAX_AGE_MINS);
-  const hasVeryRecentVideos = veryRecentVideos.length > 0 && !usedFallback;
-  
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="text-sm text-muted-foreground mr-1">
-          {isHindi ? "भाषा:" : "Language:"}
-        </span>
-        {videoLanguages.map((lang) => {
-          const hasVideos = lang.code === "all" || 
-            (data?.availableLanguages && data.availableLanguages.includes(lang.code));
-          if (!hasVideos && data?.availableLanguages) return null;
-          return (
-            <Button
-              key={lang.code}
-              variant={videoLang === lang.code ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setVideoLang(lang.code)}
-              data-testid={`video-lang-${lang.code}`}
-            >
-              {isHindi ? lang.labelHi : lang.labelEn}
-            </Button>
-          );
-        })}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => refetch()}
-          disabled={isFetching}
-          data-testid="video-refresh"
-        >
-          <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} />
-        </Button>
-      </div>
-      
-      {showFallbackNotice && (
-        <p className="text-xs text-muted-foreground mb-2">
-          {isHindi 
-            ? "चुनी गई भाषा में वीडियो उपलब्ध नहीं है, English में दिखा रहे हैं" 
-            : "Videos in selected language not available, showing in English"}
-        </p>
-      )}
-      
-      {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <VideoCardSkeleton key={i} />
-          ))}
-        </div>
-      ) : error ? (
-        <Card>
-          <CardContent className="py-8 text-center">
-            <AlertCircle className="w-12 h-12 mx-auto text-destructive mb-4" />
-            <p className="text-muted-foreground mb-2">
-              {isHindi ? "वीडियो लोड करने में समस्या" : "Error loading videos"}
-            </p>
-            <p className="text-sm text-muted-foreground mb-4">
-              {isHindi ? "कृपया इंटरनेट चेक करें" : "Please check your connection"}
-            </p>
-            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
-              {isHindi ? "फिर से कोशिश करें" : "Try Again"}
-            </Button>
-          </CardContent>
-        </Card>
-      ) : apiCount === 0 ? (
-        <Card className="border-dashed">
-          <CardContent className="py-12 text-center">
-            <div className="relative inline-block mb-4">
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-                <Video className="w-8 h-8 text-muted-foreground" />
-              </div>
-              <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
-            </div>
-            <p className="text-lg font-medium mb-2">
-              {isHindi ? "वीडियो लोड हो रहे हैं..." : "Loading videos..."}
-            </p>
-            <p className="text-sm text-muted-foreground mb-4">
-              {isHindi ? "कृपया कुछ सेकंड प्रतीक्षा करें" : "Please wait a few seconds"}
-            </p>
-            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
-              {isHindi ? "रिफ्रेश करें" : "Refresh"}
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div>
-          <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-            {hasVeryRecentVideos ? (
-              <>
-                <div className="relative">
-                  <Radio className="w-4 h-4 text-red-500" />
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                </div>
-                {isHindi ? "लाइव बिज़नेस वीडियो" : "Live Business Videos"}
-              </>
-            ) : (
-              <>
-                <Video className="w-4 h-4" />
-                {isHindi ? "बिज़नेस वीडियो" : "Business Videos"}
-              </>
-            )}
-            {usedFallback && (
-              <Badge variant="outline" className="text-xs text-amber-600 border-amber-300 dark:text-amber-400 dark:border-amber-700">
-                {isHindi ? "हाल के" : "Latest"}
-              </Badge>
-            )}
-            <Badge variant="outline" className="text-xs ml-auto">
-              {displayVideos.length} {isHindi ? "वीडियो" : "videos"}
-            </Badge>
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <AnimatePresence>
-              {displayVideos.slice(0, 12).map((video) => (
-                <VideoCard key={video.id} video={video} isHindi={isHindi} />
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
-      
-      <p className="text-xs text-muted-foreground text-center mt-6 pt-4 border-t">
-        {isHindi 
-          ? "सभी वीडियो आधिकारिक YouTube चैनलों से लिंक हैं। क्लिक करने पर YouTube खुलेगा।" 
-          : "All videos link to official YouTube channels. Click opens YouTube in a new tab."}
-      </p>
-    </div>
   );
 }
 
@@ -907,15 +362,6 @@ function getNewsFreshnessLevel(ageInMins: number): FreshnessLevel {
   if (ageInMins <= FRESH_NEWS_MAX_AGE_MINS) return "fresh";
   if (ageInMins <= RECENT_NEWS_MAX_AGE_MINS) return "recent";
   return "earlier";
-}
-
-function getFreshnessLabel(level: FreshnessLevel, isHindi: boolean): string {
-  const labels = {
-    fresh: isHindi ? "ताज़ा" : "Fresh",
-    recent: isHindi ? "हाल का" : "Recent",
-    earlier: isHindi ? "पहले का" : "Earlier"
-  };
-  return labels[level];
 }
 
 export default function LiveNews() {
@@ -963,39 +409,20 @@ export default function LiveNews() {
       });
   }, [data?.news, isHindi, currentTime]);
 
-  const { freshNews, recentNews, earlierNews, totalNewsCount, apiItemCount } = useMemo(() => {
+  const { allNews, totalNewsCount, apiItemCount } = useMemo(() => {
     const categoryFiltered = enhancedNews.filter(article => 
       selectedCategory === "all" || article.category === selectedCategory
     );
     
-    const fresh: EnhancedNewsArticle[] = [];
-    const recent: EnhancedNewsArticle[] = [];
-    const earlier: EnhancedNewsArticle[] = [];
-    
-    categoryFiltered.forEach(article => {
-      const ageInMins = getNewsAgeInMinutes(article.publishedAt);
-      const level = getNewsFreshnessLevel(ageInMins);
-      if (level === "fresh") {
-        fresh.push(article);
-      } else if (level === "recent") {
-        recent.push(article);
-      } else {
-        earlier.push(article);
-      }
-    });
-    
     const apiCount = data?.news?.length || 0;
-    const renderedCount = fresh.length + recent.length + earlier.length;
     
     if (process.env.NODE_ENV === "development") {
-      console.log(`[News Debug] API items: ${apiCount}, Rendered: ${renderedCount}, Fresh: ${fresh.length}, Recent: ${recent.length}, Earlier: ${earlier.length}`);
+      console.log(`[News Debug] API items: ${apiCount}, Filtered: ${categoryFiltered.length}`);
     }
     
     return { 
-      freshNews: fresh, 
-      recentNews: recent,
-      earlierNews: earlier,
-      totalNewsCount: renderedCount,
+      allNews: categoryFiltered,
+      totalNewsCount: categoryFiltered.length,
       apiItemCount: apiCount
     };
   }, [enhancedNews, selectedCategory, currentTime, data?.news?.length]);
@@ -1011,22 +438,22 @@ export default function LiveNews() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-        <Card className="mb-6">
-          <CardHeader className="pb-3">
+      <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+        <Card className="mb-8 border-0 shadow-none bg-transparent">
+          <CardHeader className="pb-4 px-0">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl" data-testid="live-news-title">
+                <CardTitle className="flex items-center gap-3 text-2xl sm:text-3xl font-bold" data-testid="live-news-title">
                   <div className="relative">
-                    <Newspaper className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    <Newspaper className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
+                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
                   </div>
                   {isHindi ? "लाइव बिज़नेस न्यूज़" : "Live Business News"}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2 flex-wrap">
+                <p className="text-muted-foreground mt-2 flex items-center gap-2 flex-wrap">
                   {isHindi 
-                    ? "रीयल-टाइम वित्तीय समाचार • IST टाइमज़ोन" 
-                    : "Real-time financial news • IST Timezone"}
+                    ? "रीयल-टाइम वित्तीय समाचार" 
+                    : "Real-time financial news updates"}
                   <Badge variant="outline" className="text-xs">
                     <RefreshCw className="w-3 h-3 mr-1" />
                     {formatCountdown(refreshCountdown)}
@@ -1035,14 +462,14 @@ export default function LiveNews() {
               </div>
               
               <div className="flex items-center gap-2 flex-wrap">
-                <div className="flex flex-wrap bg-muted rounded-md p-1 gap-1">
+                <div className="flex flex-wrap bg-muted rounded-lg p-1 gap-1">
                   <Button
                     variant={newsLang === "en" ? "default" : "ghost"}
                     size="sm"
                     onClick={() => setNewsLang("en")}
                     data-testid="news-lang-en"
                   >
-                    English
+                    EN
                   </Button>
                   <Button
                     variant={newsLang === "hi" ? "default" : "ghost"}
@@ -1058,7 +485,7 @@ export default function LiveNews() {
                     onClick={() => setNewsLang("gu")}
                     data-testid="news-lang-gu"
                   >
-                    ગુજરાતી
+                    ગુજ
                   </Button>
                   <Button
                     variant={newsLang === "mr" ? "default" : "ghost"}
@@ -1099,254 +526,155 @@ export default function LiveNews() {
                   <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} />
                 </Button>
               </div>
-              {showFallbackNotice && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  News in English (selected language not available)
-                </p>
-              )}
             </div>
+            {showFallbackNotice && (
+              <p className="text-xs text-muted-foreground mt-2">
+                {isHindi ? "चुनी गई भाषा में समाचार उपलब्ध नहीं है, English में दिखा रहे हैं" : "News in English (selected language not available)"}
+              </p>
+            )}
           </CardHeader>
           
-          <CardContent className="pt-0">
-            <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <Button
-                  key={cat.id}
-                  variant={selectedCategory === cat.id ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(cat.id)}
-                  data-testid={`news-category-${cat.id}`}
-                >
-                  {isHindi ? cat.labelHi : cat.labelEn}
-                </Button>
-              ))}
-            </div>
-          </CardContent>
+          <div className="flex flex-wrap gap-2 pb-2">
+            {categories.map((cat) => (
+              <Button
+                key={cat.id}
+                variant={selectedCategory === cat.id ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory(cat.id)}
+                data-testid={`news-category-${cat.id}`}
+              >
+                {isHindi ? cat.labelHi : cat.labelEn}
+              </Button>
+            ))}
+          </div>
         </Card>
 
-        <Tabs defaultValue="news" className="mb-6">
-          <TabsList className="grid w-full grid-cols-2 max-w-xs">
-            <TabsTrigger value="news" data-testid="tab-news">
-              <Newspaper className="w-4 h-4 mr-2" />
-              {isHindi ? "समाचार" : "News"}
-            </TabsTrigger>
-            <TabsTrigger value="videos" data-testid="tab-videos">
-              <Tv className="w-4 h-4 mr-2" />
-              {isHindi ? "वीडियो" : "Videos"}
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="news" className="mt-4">
-            {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <NewsCardSkeleton />
-                <NewsCardSkeleton />
-                <NewsCardSkeleton />
-                <NewsCardSkeleton />
-                <NewsCardSkeleton />
-                <NewsCardSkeleton />
-              </div>
-            ) : error ? (
-              <Card>
-                <CardContent className="py-8 text-center">
-                  <AlertCircle className="w-12 h-12 mx-auto text-destructive mb-4" />
-                  <p className="text-muted-foreground mb-2">
-                    {isHindi 
-                      ? "समाचार लोड करने में त्रुटि हुई" 
-                      : "Error loading news"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {isHindi 
-                      ? "कृपया इंटरनेट कनेक्शन चेक करें और पुनः प्रयास करें" 
-                      : "Please check your connection and try again"}
-                  </p>
-                  <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
-                    {isHindi ? "पुनः प्रयास करें" : "Try Again"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : apiItemCount === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-12 text-center">
-                  <div className="relative inline-block mb-4">
-                    <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-                      <Newspaper className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                    <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
-                  </div>
-                  <p className="text-lg font-medium mb-2">
-                    {isHindi 
-                      ? "समाचार लोड हो रहे हैं..." 
-                      : "Loading news..."}
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {isHindi 
-                      ? "कृपया कुछ सेकंड प्रतीक्षा करें" 
-                      : "Please wait a few seconds"}
-                  </p>
-                  <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
-                    {isHindi ? "रिफ्रेश करें" : "Refresh Now"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : totalNewsCount === 0 && apiItemCount > 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-8 text-center">
-                  <Newspaper className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground mb-2">
-                    {isHindi 
-                      ? `"${categories.find(c => c.id === selectedCategory)?.labelHi || selectedCategory}" में कोई खबर नहीं मिली` 
-                      : `No news found for "${categories.find(c => c.id === selectedCategory)?.labelEn || selectedCategory}"`}
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {isHindi 
-                      ? "दूसरी category देखें या 'All News' चुनें" 
-                      : "Try another category or select 'All News'"}
-                  </p>
-                  <Button variant="outline" size="sm" onClick={() => setSelectedCategory("all")}>
-                    {isHindi ? "सभी समाचार देखें" : "View All News"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <>
-                {freshNews.length > 0 && (
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="relative">
-                        <Zap className="w-5 h-5 text-green-500" />
-                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                      </div>
-                      <h3 className="text-base font-semibold text-green-600 dark:text-green-400">
-                        {isHindi ? "ताज़ा खबरें" : "Fresh News"}
-                      </h3>
-                      <Badge className="bg-green-600 text-white">
-                        {freshNews.length}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground ml-auto">
-                        {isHindi ? "पिछले 90 मिनट" : "Last 90 mins"}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      <AnimatePresence>
-                        {freshNews.map((article) => (
-                          <NewsCard
-                            key={article.id}
-                            article={article}
-                            isHindi={isHindi}
-                            showLive={showLiveBadge(article)}
-                            isBreakingSection={true}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                )}
-
-                {recentNews.length > 0 && (
-                  <div className={freshNews.length > 0 ? "mt-8 pt-6 border-t" : ""}>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Clock className="w-4 h-4 text-blue-500" />
-                      <h3 className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                        {isHindi ? "हाल की खबरें" : "Recent News"}
-                      </h3>
-                      <Badge variant="outline" className="text-xs border-blue-300 text-blue-600 dark:border-blue-700 dark:text-blue-400">
-                        {recentNews.length}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground ml-auto">
-                        {isHindi ? "90-180 मिनट पहले" : "90-180 mins ago"}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      <AnimatePresence>
-                        {recentNews.map((article) => (
-                          <NewsCard
-                            key={article.id}
-                            article={article}
-                            isHindi={isHindi}
-                            showLive={false}
-                            isBreakingSection={false}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                )}
-
-                {earlierNews.length > 0 && (
-                  <div className={(freshNews.length > 0 || recentNews.length > 0) ? "mt-8 pt-6 border-t border-dashed" : ""}>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Newspaper className="w-4 h-4 text-muted-foreground" />
-                      <h3 className="text-sm font-medium text-muted-foreground">
-                        {isHindi ? "पहले के अपडेट्स (संदर्भ के लिए)" : "Earlier Updates (for context)"}
-                      </h3>
-                      <Badge variant="outline" className="text-xs">
-                        {earlierNews.length}
-                      </Badge>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-80">
-                      <AnimatePresence>
-                        {earlierNews.map((article) => (
-                          <NewsCard
-                            key={article.id}
-                            article={article}
-                            isHindi={isHindi}
-                            showLive={false}
-                            isBreakingSection={false}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="videos" className="mt-4">
-            <LiveVideoSection isHindi={isHindi} />
-            
-            <BusinessVideosSection isHindi={isHindi} />
-          </TabsContent>
-        </Tabs>
-
-        <Card className="mb-6 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-          <CardContent className="py-3 px-4">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-              <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-200">
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeaturedSkeleton />
+            <NewsCardSkeleton />
+            <NewsCardSkeleton />
+            <NewsCardSkeleton />
+            <NewsCardSkeleton />
+            <NewsCardSkeleton />
+          </div>
+        ) : error ? (
+          <Card className="max-w-md mx-auto">
+            <CardContent className="py-12 text-center">
+              <AlertCircle className="w-16 h-16 mx-auto text-destructive mb-4" />
+              <p className="text-lg font-medium mb-2">
                 {isHindi 
-                  ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
-                  : "This news is for educational purposes only. No investment advice or buy/sell recommendations. Clicking opens original source website."}
+                  ? "समाचार लोड करने में त्रुटि हुई" 
+                  : "Error loading news"}
               </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
-          <CardContent className="py-4 px-4">
-            <div className="flex items-start gap-3">
-              <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
-                  {isHindi ? "एक ज़रूरी बात..." : "An important note..."}
-                </p>
-                <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">
-                  {isHindi 
-                    ? "News dekhna theek hai, par pehle basics seekhna zaroori hai. Bina samjhe trading mat karna!" 
-                    : "Reading news is good, but learning basics first is essential. Don't trade without understanding!"}
-                </p>
-                <Button variant="outline" size="sm" className="mt-3 border-blue-300 text-blue-700 dark:border-blue-700 dark:text-blue-300" asChild>
-                  <a href="/beginner-course" data-testid="news-cta-learn">
-                    {isHindi ? "Basics Seekho" : "Learn Basics"}
-                  </a>
-                </Button>
+              <p className="text-muted-foreground mb-6">
+                {isHindi 
+                  ? "कृपया इंटरनेट कनेक्शन चेक करें और पुनः प्रयास करें" 
+                  : "Please check your connection and try again"}
+              </p>
+              <Button onClick={() => refetch()} disabled={isFetching}>
+                <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
+                {isHindi ? "पुनः प्रयास करें" : "Try Again"}
+              </Button>
+            </CardContent>
+          </Card>
+        ) : apiItemCount === 0 ? (
+          <Card className="max-w-md mx-auto border-dashed">
+            <CardContent className="py-12 text-center">
+              <div className="relative inline-block mb-4">
+                <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
+                  <Newspaper className="w-10 h-10 text-muted-foreground" />
+                </div>
+                <RefreshCw className="w-6 h-6 text-primary animate-spin absolute -bottom-1 -right-1" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              <p className="text-xl font-medium mb-2">
+                {isHindi 
+                  ? "समाचार लोड हो रहे हैं..." 
+                  : "Loading news..."}
+              </p>
+              <p className="text-muted-foreground mb-6">
+                {isHindi 
+                  ? "कृपया कुछ सेकंड प्रतीक्षा करें" 
+                  : "Please wait a few seconds"}
+              </p>
+              <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
+                <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
+                {isHindi ? "रिफ्रेश करें" : "Refresh Now"}
+              </Button>
+            </CardContent>
+          </Card>
+        ) : totalNewsCount === 0 && apiItemCount > 0 ? (
+          <Card className="max-w-md mx-auto border-dashed">
+            <CardContent className="py-12 text-center">
+              <Newspaper className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+              <p className="text-lg font-medium mb-2">
+                {isHindi 
+                  ? `"${categories.find(c => c.id === selectedCategory)?.labelHi || selectedCategory}" में कोई खबर नहीं मिली` 
+                  : `No news found for "${categories.find(c => c.id === selectedCategory)?.labelEn || selectedCategory}"`}
+              </p>
+              <p className="text-muted-foreground mb-6">
+                {isHindi 
+                  ? "दूसरी category देखें या 'All News' चुनें" 
+                  : "Try another category or select 'All News'"}
+              </p>
+              <Button variant="outline" onClick={() => setSelectedCategory("all")}>
+                {isHindi ? "सभी समाचार देखें" : "View All News"}
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {allNews.map((article, index) => (
+                <NewsCard
+                  key={article.id}
+                  article={article}
+                  isHindi={isHindi}
+                  showLive={showLiveBadge(article)}
+                  isFeatured={index === 0}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
+
+        <div className="mt-10 space-y-4">
+          <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
+            <CardContent className="py-4 px-5">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  {isHindi 
+                    ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
+                    : "This news is for educational purposes only. No investment advice or buy/sell recommendations. Clicking opens original source website."}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+            <CardContent className="py-5 px-5">
+              <div className="flex items-start gap-4">
+                <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="font-medium text-blue-800 dark:text-blue-200 mb-1">
+                    {isHindi ? "एक ज़रूरी बात..." : "An important note..."}
+                  </p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    {isHindi 
+                      ? "News dekhna theek hai, par pehle basics seekhna zaroori hai. Bina samjhe trading mat karna!" 
+                      : "Reading news is good, but learning basics first is essential. Don't trade without understanding!"}
+                  </p>
+                  <Button variant="outline" size="sm" className="mt-4 border-blue-300 text-blue-700 dark:border-blue-700 dark:text-blue-300" asChild>
+                    <a href="/beginner-course" data-testid="news-cta-learn">
+                      {isHindi ? "Basics Seekho" : "Learn Basics"}
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
