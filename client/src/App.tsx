@@ -9,6 +9,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { LessonLanguageProvider } from "@/context/LessonLanguageContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -99,11 +100,15 @@ function App() {
                 <LiveTicker />
               </div>
               <div className="min-h-screen bg-background md:pt-11 safe-area-top">
-                <Header />
+                <div className="hidden md:block">
+                  <Header />
+                </div>
                 <main className="pt-0">
                   <Router />
                 </main>
                 <Footer />
+                <div className="h-20 md:hidden" aria-hidden="true" />
+                <MobileBottomNav />
                 <div className="safe-area-bottom" />
                 <AuthModal />
                 <LiveChat />
