@@ -186,6 +186,13 @@ export function Footer() {
               © {new Date().getFullYear()} Rotech Shiksha. All rights reserved.
             </p>
           </div>
+          
+          <div className="mt-6 pt-4 border-t border-slate-200 dark:border-border text-center">
+            <p className="text-xs text-slate-500 dark:text-muted-foreground">
+              Rotech Shiksha is an education platform.<br />
+              We do not provide trading tips or investment advice.
+            </p>
+          </div>
         </motion.div>
       </div>
     </footer>
