@@ -1,0 +1,75 @@
+CRITICAL UX FIX – LIVE NEWS TIME ACCURACY
+
+CONTEXT:
+This page is titled "Live Business News".
+Showing "12h ago / 15h ago" creates a wrong impression that news is outdated.
+We must ensure users only see near-real-time news.
+
+=====================================
+PRIMARY GOAL
+=====================================
+
+Only show news that is RECENT and feels LIVE.
+User should NEVER see news older than 10–15 minutes on initial view.
+
+=====================================
+REQUIRED CHANGES
+=====================================
+
+1. STRICT TIME FILTER (MANDATORY)
+- Filter news at fetch level.
+- Only include news where:
+  (currentTime - publishedAt) ≤ 15 minutes
+- If news is older than 15 minutes:
+  → Do NOT show it in the main feed.
+
+2. TIME FORMAT RULE (MINUTES ONLY)
+- Display time strictly in minutes:
+  - "Just now" (0–1 min)
+  - "2 mins ago"
+  - "5 mins ago"
+  - "10 mins ago"
+- NEVER display:
+  ❌ hours
+  ❌ days
+  ❌ dates
+
+3. AUTO REFRESH LOGIC
+- Refresh news automatically every 60 seconds.
+- Always re-calculate time from publishedAt.
+- Prevent stale data from staying on screen.
+
+4. FALLBACK BEHAVIOR (VERY IMPORTANT)
+- If no news is available within 15 minutes:
+  - Show a neutral message:
+    "Fetching latest live updates…"
+  - Retry silently in background.
+  - Do NOT fallback to older news.
+
+5. OPTIONAL SECONDARY FEED (IF NEEDED)
+- If required, older news (15+ mins) may go into:
+  "Earlier Updates" section
+- This section should be:
+  - Visually separated
+  - Clearly labeled
+  - Not part of main live feed
+
+=====================================
+STRICT RULES
+=====================================
+
+- Do NOT fake timestamps.
+- Do NOT convert hours into minutes artificially.
+- Do NOT mislead users.
+- Do NOT change page layout, routes, or styling.
+- Keep disclaimer unchanged.
+
+=====================================
+FINAL RESULT EXPECTED
+=====================================
+
+When a user opens the page:
+✔ They only see news from last 5–15 minutes  
+✔ Time always shows in minutes  
+✔ Page truly feels LIVE and trustworthy  
+✔ No negative impression of outdated data

@@ -176,6 +176,18 @@ const breakingKeywords = [
   "sebi", "crisis", "rally", "record high", "record low", "all-time"
 ];
 
+function getNewsAgeInMinutes(dateString: string): number {
+  try {
+    const date = parseISO(dateString);
+    if (!isValid(date)) return Infinity;
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    return Math.floor(diffMs / (1000 * 60));
+  } catch {
+    return Infinity;
+  }
+}
+
 function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
   try {
     const date = parseISO(dateString);
@@ -185,23 +197,12 @@ function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
     const diffMs = now.getTime() - date.getTime();
     const diffSecs = Math.floor(diffMs / 1000);
     const diffMins = Math.floor(diffSecs / 60);
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
 
     if (diffSecs < 60) {
       return isHindi ? "अभी" : "Just now";
     }
-    if (diffMins < 60) {
-      const minText = diffMins === 1 ? "min" : "mins";
-      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
-    }
-    if (diffHours <= 48) {
-      const totalMins = diffHours * 60 + (diffMins % 60);
-      const minText = totalMins === 1 ? "min" : "mins";
-      return isHindi ? `${totalMins} मिनट पहले` : `${totalMins} ${minText} ago`;
-    }
-    const dayText = diffDays === 1 ? "day" : "days";
-    return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
+    const minText = diffMins === 1 ? "min" : "mins";
+    return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
   } catch {
     return "";
   }
@@ -767,11 +768,15 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
   );
 }
 
+const LIVE_NEWS_MAX_AGE_MINS = 15;
+const REFRESH_INTERVAL_SECS = 60;
+
 export default function LiveNews() {
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [newsLang, setNewsLang] = useState<"en" | "hi" | "gu" | "mr" | "ta" | "te">("en");
-  const [refreshCountdown, setRefreshCountdown] = useState(300);
+  const [refreshCountdown, setRefreshCountdown] = useState(REFRESH_INTERVAL_SECS);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const isHindi = language === "hi" || newsLang === "hi";
 
@@ -782,16 +787,17 @@ export default function LiveNews() {
       if (!res.ok) throw new Error("Failed to fetch news");
       return res.json();
     },
-    refetchInterval: 5 * 60 * 1000,
+    refetchInterval: REFRESH_INTERVAL_SECS * 1000,
   });
   
   const showFallbackNotice = data?.fallbackToEnglish && newsLang !== "en";
 
   useEffect(() => {
     const timer = setInterval(() => {
+      setCurrentTime(new Date());
       setRefreshCountdown((prev) => {
         if (prev <= 1) {
-          return 300;
+          return REFRESH_INTERVAL_SECS;
         }
         return prev - 1;
       });
@@ -808,20 +814,32 @@ export default function LiveNews() {
         if (!a.isBreaking && b.isBreaking) return 1;
         return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
       });
-  }, [data?.news, isHindi]);
+  }, [data?.news, isHindi, currentTime]);
 
-  const filteredNews = useMemo(() => {
-    return enhancedNews.filter(article => 
+  const { liveNews, earlierNews } = useMemo(() => {
+    const categoryFiltered = enhancedNews.filter(article => 
       selectedCategory === "all" || article.category === selectedCategory
     );
-  }, [enhancedNews, selectedCategory]);
+    
+    const live: EnhancedNewsArticle[] = [];
+    const earlier: EnhancedNewsArticle[] = [];
+    
+    categoryFiltered.forEach(article => {
+      const ageInMins = getNewsAgeInMinutes(article.publishedAt);
+      if (ageInMins <= LIVE_NEWS_MAX_AGE_MINS) {
+        live.push(article);
+      } else {
+        earlier.push(article);
+      }
+    });
+    
+    return { liveNews: live, earlierNews: earlier };
+  }, [enhancedNews, selectedCategory, currentTime]);
 
-  const breakingNews = filteredNews.filter(n => n.isBreaking);
+  const breakingNews = liveNews.filter(n => n.isBreaking);
 
   const formatCountdown = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
+    return `${seconds}s`;
   };
 
   return (
@@ -1003,29 +1021,65 @@ export default function LiveNews() {
                   </Button>
                 </CardContent>
               </Card>
-            ) : filteredNews.length === 0 ? (
-              <Card>
-                <CardContent className="py-8 text-center">
-                  <Newspaper className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">
-                    {isHindi 
-                      ? "इस श्रेणी में कोई समाचार नहीं मिला।" 
-                      : "No news found in this category."}
-                  </p>
-                </CardContent>
-              </Card>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <AnimatePresence>
-                  {filteredNews.map((article) => (
-                    <NewsCard
-                      key={article.id}
-                      article={article}
-                      isHindi={isHindi}
-                    />
-                  ))}
-                </AnimatePresence>
-              </div>
+              <>
+                {liveNews.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <AnimatePresence>
+                      {liveNews.map((article) => (
+                        <NewsCard
+                          key={article.id}
+                          article={article}
+                          isHindi={isHindi}
+                        />
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Card className="mb-6">
+                    <CardContent className="py-8 text-center">
+                      <div className="relative inline-block mb-4">
+                        <RefreshCw className="w-12 h-12 text-primary animate-spin" />
+                      </div>
+                      <p className="text-lg font-medium mb-2">
+                        {isHindi 
+                          ? "लाइव अपडेट्स लोड हो रहे हैं..." 
+                          : "Fetching latest live updates..."}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {isHindi 
+                          ? `${refreshCountdown} सेकंड में रिफ्रेश होगा` 
+                          : `Refreshing in ${refreshCountdown} seconds`}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {earlierNews.length > 0 && (
+                  <div className="mt-8 pt-6 border-t">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Clock className="w-4 h-4 text-muted-foreground" />
+                      <h3 className="text-sm font-medium text-muted-foreground">
+                        {isHindi ? "पुरानी खबरें" : "Earlier Updates"}
+                      </h3>
+                      <Badge variant="outline" className="text-xs">
+                        {earlierNews.length}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-75">
+                      <AnimatePresence>
+                        {earlierNews.slice(0, 6).map((article) => (
+                          <NewsCard
+                            key={article.id}
+                            article={article}
+                            isHindi={isHindi}
+                          />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </TabsContent>
           
