@@ -520,26 +520,38 @@ function VideoCardSkeleton() {
   );
 }
 
+const VIDEO_MAX_AGE_MINS = 60;
+const VIDEO_LIVE_BADGE_MAX_AGE_MINS = 5;
+
+function getVideoAgeInMinutes(dateString: string): number {
+  try {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    if (diffMs < 0) return Infinity;
+    return Math.floor(diffMs / (1000 * 60));
+  } catch {
+    return Infinity;
+  }
+}
+
 function formatVideoTimeAgo(dateString: string, isHindi: boolean): string {
   try {
     const date = new Date(dateString);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
     
-    if (diffMins < 60) {
-      const minText = diffMins === 1 ? "min" : "mins";
-      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
+    if (diffMs < 0) return "";
+    
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    
+    if (diffMins < 1) {
+      return isHindi ? "अभी" : "Just now";
     }
-    if (diffHours <= 48) {
-      const totalMins = diffHours * 60 + (diffMins % 60);
-      const minText = totalMins === 1 ? "min" : "mins";
-      return isHindi ? `${totalMins} मिनट पहले` : `${totalMins} ${minText} ago`;
-    }
-    const dayText = diffDays === 1 ? "day" : "days";
-    return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
+    
+    const cappedMins = Math.min(diffMins, 60);
+    const minText = cappedMins === 1 ? "min" : "mins";
+    return isHindi ? `${cappedMins} मिनट पहले` : `${cappedMins} ${minText} ago`;
   } catch {
     return "";
   }
@@ -695,12 +707,23 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
       if (!res.ok) throw new Error("Failed to fetch videos");
       return res.json();
     },
-    refetchInterval: 10 * 60 * 1000,
+    refetchInterval: 5 * 60 * 1000,
   });
   
   const showFallbackNotice = data?.fallbackToEnglish && videoLang !== "en" && videoLang !== "all";
-  const liveVideos = data?.videos?.filter(v => v.duration === "LIVE") || [];
-  const regularVideos = data?.videos?.filter(v => v.duration !== "LIVE") || [];
+  
+  const freshVideos = useMemo(() => {
+    if (!data?.videos) return [];
+    return data.videos
+      .filter(v => {
+        const ageInMins = getVideoAgeInMinutes(v.publishedAt);
+        return ageInMins >= 0 && ageInMins <= VIDEO_MAX_AGE_MINS && v.duration !== "LIVE";
+      })
+      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  }, [data?.videos]);
+  
+  const veryRecentVideos = freshVideos.filter(v => getVideoAgeInMinutes(v.publishedAt) <= VIDEO_LIVE_BADGE_MAX_AGE_MINS);
+  const hasVeryRecentVideos = veryRecentVideos.length > 0;
   
   return (
     <div className="space-y-4">
@@ -761,67 +784,62 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
             </Button>
           </CardContent>
         </Card>
-      ) : (
-        <>
-          {liveVideos.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-                <Radio className="w-4 h-4 text-red-500 animate-pulse" />
-                {isHindi ? "लाइव अभी" : "Live Now"}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <AnimatePresence>
-                  {liveVideos.map((video) => (
-                    <VideoCard key={video.id} video={video} isHindi={isHindi} />
-                  ))}
-                </AnimatePresence>
+      ) : freshVideos.length === 0 ? (
+        <Card className="border-dashed">
+          <CardContent className="py-12 text-center">
+            <div className="relative inline-block mb-4">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                <Video className="w-8 h-8 text-muted-foreground" />
               </div>
+              <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
             </div>
-          )}
-          
-          <div>
-            <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-              <Video className="w-4 h-4" />
-              {isHindi ? "हाल के वीडियो" : "Recent Videos"}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <AnimatePresence>
-                {regularVideos.map((video) => (
-                  <VideoCard key={video.id} video={video} isHindi={isHindi} />
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
-          
-          {(!data?.videos || data.videos.length === 0) && (
-            <Card className="border-dashed">
-              <CardContent className="py-12 text-center">
-                <div className="relative inline-block mb-4">
-                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-                    <Video className="w-8 h-8 text-muted-foreground" />
-                  </div>
-                  <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
+            <p className="text-lg font-medium mb-2">
+              {isHindi ? "वेरिफाइड बिज़नेस वीडियो अपडेट हो रहे हैं" : "Latest verified business videos are being updated"}
+            </p>
+            <p className="text-sm text-muted-foreground mb-4">
+              {isHindi ? "रिफ्रेश करें या थोड़ी देर बाद देखें" : "Tap refresh or check back shortly"}
+            </p>
+            <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+              <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
+              {isHindi ? "रिफ्रेश करें" : "Refresh"}
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div>
+          <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+            {hasVeryRecentVideos ? (
+              <>
+                <div className="relative">
+                  <Radio className="w-4 h-4 text-red-500" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                 </div>
-                <p className="text-lg font-medium mb-2">
-                  {isHindi ? "लेटेस्ट बिज़नेस वीडियो लोड हो रहे हैं..." : "Latest business videos are loading..."}
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {isHindi ? "कृपया कुछ सेकंड प्रतीक्षा करें" : "Please wait a few seconds"}
-                </p>
-                <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-                  <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
-                  {isHindi ? "रिफ्रेश करें" : "Refresh"}
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-        </>
+                {isHindi ? "लाइव बिज़नेस वीडियो" : "Live Business Videos"}
+              </>
+            ) : (
+              <>
+                <Video className="w-4 h-4" />
+                {isHindi ? "हाल के बिज़नेस वीडियो" : "Recent Business Videos"}
+              </>
+            )}
+            <Badge variant="outline" className="text-xs ml-auto">
+              {isHindi ? "पिछले 60 मिनट" : "Last 60 mins"}
+            </Badge>
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <AnimatePresence>
+              {freshVideos.slice(0, 6).map((video) => (
+                <VideoCard key={video.id} video={video} isHindi={isHindi} />
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
       )}
       
       <p className="text-xs text-muted-foreground text-center mt-6 pt-4 border-t">
         {isHindi 
-          ? "सभी वीडियो उनके आधिकारिक YouTube चैनलों से एम्बेड या लिंक किए गए हैं। हम इस सामग्री के मालिक नहीं हैं।" 
-          : "All videos are embedded or linked from their official YouTube channels. We do not own or upload this content."}
+          ? "सभी वीडियो आधिकारिक YouTube चैनलों से लिंक हैं। क्लिक करने पर YouTube खुलेगा।" 
+          : "All videos link to official YouTube channels. Click opens YouTube in a new tab."}
       </p>
     </div>
   );
