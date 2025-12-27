@@ -49,8 +49,10 @@ async function fetchNewsFromGNews(language: string = "en"): Promise<any[]> {
       return cached.data;
     }
 
-    const langParam = language === "hi" ? "hi" : "en";
-    const url = `https://gnews.io/api/v4/top-headlines?category=business&lang=${langParam}&country=in&apikey=${GNEWS_API_KEY}`;
+    // GNews supports en, hi - other languages fallback to English
+    const supportedLangs: Record<string, string> = { en: "en", hi: "hi", gu: "en", mr: "en", ta: "en" };
+    const langParam = supportedLangs[language] || "en";
+    const url = `https://gnews.io/api/v4/top-headlines?category=business&lang=${langParam}&country=in&max=20&apikey=${GNEWS_API_KEY}`;
 
     console.log(`Fetching news from GNews (${language})`);
     const response = await axios.get(url, { timeout: 8000 });
@@ -1138,10 +1140,15 @@ export async function registerRoutes(
         news = news.filter((item: any) => new Date(item.publishedAt).getTime() > cutoffTime);
       }
 
+      // Check if language fallback occurred
+      const supportedLangs = ["en", "hi"];
+      const isFallback = !supportedLangs.includes(language);
+      
       res.json({
         news: news.slice(0, limit),
         language,
-        total: news.length
+        total: news.length,
+        fallbackToEnglish: isFallback
       });
     } catch (error) {
       console.error("News fetch error:", error);

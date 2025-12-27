@@ -151,9 +151,11 @@ function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
       return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} min ago`;
     }
     if (diffHours < 24) {
-      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours}h ago`;
+      const hourText = diffHours === 1 ? "hour" : "hours";
+      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours} ${hourText} ago`;
     }
-    return isHindi ? `${diffDays} दिन पहले` : `${diffDays}d ago`;
+    const dayText = diffDays === 1 ? "day" : "days";
+    return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
   } catch {
     return "";
   }
@@ -441,12 +443,12 @@ function NewsCardSkeleton() {
 export default function LiveNews() {
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [newsLang, setNewsLang] = useState<"en" | "hi">("en");
+  const [newsLang, setNewsLang] = useState<"en" | "hi" | "gu" | "mr" | "ta">("en");
   const [refreshCountdown, setRefreshCountdown] = useState(300);
 
   const isHindi = language === "hi" || newsLang === "hi";
 
-  const { data, isLoading, error, refetch, isFetching } = useQuery<{ news: NewsArticle[] }>({
+  const { data, isLoading, error, refetch, isFetching } = useQuery<{ news: NewsArticle[]; fallbackToEnglish?: boolean }>({
     queryKey: ["/api/news", newsLang, selectedCategory],
     queryFn: async () => {
       const res = await fetch(`/api/news?lang=${newsLang}&category=${selectedCategory}`);
@@ -455,6 +457,8 @@ export default function LiveNews() {
     },
     refetchInterval: 5 * 60 * 1000,
   });
+  
+  const showFallbackNotice = data?.fallbackToEnglish && newsLang !== "en";
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -519,7 +523,7 @@ export default function LiveNews() {
               </div>
               
               <div className="flex items-center gap-2 flex-wrap">
-                <div className="flex bg-muted rounded-md p-1">
+                <div className="flex flex-wrap bg-muted rounded-md p-1 gap-1">
                   <Button
                     variant={newsLang === "en" ? "default" : "ghost"}
                     size="sm"
@@ -536,6 +540,30 @@ export default function LiveNews() {
                   >
                     हिंदी
                   </Button>
+                  <Button
+                    variant={newsLang === "gu" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setNewsLang("gu")}
+                    data-testid="news-lang-gu"
+                  >
+                    ગુજરાતી
+                  </Button>
+                  <Button
+                    variant={newsLang === "mr" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setNewsLang("mr")}
+                    data-testid="news-lang-mr"
+                  >
+                    मराठी
+                  </Button>
+                  <Button
+                    variant={newsLang === "ta" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setNewsLang("ta")}
+                    data-testid="news-lang-ta"
+                  >
+                    தமிழ்
+                  </Button>
                 </div>
                 
                 <Button
@@ -551,6 +579,11 @@ export default function LiveNews() {
                   <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} />
                 </Button>
               </div>
+              {showFallbackNotice && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  News in English (selected language not available)
+                </p>
+              )}
             </div>
           </CardHeader>
           
@@ -567,19 +600,6 @@ export default function LiveNews() {
                   {isHindi ? cat.labelHi : cat.labelEn}
                 </Button>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-6 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-          <CardContent className="py-3 px-4">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-              <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-200">
-                {isHindi 
-                  ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
-                  : "This news is for educational purposes only. No investment advice or buy/sell recommendations. Clicking opens original source website."}
-              </p>
             </div>
           </CardContent>
         </Card>
@@ -730,6 +750,19 @@ export default function LiveNews() {
             </div>
           </TabsContent>
         </Tabs>
+
+        <Card className="mb-6 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
+          <CardContent className="py-3 px-4">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+              <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-200">
+                {isHindi 
+                  ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
+                  : "This news is for educational purposes only. No investment advice or buy/sell recommendations. Clicking opens original source website."}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
           <CardContent className="py-4 px-4">
