@@ -201,8 +201,10 @@ function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
     if (diffSecs < 60) {
       return isHindi ? "अभी" : "Just now";
     }
-    const minText = diffMins === 1 ? "min" : "mins";
-    return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
+    
+    const cappedMins = Math.min(diffMins, 90);
+    const minText = cappedMins === 1 ? "min" : "mins";
+    return isHindi ? `${cappedMins} मिनट पहले` : `${cappedMins} ${minText} ago`;
   } catch {
     return "";
   }
@@ -285,10 +287,14 @@ function MarketImpactBadge({ impact, isHindi }: { impact: "positive" | "negative
 
 function NewsCard({ 
   article,
-  isHindi
+  isHindi,
+  showLive = false,
+  isBreakingSection = false
 }: { 
   article: EnhancedNewsArticle;
   isHindi: boolean;
+  showLive?: boolean;
+  isBreakingSection?: boolean;
 }) {
   const handleClick = () => {
     if (article.url) {
@@ -307,17 +313,17 @@ function NewsCard({
     >
       <Card 
         className={`cursor-pointer overflow-hidden h-full transition-shadow hover:shadow-lg ${
-          article.isBreaking ? "ring-2 ring-red-500 dark:ring-red-400" : ""
+          isBreakingSection ? "ring-2 ring-red-500 dark:ring-red-400" : ""
         }`}
         onClick={handleClick}
         data-testid={`news-card-${article.id}`}
       >
         <div className="relative">
-          {article.isBreaking && (
+          {showLive && (
             <div className="absolute top-2 left-2 z-10">
               <Badge className="bg-red-600 text-white animate-pulse">
-                <Zap className="w-3 h-3 mr-1" />
-                {isHindi ? "ब्रेकिंग" : "BREAKING"}
+                <Radio className="w-3 h-3 mr-1" />
+                LIVE
               </Badge>
             </div>
           )}
@@ -821,8 +827,10 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
   );
 }
 
-const LIVE_NEWS_MAX_AGE_MINS = 15;
-const REFRESH_INTERVAL_SECS = 60;
+const BREAKING_NEWS_MAX_AGE_MINS = 15;
+const RECENT_NEWS_MAX_AGE_MINS = 90;
+const LIVE_BADGE_MAX_AGE_MINS = 5;
+const REFRESH_INTERVAL_SECS = 120;
 
 export default function LiveNews() {
   const { language } = useLanguage();
@@ -869,27 +877,34 @@ export default function LiveNews() {
       });
   }, [data?.news, isHindi, currentTime]);
 
-  const { liveNews, earlierNews } = useMemo(() => {
+  const { breakingNow, recentUpdates, hasAnyFreshNews } = useMemo(() => {
     const categoryFiltered = enhancedNews.filter(article => 
       selectedCategory === "all" || article.category === selectedCategory
     );
     
-    const live: EnhancedNewsArticle[] = [];
-    const earlier: EnhancedNewsArticle[] = [];
+    const breaking: EnhancedNewsArticle[] = [];
+    const recent: EnhancedNewsArticle[] = [];
     
     categoryFiltered.forEach(article => {
       const ageInMins = getNewsAgeInMinutes(article.publishedAt);
-      if (ageInMins <= LIVE_NEWS_MAX_AGE_MINS) {
-        live.push(article);
-      } else {
-        earlier.push(article);
+      if (ageInMins <= BREAKING_NEWS_MAX_AGE_MINS) {
+        breaking.push(article);
+      } else if (ageInMins <= RECENT_NEWS_MAX_AGE_MINS) {
+        recent.push(article);
       }
     });
     
-    return { liveNews: live, earlierNews: earlier };
+    return { 
+      breakingNow: breaking, 
+      recentUpdates: recent,
+      hasAnyFreshNews: breaking.length > 0 || recent.length > 0
+    };
   }, [enhancedNews, selectedCategory, currentTime]);
 
-  const breakingNews = liveNews.filter(n => n.isBreaking);
+  const showLiveBadge = (article: EnhancedNewsArticle) => {
+    const ageInMins = getNewsAgeInMinutes(article.publishedAt);
+    return ageInMins <= LIVE_BADGE_MAX_AGE_MINS;
+  };
 
   const formatCountdown = (seconds: number) => {
     return `${seconds}s`;
@@ -977,7 +992,7 @@ export default function LiveNews() {
                   size="icon"
                   onClick={() => {
                     refetch();
-                    setRefreshCountdown(300);
+                    setRefreshCountdown(REFRESH_INTERVAL_SECS);
                   }}
                   disabled={isFetching}
                   data-testid="news-refresh"
@@ -1023,35 +1038,6 @@ export default function LiveNews() {
           </TabsList>
           
           <TabsContent value="news" className="mt-4">
-            {breakingNews.length > 0 && (
-              <Card className="mb-6 bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
-                <CardHeader className="py-3">
-                  <CardTitle className="text-base flex items-center gap-2 text-red-700 dark:text-red-400">
-                    <Zap className="w-4 h-4" />
-                    {isHindi ? "ब्रेकिंग न्यूज़" : "Breaking News"}
-                    <Badge className="bg-red-600 text-white animate-pulse ml-2">
-                      {breakingNews.length}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-2">
-                    {breakingNews.slice(0, 3).map((article) => (
-                      <div 
-                        key={article.id}
-                        className="flex items-center gap-3 p-2 rounded-lg hover-elevate cursor-pointer"
-                        onClick={() => article.url && window.open(article.url, "_blank", "noopener,noreferrer")}
-                      >
-                        <Zap className="w-4 h-4 text-red-500 flex-shrink-0" />
-                        <span className="text-sm font-medium line-clamp-1">{article.title}</span>
-                        <span className="text-xs text-muted-foreground flex-shrink-0">{article.timeAgoIST}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <NewsCardSkeleton />
@@ -1074,58 +1060,89 @@ export default function LiveNews() {
                   </Button>
                 </CardContent>
               </Card>
+            ) : !hasAnyFreshNews ? (
+              <Card className="border-dashed">
+                <CardContent className="py-12 text-center">
+                  <div className="relative inline-block mb-4">
+                    <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                      <Newspaper className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
+                  </div>
+                  <p className="text-lg font-medium mb-2">
+                    {isHindi 
+                      ? "लाइव अपडेट्स रिफ्रेश हो रहे हैं" 
+                      : "Live updates are refreshing"}
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {isHindi 
+                      ? "वेरिफाइड बिज़नेस न्यूज़ जल्द ही यहाँ दिखेगी" 
+                      : "Latest verified business news will appear here shortly"}
+                  </p>
+                  <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+                    <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
+                    {isHindi ? "रिफ्रेश करें" : "Refresh Now"}
+                  </Button>
+                </CardContent>
+              </Card>
             ) : (
               <>
-                {liveNews.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <AnimatePresence>
-                      {liveNews.map((article) => (
-                        <NewsCard
-                          key={article.id}
-                          article={article}
-                          isHindi={isHindi}
-                        />
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Card className="mb-6">
-                    <CardContent className="py-8 text-center">
-                      <div className="relative inline-block mb-4">
-                        <RefreshCw className="w-12 h-12 text-primary animate-spin" />
-                      </div>
-                      <p className="text-lg font-medium mb-2">
-                        {isHindi 
-                          ? "लाइव अपडेट्स लोड हो रहे हैं..." 
-                          : "Fetching latest live updates..."}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {isHindi 
-                          ? `${refreshCountdown} सेकंड में रिफ्रेश होगा` 
-                          : `Refreshing in ${refreshCountdown} seconds`}
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {earlierNews.length > 0 && (
-                  <div className="mt-8 pt-6 border-t">
+                {breakingNow.length > 0 && (
+                  <div className="mb-6">
                     <div className="flex items-center gap-2 mb-4">
-                      <Clock className="w-4 h-4 text-muted-foreground" />
-                      <h3 className="text-sm font-medium text-muted-foreground">
-                        {isHindi ? "पुरानी खबरें" : "Earlier Updates"}
+                      <div className="relative">
+                        <Radio className="w-5 h-5 text-red-500" />
+                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                      </div>
+                      <h3 className="text-base font-semibold text-red-600 dark:text-red-400">
+                        {isHindi ? "ब्रेकिंग नाउ" : "Breaking Now"}
                       </h3>
-                      <Badge variant="outline" className="text-xs">
-                        {earlierNews.length}
+                      <Badge className="bg-red-600 text-white">
+                        {breakingNow.length}
                       </Badge>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {isHindi ? "पिछले 15 मिनट" : "Last 15 minutes"}
+                      </span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-75">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       <AnimatePresence>
-                        {earlierNews.slice(0, 6).map((article) => (
+                        {breakingNow.slice(0, 3).map((article) => (
                           <NewsCard
                             key={article.id}
                             article={article}
                             isHindi={isHindi}
+                            showLive={showLiveBadge(article)}
+                            isBreakingSection={true}
+                          />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                )}
+
+                {recentUpdates.length > 0 && (
+                  <div className={breakingNow.length > 0 ? "mt-8 pt-6 border-t" : ""}>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Newspaper className="w-4 h-4 text-muted-foreground" />
+                      <h3 className="text-sm font-medium text-muted-foreground">
+                        {isHindi ? "हाल के अपडेट्स" : "Recent Updates"}
+                      </h3>
+                      <Badge variant="outline" className="text-xs">
+                        {recentUpdates.length}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {isHindi ? "15-90 मिनट पहले" : "15-90 mins ago"}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <AnimatePresence>
+                        {recentUpdates.slice(0, 6).map((article) => (
+                          <NewsCard
+                            key={article.id}
+                            article={article}
+                            isHindi={isHindi}
+                            showLive={false}
+                            isBreakingSection={false}
                           />
                         ))}
                       </AnimatePresence>

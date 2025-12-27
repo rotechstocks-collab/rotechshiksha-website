@@ -1,0 +1,132 @@
+EMERGENCY FIX REQUIRED — Live Business News UX + Time Accuracy
+
+========================================
+CRITICAL PROBLEM
+========================================
+
+The "Live Business News" page is showing:
+❌ Very old timestamps (800 min ago, 13 hours ago)
+❌ Mixed freshness (old + new together)
+❌ User confusion & loss of trust
+❌ Design does not communicate freshness clearly
+
+THIS IS UNACCEPTABLE FOR A "LIVE" PAGE.
+
+========================================
+ABSOLUTE RULES (NO EXCEPTIONS)
+========================================
+
+1️⃣ STRICT TIME FILTER (MANDATORY)
+--------------------------------
+- ONLY show news items published within:
+  ⏱ LAST 90 MINUTES (MAX)
+- Anything older than 90 minutes:
+  ❌ MUST NOT RENDER
+  ❌ MUST NOT BE SHOWN ANYWHERE
+
+If no news found within 90 minutes:
+→ Show a clean empty-state message (see UI section)
+
+--------------------------------
+
+2️⃣ TIME DISPLAY FORMAT (USER-FRIENDLY)
+--------------------------------
+REPLACE raw timestamps like:
+❌ "800 minutes ago"
+❌ "13 hours ago"
+
+WITH ONLY THESE FORMATS:
+✅ "Just now"
+✅ "5 min ago"
+✅ "12 min ago"
+✅ "45 min ago"
+
+RULE:
+- Never show hours
+- Never show absolute dates
+- Max value shown = "90 min ago"
+
+--------------------------------
+
+3️⃣ LIVE BADGE LOGIC (REAL ONLY)
+--------------------------------
+- Show 🔴 LIVE badge ONLY IF:
+  - published < 5 minutes ago
+- Else:
+  - Remove LIVE badge completely
+
+========================================
+NEWS FLOW ARCHITECTURE
+========================================
+
+4️⃣ TWO CLEAR SECTIONS (SEPARATION REQUIRED)
+
+SECTION A — 🔴 BREAKING NOW
+- News < 15 minutes old
+- Max 3 cards
+- Highlighted border + pulse dot
+
+SECTION B — 📰 RECENT UPDATES
+- News between 15–90 minutes old
+- Normal cards
+- No highlight
+
+DO NOT MIX THESE SECTIONS.
+
+========================================
+EMPTY & FAIL SAFE UX
+========================================
+
+5️⃣ IF NO FRESH NEWS AVAILABLE
+--------------------------------
+Show this exact message (clean card):
+
+"Live updates are refreshing.
+Latest verified business news will appear here shortly."
+
+- Add subtle spinner
+- No blank space
+- No old news fallback
+
+========================================
+DESIGN IMPROVEMENTS (TRUST FIRST)
+========================================
+
+6️⃣ CARD REDESIGN
+--------------------------------
+Each news card must include:
+- Source logo (Mint, ET, Reuters, etc.)
+- Category tag (Markets / Economy / Stocks)
+- Sentiment badge (Positive / Neutral / Negative)
+- Time badge (rounded pill)
+
+NO clutter.
+NO overloading.
+
+--------------------------------
+
+7️⃣ AUTO REFRESH LOGIC
+--------------------------------
+- Refresh feed every 120 seconds
+- On refresh:
+  - Re-filter strictly by time window
+  - Remove expired items automatically
+
+========================================
+STRICT DO-NOTs
+========================================
+
+❌ Do NOT show old news to fill space
+❌ Do NOT show hours-old content
+❌ Do NOT sacrifice trust for quantity
+❌ Do NOT label page "Live" if rules fail
+
+========================================
+FINAL EXPECTED RESULT
+========================================
+
+✔ User NEVER sees old timestamps
+✔ Page truly feels LIVE
+✔ Clean, premium, professional UX
+✔ High trust like Moneycontrol / Bloomberg
+✔ Less content is acceptable, freshness is mandatory
