@@ -7,12 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
@@ -29,14 +23,13 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
-  Play,
   Radio,
   BookOpen,
   AlertCircle,
   Tv,
   Video
 } from "lucide-react";
-import { format, parseISO, isValid } from "date-fns";
+import { parseISO, isValid } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NewsArticle {
@@ -64,6 +57,7 @@ const categories = [
   { id: "markets", labelEn: "Markets", labelHi: "बाजार" },
   { id: "economy", labelEn: "Economy", labelHi: "अर्थव्यवस्था" },
   { id: "business", labelEn: "Business", labelHi: "व्यापार" },
+  { id: "commodities", labelEn: "Commodities", labelHi: "कमोडिटीज" },
   { id: "banking", labelEn: "Banking", labelHi: "बैंकिंग" },
   { id: "mutualfunds", labelEn: "Mutual Funds", labelHi: "म्यूचुअल फंड" },
 ];
@@ -140,29 +134,23 @@ function formatTimeAgo(dateString: string): string {
   }
 }
 
-function formatDate(dateString: string): string {
-  try {
-    const date = parseISO(dateString);
-    if (!isValid(date)) return "";
-    return format(date, "dd MMM yyyy, HH:mm");
-  } catch {
-    return "";
-  }
-}
-
 function FeaturedNewsCard({ 
-  article, 
-  onClick 
+  article
 }: { 
-  article: NewsArticle; 
-  onClick: () => void;
+  article: NewsArticle;
 }) {
+  const handleClick = () => {
+    if (article.url) {
+      window.open(article.url, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="relative rounded-lg overflow-hidden cursor-pointer group"
-      onClick={onClick}
+      onClick={handleClick}
       data-testid={`featured-news-${article.id}`}
     >
       <div className="aspect-video relative">
@@ -196,23 +184,27 @@ function FeaturedNewsCard({
 }
 
 function NewsListItem({ 
-  article, 
-  onClick,
+  article,
   index
 }: { 
-  article: NewsArticle; 
-  onClick: () => void;
+  article: NewsArticle;
   index: number;
 }) {
   const CategoryIcon = categoryIcons[article.category] || Newspaper;
   
+  const handleClick = () => {
+    if (article.url) {
+      window.open(article.url, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.05 }}
       className="flex gap-3 p-3 rounded-lg hover-elevate cursor-pointer border-b last:border-0"
-      onClick={onClick}
+      onClick={handleClick}
       data-testid={`news-item-${article.id}`}
     >
       {article.imageUrl && (
@@ -243,84 +235,6 @@ function NewsListItem({
         </h3>
       </div>
     </motion.div>
-  );
-}
-
-function NewsDetailModal({ 
-  article, 
-  isOpen, 
-  onClose,
-  isHindi
-}: { 
-  article: NewsArticle | null; 
-  isOpen: boolean;
-  onClose: () => void;
-  isHindi: boolean;
-}) {
-  if (!article) return null;
-
-  const CategoryIcon = categoryIcons[article.category] || Newspaper;
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="secondary">
-              <CategoryIcon className="w-3 h-3 mr-1" />
-              {article.category}
-            </Badge>
-            <span className="text-xs text-muted-foreground">
-              {formatDate(article.publishedAt)}
-            </span>
-          </div>
-          <DialogTitle className="text-lg sm:text-xl leading-tight">
-            {article.title}
-          </DialogTitle>
-        </DialogHeader>
-        
-        {article.imageUrl && (
-          <div className="w-full h-48 sm:h-64 rounded-md overflow-hidden my-4">
-            <img
-              src={article.imageUrl}
-              alt=""
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format";
-              }}
-            />
-          </div>
-        )}
-
-        <div className="space-y-4">
-          <p className="text-sm sm:text-base text-foreground leading-relaxed">
-            {article.summary}
-          </p>
-
-          <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-            <CardContent className="py-3 px-4">
-              <div className="flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-amber-800 dark:text-amber-200">
-                  {isHindi 
-                    ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
-                    : "This news is for educational purposes only. No investment advice or buy/sell recommendations are provided."}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex items-center justify-between pt-2 border-t">
-            <span className="text-sm text-muted-foreground">
-              Source: {article.source}
-            </span>
-            <Button variant="outline" size="sm" onClick={onClose}>
-              {isHindi ? "बंद करें" : "Close"}
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
   );
 }
 
@@ -440,8 +354,6 @@ export default function LiveNews() {
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [newsLang, setNewsLang] = useState<"en" | "hi">("en");
-  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshCountdown, setRefreshCountdown] = useState(60);
 
   const { data, isLoading, error, refetch, isFetching } = useQuery<{ news: NewsArticle[] }>({
@@ -469,16 +381,6 @@ export default function LiveNews() {
   const restNews = filteredNews.slice(1);
 
   const isHindi = language === "hi";
-
-  const handleNewsClick = (article: NewsArticle) => {
-    setSelectedArticle(article);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedArticle(null);
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -624,8 +526,7 @@ export default function LiveNews() {
                 <div className="lg:col-span-2">
                   {featuredNews && (
                     <FeaturedNewsCard 
-                      article={featuredNews} 
-                      onClick={() => handleNewsClick(featuredNews)}
+                      article={featuredNews}
                     />
                   )}
                   
@@ -642,7 +543,6 @@ export default function LiveNews() {
                           <NewsListItem
                             key={article.id}
                             article={article}
-                            onClick={() => handleNewsClick(article)}
                             index={index}
                           />
                         ))}
@@ -664,7 +564,6 @@ export default function LiveNews() {
                           <NewsListItem
                             key={article.id}
                             article={article}
-                            onClick={() => handleNewsClick(article)}
                             index={index}
                           />
                         ))}
@@ -757,13 +656,6 @@ export default function LiveNews() {
           </CardContent>
         </Card>
       </div>
-
-      <NewsDetailModal 
-        article={selectedArticle}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        isHindi={isHindi}
-      />
     </div>
   );
 }
