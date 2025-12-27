@@ -11,7 +11,7 @@ import {
   BookOpen 
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { blogPosts } from "@/content/blog-data";
+import { blogPosts, blogCategories } from "@/content/blog-data";
 import { SEOHead } from "@/components/SEOHead";
 
 export default function BlogPost() {
@@ -63,6 +63,9 @@ export default function BlogPost() {
 
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <Badge variant="outline">Level {post.relatedLevel}</Badge>
+              <Badge variant="secondary">
+                {blogCategories.find(c => c.id === post.category)?.hindiName}
+              </Badge>
               <span className="text-sm text-muted-foreground flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 {new Date(post.publishedDate).toLocaleDateString("hi-IN", {
