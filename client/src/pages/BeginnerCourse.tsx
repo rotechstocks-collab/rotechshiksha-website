@@ -16,6 +16,8 @@ import {
 import { SEOHead } from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
+import { CharacterIntro } from "@/components/Characters";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Lesson {
   id: string;
@@ -85,6 +87,8 @@ const modules: Module[] = [
 ];
 
 export default function BeginnerCourse() {
+  const { language } = useLanguage();
+  const isHindi = language === "hi";
   const totalLessons = modules.reduce((acc, m) => acc + m.lessons.length, 0);
   const totalDuration = modules.reduce((acc, m) => {
     return acc + m.lessons.reduce((a, l) => a + parseInt(l.duration), 0);
@@ -133,11 +137,27 @@ export default function BeginnerCourse() {
               <Link href="/beginner-course/paise-invest-kyu" data-testid="link-start-course">
                 <Button size="lg" className="gap-2" data-testid="button-start-course">
                   <Play className="w-4 h-4" />
-                  Start Course – Lesson 1
+                  {isHindi ? "Course शुरू करें – Lesson 1" : "Start Course – Lesson 1"}
                 </Button>
               </Link>
             </div>
           </FadeInUp>
+        </div>
+      </section>
+
+      <section className="py-8 lg:py-10 bg-muted/30">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-6">
+            <h2 className="text-lg font-bold text-foreground mb-1">
+              {isHindi ? "आपके Learning Companions" : "Meet Your Learning Companions"}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {isHindi 
+                ? "इनके साथ step-by-step सीखें – Priya समझाएगी, Rohit के doubts शायद आपके भी हों!"
+                : "Learn step-by-step with them – Priya explains, Rohit asks questions you might also have!"}
+            </p>
+          </div>
+          <CharacterIntro isHindi={isHindi} />
         </div>
       </section>
 
