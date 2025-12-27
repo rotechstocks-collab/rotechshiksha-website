@@ -39,10 +39,10 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "priya",
         content: [
-          "Rohit, main Priya hun. Main tujhe stock market basics sikhaungi – par ekdum simple Hindi me. Koi mushkil words nahi, koi jargon nahi.",
+          "Rohit, main Priya hun. Chal saath me stock market basics samajhte hain – ekdum simple Hindi me. Koi mushkil words nahi, koi jargon nahi.",
           "Pehle baat – tu akela nahi hai. Bahut log aise hi confuse hote hain. Aur ye confusion isliye hoti hai kyunki sahi jagah se seekha nahi.",
           "Doosri baat – stock market koi jua nahi hai. Aur na hi ye sirf ameer logon ke liye hai. Koi bhi seekh sakta hai – bas patience chahiye aur sahi guidance.",
-          "Main tujhe step by step le jaungi. Pehle basics, phir thoda deep, phir practical. Par jaldi mat karna – seekhne me time lo.",
+          "Hum saath me step by step chalenge. Pehle basics, phir thoda deep, phir practical. Par jaldi mat kar – seekhne me time le.",
         ],
       },
       {
@@ -123,7 +123,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, sach me thoda confidence aaya. Lagta hai main bhi seekh sakta hun.",
+          "Priya, sach me thoda confidence aaya. Lagta hai main bhi seekh sakta hun.",
           "Chalo shuru karte hain. Agle lesson me kya hai?",
         ],
       },
@@ -178,7 +178,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Priya didi, main ek cheez se confuse hun. Main har mahine apni salary me se kuch paisa bacha leta hun. Bank me daal deta hun. Par sab log kehte hain 'invest karo, invest karo'. Kya bank me rakhna kaafi nahi hai?",
+          "Priya, main ek cheez se confuse hun. Main har mahine apni salary me se kuch paisa bacha leta hun. Bank me daal deta hun. Par sab log kehte hain 'invest karo, invest karo'. Kya bank me rakhna kaafi nahi hai?",
         ],
       },
       {
@@ -214,7 +214,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "priya",
         content: [
-          "Rohit, is cheez ko log 'mehangai' ya 'inflation' kehte hain. Sunne me boring lagta hai, par samajhna bahut zaroori hai. Main tujhe bilkul simple tarike se samjhati hun.",
+          "Rohit, is cheez ko log 'mehangai' ya 'inflation' kehte hain. Sunne me boring lagta hai, par samajhna bahut zaroori hai. Chal simple tarike se samajhte hain.",
         ],
       },
       {
@@ -272,7 +272,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, mujhe laga tha ye sab bahut complicated hoga. Par ab thoda clear ho raha hai. Aage bhi aise hi simple samjhaana!",
+          "Priya, mujhe laga tha ye sab bahut complicated hoga. Par ab thoda clear ho raha hai. Aage bhi aise hi simple samjhaana!",
         ],
       },
       {
@@ -334,7 +334,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, stock market stock market sunne me aata hai news me. Par mujhe actually samajh nahi aata ki ye hai kya. Koi building hai? Website hai? Ya kuch aur?",
+          "Priya, stock market stock market sunne me aata hai news me. Par mujhe actually samajh nahi aata ki ye hai kya. Koi building hai? Website hai? Ya kuch aur?",
         ],
       },
       {
@@ -418,7 +418,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Ek doubt hai didi. Log kehte hain stock market me paisa doob jaata hai. Toh kya ye safe nahi hai?",
+          "Ek doubt hai Priya. Log kehte hain stock market me paisa doob jaata hai. Toh kya ye safe nahi hai?",
         ],
       },
       {
@@ -437,7 +437,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Samajh gaya didi. Toh stock market khud bura nahi hai – bas bina samjhe use karna risky hai.",
+          "Samajh gaya. Toh stock market khud bura nahi hai – bas bina samjhe use karna risky hai.",
         ],
       },
       {
@@ -499,7 +499,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, ye company exactly kya hoti hai? Matlab Reliance company hai, Tata company hai – par company ka matlab kya hai?",
+          "Priya, ye company exactly kya hoti hai? Matlab Reliance company hai, Tata company hai – par company ka matlab kya hai?",
         ],
       },
       {
@@ -575,7 +575,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Ek doubt hai didi. Agar main share khareedte hun aur company doob gayi – toh kya mujhe uska karza bhi chukana padega?",
+          "Ek doubt hai Priya. Agar main share khareedte hun aur company doob gayi – toh kya mujhe uska karza bhi chukana padega?",
         ],
       },
       {
@@ -605,7 +605,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Samajh gaya didi! Company matlab business, share matlab uska chhota hissa, aur ownership matlab main bhi us business ka thoda maalik hun.",
+          "Samajh gaya! Company matlab business, share matlab uska chhota hissa, aur ownership matlab main bhi us business ka thoda maalik hun.",
         ],
       },
       {
@@ -667,7 +667,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, ye Sensex aur Nifty sunne me lagta hai koi secret code hai. Kya hai ye actually?",
+          "Priya, ye Sensex aur Nifty sunne me lagta hai koi secret code hai. Kya hai ye actually?",
         ],
       },
       {
@@ -745,7 +745,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Samajh gaya didi! Par mujhe personally Sensex/Nifty se kya lena dena? Main toh individual shares khareedta hun na?",
+          "Samajh gaya! Par mujhe personally Sensex/Nifty se kya lena dena? Main toh individual shares khareedta hun na?",
         ],
       },
       {
@@ -818,7 +818,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, Demat Account ka naam toh suna hai. Par ye exactly kya hai? Kya ye bank account jaisa kuch hai?",
+          "Priya, Demat Account ka naam toh suna hai. Par ye exactly kya hai? Kya ye bank account jaisa kuch hai?",
         ],
       },
       {
@@ -963,7 +963,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, Zerodha, Groww, Upstox – itne names hain. Kya farak hai inme? Koi bhi choose kar lun?",
+          "Priya, Zerodha, Groww, Upstox – itne names hain. Kya farak hai inme? Koi bhi choose kar lun?",
         ],
       },
       {
@@ -1076,7 +1076,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, account toh ban gaya. Ab app me jaake kya karun? Bahut confusing lagta hai!",
+          "Priya, account toh ban gaya. Ab app me jaake kya karun? Bahut confusing lagta hai!",
         ],
       },
       {
@@ -1084,7 +1084,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "priya",
         content: [
-          "Rohit, relax. Main tujhe step by step bataati hun. Ek baar kar lega toh doosri baar bahut easy lagega.",
+          "Rohit, relax. Chal step by step dekhte hain. Ek baar kar lega toh doosri baar bahut easy lagega.",
         ],
       },
       {
@@ -1217,7 +1217,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, mujhe darr lagta hai ki main koi badi galti kar dunga aur paisa doob jayega.",
+          "Priya, mujhe darr lagta hai ki main koi badi galti kar dunga aur paisa doob jayega.",
         ],
       },
       {
@@ -1351,7 +1351,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, itni saari companies hain. Kaise pata chalega konsi acchi hai?",
+          "Priya, itni saari companies hain. Kaise pata chalega konsi acchi hai?",
         ],
       },
       {
@@ -1483,7 +1483,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, portfolio ka naam toh suna hai. Par exactly matlab kya hai?",
+          "Priya, portfolio ka naam toh suna hai. Par exactly matlab kya hai?",
         ],
       },
       {
@@ -1596,7 +1596,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, risk risk sunke darr lagta hai. Kaise samjhun ki kitna risk lena chahiye?",
+          "Priya, risk risk sunke darr lagta hai. Kaise samjhun ki kitna risk lena chahiye?",
         ],
       },
       {
@@ -1708,7 +1708,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, finally last lesson! Kya main ab invest karne ke liye ready hun?",
+          "Priya, finally last lesson! Kya main ab invest karne ke liye ready hun?",
         ],
       },
       {
@@ -1796,7 +1796,7 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Thank you didi! Mujhe lagta tha stock market mujh jaise logon ke liye nahi hai. Par ab confident feel ho raha hai.",
+          "Thank you Priya! Mujhe lagta tha stock market mujh jaise logon ke liye nahi hai. Par ab confident feel ho raha hai.",
           "Chhote se shuru karunga aur dheere dheere seekhta rahunga. Ye journey toh abhi shuru hui hai!",
         ],
       },

@@ -33,11 +33,11 @@ Rohit confused ho gaya. "Ye stock market toh bahut risky lagta hai. Kya main bhi
     visual: "Priya appears on screen – calm, professional. Clean background. Friendly smile. Simple text card with her name.",
     voiceover: `Rohit ki tarah bahut log confuse hote hain. Aur ye confusion bilkul normal hai.
 
-Main Priya hun. Aur main aapko bataungi ki stock market actually itna mushkil nahi hai jitna lagta hai.
+Main Priya hun. Chal saath me dekhte hain ki stock market actually itna mushkil nahi hai jitna lagta hai.
 
 Bas sahi jagah se seekhna chahiye. Step by step. Simple Hindi me.
 
-Aaj hum pehla step lenge – bilkul basics se shuru karenge.`,
+Aaj hum saath me pehla step lenge – bilkul basics se shuru karte hain.`,
     onScreenText: "Step-by-step. Simple Hindi me.",
   },
   {
@@ -127,7 +127,7 @@ Kya MILEGA:
 - Confidence – ki tum bhi seekh sakte ho
 - Foundation – jo zindagi bhar kaam aayega
 
-Hum tujhe samajhdar banayenge – taaki tu KHUD decision le sake.`,
+Is journey me tu samajhdar banega – taaki tu KHUD decision le sake.`,
     onScreenText: "No tips. No shortcuts. Sirf knowledge.",
   },
   {
@@ -156,7 +156,7 @@ export const storyboardSummary = {
   totalScenes: 8,
   style: "Clean, minimal animation with Hindi text overlays",
   colorPalette: "Professional fintech – Blues, greens, white backgrounds",
-  voiceoverTone: "Calm, friendly, reassuring – like a helpful elder sibling",
+  voiceoverTone: "Calm, friendly, reassuring – like a knowledgeable peer/friend",
   musicStyle: "Soft, uplifting background music – not distracting",
   keyVisualElements: [
     "Rohit character – relatable young professional",
