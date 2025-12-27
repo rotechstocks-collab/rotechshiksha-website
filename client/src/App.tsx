@@ -32,6 +32,7 @@ import EconomicCalendar from "@/pages/EconomicCalendar";
 import PaperTrade from "@/pages/PaperTrade";
 import EducationalVideos from "@/pages/EducationalVideos";
 import LoansAndCreditCards from "@/pages/LoansAndCreditCards";
+import LiveMarket from "@/pages/LiveMarket";
 import Level1Lesson from "@/pages/lessons/Level1Lesson";
 import Level2Lesson from "@/pages/lessons/Level2Lesson";
 import Level3Lesson from "@/pages/lessons/Level3Lesson";
@@ -69,6 +70,7 @@ function Router() {
       <Route path="/paper-trade" component={PaperTrade} />
       <Route path="/educational-videos" component={EducationalVideos} />
       <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
+      <Route path="/live-market" component={LiveMarket} />
       <Route path="/calculators" component={CalculatorHub} />
       <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
       <Route path="/calculators/:id" component={GenericCalculator} />
