@@ -357,14 +357,10 @@ function NewsCard({
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
+            <div className="absolute bottom-2 left-2">
               <Badge variant="secondary" className="bg-black/60 text-white text-xs">
                 {article.source}
               </Badge>
-              <span className="text-white/90 text-xs flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {article.timeAgoIST}
-              </span>
             </div>
           </div>
         </div>
