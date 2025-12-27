@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
 import {
@@ -13,17 +12,18 @@ import {
   FileText,
   Lock,
   Play,
-  Download,
   ChevronRight,
   Clock,
-  CheckCircle,
   TrendingUp,
   Zap,
   Bot,
+  GraduationCap,
+  Target,
+  Shield,
 } from "lucide-react";
-import { BookLearning, GrowthChart } from "@/components/Illustrations";
-import { PortfolioCard, PhoneWithChart } from "@/components/SmallcaseIllustrations";
-import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem, HoverLift } from "@/components/AnimationWrappers";
+import { LottieAnimation } from "@/components/LottieAnimation";
+import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
+import { SEOHead } from "@/components/SEOHead";
 
 interface Topic {
   id: string;
@@ -214,17 +214,248 @@ const courseData: Record<string, CourseData> = {
   },
 };
 
-const colorClasses: Record<string, { bg: string; text: string }> = {
-  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400" },
-  blue: { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400" },
-  purple: { bg: "bg-purple-500/10", text: "text-purple-600 dark:text-purple-400" },
-  amber: { bg: "bg-amber-500/10", text: "text-amber-600 dark:text-amber-400" },
+const colorClasses: Record<string, { bg: string; text: string; border: string; gradient: string }> = {
+  emerald: { 
+    bg: "bg-emerald-50 dark:bg-emerald-950/30", 
+    text: "text-emerald-600 dark:text-emerald-400",
+    border: "border-emerald-200 dark:border-emerald-800",
+    gradient: "from-emerald-500 to-teal-600"
+  },
+  blue: { 
+    bg: "bg-blue-50 dark:bg-blue-950/30", 
+    text: "text-blue-600 dark:text-blue-400",
+    border: "border-blue-200 dark:border-blue-800",
+    gradient: "from-blue-500 to-indigo-600"
+  },
+  purple: { 
+    bg: "bg-purple-50 dark:bg-purple-950/30", 
+    text: "text-purple-600 dark:text-purple-400",
+    border: "border-purple-200 dark:border-purple-800",
+    gradient: "from-purple-500 to-violet-600"
+  },
+  amber: { 
+    bg: "bg-amber-50 dark:bg-amber-950/30", 
+    text: "text-amber-600 dark:text-amber-400",
+    border: "border-amber-200 dark:border-amber-800",
+    gradient: "from-amber-500 to-orange-600"
+  },
 };
 
-export default function Courses() {
-  const [, params] = useRoute("/courses/:level");
+const levelCourses = [
+  {
+    level: 1,
+    title: "Stock Market ki Shuruaat",
+    description: "Bilkul shuru se seekho - shares, market, aur investment ki basic samajh",
+    lottieUrl: "https://assets2.lottiefiles.com/packages/lf20_kuuzhuxq.json",
+    fallbackIcon: <BookOpen className="w-10 h-10" />,
+    color: "emerald",
+    route: "/level-1",
+    lessons: 5,
+  },
+  {
+    level: 2,
+    title: "Market Basics aur Tools",
+    description: "Demat account, broker selection, aur trading tools ki jaankari",
+    lottieUrl: "https://assets3.lottiefiles.com/packages/lf20_swnrn2oy.json",
+    fallbackIcon: <TrendingUp className="w-10 h-10" />,
+    color: "blue",
+    route: "/learn/level-2",
+    lessons: 5,
+  },
+  {
+    level: 3,
+    title: "Risk aur Planning",
+    description: "Risk management aur investment planning ki samajh",
+    lottieUrl: "https://assets9.lottiefiles.com/packages/lf20_tljjahng.json",
+    fallbackIcon: <Shield className="w-10 h-10" />,
+    color: "purple",
+    route: "/learn/level-3",
+    lessons: 5,
+  },
+  {
+    level: 4,
+    title: "Chart Reading Basics",
+    description: "Price charts aur candlesticks ko padhna seekho",
+    lottieUrl: "https://assets4.lottiefiles.com/packages/lf20_qp1q7mct.json",
+    fallbackIcon: <Target className="w-10 h-10" />,
+    color: "amber",
+    route: "/learn/level-4",
+    lessons: 5,
+  },
+  {
+    level: 5,
+    title: "Technical Analysis",
+    description: "Indicators aur patterns ki madad se market samjho",
+    lottieUrl: "https://assets5.lottiefiles.com/packages/lf20_kxsd2ytq.json",
+    fallbackIcon: <Zap className="w-10 h-10" />,
+    color: "emerald",
+    route: "/learn/level-5",
+    lessons: 5,
+  },
+  {
+    level: 6,
+    title: "Fundamental Analysis",
+    description: "Company ke financials aur business ko samjho",
+    lottieUrl: "https://assets7.lottiefiles.com/packages/lf20_yzoqyyqf.json",
+    fallbackIcon: <GraduationCap className="w-10 h-10" />,
+    color: "blue",
+    route: "/learn/level-6",
+    lessons: 5,
+  },
+  {
+    level: 7,
+    title: "Portfolio Building",
+    description: "Apna diversified portfolio banana seekho",
+    lottieUrl: "https://assets1.lottiefiles.com/packages/lf20_sz9mnlk7.json",
+    fallbackIcon: <BookOpen className="w-10 h-10" />,
+    color: "purple",
+    route: "/learn/level-7",
+    lessons: 5,
+  },
+  {
+    level: 8,
+    title: "Advanced Strategies",
+    description: "Options, derivatives aur advanced concepts",
+    lottieUrl: "https://assets2.lottiefiles.com/packages/lf20_fcfjwiyb.json",
+    fallbackIcon: <Bot className="w-10 h-10" />,
+    color: "amber",
+    route: "/learn/level-8",
+    lessons: 5,
+  },
+];
+
+function CoursesLanding() {
+  const progressValue = 0;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Courses - Rotech Shiksha | Stock Market Education"
+        description="Free stock market courses in Hindi. Learn from basics to advanced level with our structured learning path."
+        keywords="stock market course hindi, share market course, learn trading india"
+      />
+
+      <section className="py-10 lg:py-14 bg-gradient-to-b from-emerald-50/50 to-background dark:from-emerald-950/10 dark:to-background border-b">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <FadeInUp>
+            <Badge variant="outline" className="mb-4 text-emerald-600 border-emerald-300 dark:text-emerald-400 dark:border-emerald-700">
+              Free Learning Path
+            </Badge>
+            
+            <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-3">
+              Stock Market Seekhein Step by Step
+            </h1>
+            
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              8 levels mein complete stock market education - bilkul beginners ke liye banayi gayi hai
+            </p>
+
+            <div className="max-w-md mx-auto">
+              <div className="flex items-center justify-between text-sm mb-2">
+                <span className="text-muted-foreground">Your learning progress</span>
+                <span className="font-medium text-emerald-600 dark:text-emerald-400">{progressValue}% completed</span>
+              </div>
+              <div className="relative">
+                <Progress value={progressValue} className="h-3" />
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-transparent rounded-full"
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                />
+              </div>
+            </div>
+          </FadeInUp>
+        </div>
+      </section>
+
+      <section className="py-10 lg:py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <StaggerContainer>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-6">
+              {levelCourses.map((course) => {
+                const colors = colorClasses[course.color];
+                return (
+                  <StaggerItem key={course.level}>
+                    <Link href={course.route} data-testid={`link-level-${course.level}`}>
+                      <Card 
+                        className={`h-full hover-elevate cursor-pointer transition-all duration-300 border-2 ${colors.border} bg-white dark:bg-card`}
+                        data-testid={`card-level-${course.level}`}
+                      >
+                        <CardHeader className="pb-3">
+                          <div className={`w-20 h-20 mx-auto mb-3 rounded-xl ${colors.bg} flex items-center justify-center overflow-visible`}>
+                            <LottieAnimation
+                              src={course.lottieUrl}
+                              fallbackIcon={<div className={colors.text}>{course.fallbackIcon}</div>}
+                              className="w-16 h-16"
+                              speed={0.4}
+                            />
+                          </div>
+                          
+                          <div className="text-center">
+                            <Badge 
+                              variant="secondary" 
+                              className={`mb-2 ${colors.bg} ${colors.text} border-0`}
+                            >
+                              Level {course.level}
+                            </Badge>
+                            <CardTitle className="text-lg leading-snug">
+                              {course.title}
+                            </CardTitle>
+                          </div>
+                        </CardHeader>
+                        
+                        <CardContent className="pt-0">
+                          <CardDescription className="text-center text-sm mb-4 min-h-[40px]">
+                            {course.description}
+                          </CardDescription>
+                          
+                          <div className="text-center text-xs text-muted-foreground mb-4">
+                            <Clock className="w-3 h-3 inline mr-1" />
+                            {course.lessons} lessons
+                          </div>
+                          
+                          <Button 
+                            className="w-full min-h-[48px] text-base font-medium gap-2"
+                            data-testid={`button-start-level-${course.level}`}
+                          >
+                            <Play className="w-4 h-4" />
+                            Start Learning
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </StaggerItem>
+                );
+              })}
+            </div>
+          </StaggerContainer>
+        </div>
+      </section>
+
+      <section className="py-8 border-t bg-muted/30">
+        <div className="max-w-4xl mx-auto px-4">
+          <FadeInUp>
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
+              <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm text-amber-800 dark:text-amber-200 font-medium mb-1">
+                  Education Platform Notice
+                </p>
+                <p className="text-sm text-amber-700 dark:text-amber-300/80">
+                  Rotech Shiksha is an education platform. We do not provide trading tips or investment advice.
+                  All content is for educational purposes only.
+                </p>
+              </div>
+            </div>
+          </FadeInUp>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function CourseDetail({ level }: { level: string }) {
   const { isAuthenticated, setShowAuthPopup, setPendingAction } = useAuth();
-  const level = params?.level || "basic";
   const course = courseData[level] || courseData.basic;
   const colors = colorClasses[course.color];
 
@@ -235,174 +466,8 @@ export default function Courses() {
     }
   };
 
-  if (!params?.level) {
-    return (
-      <div className="min-h-screen pt-28">
-        {/* Featured Story-Based Lessons */}
-        <section className="py-12 bg-gradient-to-br from-emerald-50 via-blue-50 to-violet-50 dark:from-emerald-950/30 dark:via-blue-950/30 dark:to-violet-950/30">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            <FadeInUp>
-              <div className="text-center mb-8">
-                <Badge className="mb-3 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-0">
-                  Story-Based Learning
-                </Badge>
-                <h2 className="text-3xl font-bold mb-2">Rohit aur Priya ke Saath Seekhein</h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Simple Hindi stories ke through stock market ki basics samjhein. Aasaan bhasha, clear concepts.
-                </p>
-              </div>
-            </FadeInUp>
-
-            <StaggerContainer className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {/* Level 1 */}
-              <StaggerItem>
-                <Link href="/learn/level-1" data-testid="link-featured-level-1">
-                  <Card className="h-full hover-elevate cursor-pointer border-2 border-emerald-200 dark:border-emerald-800 bg-white dark:bg-card">
-                    <CardHeader>
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-lg">
-                          1
-                        </div>
-                        <div>
-                          <Badge variant="secondary" className="text-xs">Free</Badge>
-                          <span className="text-xs text-muted-foreground ml-2">5 min</span>
-                        </div>
-                      </div>
-                      <CardTitle className="text-xl">Stock Market ki Shuruaat</CardTitle>
-                      <CardDescription>
-                        Dar se samajh tak – Stock Market kya hai, Share kya hai, Risk ka real meaning
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <BookOpen className="w-4 h-4" />
-                          <span>Story + Concepts</span>
-                        </div>
-                        <Button size="sm" data-testid="button-start-level-1">
-                          Shuru Karein
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </StaggerItem>
-
-              {/* Level 2 */}
-              <StaggerItem>
-                <Link href="/learn/level-2" data-testid="link-featured-level-2">
-                  <Card className="h-full hover-elevate cursor-pointer border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-card">
-                    <CardHeader>
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">
-                          2
-                        </div>
-                        <div>
-                          <Badge variant="secondary" className="text-xs">Free</Badge>
-                          <span className="text-xs text-muted-foreground ml-2">7 min</span>
-                        </div>
-                      </div>
-                      <CardTitle className="text-xl">Stock, Index aur IPO</CardTitle>
-                      <CardDescription>
-                        Market ki asli tasveer – Nifty, Sensex, IPO basics aur market news ka matlab
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <TrendingUp className="w-4 h-4" />
-                          <span>Story + Concepts</span>
-                        </div>
-                        <Button size="sm" data-testid="button-start-level-2">
-                          Shuru Karein
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </StaggerItem>
-            </StaggerContainer>
-
-            {/* More levels coming */}
-            <div className="text-center mt-6">
-              <p className="text-sm text-muted-foreground">
-                Level 3-8 jaldi aa rahe hain
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Traditional Course Structure */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-center lg:text-left space-y-4"
-              >
-                <h2 className="text-3xl font-bold text-foreground">Advanced Topics</h2>
-                <p className="text-muted-foreground max-w-xl">
-                  In-depth courses for those who want to go beyond basics
-                </p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="hidden lg:flex justify-center relative"
-              >
-                <GrowthChart size={200} />
-                <motion.div
-                  className="absolute -top-4 -right-8"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 2.5, repeat: Infinity }}
-                >
-                  <BookLearning size={100} />
-                </motion.div>
-              </motion.div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Object.values(courseData).map((c, index) => {
-                const cl = colorClasses[c.color];
-                const totalTopics = c.modules.reduce((acc, m) => acc + m.topics.length, 0);
-                return (
-                  <Link key={c.id} href={`/courses/${c.id}`} data-testid={`link-course-${c.id}`}>
-                    <Card className="h-full hover-elevate cursor-pointer" data-testid={`card-course-list-${c.id}`}>
-                      <CardHeader>
-                        <div className={`w-12 h-12 rounded-lg ${cl.bg} ${cl.text} flex items-center justify-center mb-4`}>
-                          {c.icon}
-                        </div>
-                        <CardTitle>{c.title}</CardTitle>
-                        <CardDescription>{c.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                          <span>{c.modules.length} Modules</span>
-                          <span>{totalTopics} Topics</span>
-                        </div>
-                        <Button variant="ghost" className="w-full mt-4 justify-between">
-                          View Course
-                          <ChevronRight className="w-4 h-4" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen pt-28">
+    <div className="min-h-screen bg-background pt-8">
       <section className="py-8 bg-card/50 border-b">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center gap-4">
@@ -525,6 +590,24 @@ export default function Courses() {
           </div>
         </div>
       </section>
+
+      <section className="py-6 border-t">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            Rotech Shiksha is an education platform. We do not provide trading tips or investment advice.
+          </p>
+        </div>
+      </section>
     </div>
   );
+}
+
+export default function Courses() {
+  const [, params] = useRoute("/courses/:level");
+  
+  if (params?.level) {
+    return <CourseDetail level={params.level} />;
+  }
+  
+  return <CoursesLanding />;
 }
