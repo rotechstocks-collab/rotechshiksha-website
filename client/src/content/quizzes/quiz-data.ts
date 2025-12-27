@@ -441,3 +441,143 @@ export const level6Quiz: QuizData = {
   nextLevelPath: "/learn/level-7",
   nextLevelText: "➡ Go to Level 7",
 };
+
+export const level7Quiz: QuizData = {
+  levelId: 7,
+  topic: "Trader Psychology & Emotional Control",
+  questions: [
+    {
+      id: 1,
+      question: "Trading/investing me sabse bada challenge kya hota hai?",
+      options: [
+        "Strategy",
+        "Capital",
+        "Emotions control karna",
+        "App selection",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 2,
+      question: "Market girne par beginner ka common reaction kya hota hai?",
+      options: [
+        "Shaant rehna",
+        "Panic me galat decision lena",
+        "Plan follow karna",
+        "Wait karna",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 3,
+      question: "Greed ka effect kya hota hai?",
+      options: [
+        "Discipline badhta hai",
+        "Overtrading hoti hai",
+        "Risk kam hota hai",
+        "Loss nahi hota",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 4,
+      question: "Priya Rohit ko emotions control ke liye kya bolti hai?",
+      options: [
+        "Market se ladho",
+        "Apne rules follow karo",
+        "Tips lo",
+        "Zyada trade karo",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 5,
+      question: "Successful investor/trader ka secret kya hota hai?",
+      options: [
+        "Perfect prediction",
+        "Emotional discipline",
+        "Fast action",
+        "Luck",
+      ],
+      correctIndex: 1,
+    },
+  ],
+  successMessage: {
+    title: "🎉 Excellent Control!",
+    rohitText: "Ab Rohit market ke ups & downs se ghabrata nahi.",
+    priyaQuote: "Market ko jeetne se pehle khud ko jeetna padta hai.",
+  },
+  retryMessage: "Koi baat nahi. Rohit ne bhi yeh stage cross karne me time liya. Thoda revise karke dobara try karo.",
+  nextLevelPath: "/learn/level-8",
+  nextLevelText: "➡ Go to Level 8",
+};
+
+export const level8Quiz: QuizData = {
+  levelId: 8,
+  topic: "Long-Term Mindset & Complete Journey",
+  questions: [
+    {
+      id: 1,
+      question: "Long-term investing ka sabse bada fayda kya hota hai?",
+      options: [
+        "Daily profit",
+        "Compounding ka power",
+        "Zero risk",
+        "Guaranteed return",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 2,
+      question: "Compounding ka matlab kya hota hai?",
+      options: [
+        "Fixed income",
+        "Profit par profit milna time ke saath",
+        "Fast trading",
+        "Bonus scheme",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 3,
+      question: "Rohit Level 8 me kya realize karta hai?",
+      options: [
+        "Market gambling hai",
+        "Discipline + patience se wealth banti hai",
+        "Tips zaroori hoti hain",
+        "Risk lena galat hai",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 4,
+      question: "Priya ka final message kya hota hai?",
+      options: [
+        "Jaldi rich bano",
+        "Process follow karo aur patient raho",
+        "Market chhod do",
+        "Sirf experts invest karein",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 5,
+      question: "Is poori journey ka final lesson kya hai?",
+      options: [
+        "Market predict karo",
+        "Emotion aur discipline ke saath long-term socho",
+        "Roz trade karo",
+        "Risk ignore karo",
+      ],
+      correctIndex: 1,
+    },
+  ],
+  successMessage: {
+    title: "🎉 Congratulations! 🎉",
+    rohitText: "Rohit ki learning journey yahin khatam hoti hai, lekin investing ki journey ab shuru hoti hai.",
+    priyaQuote: "Seekhna band mat karna, aur hamesha discipline ke saath aage badhte rehna.",
+  },
+  retryMessage: "Koi baat nahi. Rohit ne bhi yeh stage cross karne me time liya. Thoda revise karke dobara try karo.",
+  nextLevelPath: "/calculators",
+  nextLevelText: "➡ Go to Practice Zone / Paper Trading / Certificate Page",
+};

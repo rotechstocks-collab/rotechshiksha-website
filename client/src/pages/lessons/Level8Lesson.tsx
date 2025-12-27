@@ -26,6 +26,8 @@ import { level8Bilingual } from "@/content/lessons/level8-bilingual";
 import { useLessonLanguage } from "@/context/LessonLanguageContext";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { LessonScene } from "@/content/lessons/types";
+import LessonQuiz from "@/components/LessonQuiz";
+import { level8Quiz } from "@/content/quizzes/quiz-data";
 
 export default function Level8Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
@@ -224,7 +226,14 @@ export default function Level8Lesson() {
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
 
+          {/* Quiz Section */}
           <FadeInUp delay={0.3}>
+            <div className="mt-10">
+              <LessonQuiz quizData={level8Quiz} />
+            </div>
+          </FadeInUp>
+
+          <FadeInUp delay={0.4}>
             <Card className="mt-10 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-emerald-200 dark:border-emerald-800">
               <CardContent className="py-6 text-center">
                 <Award className="w-10 h-10 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
