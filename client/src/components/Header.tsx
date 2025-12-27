@@ -29,7 +29,8 @@ import {
   CreditCard,
   LineChart,
   TrendingUp,
-  BarChart3
+  BarChart3,
+  Video
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
@@ -54,9 +55,10 @@ interface NavItem {
 
 const toolsNavItems: NavChild[] = [
   { labelKey: "nav.calculators", href: "/calculators", icon: Calculator, description: "SIP, CAGR, Brokerage" },
-  { labelKey: "nav.paperTrade", href: "/paper-trade", icon: LineChart, description: "Practice trading" },
-  { labelKey: "nav.brokers", href: "/compare-brokers", icon: Scale, description: "Compare brokers" },
-  { labelKey: "nav.economicCalendar", href: "/economic-calendar", icon: Calendar, description: "Market events" },
+  { labelKey: "nav.educationalVideos", href: "/educational-videos", icon: Video, description: "Seekhne ke Videos" },
+  { labelKey: "nav.paperTrade", href: "/paper-trade", icon: LineChart, description: "Practice Trading karo" },
+  { labelKey: "nav.brokers", href: "/compare-brokers", icon: Scale, description: "Brokers ki Comparison" },
+  { labelKey: "nav.economicCalendar", href: "/economic-calendar", icon: Calendar, description: "Market Events" },
 ];
 
 export function Header() {

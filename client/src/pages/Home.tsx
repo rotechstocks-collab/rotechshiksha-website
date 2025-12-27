@@ -243,12 +243,10 @@ export default function Home() {
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center">
-              {isHindi ? "Rotech Shiksha में आपका स्वागत है!" : "Welcome to Rotech Shiksha!"}
+              Rotech Shiksha mein Swagat Hai!
             </DialogTitle>
             <DialogDescription className="text-center pt-2">
-              {isHindi 
-                ? "Stock market seekho – simple Hindi mein, step by step."
-                : "Learn stock market – in simple Hindi, step by step."}
+              Stock market seekho – Simple Hindi mein, Step by Step.
             </DialogDescription>
           </DialogHeader>
           
@@ -258,8 +256,8 @@ export default function Home() {
                 <CharacterAvatar character="priya" size="sm" />
               </div>
               <div>
-                <p className="font-medium text-foreground">{isHindi ? "प्रिया से मिलो" : "Meet Priya"}</p>
-                <p className="text-sm text-muted-foreground">{isHindi ? "आपकी मार्गदर्शक" : "Your guide"}</p>
+                <p className="font-medium text-foreground">Priya se Milo</p>
+                <p className="text-sm text-muted-foreground">Tumhari Guide (Friend)</p>
               </div>
             </div>
             
@@ -268,23 +266,23 @@ export default function Home() {
                 <CharacterAvatar character="rohit" size="sm" />
               </div>
               <div>
-                <p className="font-medium text-foreground">{isHindi ? "रोहित से मिलो" : "Meet Rohit"}</p>
-                <p className="text-sm text-muted-foreground">{isHindi ? "आपके साथ सीखने वाला" : "Learning with you"}</p>
+                <p className="font-medium text-foreground">Rohit se Milo</p>
+                <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala (Friend)</p>
               </div>
             </div>
             
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                {isHindi ? "100% Free course – कोई hidden charges नहीं" : "100% Free course – no hidden charges"}
+                100% FREE course – Koi hidden charges nahi
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                {isHindi ? "Simple Hindi में समझाया गया" : "Explained in simple Hindi"}
+                Simple Hindi mein samjhaya gaya
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                {isHindi ? "Story-based learning – boring नहीं" : "Story-based learning – not boring"}
+                Story-based learning – Boring nahi hai
               </li>
             </ul>
           </div>
@@ -293,11 +291,11 @@ export default function Home() {
             <Link href="/beginner-course">
               <Button className="w-full gap-2" size="lg" onClick={handleCloseWelcome} data-testid="button-welcome-start-course">
                 <Play className="w-4 h-4" />
-                {isHindi ? "Free Course शुरू करें" : "Start Free Course"}
+                FREE Course Shuru Karo
               </Button>
             </Link>
             <Button variant="ghost" onClick={handleCloseWelcome} data-testid="button-welcome-explore">
-              {isHindi ? "पहले देखना चाहता हूं" : "Let me explore first"}
+              Pehle Website Explore Karunga
             </Button>
           </div>
         </DialogContent>
@@ -318,7 +316,7 @@ export default function Home() {
           >
             <Badge className="bg-primary/10 text-primary border-primary/20 mb-4 text-sm px-4 py-1">
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-              {isHindi ? "100% Free • Hindi में • Beginners के लिए" : "100% Free • In Hindi • For Beginners"}
+              100% FREE • Hindi Mein • Beginners Ke Liye
             </Badge>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 tracking-tight">
@@ -328,22 +326,20 @@ export default function Home() {
             </h1>
             
             <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
-              {isHindi 
-                ? "Simple Hindi + Story-based learning with Priya & Rohit."
-                : "Simple Hindi + Story-based learning with Priya & Rohit."}
+              Simple Hindi + Story-based learning with Priya & Rohit ke saath.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
               <Link href="/beginner-course" data-testid="link-start-learning-hero">
                 <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8 shadow-lg" data-testid="button-start-learning-hero">
                   <Play className="w-5 h-5" />
-                  {isHindi ? "Free Course शुरू करें" : "Start Free Course"}
+                  FREE Course Shuru Karo
                 </Button>
               </Link>
               <Link href="/calculators" data-testid="link-explore-tools">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8" data-testid="button-explore-tools">
                   <Calculator className="w-5 h-5" />
-                  {isHindi ? "Tools देखें" : "Explore Tools"}
+                  Tools Dekho
                 </Button>
               </Link>
             </div>
@@ -391,19 +387,17 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="font-semibold text-foreground">
-                        {isHindi ? "वापस आने पर स्वागत है!" : "Welcome back!"}
+                        Wapas Aane Par Swagat Hai!
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {isHindi 
-                          ? `${progress.completedLevels.length} स्तर पूरे किए | जहां छोड़ा था वहीं से शुरू करें`
-                          : `${progress.completedLevels.length} levels done | Continue where you left off`}
+                        {progress.completedLevels.length} levels complete ho gaye | Jahaan chhoda tha wahaan se shuru karo
                       </p>
                     </div>
                   </div>
                   <Link href={continueUrl}>
                     <Button className="gap-2 min-h-[44px]" data-testid="button-continue-learning-home">
                       <Play className="w-4 h-4" />
-                      {isHindi ? "आगे बढ़ें" : "Continue Learning"}
+                      Aage Badho
                       <ArrowRight className="w-4 h-4" />
                     </Button>
                   </Link>
