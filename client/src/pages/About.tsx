@@ -17,11 +17,11 @@ import { MentorCharacter, LearnerCharacter, RocketGrowth, TargetGoal } from "@/c
 import { InvestingCharacter } from "@/components/SmallcaseIllustrations";
 import { FadeInUp, ScaleIn, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 
-const stats = [
-  { label: "Years of Experience", value: "5+" },
-  { label: "Active Learners", value: "10,000+" },
-  { label: "Course Modules", value: "100+" },
-  { label: "Success Stories", value: "500+" },
+const highlights = [
+  { label: "Learning Levels", value: "8" },
+  { label: "Community", value: "Growing" },
+  { label: "Stage", value: "Early" },
+  { label: "Focus", value: "Beginners" },
 ];
 
 const values = [
@@ -38,7 +38,7 @@ const values = [
   {
     icon: <Users className="w-6 h-6" />,
     title: "Community Support",
-    description: "Learn alongside thousands of fellow traders in our supportive community.",
+    description: "Learn alongside fellow beginners in our growing community.",
   },
   {
     icon: <BookOpen className="w-6 h-6" />,
@@ -51,17 +51,17 @@ const team = [
   {
     name: "Rohan Mehta",
     role: "Founder & Lead Educator",
-    bio: "10+ years in financial markets. SEBI registered research analyst. Passionate about democratizing market education.",
+    bio: "Passionate about making stock market education accessible to everyone in India.",
   },
   {
     name: "Sneha Iyer",
-    role: "Technical Analysis Expert",
-    bio: "Certified CMT. Specialized in price action and chart patterns. Trained 5000+ traders.",
+    role: "Content & Curriculum",
+    bio: "Focused on creating beginner-friendly content with practical examples from Indian markets.",
   },
   {
     name: "Vikram Singh",
-    role: "Options Strategist",
-    bio: "Former institutional trader. Expert in options strategies and risk management frameworks.",
+    role: "Technical Content",
+    bio: "Helps simplify complex trading concepts for first-time learners.",
   },
 ];
 
@@ -132,11 +132,11 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12"
           >
-            {stats.map((stat, index) => (
+            {highlights.map((item, index) => (
               <Card key={index} className="text-center" data-testid={`card-stat-${index}`}>
                 <CardContent className="pt-6">
-                  <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-2xl font-bold text-primary mb-1">{item.value}</div>
+                  <div className="text-sm text-muted-foreground">{item.label}</div>
                 </CardContent>
               </Card>
             ))}
@@ -174,7 +174,7 @@ export default function About() {
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Meet Our Team</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Learn from industry experts with decades of combined experience
+              The people behind Rotech Shiksha
             </p>
           </div>
 
@@ -206,12 +206,12 @@ export default function About() {
           <div className="max-w-3xl mx-auto space-y-4">
             {[
               "Completely free basic education - no hidden charges",
-              "Content created by SEBI registered professionals",
+              "Beginner-friendly content in simple Hindi/English",
               "Practical examples from Indian markets (NSE/BSE)",
-              "Regular updates with latest market trends",
-              "Active community of 10,000+ learners",
+              "Story-based learning with Rohit & Priya",
+              "Growing learner community",
               "No buy/sell tips - pure education focus",
-              "Self-paced learning with lifetime access",
+              "Self-paced learning at your own speed",
             ].map((point, index) => (
               <div key={index} className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
@@ -228,7 +228,7 @@ export default function About() {
             Ready to Start Your Learning Journey?
           </h2>
           <p className="max-w-2xl mx-auto opacity-90">
-            Join thousands of learners who are already building their stock market knowledge
+            Join our growing community of beginners learning stock market basics
           </p>
           {!isAuthenticated && (
             <Button
