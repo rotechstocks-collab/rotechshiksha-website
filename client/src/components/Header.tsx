@@ -38,12 +38,12 @@ interface NavItem {
 const primaryNavItems: NavItem[] = [
   { labelKey: "nav.home", href: "/" },
   { labelKey: "nav.courses", href: "/courses" },
-  { labelKey: "nav.calculators", href: "/calculators" },
   { labelKey: "nav.blog", href: "/blog" },
   { labelKey: "nav.faq", href: "/faq" },
 ];
 
 const toolsNavItems: NavItem[] = [
+  { labelKey: "nav.calculators", href: "/calculators" },
   { labelKey: "nav.liveBusinessNews", href: "/live-news" },
   { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
   { labelKey: "nav.brokers", href: "/compare-brokers" },
