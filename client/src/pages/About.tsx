@@ -60,6 +60,13 @@ export default function About() {
               simple language me, practical examples ke saath, bilkul free."
             </p>
           </div>
+
+          <div className="mt-8 p-6 bg-slate-100 dark:bg-card/50 rounded-lg text-center">
+            <p className="text-sm text-muted-foreground">
+              This platform is built for beginners<br />
+              to understand stock market basics without risk.
+            </p>
+          </div>
         </div>
       </section>
 
