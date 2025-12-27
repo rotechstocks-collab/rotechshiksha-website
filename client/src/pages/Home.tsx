@@ -8,25 +8,20 @@ import {
   BookOpen,
   Calculator,
   PiggyBank,
-  Target,
-  Lightbulb,
-  GraduationCap,
-  IndianRupee,
-  Wallet,
-  Banknote,
   TrendingUp,
-  Users,
-  Shield,
   CheckCircle,
   Play,
   Star,
+  Wallet,
+  Banknote,
+  IndianRupee,
+  Shield,
+  GraduationCap,
 } from "lucide-react";
 import {
   CalculatorIllustration,
   GrowthChart,
-  BookLearning,
 } from "@/components/Illustrations";
-import { FAQSection } from "@/components/FAQSection";
 import { SEOHead } from "@/components/SEOHead";
 
 const fadeInUp = {
@@ -56,14 +51,6 @@ const popularCalculators = [
   { id: "emi", name: "EMI Calculator", icon: <IndianRupee className="w-6 h-6" />, color: "from-rose-500 to-red-500", description: "Calculate loan EMIs" },
 ];
 
-const trustPoints = [
-  { icon: <BookOpen className="w-6 h-6" />, title: "Beginner-friendly Hindi", description: "Simple language, no confusing terms" },
-  { icon: <Users className="w-6 h-6" />, title: "Story-based learning", description: "Learn through Rohit & Priya's journey" },
-  { icon: <Target className="w-6 h-6" />, title: "Indian market focused", description: "NSE/BSE examples only" },
-  { icon: <Calculator className="w-6 h-6" />, title: "Free practical calculators", description: "SIP, EMI, CAGR & more" },
-  { icon: <GraduationCap className="w-6 h-6" />, title: "Structured 8-level path", description: "Zero se confident investor tak" },
-];
-
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -72,6 +59,7 @@ export default function Home() {
         description="Learn share market from zero with story-based lessons, quizzes, and practice. Beginner friendly & educational. Hindi first, soon all Indian languages."
         keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
       />
+      
       <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
@@ -217,114 +205,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-2 lg:order-1"
-            >
-              <Card className="bg-gradient-to-br from-primary/5 to-blue-500/5 border-primary/20">
-                <CardContent className="p-8 space-y-6">
-                  <Badge className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20">
-                    <BookOpen className="w-3 h-3 mr-1" />
-                    Story Introduction
-                  </Badge>
-                  
-                  <h3 className="text-2xl font-bold text-foreground">
-                    Rohit aur Priya ki Journey
-                  </h3>
-                  
-                  <p className="text-muted-foreground">
-                    Rohit ek normal job karta hai.
-                  </p>
-                  <p className="text-muted-foreground">
-                    Usne suna stock market me paisa banta hai, lekin terms aur risk se wo confuse ho jata hai.
-                  </p>
-                  <p className="text-muted-foreground">
-                    <strong>Priya</strong>, ek calm aur practical mentor, use basics se samjhana shuru karti hai.
-                  </p>
-                  <p className="text-muted-foreground">
-                    Ye platform usi journey par based hai.
-                  </p>
-                  
-                  <div className="flex gap-8">
-                    <div className="text-center">
-                      <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-2">
-                        <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <p className="text-sm font-medium">Rohit</p>
-                      <p className="text-xs text-muted-foreground">The Learner</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-16 h-16 rounded-full bg-purple-500/10 flex items-center justify-center mx-auto mb-2">
-                        <Lightbulb className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-                      </div>
-                      <p className="text-sm font-medium">Priya</p>
-                      <p className="text-xs text-muted-foreground">The Mentor</p>
-                    </div>
-                  </div>
-                  
-                  <Link href="/learn/level-1" data-testid="link-start-level-1">
-                    <Button className="gap-2 w-full" data-testid="button-start-level-1">
-                      <ArrowRight className="w-4 h-4" />
-                      Rohit ki Journey Shuru Karo (Level 1)
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-1 lg:order-2 space-y-4"
-            >
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-                What You Will <span className="text-primary">Learn</span>
-              </h2>
-              <p className="text-muted-foreground">
-                Yahan aap seekhenge:
-              </p>
-              
-              <div className="space-y-4 pt-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                    <Lightbulb className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Share market kya hai aur kaise kaam karta hai</h4>
-                    <p className="text-sm text-muted-foreground">IPO, stocks, index aur mutual funds ka real meaning</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                    <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Risk kya hota hai aur use kaise control kare</h4>
-                    <p className="text-sm text-muted-foreground">Long-term investing vs short-term trading</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                    <GraduationCap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Charts aur indicators ko beginner-friendly tarike se samajhna</h4>
-                    <p className="text-sm text-muted-foreground">Real examples aur step-by-step guidance</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl" />
@@ -390,76 +271,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center mb-12 space-y-4">
-            <Badge className="bg-primary/10 text-primary border-primary/20">
-              <Shield className="w-3 h-3 mr-1" />
-              Why Rotech Shiksha
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Kyun Chunein Rotech Shiksha?
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Hindi first, soon all Indian languages
-            </p>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {trustPoints.map((point, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center space-y-4 p-6"
-              >
-                <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                  {point.icon}
-                </div>
-                <h3 className="font-semibold text-foreground">{point.title}</h3>
-                <p className="text-sm text-muted-foreground">{point.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-4xl mx-auto px-4 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Aaj Hi Shuru Karo
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Agar aap bhi Rohit jaise confused ho ya Priya ki tarah smart decision lena chahte ho, toh aaj hi shuru karo.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Link href="/learn/level-1" data-testid="link-start-journey">
-                <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-start-journey">
-                  <GraduationCap className="w-4 h-4" />
-                  Start Learning – Level 1
-                </Button>
-              </Link>
-              <Link href="/calculators" data-testid="link-try-calculators">
-                <Button size="lg" variant="outline" className="gap-2 w-full sm:w-auto" data-testid="button-try-calculators">
-                  <Calculator className="w-4 h-4" />
-                  Try Our Calculators
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <FAQSection limit={5} showTitle={true} showViewAllLink={true} />
     </div>
   );
 }
