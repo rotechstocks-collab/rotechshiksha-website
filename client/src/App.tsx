@@ -99,11 +99,9 @@ function App() {
               <div className="hidden md:block">
                 <LiveTicker />
               </div>
-              <div className="min-h-screen bg-background md:pt-11 safe-area-top">
-                <div className="hidden md:block">
-                  <Header />
-                </div>
-                <main className="pt-0">
+              <div className="min-h-screen bg-background safe-area-top">
+                <Header />
+                <main className="pt-14 md:pt-[104px]">
                   <Router />
                 </main>
                 <Footer />
