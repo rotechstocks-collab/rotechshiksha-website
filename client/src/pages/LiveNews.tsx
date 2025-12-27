@@ -234,11 +234,11 @@ function NewsCard({
                 {article.aiSummary}
               </p>
               
-              <div className="flex items-center justify-between pt-3 border-t">
+              <div className="flex items-center justify-between pt-3 border-t gap-2">
                 <span className="text-sm text-muted-foreground">
-                  {isHindi ? "पूरी खबर पढ़ें" : "Read full story"}
+                  {isHindi ? `${article.source} पर पूरी खबर पढ़ें` : `Read full article at ${article.source}`}
                 </span>
-                <ExternalLink className="w-5 h-5 text-primary" />
+                <ExternalLink className="w-5 h-5 text-primary flex-shrink-0" />
               </div>
             </CardContent>
           </div>
@@ -304,8 +304,11 @@ function NewsCard({
             {article.aiSummary}
           </p>
           
-          <div className="flex items-center justify-end pt-2">
-            <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+          <div className="flex items-center justify-between pt-2 gap-2">
+            <span className="text-xs text-muted-foreground">
+              {isHindi ? `${article.source} पर पढ़ें` : `Read at ${article.source}`}
+            </span>
+            <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
           </div>
         </CardContent>
       </Card>
@@ -643,11 +646,18 @@ export default function LiveNews() {
             <CardContent className="py-4 px-5">
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-amber-800 dark:text-amber-200">
-                  {isHindi 
-                    ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
-                    : "This news is for educational purposes only. No investment advice or buy/sell recommendations. Clicking opens original source website."}
-                </p>
+                <div className="space-y-2">
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    {isHindi 
+                      ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
+                      : "This news is for educational purposes only. No investment advice or buy/sell recommendations."}
+                  </p>
+                  <p className="text-xs text-amber-700 dark:text-amber-300">
+                    {isHindi 
+                      ? "सभी समाचार सामग्री और कॉपीराइट उनके मूल स्रोतों के हैं। Rotech Shiksha कोई भी समाचार सामग्री का स्वामित्व नहीं रखता। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
+                      : "All news content and copyrights belong to their original sources. Rotech Shiksha does not claim ownership of any news content. Clicking any article opens the original source website."}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>

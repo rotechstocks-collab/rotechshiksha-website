@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -24,11 +26,24 @@ import {
   Sparkles,
   BarChart3,
   Quote,
+  X,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { CharacterAvatar, CharacterIntro, HeroCharacters } from "@/components/Characters";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
+import { getProgress, UserProgress } from "@/lib/progress";
+
+// Check if this is the user's first visit
+const FIRST_VISIT_KEY = "rotech-first-visit-complete";
+function isFirstVisit(): boolean {
+  if (typeof window === "undefined") return false;
+  return !localStorage.getItem(FIRST_VISIT_KEY);
+}
+function markVisitComplete(): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(FIRST_VISIT_KEY, "true");
+}
 
 const calculators = [
   { id: "sip", name: "SIP Calculator", nameHi: "SIP कैलकुलेटर", icon: <PiggyBank className="w-5 h-5" />, color: "bg-emerald-500" },
@@ -180,9 +195,113 @@ const stats = [
 export default function Home() {
   const { language } = useLanguage();
   const isHindi = language === "hi";
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [progress, setProgress] = useState<UserProgress | null>(null);
+
+  // Show welcome popup for first-time visitors (slight delay for better UX)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isFirstVisit()) {
+        setShowWelcome(true);
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Load user progress for Continue Learning feature
+  useEffect(() => {
+    setProgress(getProgress());
+  }, []);
+
+  const handleCloseWelcome = () => {
+    markVisitComplete();
+    setShowWelcome(false);
+  };
+
+  // Calculate continue learning destination based on completed levels
+  // Since progress tracks completed levels (not individual lessons), 
+  // we use currentLevel which is the next level to work on
+  const getContinueUrl = (): string | null => {
+    if (!progress) return null;
+    // Show continue option if user has any progress (has completed at least one level)
+    // or if currentLevel is > 1 (indicating progress)
+    if (progress.completedLevels.length === 0 && progress.currentLevel <= 1) return null;
+    // Link to the current level they should be working on
+    const targetLevel = progress.currentLevel;
+    if (targetLevel <= 8) {
+      return `/courses/level${targetLevel}/lesson1`;
+    }
+    // If all levels complete, return to course overview
+    return "/courses";
+  };
+  const continueUrl = getContinueUrl();
 
   return (
     <div className="min-h-screen bg-background">
+      {/* First-time visitor Welcome Popup */}
+      <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
+        <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center">
+              {isHindi ? "Rotech Shiksha में आपका स्वागत है!" : "Welcome to Rotech Shiksha!"}
+            </DialogTitle>
+            <DialogDescription className="text-center pt-2">
+              {isHindi 
+                ? "Stock market seekho – simple Hindi mein, step by step."
+                : "Learn stock market – in simple Hindi, step by step."}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+              <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-800 flex items-center justify-center">
+                <CharacterAvatar character="priya" size="sm" />
+              </div>
+              <div>
+                <p className="font-medium text-foreground">{isHindi ? "प्रिया से मिलो" : "Meet Priya"}</p>
+                <p className="text-sm text-muted-foreground">{isHindi ? "आपकी मार्गदर्शक" : "Your guide"}</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                <CharacterAvatar character="rohit" size="sm" />
+              </div>
+              <div>
+                <p className="font-medium text-foreground">{isHindi ? "रोहित से मिलो" : "Meet Rohit"}</p>
+                <p className="text-sm text-muted-foreground">{isHindi ? "आपके साथ सीखने वाला" : "Learning with you"}</p>
+              </div>
+            </div>
+            
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                {isHindi ? "100% Free course – कोई hidden charges नहीं" : "100% Free course – no hidden charges"}
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                {isHindi ? "Simple Hindi में समझाया गया" : "Explained in simple Hindi"}
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                {isHindi ? "Story-based learning – boring नहीं" : "Story-based learning – not boring"}
+              </li>
+            </ul>
+          </div>
+          
+          <div className="flex flex-col gap-2">
+            <Link href="/beginner-course">
+              <Button className="w-full gap-2" size="lg" onClick={handleCloseWelcome} data-testid="button-welcome-start-course">
+                <Play className="w-4 h-4" />
+                {isHindi ? "Free Course शुरू करें" : "Start Free Course"}
+              </Button>
+            </Link>
+            <Button variant="ghost" onClick={handleCloseWelcome} data-testid="button-welcome-explore">
+              {isHindi ? "पहले देखना चाहता हूं" : "Let me explore first"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
       <SEOHead
         title="Stock Market Seekho – Bilkul Zero Se | Rotech Shiksha"
         description="Simple Hindi mein stock market seekho. Beginner-friendly free course with step-by-step learning. No prior knowledge needed."
@@ -258,6 +377,42 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Continue Learning Banner for returning users */}
+      {continueUrl && progress && progress.completedLevels.length > 0 && (
+        <section className="py-4">
+          <div className="max-w-4xl mx-auto px-4">
+            <Card className="bg-primary/5 border-primary/20 overflow-hidden">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Play className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">
+                        {isHindi ? "वापस आने पर स्वागत है!" : "Welcome back!"}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {isHindi 
+                          ? `${progress.completedLevels.length} स्तर पूरे किए | जहां छोड़ा था वहीं से शुरू करें`
+                          : `${progress.completedLevels.length} levels done | Continue where you left off`}
+                      </p>
+                    </div>
+                  </div>
+                  <Link href={continueUrl}>
+                    <Button className="gap-2 min-h-[44px]" data-testid="button-continue-learning-home">
+                      <Play className="w-4 h-4" />
+                      {isHindi ? "आगे बढ़ें" : "Continue Learning"}
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
 
       <section className="py-10 sm:py-14">
         <div className="max-w-4xl mx-auto px-4">

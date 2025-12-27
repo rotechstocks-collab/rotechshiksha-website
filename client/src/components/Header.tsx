@@ -125,7 +125,7 @@ export function Header() {
         return (
           <Link key={item.href} href={item.href}>
             <button
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+              className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                 isActive(item.href)
                   ? "bg-primary/10 text-primary font-medium"
                   : "text-foreground hover:bg-accent/50"
@@ -133,7 +133,7 @@ export function Header() {
               onClick={onClose}
               data-testid={`mobile-nav-${item.labelKey}`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-5 h-5 flex-shrink-0" />
               <span className="text-sm">{t(item.labelKey)}</span>
             </button>
           </Link>
@@ -325,7 +325,7 @@ export function Header() {
                   <div className="flex-1 p-3 space-y-5 overflow-y-auto">
                     <Link href="/">
                       <button
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                           location === "/"
                             ? "bg-primary/10 text-primary font-medium"
                             : "text-foreground hover:bg-accent/50"
@@ -339,7 +339,7 @@ export function Header() {
                     
                     <Link href="/courses">
                       <button
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                           isActive("/courses")
                             ? "bg-primary/10 text-primary font-medium"
                             : "text-foreground hover:bg-accent/50"
@@ -347,14 +347,14 @@ export function Header() {
                         onClick={() => setMobileMenuOpen(false)}
                         data-testid="mobile-nav-courses"
                       >
-                        <GraduationCap className="w-4 h-4" />
+                        <GraduationCap className="w-5 h-5 flex-shrink-0" />
                         <span className="text-sm font-medium">{t("nav.courses")}</span>
                       </button>
                     </Link>
                     
                     <Link href="/beginner-course">
                       <button
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                           isActive("/beginner-course") || isActive("/level-1")
                             ? "bg-primary/10 text-primary font-medium"
                             : "text-foreground hover:bg-accent/50"
@@ -362,7 +362,7 @@ export function Header() {
                         onClick={() => setMobileMenuOpen(false)}
                         data-testid="mobile-nav-learning-path"
                       >
-                        <BookOpen className="w-4 h-4" />
+                        <BookOpen className="w-5 h-5 flex-shrink-0" />
                         <span className="text-sm font-medium">{t("nav.learningPath") || "Learning Path"}</span>
                       </button>
                     </Link>
@@ -375,7 +375,7 @@ export function Header() {
                     
                     <Link href="/blog">
                       <button
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                           isActive("/blog")
                             ? "bg-primary/10 text-primary font-medium"
                             : "text-foreground hover:bg-accent/50"
@@ -383,14 +383,14 @@ export function Header() {
                         onClick={() => setMobileMenuOpen(false)}
                         data-testid="mobile-nav-blog"
                       >
-                        <FileText className="w-4 h-4" />
+                        <FileText className="w-5 h-5 flex-shrink-0" />
                         <span className="text-sm font-medium">{t("nav.blog")}</span>
                       </button>
                     </Link>
                     
                     <Link href="/live-news">
                       <button
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                           isActive("/live-news") || isActive("/market-news")
                             ? "bg-primary/10 text-primary font-medium"
                             : "text-foreground hover:bg-accent/50"
@@ -398,14 +398,14 @@ export function Header() {
                         onClick={() => setMobileMenuOpen(false)}
                         data-testid="mobile-nav-news"
                       >
-                        <Newspaper className="w-4 h-4" />
+                        <Newspaper className="w-5 h-5 flex-shrink-0" />
                         <span className="text-sm font-medium">{t("nav.news") || "News"}</span>
                       </button>
                     </Link>
                     
                     <Link href="/pricing">
                       <button
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-md text-left transition-colors ${
                           isActive("/pricing")
                             ? "bg-primary/10 text-primary font-medium"
                             : "text-foreground hover:bg-accent/50"

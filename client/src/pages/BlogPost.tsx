@@ -6,17 +6,112 @@ import {
   ArrowLeft, 
   ArrowRight, 
   Calendar, 
-  User, 
+  Clock,
+  List,
+  ChevronRight,
+  User,
   GraduationCap,
   BookOpen 
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { blogPosts, blogCategories } from "@/content/blog-data";
+import { blogPosts, blogCategories, BlogPost as BlogPostType } from "@/content/blog-data";
 import { SEOHead } from "@/components/SEOHead";
+import { useMemo, useState } from "react";
+
+// Calculate reading time based on word count (average 200 words/min for Hindi text)
+function calculateReadingTime(content: string): number {
+  const wordCount = content.split(/\s+/).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+}
+
+// Extract headings from content for TOC
+function extractHeadings(content: string): { id: string; text: string; level: number }[] {
+  const headings: { id: string; text: string; level: number }[] = [];
+  const blocks = content.split("\n\n");
+  
+  blocks.forEach((block, index) => {
+    if (block.startsWith("## ")) {
+      const text = block.replace("## ", "").trim();
+      headings.push({ id: `heading-${index}`, text, level: 2 });
+    } else if (block.startsWith("### ")) {
+      const text = block.replace("### ", "").trim();
+      headings.push({ id: `heading-${index}`, text, level: 3 });
+    }
+  });
+  
+  return headings;
+}
+
+// Get related posts by category, then by level
+function getRelatedPosts(currentPost: BlogPostType, allPosts: BlogPostType[]): BlogPostType[] {
+  // Prioritize same category, then same level
+  const sameCategoryPosts = allPosts
+    .filter(p => p.id !== currentPost.id && p.category === currentPost.category)
+    .slice(0, 2);
+  
+  if (sameCategoryPosts.length >= 2) return sameCategoryPosts;
+  
+  // Fill with same level posts if needed
+  const sameLevelPosts = allPosts
+    .filter(p => p.id !== currentPost.id && p.relatedLevel === currentPost.relatedLevel && !sameCategoryPosts.includes(p))
+    .slice(0, 2 - sameCategoryPosts.length);
+  
+  const related = [...sameCategoryPosts, ...sameLevelPosts];
+  
+  // Fill with any other posts if still needed
+  if (related.length < 2) {
+    const otherPosts = allPosts
+      .filter(p => p.id !== currentPost.id && !related.includes(p))
+      .slice(0, 2 - related.length);
+    return [...related, ...otherPosts];
+  }
+  
+  return related;
+}
+
+// Generate FAQ schema for SEO
+function generateFAQSchema(post: BlogPostType): object | null {
+  // Extract Q&A patterns from content (lines starting with "Q:" or questions ending with "?")
+  const faqs: { question: string; answer: string }[] = [];
+  const blocks = post.content.split("\n\n");
+  
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i];
+    // Look for question patterns
+    if (block.includes("?") && blocks[i + 1] && !blocks[i + 1].startsWith("#")) {
+      faqs.push({
+        question: block.split("?")[0] + "?",
+        answer: blocks[i + 1].substring(0, 200)
+      });
+    }
+  }
+  
+  if (faqs.length === 0) return null;
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.slice(0, 5).map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+}
 
 export default function BlogPost() {
   const [match, params] = useRoute("/blog/:slug");
   const post = blogPosts.find((p) => p.slug === params?.slug);
+  const [showTOC, setShowTOC] = useState(true);
+
+  // Memoize computed values
+  const readingTime = useMemo(() => post ? calculateReadingTime(post.content) : 0, [post]);
+  const headings = useMemo(() => post ? extractHeadings(post.content) : [], [post]);
+  const relatedPosts = useMemo(() => post ? getRelatedPosts(post, blogPosts) : [], [post]);
+  const faqSchema = useMemo(() => post ? generateFAQSchema(post) : null, [post]);
 
   if (!post) {
     return (
@@ -39,6 +134,14 @@ export default function BlogPost() {
     );
   }
 
+  // Scroll to heading
+  const scrollToHeading = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -46,6 +149,14 @@ export default function BlogPost() {
         description={post.shortDescription}
         keywords={`${post.title}, stock market hindi, share market learning`}
       />
+      
+      {/* FAQ Schema for SEO */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <article className="py-8 md:py-12">
         <div className="max-w-3xl mx-auto px-4">
@@ -74,15 +185,53 @@ export default function BlogPost() {
                   year: "numeric",
                 })}
               </span>
+              <span className="text-sm text-muted-foreground flex items-center gap-1" data-testid="text-reading-time">
+                <Clock className="w-4 h-4" />
+                {readingTime} min read
+              </span>
             </div>
 
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4 leading-tight">
               {post.title}
             </h1>
 
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-6">
               {post.shortDescription}
             </p>
+            
+            {/* Table of Contents */}
+            {headings.length > 0 && (
+              <Card className="mb-8 bg-slate-50 dark:bg-card/50">
+                <CardContent className="py-4">
+                  <button
+                    onClick={() => setShowTOC(!showTOC)}
+                    className="flex items-center gap-2 w-full text-left"
+                    data-testid="button-toggle-toc"
+                  >
+                    <List className="w-4 h-4 text-primary" />
+                    <span className="font-medium text-foreground">Contents</span>
+                    <ChevronRight className={`w-4 h-4 ml-auto transition-transform ${showTOC ? 'rotate-90' : ''}`} />
+                  </button>
+                  
+                  {showTOC && (
+                    <nav className="mt-3 space-y-1">
+                      {headings.map((heading) => (
+                        <button
+                          key={heading.id}
+                          onClick={() => scrollToHeading(heading.id)}
+                          className={`block text-sm text-muted-foreground hover:text-primary transition-colors text-left w-full ${
+                            heading.level === 3 ? 'pl-4' : ''
+                          }`}
+                          data-testid={`toc-${heading.id}`}
+                        >
+                          {heading.text}
+                        </button>
+                      ))}
+                    </nav>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </motion.div>
 
           <motion.div
@@ -96,14 +245,14 @@ export default function BlogPost() {
                   {post.content.split("\n\n").map((block, index) => {
                     if (block.startsWith("## ")) {
                       return (
-                        <h2 key={index} className="text-xl font-bold text-foreground mt-6 mb-3">
+                        <h2 key={index} id={`heading-${index}`} className="text-xl font-bold text-foreground mt-6 mb-3 scroll-mt-24">
                           {block.replace("## ", "")}
                         </h2>
                       );
                     }
                     if (block.startsWith("### ")) {
                       return (
-                        <h3 key={index} className="text-lg font-semibold text-foreground mt-4 mb-2">
+                        <h3 key={index} id={`heading-${index}`} className="text-lg font-semibold text-foreground mt-4 mb-2 scroll-mt-24">
                           {block.replace("### ", "")}
                         </h3>
                       );
@@ -199,12 +348,9 @@ export default function BlogPost() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="mt-8 pt-8 border-t"
           >
-            <h3 className="text-lg font-semibold mb-4">Aur padhein</h3>
+            <h3 className="text-lg font-semibold mb-4">Isse related aur padhein</h3>
             <div className="grid gap-4">
-              {blogPosts
-                .filter((p) => p.id !== post.id)
-                .slice(0, 2)
-                .map((relatedPost) => (
+              {relatedPosts.map((relatedPost) => (
                   <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`}>
                     <Card className="hover-elevate cursor-pointer" data-testid={`related-blog-${relatedPost.id}`}>
                       <CardContent className="py-4">
