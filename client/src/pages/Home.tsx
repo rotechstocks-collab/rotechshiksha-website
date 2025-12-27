@@ -41,8 +41,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Stock Market Seekho Zero Se | Rotech Shiksha"
-        description="Learn share market from zero with story-based lessons. Beginner friendly, Hindi first, 100% free."
+        title="Stock Market Learning for Beginners – Rotech Shiksha"
+        description="Learn stock market basics step by step in simple Hinglish. Beginner-friendly education, no trading tips."
         keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
       />
       
