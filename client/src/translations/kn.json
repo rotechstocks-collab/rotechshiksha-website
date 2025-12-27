@@ -20,7 +20,10 @@
   "nav.adminPanel": "ನಿರ್ವಾಹಕ ಫಲಕ",
   "nav.logout": "ಲಾಗ್‌ಔಟ್",
   "nav.login": "ಮೊಬೈಲ್‌ನಿಂದ ಲಾಗಿನ್",
-  "nav.blog": "ಮಾರುಕಟ್ಟೆ ಜ್ಞಾನ",
+  "nav.blog": "ಮಾರುಕಟ್ಟೆ ಜ್ಞಾನ (Blog)",
+  "nav.blog.beginner": "ಆರಂಭಿಕ ಲೇಖನಗಳು",
+  "nav.blog.basics": "ಮಾರುಕಟ್ಟೆ ಮೂಲಗಳು",
+  "nav.blog.faqs": "ಷೇರು FAQs",
   "nav.faq": "ಪ್ರಶ್ನೋತ್ತರ",
   "nav.loansAndCreditCards": "ಸಾಲ ಮತ್ತು ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್",
 

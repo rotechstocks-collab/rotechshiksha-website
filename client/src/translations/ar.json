@@ -20,7 +20,10 @@
   "nav.adminPanel": "لوحة الإدارة",
   "nav.logout": "تسجيل الخروج",
   "nav.login": "تسجيل الدخول بالهاتف",
-  "nav.blog": "معرفة السوق",
+  "nav.blog": "معرفة السوق (مدونة)",
+  "nav.blog.beginner": "مقالات للمبتدئين",
+  "nav.blog.basics": "أساسيات السوق",
+  "nav.blog.faqs": "أسئلة الأسهم",
   "nav.faq": "الأسئلة الشائعة",
   "nav.loansAndCreditCards": "القروض وبطاقات الائتمان",
 

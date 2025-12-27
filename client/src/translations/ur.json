@@ -20,7 +20,10 @@
   "nav.adminPanel": "ایڈمن پینل",
   "nav.logout": "لاگ آؤٹ",
   "nav.login": "موبائل سے لاگ ان",
-  "nav.blog": "مارکیٹ علم",
+  "nav.blog": "مارکیٹ علم (بلاگ)",
+  "nav.blog.beginner": "ابتدائی مضامین",
+  "nav.blog.basics": "مارکیٹ بنیادیات",
+  "nav.blog.faqs": "اسٹاک سوالات",
   "nav.faq": "سوالات و جوابات",
   "nav.loansAndCreditCards": "قرضے اور کریڈٹ کارڈ",
 

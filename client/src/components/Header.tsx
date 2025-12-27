@@ -48,7 +48,15 @@ const navItemsConfig: NavItem[] = [
       { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
     ],
   },
-  { labelKey: "nav.blog", href: "/blog" },
+  {
+    labelKey: "nav.blog",
+    href: "/blog",
+    children: [
+      { labelKey: "nav.blog.beginner", href: "/blog?category=beginner" },
+      { labelKey: "nav.blog.basics", href: "/blog?category=basics" },
+      { labelKey: "nav.blog.faqs", href: "/blog?category=faqs" },
+    ],
+  },
   { labelKey: "nav.faq", href: "/faq" },
   { labelKey: "nav.pricing", href: "/pricing" },
 ];

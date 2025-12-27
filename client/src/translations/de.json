@@ -20,7 +20,10 @@
   "nav.adminPanel": "Admin-Panel",
   "nav.logout": "Abmelden",
   "nav.login": "Mit Handy anmelden",
-  "nav.blog": "Markt Wissen",
+  "nav.blog": "Markt Wissen (Blog)",
+  "nav.blog.beginner": "Anfänger Artikel",
+  "nav.blog.basics": "Markt Grundlagen",
+  "nav.blog.faqs": "Aktien FAQs",
   "nav.faq": "FAQ",
   "nav.loansAndCreditCards": "Kredite & Kreditkarten",
 

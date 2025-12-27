@@ -20,7 +20,10 @@
   "nav.adminPanel": "అడ్మిన్ ప్యానెల్",
   "nav.logout": "లాగ్‌అవుట్",
   "nav.login": "మొబైల్‌తో లాగిన్",
-  "nav.blog": "మార్కెట్ జ్ఞానం",
+  "nav.blog": "మార్కెట్ జ్ఞానం (Blog)",
+  "nav.blog.beginner": "ప్రారంభ వ్యాసాలు",
+  "nav.blog.basics": "మార్కెట్ బేసిక్స్",
+  "nav.blog.faqs": "స్టాక్ FAQs",
   "nav.faq": "ప్రశ్నోత్తరాలు",
   "nav.loansAndCreditCards": "రుణాలు & క్రెడిట్ కార్డ్",
 

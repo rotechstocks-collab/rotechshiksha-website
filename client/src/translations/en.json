@@ -20,7 +20,10 @@
   "nav.adminPanel": "Admin Panel",
   "nav.logout": "Logout",
   "nav.login": "Login with Mobile",
-  "nav.blog": "Market Gyaan",
+  "nav.blog": "Market Gyaan (Blog)",
+  "nav.blog.beginner": "Beginner Articles",
+  "nav.blog.basics": "Market Basics",
+  "nav.blog.faqs": "Stock FAQs",
   "nav.faq": "FAQ",
   "nav.loansAndCreditCards": "Loans & Credit Cards",
 

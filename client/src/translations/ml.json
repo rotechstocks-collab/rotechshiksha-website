@@ -20,7 +20,10 @@
   "nav.adminPanel": "അഡ്മിൻ പാനൽ",
   "nav.logout": "ലോഗൗട്ട്",
   "nav.login": "മൊബൈലില്‍ ലോഗിന്‍ ചെയ്യുക",
-  "nav.blog": "മാര്‍ക്കറ്റ് ജ്ഞാനം",
+  "nav.blog": "മാര്‍ക്കറ്റ് ജ്ഞാനം (Blog)",
+  "nav.blog.beginner": "തുടക്കക്കാര്‍ക്കുള്ള ലേഖനങ്ങള്‍",
+  "nav.blog.basics": "മാര്‍ക്കറ്റ് അടിസ്ഥാനങ്ങള്‍",
+  "nav.blog.faqs": "ഓഹരി FAQs",
   "nav.faq": "ചോദ്യോത്തരങ്ങള്‍",
   "nav.loansAndCreditCards": "ലോണ്‍ & ക്രെഡിറ്റ് കാര്‍ഡ്",
 

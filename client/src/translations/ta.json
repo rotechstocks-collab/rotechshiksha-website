@@ -20,7 +20,10 @@
   "nav.adminPanel": "நிர்வாக பேனல்",
   "nav.logout": "வெளியேறு",
   "nav.login": "மொபைலில் உள்நுழைக",
-  "nav.blog": "சந்தை அறிவு",
+  "nav.blog": "சந்தை அறிவு (Blog)",
+  "nav.blog.beginner": "தொடக்கநிலை கட்டுரைகள்",
+  "nav.blog.basics": "சந்தை அடிப்படைகள்",
+  "nav.blog.faqs": "பங்கு FAQs",
   "nav.faq": "கேள்வி-பதில்",
   "nav.loansAndCreditCards": "கடன் & கிரெடிட் கார்டு",
 

@@ -20,7 +20,10 @@
   "nav.adminPanel": "Panneau d'administration",
   "nav.logout": "Deconnexion",
   "nav.login": "Connexion mobile",
-  "nav.blog": "Savoir du Marche",
+  "nav.blog": "Savoir du Marche (Blog)",
+  "nav.blog.beginner": "Articles Debutant",
+  "nav.blog.basics": "Bases du Marche",
+  "nav.blog.faqs": "FAQs Actions",
   "nav.faq": "FAQ",
   "nav.loansAndCreditCards": "Prets et Cartes",
 

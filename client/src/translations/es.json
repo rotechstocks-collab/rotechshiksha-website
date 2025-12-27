@@ -20,7 +20,10 @@
   "nav.adminPanel": "Panel de administracion",
   "nav.logout": "Cerrar sesion",
   "nav.login": "Iniciar con movil",
-  "nav.blog": "Conocimiento del Mercado",
+  "nav.blog": "Conocimiento del Mercado (Blog)",
+  "nav.blog.beginner": "Articulos para Principiantes",
+  "nav.blog.basics": "Conceptos Basicos",
+  "nav.blog.faqs": "FAQs de Acciones",
   "nav.faq": "Preguntas Frecuentes",
   "nav.loansAndCreditCards": "Prestamos y Tarjetas",
 

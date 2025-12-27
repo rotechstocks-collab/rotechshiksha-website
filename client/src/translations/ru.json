@@ -20,7 +20,10 @@
   "nav.adminPanel": "Панель администратора",
   "nav.logout": "Выйти",
   "nav.login": "Вход с мобильного",
-  "nav.blog": "Знания о рынке",
+  "nav.blog": "Знания о рынке (Блог)",
+  "nav.blog.beginner": "Статьи для начинающих",
+  "nav.blog.basics": "Основы рынка",
+  "nav.blog.faqs": "Вопросы об акциях",
   "nav.faq": "Частые вопросы",
   "nav.loansAndCreditCards": "Кредиты и карты",
 

@@ -20,7 +20,10 @@
   "nav.adminPanel": "एडमिन पैनल",
   "nav.logout": "लॉगआउट",
   "nav.login": "मोबाइल से लॉगिन करें",
-  "nav.blog": "मार्केट ज्ञान",
+  "nav.blog": "मार्केट ज्ञान (Blog)",
+  "nav.blog.beginner": "शुरुआती लेख",
+  "nav.blog.basics": "मार्केट बेसिक्स",
+  "nav.blog.faqs": "स्टॉक FAQs",
   "nav.faq": "सवाल-जवाब",
   "nav.loansAndCreditCards": "लोन और क्रेडिट कार्ड",
 
