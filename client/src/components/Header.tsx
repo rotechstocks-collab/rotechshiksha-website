@@ -47,6 +47,7 @@ const moreNavItems: NavItem[] = [
   { labelKey: "nav.lessons", href: "/beginner-course" },
   { labelKey: "nav.learningLevels", href: "/level-1" },
   { labelKey: "nav.liveMarket", href: "/live-market" },
+  { labelKey: "nav.liveNews", href: "/live-news" },
   { labelKey: "nav.marketNews", href: "/market-news" },
   { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
   { labelKey: "nav.educationalVideos", href: "/educational-videos" },
