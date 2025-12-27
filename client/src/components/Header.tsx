@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -16,14 +16,7 @@ import {
   User, 
   LogOut, 
   LayoutDashboard,
-  Home,
-  GraduationCap,
-  BookOpen,
-  Layers,
-  Calculator,
-  FileText,
-  HelpCircle,
-  CreditCard,
+  MoreVertical,
   Globe,
   Palette
 } from "lucide-react";
@@ -38,28 +31,21 @@ import logoImage from "@assets/generated_images/professional_rotech_shiksha_logo
 interface NavItem {
   labelKey: string;
   href: string;
-  icon?: typeof Home;
   children?: { labelKey: string; href: string }[];
 }
 
-const desktopNavItems: NavItem[] = [
+const primaryNavItems: NavItem[] = [
   { labelKey: "nav.home", href: "/" },
   { labelKey: "nav.courses", href: "/courses" },
   { labelKey: "nav.calculators", href: "/calculators" },
   { labelKey: "nav.blog", href: "/blog" },
   { labelKey: "nav.faq", href: "/faq" },
-  { labelKey: "nav.pricing", href: "/pricing" },
 ];
 
-const mobileNavItems: { labelKey: string; href: string; icon: typeof Home; highlight?: boolean }[] = [
-  { labelKey: "nav.home", href: "/", icon: Home },
-  { labelKey: "nav.startLearning", href: "/beginner-course", icon: GraduationCap, highlight: true },
-  { labelKey: "nav.courses", href: "/courses", icon: BookOpen },
-  { labelKey: "nav.learningLevels", href: "/level-1", icon: Layers },
-  { labelKey: "nav.calculators", href: "/calculators", icon: Calculator },
-  { labelKey: "nav.blog", href: "/blog", icon: FileText },
-  { labelKey: "nav.faq", href: "/faq", icon: HelpCircle },
-  { labelKey: "nav.pricing", href: "/pricing", icon: CreditCard },
+const moreNavItems: NavItem[] = [
+  { labelKey: "nav.pricing", href: "/pricing" },
+  { labelKey: "nav.lessons", href: "/beginner-course" },
+  { labelKey: "nav.learningLevels", href: "/level-1" },
 ];
 
 export function Header() {
@@ -68,6 +54,27 @@ export function Header() {
   const { user, isAuthenticated, logout, setShowAuthPopup } = useAuth();
   const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [visibleItems, setVisibleItems] = useState(5);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 380) {
+        setVisibleItems(2);
+      } else if (width < 480) {
+        setVisibleItems(3);
+      } else if (width < 640) {
+        setVisibleItems(4);
+      } else {
+        setVisibleItems(5);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLoginClick = () => {
     setShowAuthPopup(true);
@@ -78,27 +85,29 @@ export function Header() {
     return location.startsWith(href);
   };
 
+  const mobileVisibleItems = primaryNavItems.slice(0, visibleItems);
+  const mobileOverflowItems = [...primaryNavItems.slice(visibleItems), ...moreNavItems];
+
   return (
     <motion.header 
       className="fixed top-0 md:top-11 left-0 right-0 z-40 bg-white/95 dark:bg-background/95 backdrop-blur-md border-b border-slate-100 dark:border-border shadow-sm"
-      style={{ top: 'calc(env(safe-area-inset-top, 0px))', marginTop: 'var(--header-top-offset, 0px)' }}
+      style={{ 
+        top: 'env(safe-area-inset-top, 0px)',
+      }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <style>{`
         @media (min-width: 768px) {
-          :root { --header-top-offset: 44px; }
-        }
-        @media (max-width: 767px) {
-          :root { --header-top-offset: 0px; }
+          header { top: 44px !important; }
         }
       `}</style>
-      <div className="max-w-7xl mx-auto px-4 lg:px-8" style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}>
-        <div className="flex items-center justify-between h-14 md:h-16 gap-4">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8" style={{ paddingLeft: 'max(0.5rem, env(safe-area-inset-left))', paddingRight: 'max(0.5rem, env(safe-area-inset-right))' }}>
+        <div className="flex items-center justify-between h-14 md:h-16 gap-2">
           <Link href="/">
             <motion.div
-              className="flex items-center cursor-pointer"
+              className="flex items-center cursor-pointer flex-shrink-0"
               data-testid="link-logo"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -106,13 +115,13 @@ export function Header() {
               <img 
                 src={logoImage} 
                 alt="Rotech Shiksha Logo" 
-                className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+                className="h-7 sm:h-8 md:h-12 w-auto object-contain"
               />
             </motion.div>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {desktopNavItems.map((item) =>
+            {primaryNavItems.map((item) =>
               item.children ? (
                 <DropdownMenu key={item.labelKey}>
                   <DropdownMenuTrigger asChild>
@@ -152,9 +161,78 @@ export function Header() {
                 </Link>
               )
             )}
+            {moreNavItems.length > 0 && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="gap-1" data-testid="nav-more-desktop">
+                    {t("nav.more") || "More"}
+                    <ChevronDown className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  {moreNavItems.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link href={item.href}>
+                        <span className="w-full cursor-pointer" data-testid={`nav-${item.labelKey}`}>
+                          {t(item.labelKey)}
+                        </span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <nav 
+            ref={navRef}
+            className="flex lg:hidden items-center gap-0.5 flex-1 justify-center overflow-x-auto scrollbar-hide"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {mobileVisibleItems.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <button
+                  className={`px-2 py-1.5 text-xs sm:text-sm font-medium whitespace-nowrap rounded-md transition-colors ${
+                    isActive(item.href) 
+                      ? "bg-primary/10 text-primary" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                  }`}
+                  data-testid={`mobile-nav-${item.labelKey}`}
+                >
+                  {t(item.labelKey)}
+                </button>
+              </Link>
+            ))}
+            
+            {mobileOverflowItems.length > 0 && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="px-2 py-1.5 text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-md flex items-center gap-0.5"
+                    data-testid="mobile-nav-more"
+                  >
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[160px]">
+                  {mobileOverflowItems.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link href={item.href}>
+                        <span 
+                          className={`w-full cursor-pointer ${isActive(item.href) ? "text-primary font-medium" : ""}`}
+                          data-testid={`mobile-nav-more-${item.labelKey}`}
+                        >
+                          {t(item.labelKey)}
+                        </span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </nav>
+
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             <div className="hidden lg:block w-56">
               <StockSearch variant="compact" />
             </div>
@@ -216,13 +294,13 @@ export function Header() {
 
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild className="lg:hidden">
-                <Button size="icon" variant="ghost" data-testid="button-mobile-menu">
-                  <Menu className="w-6 h-6" />
+                <Button size="icon" variant="ghost" data-testid="button-mobile-menu" className="h-9 w-9">
+                  <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 overflow-y-auto">
+              <SheetContent side="right" className="w-[280px] p-0">
                 <SheetHeader className="sr-only">
-                  <SheetTitle>Navigation Menu</SheetTitle>
+                  <SheetTitle>Settings Menu</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between p-4 border-b border-border">
@@ -233,40 +311,7 @@ export function Header() {
                     />
                   </div>
                   
-                  <nav className="flex flex-col flex-1 py-2">
-                    {mobileNavItems.map((item, index) => {
-                      const Icon = item.icon;
-                      const active = isActive(item.href);
-                      
-                      return (
-                        <motion.div
-                          key={item.href}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.03 }}
-                        >
-                          <Link href={item.href}>
-                            <button
-                              className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors ${
-                                item.highlight 
-                                  ? "bg-primary/10 text-primary font-semibold border-l-4 border-primary" 
-                                  : active 
-                                    ? "bg-accent text-accent-foreground font-medium" 
-                                    : "text-foreground hover:bg-accent/50"
-                              }`}
-                              onClick={() => setMobileMenuOpen(false)}
-                              data-testid={`mobile-nav-${item.labelKey}`}
-                            >
-                              <Icon className={`w-5 h-5 flex-shrink-0 ${item.highlight ? "text-primary" : active ? "text-primary" : "text-muted-foreground"}`} />
-                              <span className="text-base">{t(item.labelKey)}</span>
-                            </button>
-                          </Link>
-                        </motion.div>
-                      );
-                    })}
-                  </nav>
-                  
-                  <div className="border-t border-border p-4 space-y-4 bg-muted/30">
+                  <div className="flex-1 p-4 space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Globe className="w-4 h-4" />
@@ -300,64 +345,64 @@ export function Header() {
                         )}
                       </Button>
                     </div>
-                    
-                    <div className="pt-2 border-t border-border">
-                      {isAuthenticated ? (
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 py-2 px-1">
-                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                              <User className="w-4 h-4 text-primary" />
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">{user?.fullName}</p>
-                              <p className="text-xs text-muted-foreground">{user?.mobile}</p>
-                            </div>
+                  </div>
+                  
+                  <div className="border-t border-border p-4 bg-muted/30">
+                    {isAuthenticated ? (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 py-2">
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <User className="w-4 h-4 text-primary" />
                           </div>
-                          <Link href="/dashboard">
+                          <div>
+                            <p className="text-sm font-medium">{user?.fullName}</p>
+                            <p className="text-xs text-muted-foreground">{user?.mobile}</p>
+                          </div>
+                        </div>
+                        <Link href="/dashboard">
+                          <Button 
+                            variant="outline" 
+                            className="w-full justify-start gap-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                            data-testid="mobile-dashboard"
+                          >
+                            <LayoutDashboard className="w-4 h-4" />
+                            {t("nav.dashboard")}
+                          </Button>
+                        </Link>
+                        {user?.isAdmin && (
+                          <Link href="/admin">
                             <Button 
                               variant="outline" 
-                              className="w-full justify-start gap-2"
+                              className="w-full justify-start gap-2 mt-2"
                               onClick={() => setMobileMenuOpen(false)}
-                              data-testid="mobile-dashboard"
+                              data-testid="mobile-admin"
                             >
-                              <LayoutDashboard className="w-4 h-4" />
-                              {t("nav.dashboard")}
+                              <User className="w-4 h-4" />
+                              {t("nav.adminPanel")}
                             </Button>
                           </Link>
-                          {user?.isAdmin && (
-                            <Link href="/admin">
-                              <Button 
-                                variant="outline" 
-                                className="w-full justify-start gap-2"
-                                onClick={() => setMobileMenuOpen(false)}
-                                data-testid="mobile-admin"
-                              >
-                                <User className="w-4 h-4" />
-                                {t("nav.adminPanel")}
-                              </Button>
-                            </Link>
-                          )}
-                          <Button 
-                            variant="destructive" 
-                            className="w-full justify-start gap-2"
-                            onClick={() => { logout(); setMobileMenuOpen(false); }}
-                            data-testid="mobile-logout"
-                          >
-                            <LogOut className="w-4 h-4" />
-                            {t("nav.logout")}
-                          </Button>
-                        </div>
-                      ) : (
+                        )}
                         <Button 
-                          className="w-full gap-2"
-                          onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
-                          data-testid="mobile-login"
+                          variant="destructive" 
+                          className="w-full justify-start gap-2 mt-2"
+                          onClick={() => { logout(); setMobileMenuOpen(false); }}
+                          data-testid="mobile-logout"
                         >
-                          <User className="w-4 h-4" />
-                          {t("nav.login")}
+                          <LogOut className="w-4 h-4" />
+                          {t("nav.logout")}
                         </Button>
-                      )}
-                    </div>
+                      </div>
+                    ) : (
+                      <Button 
+                        className="w-full gap-2"
+                        onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
+                        data-testid="mobile-login"
+                      >
+                        <User className="w-4 h-4" />
+                        {t("nav.login")}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </SheetContent>
