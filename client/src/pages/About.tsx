@@ -28,22 +28,26 @@ const values = [
   {
     icon: <Target className="w-6 h-6" />,
     title: "Education First",
-    description: "We believe in empowering traders with knowledge, not tips or recommendations.",
+    subtitle: "(Pehle padhai)",
+    description: "Tips nahi, knowledge dete hain – samjho, phir invest karo.",
   },
   {
     icon: <Shield className="w-6 h-6" />,
     title: "Risk Awareness",
-    description: "Every lesson emphasizes risk management because protecting capital is priority one.",
+    subtitle: "(Risk ko samjho)",
+    description: "Har lesson me risk management – kyunki paisa bachana bhi zaroori hai.",
   },
   {
     icon: <Users className="w-6 h-6" />,
     title: "Community Support",
-    description: "Learn alongside fellow beginners in our growing community.",
+    subtitle: "(Saath me seekho)",
+    description: "Akele nahi, doosre beginners ke saath milke seekho.",
   },
   {
     icon: <BookOpen className="w-6 h-6" />,
     title: "Practical Learning",
-    description: "Real examples, live market analysis, and actionable insights in every lesson.",
+    subtitle: "(Kaam ki baatein)",
+    description: "Real examples, Indian market se – jo actually kaam aaye.",
   },
 ];
 
@@ -94,18 +98,17 @@ export default function About() {
               <Badge variant="outline" className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400">
                 About Us
               </Badge>
+              <p className="text-sm text-muted-foreground">(Humari kahani)</p>
               <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 dark:text-foreground">
-                Empowering India with
-                <span className="bg-gradient-to-r from-[#4A90E2] to-[#4ECDC4] bg-clip-text text-transparent block mt-2">Financial Literacy</span>
+                Financial Literacy for India
+                <span className="bg-gradient-to-r from-[#4A90E2] to-[#4ECDC4] bg-clip-text text-transparent block mt-2">(Har Indian ke liye)</span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Rotech Shiksha was founded with a simple mission: make stock market
-                education accessible to every Indian. We believe that with the right knowledge,
-                anyone can make informed investment decisions.
+                Rotech Shiksha ka mission simple hai: stock market ki basic knowledge har Indian tak pahunchana. 
+                Sahi jaankari ke saath, koi bhi samajhdaari se invest kar sakta hai.
               </p>
               <p className="text-muted-foreground">
-                Our courses are designed by market practitioners with real-world experience,
-                ensuring you learn practical skills that matter in today's markets.
+                Humare courses practical examples ke saath banaye gaye hain – jo aaj ke Indian markets me kaam aayein.
               </p>
             </FadeInUp>
 
@@ -148,8 +151,9 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Our Values</h2>
+            <p className="text-sm text-muted-foreground">(Humari soch)</p>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              What drives us to create the best learning experience for you
+              Hum kya believe karte hain aur kyun
             </p>
           </div>
 
@@ -161,6 +165,7 @@ export default function About() {
                     {value.icon}
                   </div>
                   <h3 className="font-semibold text-foreground">{value.title}</h3>
+                  {value.subtitle && <p className="text-xs text-muted-foreground">{value.subtitle}</p>}
                   <p className="text-sm text-muted-foreground">{value.description}</p>
                 </CardContent>
               </Card>
@@ -173,8 +178,9 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Meet Our Team</h2>
+            <p className="text-sm text-muted-foreground">(Humari team se milo)</p>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              The people behind Rotech Shiksha
+              Jo log Rotech Shiksha banate hain
             </p>
           </div>
 
@@ -201,17 +207,18 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Why Choose Us</h2>
+            <p className="text-sm text-muted-foreground">(Humein kyun chunein?)</p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
             {[
-              "Completely free basic education - no hidden charges",
-              "Beginner-friendly content in simple Hindi/English",
-              "Practical examples from Indian markets (NSE/BSE)",
-              "Story-based learning with Rohit & Priya",
+              "Bilkul free – koi hidden charges nahi",
+              "Simple Hindi/English me content",
+              "Indian markets ke real examples (NSE/BSE)",
+              "Rohit & Priya ki story ke saath seekho",
               "Growing learner community",
-              "No buy/sell tips - pure education focus",
-              "Self-paced learning at your own speed",
+              "Tips nahi – sirf education",
+              "Apni speed se seekho",
             ].map((point, index) => (
               <div key={index} className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
@@ -225,10 +232,11 @@ export default function About() {
       <section className="py-16 lg:py-24 bg-primary text-primary-foreground">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 text-center space-y-6">
           <h2 className="text-3xl lg:text-4xl font-bold">
-            Ready to Start Your Learning Journey?
+            Ready to Start?
           </h2>
+          <p className="text-lg opacity-90">(Shuru karne ke liye tayyar ho?)</p>
           <p className="max-w-2xl mx-auto opacity-90">
-            Join our growing community of beginners learning stock market basics
+            Aaj hi seekhna shuru karo – bilkul free, bilkul asaan
           </p>
           {!isAuthenticated && (
             <Button

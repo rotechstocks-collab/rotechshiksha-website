@@ -43,12 +43,12 @@ const learningLevels = [
 ];
 
 const popularCalculators = [
-  { id: "sip", name: "SIP Calculator", icon: <PiggyBank className="w-6 h-6" />, color: "from-emerald-500 to-teal-500", description: "Plan your monthly investments" },
-  { id: "lumpsum", name: "Lumpsum", icon: <Wallet className="w-6 h-6" />, color: "from-blue-500 to-indigo-500", description: "Calculate one-time investments" },
-  { id: "cagr", name: "CAGR Calculator", icon: <TrendingUp className="w-6 h-6" />, color: "from-purple-500 to-pink-500", description: "Find your growth rate" },
-  { id: "ppf", name: "PPF Calculator", icon: <Shield className="w-6 h-6" />, color: "from-cyan-500 to-blue-500", description: "Public Provident Fund returns" },
-  { id: "fd", name: "FD Calculator", icon: <Banknote className="w-6 h-6" />, color: "from-amber-500 to-orange-500", description: "Fixed deposit maturity" },
-  { id: "emi", name: "EMI Calculator", icon: <IndianRupee className="w-6 h-6" />, color: "from-rose-500 to-red-500", description: "Calculate loan EMIs" },
+  { id: "sip", name: "SIP Calculator", icon: <PiggyBank className="w-6 h-6" />, color: "from-emerald-500 to-teal-500", description: "Monthly invest karo, future banao" },
+  { id: "lumpsum", name: "Lumpsum Calculator", icon: <Wallet className="w-6 h-6" />, color: "from-blue-500 to-indigo-500", description: "Ek baar invest, kitna milega?" },
+  { id: "cagr", name: "CAGR Calculator", icon: <TrendingUp className="w-6 h-6" />, color: "from-purple-500 to-pink-500", description: "Growth rate pata karo" },
+  { id: "ppf", name: "PPF Calculator", icon: <Shield className="w-6 h-6" />, color: "from-cyan-500 to-blue-500", description: "PPF me kitna banega?" },
+  { id: "fd", name: "FD Calculator", icon: <Banknote className="w-6 h-6" />, color: "from-amber-500 to-orange-500", description: "Fixed Deposit returns" },
+  { id: "emi", name: "EMI Calculator", icon: <IndianRupee className="w-6 h-6" />, color: "from-rose-500 to-red-500", description: "Loan ki EMI nikalo" },
 ];
 
 export default function Home() {
@@ -136,7 +136,7 @@ export default function Home() {
                 >
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-emerald-500" />
-                    <span className="text-sm font-medium">10,000+ Students</span>
+                    <span className="text-sm font-medium">Growing Community</span>
                   </div>
                 </motion.div>
                 <motion.div
@@ -162,8 +162,9 @@ export default function Home() {
               <GraduationCap className="w-3 h-3 mr-1" />
               Structured Learning Path
             </Badge>
+            <p className="text-sm text-muted-foreground -mt-2">(Asaan step-by-step padhai ka system)</p>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              8 Simple Levels
+              8 Levels – Zero se Confident Investor Tak
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Humne learning ko 8 simple levels me divide kiya hai, taaki aap bina pressure ke aage badh sakein
@@ -218,11 +219,12 @@ export default function Home() {
                 <Calculator className="w-3 h-3 mr-1" />
                 Financial Tools
               </Badge>
+              <p className="text-sm text-muted-foreground">(Paisa calculate karne ke free tools)</p>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
                 Popular Calculators
               </h2>
               <p className="text-muted-foreground max-w-xl">
-                Learning ke saath practical tools – bilkul free
+                SIP, EMI, FD – sabka hisaab ek jagah, bilkul free
               </p>
             </motion.div>
             <motion.div
@@ -264,7 +266,7 @@ export default function Home() {
           <motion.div {...fadeInUp} className="text-center">
             <Link href="/calculators" data-testid="link-view-all-calculators">
               <Button size="lg" variant="outline" className="gap-2" data-testid="button-view-all-calculators">
-                View All 20+ Calculators
+                Saare Calculators Dekho
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
