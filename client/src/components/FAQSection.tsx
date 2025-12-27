@@ -6,9 +6,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { HelpCircle, ArrowRight } from "lucide-react";
-import { faqData, FAQItem } from "@/content/faq-data";
+import { faqData } from "@/content/faq-data";
 import { motion } from "framer-motion";
 
 interface FAQSectionProps {
@@ -63,20 +63,7 @@ export function FAQSection({ limit, showTitle = true, showViewAllLink = true }: 
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed">
-                      <p className="mb-3">{faq.answer}</p>
-                      {faq.relatedLink && faq.relatedLinkText && (
-                        <Link href={faq.relatedLink}>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="gap-1"
-                            data-testid={`faq-link-${faq.id}`}
-                          >
-                            {faq.relatedLinkText}
-                            <ArrowRight className="w-3 h-3" />
-                          </Button>
-                        </Link>
-                      )}
+                      <p>{faq.answer}</p>
                     </AccordionContent>
                   </AccordionItem>
                 ))}

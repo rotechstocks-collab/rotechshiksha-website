@@ -2,59 +2,59 @@ export interface FAQItem {
   id: string;
   question: string;
   answer: string;
-  relatedLink?: string;
-  relatedLinkText?: string;
 }
 
 export const faqData: FAQItem[] = [
   {
     id: "1",
-    question: "Kya ye website beginners ke liye hai?",
-    answer: "Haan, bilkul! Rotech Shiksha specially un logon ke liye banaya gaya hai jinhe share market ki koi knowledge nahi hai. Humari saari content Hindi/Hinglish me hai aur bilkul zero se start hoti hai. Rohit aur Priya ke story-based lessons aapko step-by-step sikhate hain.",
-    relatedLink: "/learn/level-1",
-    relatedLinkText: "Level 1 se shuru karein",
+    question: "Kya stock market safe hai beginners ke liye?",
+    answer: "Stock market me risk hota hai – ye sach hai. Par 'risky' aur 'dangerous' me farak hai. Bina knowledge ke invest karna risky hai. Par agar aap pehle samjho, phir invest karo, toh informed decisions le sakte ho. Isliye hum pehle education recommend karte hain. Jaldi mat karo. Seekho, samjho, phir start karo.",
   },
   {
     id: "2",
-    question: "Kya yahan real paisa lagta hai?",
-    answer: "Nahi! Ye ek pure educational platform hai. Yahan koi real trading nahi hoti. Aap sirf seekhte ho – concepts, strategies, aur market understanding. Jab aap ready feel karo, tab apne research ke baad real broker se invest kar sakte ho. Yahan sirf learning hai.",
+    question: "Kya mujhe paisa chahiye yahan seekhne ke liye?",
+    answer: "Nahi! Rotech Shiksha pe saari learning content bilkul FREE hai. 8 levels, quizzes, calculators – sab free. Aapko sikhne ke liye koi paisa nahi lagana. Jab aap apni knowledge confident feel karo aur real investing start karna chaho, tab apne research ke baad decision lo.",
   },
   {
     id: "3",
-    question: "Kya share market risky hota hai?",
-    answer: "Haan, share market me risk hota hai – ye sach hai. Par risk ko samajhna aur manage karna seekhna important hai. Bina knowledge ke invest karna gambling hai, par sahi knowledge ke saath ye informed decision making hai. Isliye humne Risk Management ka poora level banaya hai.",
-    relatedLink: "/learn/level-4",
-    relatedLinkText: "Risk Management seekhein (Level 4)",
+    question: "Kya ye trading platform hai ya sirf education?",
+    answer: "Ye SIRF education platform hai. Yahan aap kuch buy ya sell nahi kar sakte. Koi real money invest nahi hota. Hum sirf concepts sikhate hain – simple Hindi me. Real trading ke liye SEBI registered brokers (jaise Zerodha, Groww, etc.) use karein – wo alag platforms hain.",
   },
   {
     id: "4",
-    question: "Kya main bina knowledge ke start kar sakta hoon?",
-    answer: "Investing bina knowledge ke risky hai. Isliye pehle seekho, phir invest karo. Rotech Shiksha exactly isi liye hai – aapko zero se confident investor tak le jaana. 8 levels complete karo, quizzes do, aur phir real decisions lo. Patience rakho!",
-    relatedLink: "/courses",
-    relatedLinkText: "Poora learning path dekhein",
+    question: "Kya main bina kisi prior knowledge ke start kar sakta hoon?",
+    answer: "Bilkul haan! Rotech Shiksha specifically un logon ke liye hai jinhe share market ki koi knowledge nahi hai. Level 1 bilkul basics se start hota hai – 'share market kya hai' se. Koi bhi confusing jargon nahi. Rohit aur Priya ke story ke through simple language me seekho.",
   },
   {
     id: "5",
-    question: "Kya quizzes aur practice free hai?",
-    answer: "Haan! Filhaal saare 8 levels, quizzes, aur calculators completely free hain. Hum chahte hain ki har beginner ko quality education mile bina paisa kharch kiye. Aage premium features aa sakte hain, par basic learning hamesha accessible rehni chahiye.",
-    relatedLink: "/calculators",
-    relatedLinkText: "Free calculators try karein",
+    question: "Kya Rotech Shiksha beginner-friendly hai?",
+    answer: "Haan, 100%. Humne ye platform specifically beginners ke liye banaya hai. Content Hindi/Hinglish me hai. Complicated terms ko simple examples se samjhate hain. Har level easy se difficult ki taraf jata hai. Aap apni speed se seekh sakte ho – koi pressure nahi.",
   },
   {
     id: "6",
-    question: "Kya mujhe certificate milega?",
-    answer: "Filhaal official certificate feature nahi hai. Par aapka asli certificate hai – knowledge aur confidence jo aap gain karte ho. Future me hum certificate system add kar sakte hain. Abhi focus karo learning pe!",
+    question: "Kya yahan tips milte hain – konsa stock kharidna chahiye?",
+    answer: "Nahi! Hum kabhi bhi buy/sell tips nahi dete. Ye galat practice hai aur beginners ke liye harmful hai. Hum sirf concepts sikhate hain taaki aap KHUD samajh ke decision le sako. Kisi bhi 'stock tip' dene wale se bachke rehna – wo mostly scam hote hain.",
   },
   {
     id: "7",
-    question: "Kya ye trading platform hai?",
-    answer: "Nahi! Rotech Shiksha ek EDUCATIONAL platform hai, trading platform nahi. Yahan aap invest nahi kar sakte. Sirf seekhte ho. Real trading ke liye Zerodha, Groww, Upstox jaise SEBI registered brokers use karo. Hum recommend karte hain ki seekhne ke baad research karke sahi broker choose karo.",
+    question: "Kitna time lagta hai poora course karne me?",
+    answer: "Ye aap pe depend karta hai. Koi jaldi seekhta hai, koi dheere. Average me ek level 30-60 minutes me complete ho sakta hai. Par hum recommend karte hain ki jaldi mat karo. Samajhne me time lo. Ek level complete karo, practice karo, phir aage badho.",
   },
   {
     id: "8",
-    question: "Kya yeh SEBI registered hai?",
-    answer: "Rotech Shiksha ek educational website hai, broker ya investment advisor nahi. Isliye SEBI registration applicable nahi hai. Hum koi investment advice nahi dete – sirf general education provide karte hain. Koi bhi investment decision lene se pehle SEBI registered advisor se consult karein.",
+    question: "Kya ye SEBI registered hai?",
+    answer: "Rotech Shiksha ek educational website hai – broker ya investment advisor nahi. Isliye SEBI registration yahan applicable nahi hai. Hum koi investment advice nahi dete. Sirf general stock market education provide karte hain. Koi bhi investment decision lene se pehle apni research zaroor karein.",
+  },
+  {
+    id: "9",
+    question: "Kya yahan scam hai? Itna free kyun hai?",
+    answer: "Valid question! Hum early stage me hain aur humara goal hai ki beginners ko quality education mile. Abhi focus learning community banana hai. Future me premium features aa sakte hain, par basic education hamesha accessible rehni chahiye. Transparency humari priority hai.",
+  },
+  {
+    id: "10",
+    question: "Kya main mobile pe seekh sakta hoon?",
+    answer: "Haan! Website mobile-friendly hai. Aap phone, tablet, ya computer – kisi bhi device pe access kar sakte ho. Internet connection chahiye bas. Apni convenience ke hisaab se kabhi bhi, kahin bhi seekho.",
   },
 ];
 
-export const disclaimerText = "This website is for educational purpose only. We do not provide investment advice. Invest at your own risk after proper research. Past performance does not guarantee future results.";
+export const disclaimerText = "Ye website sirf educational purpose ke liye hai. Hum investment advice nahi dete. Invest karne se pehle apni research karein aur zarurat ho toh SEBI registered advisor se consult karein. Past performance future results guarantee nahi karta.";
