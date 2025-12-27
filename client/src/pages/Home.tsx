@@ -14,6 +14,8 @@ import {
   IndianRupee,
   Shield,
   GraduationCap,
+  BookOpen,
+  HelpCircle,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 
@@ -162,6 +164,39 @@ export default function Home() {
                 Saare Calculators
                 <ArrowRight className="w-4 h-4" />
               </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 lg:py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Link href="/blog" data-testid="link-blog-home">
+              <Card className="hover-elevate cursor-pointer h-full" data-testid="card-blog-home">
+                <CardContent className="p-5 flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Market Gyaan (Blog)</h3>
+                    <p className="text-sm text-muted-foreground">Simple articles for beginners</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/faq" data-testid="link-faq-home">
+              <Card className="hover-elevate cursor-pointer h-full" data-testid="card-faq-home">
+                <CardContent className="p-5 flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                    <HelpCircle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Beginner FAQ</h3>
+                    <p className="text-sm text-muted-foreground">Common questions answered</p>
+                  </div>
+                </CardContent>
+              </Card>
             </Link>
           </div>
         </div>

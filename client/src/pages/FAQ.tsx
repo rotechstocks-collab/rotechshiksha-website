@@ -1,10 +1,16 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, HelpCircle, ChevronDown } from "lucide-react";
+import { ArrowRight, HelpCircle, ChevronDown, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { SEOHead } from "@/components/SEOHead";
 import { faqData, disclaimerText } from "@/content/faq-data";
+
+const relatedBlogPosts = [
+  { title: "Share Market kya hota hai?", slug: "share-market-kya-hota-hai" },
+  { title: "Kya share market safe hai?", slug: "kya-share-market-safe-hai" },
+  { title: "Kitne paise se start karein?", slug: "kitne-paise-se-start-karein" },
+];
 
 export default function FAQ() {
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -70,7 +76,24 @@ export default function FAQ() {
             ))}
           </div>
 
-          <Card className="mt-10 bg-slate-50 dark:bg-card/50 border-slate-200 dark:border-slate-700">
+          <div className="mt-10 p-6 bg-slate-50 dark:bg-card/50 rounded-lg">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <h3 className="font-semibold text-foreground">Related Articles</h3>
+            </div>
+            <div className="space-y-2">
+              {relatedBlogPosts.map((post) => (
+                <Link key={post.slug} href={`/blog/${post.slug}`}>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-1" data-testid={`link-related-${post.slug}`}>
+                    <ArrowRight className="w-4 h-4" />
+                    {post.title}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <Card className="mt-6 bg-slate-50 dark:bg-card/50 border-slate-200 dark:border-slate-700">
             <CardContent className="py-6">
               <p className="text-sm text-muted-foreground leading-relaxed">
                 <strong>Disclaimer:</strong> {disclaimerText}
