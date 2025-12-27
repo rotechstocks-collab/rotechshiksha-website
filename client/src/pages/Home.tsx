@@ -18,7 +18,6 @@ import {
   Lightbulb,
   Users,
   ChevronRight,
-  Heart,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 
@@ -80,19 +79,19 @@ export default function Home() {
         keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
       />
       
-      <section className="pt-8 pb-8 sm:pt-10 sm:pb-10 lg:pt-12 lg:pb-10 bg-gradient-to-b from-slate-50 via-slate-50/80 to-background dark:from-card/40 dark:via-card/20 dark:to-background">
+      <section className="pt-6 pb-6 sm:pt-8 sm:pb-8 lg:pt-10 lg:pb-8 bg-gradient-to-b from-slate-50 via-slate-50/80 to-background dark:from-card/40 dark:via-card/20 dark:to-background">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 mb-3 text-xs">
             100% Free | Hindi Mein | Beginners Ke Liye
           </Badge>
           
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-3">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-2.5">
             Stock Market Seekho
             <br />
             <span className="text-primary">Bilkul Zero Se</span>
           </h1>
           
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-md mx-auto mb-5">
+          <p className="text-sm sm:text-base text-muted-foreground leading-[1.7] max-w-md mx-auto mb-4">
             Chahe aapko share market ki "S" bhi nahi pata – yahan se shuru karo. 
             Simple Hindi mein, step-by-step.
           </p>
@@ -104,36 +103,34 @@ export default function Home() {
             </Button>
           </Link>
           
-          <div className="mt-4 flex flex-col items-center gap-1">
+          <div className="mt-3 flex flex-col items-center gap-0.5">
             <p className="text-xs text-muted-foreground flex items-center gap-1.5">
               <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
               10,000+ beginners ne yahan se seekha hai
             </p>
-            <p className="text-xs text-muted-foreground/70 flex items-center gap-1">
-              <Heart className="w-3 h-3 text-rose-400" />
-              Aap akele nahi ho – hum saath hain
+            <p className="text-[11px] text-muted-foreground/60 mt-1">
+              Education only • No tips • No stock recommendations
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-5 sm:py-6 lg:py-5 border-b border-border/30">
+      <section className="py-4 sm:py-5">
         <div className="max-w-2xl mx-auto px-4">
-          <Card className="bg-gradient-to-r from-amber-50/80 to-orange-50/80 dark:from-amber-900/15 dark:to-orange-900/15 border-amber-200/40 dark:border-amber-800/30 shadow-sm">
-            <CardContent className="p-4">
+          <Card className="bg-gradient-to-r from-amber-50/70 to-orange-50/70 dark:from-amber-900/10 dark:to-orange-900/10 border-amber-200/40 dark:border-amber-800/30 shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex gap-3">
                 <div className="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center flex-shrink-0">
                   <Users className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div className="min-w-0">
-                  <h2 className="font-semibold text-foreground text-base mb-1">
+                  <h2 className="font-semibold text-foreground text-sm sm:text-base mb-1">
                     Rohit Jaisa – Shayad Aap Bhi
                   </h2>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    <span className="font-medium text-foreground">Rohit</span> ek aam aadmi hai – naukri karta hai, thodi savings hai, lekin stock market ka naam sunte hi darta tha. 
-                    "Kahan se shuru karun? Galti ho gayi toh?" – yahi sochta rehta tha. 
-                    Phir usne <span className="font-medium text-foreground">Priya</span> se seekha – jo ekdum seedhi Hindi mein, bina jargon ke samjhati hai. 
-                    Aaj Rohit apni pehli SIP kar chuka hai, aur ab confident hai. <span className="font-medium text-primary">Aapki bhi baari hai.</span>
+                  <p className="text-[13px] sm:text-sm text-muted-foreground leading-[1.75]">
+                    <span className="font-medium text-foreground">Rohit</span> ek aam aadmi hai – naukri karta hai, thodi savings hai, lekin stock market se darta tha. 
+                    Phir usne <span className="font-medium text-foreground">Priya</span> se seekha – simple Hindi mein, bina jargon ke. 
+                    Aaj Rohit confident hai. <span className="font-medium text-primary">Aapki bhi baari hai.</span>
                   </p>
                 </div>
               </div>
@@ -142,26 +139,26 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-5 sm:py-6 lg:py-6 bg-muted/30">
+      <section className="py-4 sm:py-5 bg-muted/30">
         <div className="max-w-3xl mx-auto px-4">
-          <div className="text-center mb-5">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
+          <div className="text-center mb-4">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground mb-0.5">
               Course Ke Baad Aap...
             </h2>
             <p className="text-xs text-muted-foreground">Ye 3 cheezein zaroor hogi</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {learningOutcomes.map((outcome, index) => (
               <Card key={index} className="shadow-sm" data-testid={`card-outcome-${index}`}>
-                <CardContent className="p-4">
+                <CardContent className="p-4 sm:p-5">
                   <div className="flex sm:flex-col items-start sm:items-center sm:text-center gap-3 sm:gap-0">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary sm:mb-2.5 flex-shrink-0">
                       {outcome.icon}
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground text-sm mb-0.5 sm:mb-1">{outcome.title}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{outcome.description}</p>
+                      <p className="text-xs text-muted-foreground leading-[1.6]">{outcome.description}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -171,14 +168,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-5 sm:py-6 lg:py-6">
+      <section className="py-4 sm:py-5">
         <div className="max-w-3xl mx-auto px-4">
-          <div className="text-center mb-5">
-            <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 mb-2 text-xs">
+          <div className="text-center mb-4">
+            <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 mb-1.5 text-xs">
               <GraduationCap className="w-3 h-3 mr-1" />
               Step-by-Step Path
             </Badge>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-0.5">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground mb-0.5">
               Beginner Learning Path
             </h2>
             <p className="text-xs text-muted-foreground">Ek-ek step follow karo, confusion nahi hoga</p>
@@ -191,7 +188,7 @@ export default function Home() {
                   className="hover-elevate cursor-pointer group shadow-sm"
                   data-testid={`card-level-${level.level}`}
                 >
-                  <CardContent className="p-3 sm:p-4">
+                  <CardContent className="p-3.5 sm:p-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center font-bold text-base flex-shrink-0 ${
                         index === 0 
@@ -204,7 +201,7 @@ export default function Home() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-foreground text-sm">{level.title}</h3>
-                        <p className="text-xs text-muted-foreground line-clamp-1">{level.description}</p>
+                        <p className="text-xs text-muted-foreground leading-[1.5] line-clamp-1">{level.description}</p>
                         <div className="flex items-center gap-1.5 mt-1 text-xs text-muted-foreground">
                           <BookOpen className="w-3 h-3" />
                           <span>{level.lessons} lessons</span>
@@ -218,7 +215,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-5">
+          <div className="mt-4 text-center sm:text-left">
             <Link href="/beginner-course" data-testid="link-start-path">
               <Button className="w-full sm:w-auto gap-2 min-h-[48px]" data-testid="button-start-path">
                 <Play className="w-4 h-4" />
@@ -229,20 +226,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-5 sm:py-6 lg:py-5 bg-muted/30">
+      <section className="py-4 sm:py-5 bg-muted/30">
         <div className="max-w-2xl mx-auto px-4">
-          <div className="text-center mb-4">
+          <div className="text-center mb-3">
             <h2 className="text-lg sm:text-xl font-bold text-foreground mb-0.5">
               Free Calculators
             </h2>
             <p className="text-xs text-muted-foreground">SIP, Lumpsum, CAGR – sabka hisaab</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
             {calculators.map((calc) => (
               <Link key={calc.id} href={`/calculators/${calc.id}`} data-testid={`link-calc-${calc.id}`}>
                 <Card className="hover-elevate cursor-pointer h-full shadow-sm" data-testid={`card-calc-${calc.id}`}>
-                  <CardContent className="p-3 text-center">
+                  <CardContent className="p-3.5 text-center">
                     <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${calc.color} text-white flex items-center justify-center mx-auto mb-2`}>
                       {calc.icon}
                     </div>
@@ -264,12 +261,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-4 sm:py-5 lg:py-4">
+      <section className="py-3.5 sm:py-4">
         <div className="max-w-2xl mx-auto px-4">
           <div className="grid grid-cols-2 gap-2">
             <Link href="/blog" data-testid="link-blog-home">
               <Card className="hover-elevate cursor-pointer h-full shadow-sm" data-testid="card-blog-home">
-                <CardContent className="p-3 flex items-center gap-2.5">
+                <CardContent className="p-3.5 flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-md bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
                     <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
@@ -282,7 +279,7 @@ export default function Home() {
             </Link>
             <Link href="/faq" data-testid="link-faq-home">
               <Card className="hover-elevate cursor-pointer h-full shadow-sm" data-testid="card-faq-home">
-                <CardContent className="p-3 flex items-center gap-2.5">
+                <CardContent className="p-3.5 flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-md bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
                     <HelpCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   </div>
@@ -297,7 +294,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-3 sm:py-4 bg-muted/50 border-t border-border/30">
+      <section className="py-3 bg-muted/50 border-t border-border/30">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             <strong>Disclaimer:</strong> Ye website sirf educational purpose ke liye hai. 
