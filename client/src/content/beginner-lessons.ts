@@ -172,11 +172,21 @@ export const beginnerLessons: Record<string, LessonData> = {
     nextLesson: { slug: "share-kya-hai", title: "Share kya hota hai?" },
     scenes: [
       {
+        id: "m1l2-intro",
+        type: "concept",
+        title: "Aaj Ka Topic – Stock Market Samjho",
+        content: [
+          "Bahut logon ke mann me stock market ka naam sunte hi ek picture aati hai – computers, numbers, tension, aur 'paisa doobna'. Par ye sab galat dharna hai.",
+          "Stock market actually ek simple concept hai. Aaj hum isko bilkul basic level pe samjhenge – bina kisi technical word ke.",
+          "Pichle lesson me humne seekha ki investing kyu zaroori hai. Ab dekhte hain ki stock market actually kya cheez hai.",
+        ],
+      },
+      {
         id: "m1l2-s1",
         type: "dialogue",
         speaker: "rohit",
         content: [
-          "Didi, stock market stock market sunne me aata hai. Par ye actually hai kya? Koi building hai ya online kuch?",
+          "Didi, stock market stock market sunne me aata hai news me. Par mujhe actually samajh nahi aata ki ye hai kya. Koi building hai? Website hai? Ya kuch aur?",
         ],
       },
       {
@@ -184,55 +194,134 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "dialogue",
         speaker: "priya",
         content: [
-          "Soch aise – stock market ek bazaar hai. Lekin yahan sabzi nahi, companies ke shares bikte hain!",
+          "Rohit, bahut simple hai. Stock market ek bazaar hai – bilkul waise jaise tere mohalle me sabzi mandi hoti hai.",
+          "Farq bas itna hai ki sabzi mandi me tamatar, pyaaz bikte hain. Stock market me companies ke shares bikte hain.",
         ],
       },
       {
         id: "m1l2-s3",
-        type: "example",
-        title: "Sabzi Mandi Jaisa Soch",
+        type: "dialogue",
+        speaker: "rohit",
         content: [
-          "Jaise tere gaon me sabzi mandi hoti hai – farmers apni sabzi laate hain, log khareedte hain.",
-          "Stock market bhi aise hi hai, bas yahan pe companies apne shares bechti hain aur log unhe khareedte hain.",
-          "Pehle ye sab ek building me hota tha (jaise Dalal Street, Mumbai). Ab sab online ho gaya hai.",
+          "Companies ke shares? Matlab company bech dete hain log?",
         ],
       },
       {
         id: "m1l2-s4",
-        type: "dialogue",
-        speaker: "rohit",
+        type: "concept",
+        title: "Stock Market Ka Simple Matlab",
         content: [
-          "Accha, toh main bhi ghar baithe khareed sakta hun?",
+          "Nahi nahi, poori company nahi bechte. Companies apna chhota chhota hissa bechti hain – jise 'share' kehte hain.",
+          "Jab tu ek share khareedte hai kisi company ka – toh tu us company ka thoda sa maalik ban jaata hai.",
+          "Stock market wo jagah hai jahan ye shares kharide aur beche jaate hain. Buyers aur sellers dono yahan milte hain.",
+          "Pehle ye sab physically hota tha – ek building me traders cheekh cheekh ke deal karte the. Ab ye sab online ho gaya hai – tu ghar baithe phone se bhi kar sakta hai.",
         ],
       },
       {
         id: "m1l2-s5",
         type: "dialogue",
-        speaker: "priya",
+        speaker: "rohit",
         content: [
-          "Haan! Aaj kal mobile app se bhi ho jaata hai. Par pehle basics samjhna zaroori hai.",
-          "India me do main stock exchanges hain: NSE (National Stock Exchange) aur BSE (Bombay Stock Exchange).",
+          "Accha! Toh share matlab company ka chhota hissa. Par ye share concept thoda aur clearly samjhao na.",
         ],
       },
       {
         id: "m1l2-s6",
-        type: "concept",
-        title: "NSE aur BSE",
+        type: "example",
+        title: "Ramu Ki Chai Ki Dukaan",
         content: [
-          "NSE – National Stock Exchange: Sabse bada stock exchange hai India ka. Yahan Nifty 50 track hota hai.",
-          "BSE – Bombay Stock Exchange: Duniya ka sabse purana stock exchange me se ek. Yahan Sensex track hota hai.",
-          "Dono jagah same companies ke shares available hote hain. Tum dono me se kisi pe bhi trade kar sakte ho.",
+          "Soch, Ramu ne ek chai ki dukaan kholni hai. Uske paas 50,000 rupaye hain, par dukaan ke liye 1 lakh chahiye.",
+          "Toh Ramu ne kya kiya? Usne apne 4 doston ko bola – 'Tum log 12,500-12,500 rupaye lagao. Badme jo bhi profit hoga, wo hum sab milke baatenge.'",
+          "Ab Ramu ki dukaan ke 5 hissedar hain – Ramu + 4 dost. Har ek ke paas 20% ownership hai.",
+          "Ye '20% ownership' hi ek tarah ka share hai. Bas bade companies me ye hisse crores me bante hain – lakhs of shares.",
+          "Jab tu Reliance ka 1 share khareedte hai – tu Reliance ka thoda sa owner ban jaata hai. Bahut chhota hissa, par owner zaroor.",
         ],
       },
       {
         id: "m1l2-s7",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Oh wow! Toh agar main TCS ka share khareedte hun – toh main TCS ka thoda owner hun?",
+        ],
+      },
+      {
+        id: "m1l2-s8",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Haan bilkul! Legally tu us company ka part-owner hai. Company profit karti hai toh tujhe bhi fayda ho sakta hai. Company ka share price badhta hai toh teri investment ki value bhi badhti hai.",
+          "Par dhyan rakh – agar company ka kaam theek nahi chalta, toh share price gir bhi sakta hai. Isliye samajh ke invest karna zaroori hai.",
+        ],
+      },
+      {
+        id: "m1l2-s9",
+        type: "concept",
+        title: "India Ke Do Main Stock Exchanges",
+        content: [
+          "India me shares kharidne-bechne ke liye do main jagah hain – inhe 'Stock Exchanges' kehte hain.",
+          "NSE (National Stock Exchange): Ye India ka sabse bada stock exchange hai. Yahan 'Nifty 50' track hota hai – jo top 50 companies ka group hai.",
+          "BSE (Bombay Stock Exchange): Ye duniya ke sabse purane stock exchanges me se ek hai. Yahan 'Sensex' track hota hai – jo top 30 companies ka group hai.",
+          "Dono exchanges pe almost same companies available hoti hain. Tu dono me se kisi pe bhi trade kar sakta hai.",
+        ],
+      },
+      {
+        id: "m1l2-s10",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Ek doubt hai didi. Log kehte hain stock market me paisa doob jaata hai. Toh kya ye safe nahi hai?",
+        ],
+      },
+      {
+        id: "m1l2-s11",
+        type: "concept",
+        title: "Ek Common Confusion Clear Karo",
+        content: [
+          "Dekho Rohit, stock market ek tool hai – bilkul knife jaisa. Knife se tum sabzi kaat sakte ho ya apne aap ko hurt kar sakte ho. Tool galat nahi hai – use karna aana chahiye.",
+          "Jo log bina samjhe, bina seekhe, sirf 'tip' sunke paisa lagaate hain – wo aksar loss karte hain. Ye unki galti hai, stock market ki nahi.",
+          "Jo log pehle seekhte hain, research karte hain, patience rakhte hain – wo stock market se ache returns kama sakte hain.",
+          "Isliye hum pehle poora basics samjh rahe hain. Jaldi nahi karni. Pehle foundation strong karo.",
+        ],
+      },
+      {
+        id: "m1l2-s12",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Samajh gaya didi. Toh stock market khud bura nahi hai – bas bina samjhe use karna risky hai.",
+        ],
+      },
+      {
+        id: "m1l2-s13",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Exactly! Tu samajhdar hai Rohit. Ye course isi liye banaya gaya hai – taaki tum basics clear karo aur jab kabhi invest karo toh informed decision lo.",
+          "Remember: Knowledge hi sabse bada investment hai. Pehle ye invest karo, baaki sab baad me aayega.",
+        ],
+      },
+      {
+        id: "m1l2-conclusion",
+        type: "concept",
+        title: "Aaj Ka Takeaway",
+        content: [
+          "Stock market ek bazaar hai jahan companies ke shares – matlab chhote chhote ownership hisse – kharide aur beche jaate hain.",
+          "Jab tu share khareedte hai, toh tu company ka thoda maalik ban jaata hai. Company accha karti hai toh tujhe fayda, nahi karti toh nuksaan bhi ho sakta hai.",
+          "India me NSE aur BSE do main exchanges hain jahan ye sab hota hai. Ab ye sab online hai – phone se bhi ho jaata hai.",
+          "Ab basic idea ho gaya! Agle lesson me hum 'share' concept ko aur deep me samjhenge.",
+        ],
+      },
+      {
+        id: "m1l2-summary",
         type: "summary",
         title: "Is Lesson Se Seekha",
         content: [
           "Stock market ek bazaar hai jahan companies ke shares bikte hain",
-          "Pehle physical tha, ab online hai – mobile se bhi access ho sakta hai",
-          "India me NSE aur BSE do main exchanges hain",
-          "Dono pe same companies available hoti hain",
+          "Share matlab company ka chhota ownership hissa",
+          "Share kharidne se tu company ka thoda maalik ban jaata hai",
+          "India me NSE aur BSE do main stock exchanges hain",
+          "Stock market risky tabhi hai jab bina samjhe use karo – seekhna zaroori hai",
         ],
       },
     ],
