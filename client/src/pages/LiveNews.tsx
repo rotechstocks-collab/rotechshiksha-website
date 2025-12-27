@@ -55,6 +55,35 @@ interface EnhancedNewsArticle extends NewsArticle {
   timeAgoIST: string;
 }
 
+interface BusinessVideo {
+  id: string;
+  videoId: string;
+  title: string;
+  thumbnail: string;
+  channelName: string;
+  channelId: string;
+  publishedAt: string;
+  viewCount: string;
+  duration: string;
+  category: string;
+  language: string;
+  languageCode: string;
+  type: "news" | "analysis" | "live" | "educational";
+}
+
+const videoLanguages = [
+  { code: "all", labelEn: "All", labelHi: "सभी" },
+  { code: "en", labelEn: "English", labelHi: "English", badge: "EN" },
+  { code: "hi", labelEn: "Hindi", labelHi: "हिंदी", badge: "HI" },
+  { code: "gu", labelEn: "Gujarati", labelHi: "ગુજરાતી", badge: "GU" },
+  { code: "mr", labelEn: "Marathi", labelHi: "मराठी", badge: "MR" },
+  { code: "ta", labelEn: "Tamil", labelHi: "தமிழ்", badge: "TA" },
+  { code: "te", labelEn: "Telugu", labelHi: "తెలుగు", badge: "TE" },
+  { code: "bn", labelEn: "Bengali", labelHi: "বাংলা", badge: "BN" },
+  { code: "kn", labelEn: "Kannada", labelHi: "ಕನ್ನಡ", badge: "KN" },
+  { code: "ml", labelEn: "Malayalam", labelHi: "മലയാളം", badge: "ML" },
+];
+
 const categoryIcons: Record<string, typeof TrendingUp> = {
   markets: TrendingUp,
   economy: Landmark,
@@ -440,6 +469,277 @@ function NewsCardSkeleton() {
   );
 }
 
+function VideoCardSkeleton() {
+  return (
+    <Card className="overflow-hidden">
+      <Skeleton className="aspect-video w-full" />
+      <CardContent className="p-3 space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+        <div className="flex gap-2">
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-20" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function formatVideoTimeAgo(dateString: string, isHindi: boolean): string {
+  try {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    
+    if (diffMins < 60) {
+      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} min ago`;
+    }
+    if (diffHours < 24) {
+      const hourText = diffHours === 1 ? "hour" : "hours";
+      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours} ${hourText} ago`;
+    }
+    const dayText = diffDays === 1 ? "day" : "days";
+    return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
+  } catch {
+    return "";
+  }
+}
+
+function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const isLive = video.duration === "LIVE";
+  
+  const getYouTubeUrl = () => {
+    if (video.videoId === "live_stream") {
+      return `https://www.youtube.com/channel/${video.channelId}/live`;
+    }
+    return `https://www.youtube.com/watch?v=${video.videoId}`;
+  };
+  
+  const langBadge = videoLanguages.find(l => l.code === video.languageCode)?.badge || video.languageCode.toUpperCase();
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Card className="overflow-hidden hover-elevate group" data-testid={`video-card-${video.id}`}>
+        <a 
+          href={getYouTubeUrl()} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block"
+        >
+          <div className="relative aspect-video overflow-hidden bg-muted">
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Video className="w-12 h-12 text-muted-foreground animate-pulse" />
+              </div>
+            )}
+            <img
+              src={video.thumbnail}
+              alt=""
+              className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&auto=format";
+                setImageLoaded(true);
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+            
+            <div className="absolute top-2 left-2 flex gap-1">
+              <Badge variant="secondary" className="text-xs bg-black/70 text-white">
+                {langBadge}
+              </Badge>
+              {isLive && (
+                <Badge variant="destructive" className="text-xs animate-pulse">
+                  <Radio className="w-3 h-3 mr-1" />
+                  LIVE
+                </Badge>
+              )}
+            </div>
+            
+            {!isLive && (
+              <div className="absolute bottom-2 right-2">
+                <Badge variant="secondary" className="text-xs bg-black/80 text-white">
+                  {video.duration}
+                </Badge>
+              </div>
+            )}
+            
+            <div className="absolute bottom-2 left-2">
+              <span className="text-white/90 text-xs flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                {formatVideoTimeAgo(video.publishedAt, isHindi)}
+              </span>
+            </div>
+          </div>
+          
+          <CardContent className="p-3 space-y-2">
+            <h3 className="font-medium text-sm line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+              {video.title}
+            </h3>
+            
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1 text-xs text-muted-foreground min-w-0">
+                <Tv className="w-3 h-3 flex-shrink-0" />
+                <span className="truncate">{video.channelName}</span>
+              </div>
+              <span className="text-xs text-muted-foreground flex-shrink-0">{video.viewCount} views</span>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full mt-2"
+              data-testid={`video-watch-${video.id}`}
+            >
+              <ExternalLink className="w-3 h-3 mr-2" />
+              {isHindi ? "YouTube पर देखें" : "Watch on YouTube"}
+            </Button>
+          </CardContent>
+        </a>
+      </Card>
+    </motion.div>
+  );
+}
+
+function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
+  const [videoLang, setVideoLang] = useState("all");
+  
+  const { data, isLoading, error, refetch, isFetching } = useQuery<{ 
+    videos: BusinessVideo[]; 
+    fallbackToEnglish?: boolean;
+    availableLanguages?: string[];
+  }>({
+    queryKey: ["/api/youtube/videos", videoLang],
+    queryFn: async () => {
+      const res = await fetch(`/api/youtube/videos?lang=${videoLang}`);
+      if (!res.ok) throw new Error("Failed to fetch videos");
+      return res.json();
+    },
+    refetchInterval: 10 * 60 * 1000,
+  });
+  
+  const showFallbackNotice = data?.fallbackToEnglish && videoLang !== "en" && videoLang !== "all";
+  const liveVideos = data?.videos?.filter(v => v.duration === "LIVE") || [];
+  const regularVideos = data?.videos?.filter(v => v.duration !== "LIVE") || [];
+  
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-sm text-muted-foreground mr-1">
+          {isHindi ? "भाषा:" : "Language:"}
+        </span>
+        {videoLanguages.map((lang) => (
+          <Button
+            key={lang.code}
+            variant={videoLang === lang.code ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setVideoLang(lang.code)}
+            data-testid={`video-lang-${lang.code}`}
+          >
+            {isHindi ? lang.labelHi : lang.labelEn}
+          </Button>
+        ))}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => refetch()}
+          disabled={isFetching}
+          data-testid="video-refresh"
+        >
+          <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} />
+        </Button>
+      </div>
+      
+      {showFallbackNotice && (
+        <p className="text-xs text-muted-foreground mb-2">
+          {isHindi 
+            ? "चुनी गई भाषा में वीडियो उपलब्ध नहीं है, English में दिखा रहे हैं" 
+            : "Videos in selected language not available, showing in English"}
+        </p>
+      )}
+      
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <VideoCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : error ? (
+        <Card>
+          <CardContent className="py-8 text-center">
+            <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">
+              {isHindi ? "वीडियो लोड करने में समस्या" : "Error loading videos"}
+            </p>
+            <Button variant="outline" size="sm" className="mt-4" onClick={() => refetch()}>
+              {isHindi ? "फिर से कोशिश करें" : "Try Again"}
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          {liveVideos.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+                <Radio className="w-4 h-4 text-red-500 animate-pulse" />
+                {isHindi ? "लाइव अभी" : "Live Now"}
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <AnimatePresence>
+                  {liveVideos.map((video) => (
+                    <VideoCard key={video.id} video={video} isHindi={isHindi} />
+                  ))}
+                </AnimatePresence>
+              </div>
+            </div>
+          )}
+          
+          <div>
+            <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+              <Video className="w-4 h-4" />
+              {isHindi ? "हाल के वीडियो" : "Recent Videos"}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <AnimatePresence>
+                {regularVideos.map((video) => (
+                  <VideoCard key={video.id} video={video} isHindi={isHindi} />
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+          
+          {(!data?.videos || data.videos.length === 0) && (
+            <Card>
+              <CardContent className="py-8 text-center">
+                <Video className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">
+                  {isHindi ? "कोई वीडियो नहीं मिला" : "No videos found"}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </>
+      )}
+      
+      <p className="text-xs text-muted-foreground text-center mt-6 pt-4 border-t">
+        {isHindi 
+          ? "सभी वीडियो उनके आधिकारिक YouTube चैनलों से एम्बेड या लिंक किए गए हैं। हम इस सामग्री के मालिक नहीं हैं।" 
+          : "All videos are embedded or linked from their official YouTube channels. We do not own or upload this content."}
+      </p>
+    </div>
+  );
+}
+
 export default function LiveNews() {
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -697,57 +997,7 @@ export default function LiveNews() {
           <TabsContent value="videos" className="mt-4">
             <LiveVideoSection isHindi={isHindi} />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader className="py-3">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Globe className="w-4 h-4" />
-                    {isHindi ? "ग्लोबल मार्केट वीडियो" : "Global Market Videos"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  {globalVideoSources.map((source) => (
-                    <div 
-                      key={source.id}
-                      className="flex items-center justify-between p-2 rounded hover-elevate"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Video className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">{source.name}</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {source.description.split(" ")[0]}
-                      </Badge>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="py-3">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Building2 className="w-4 h-4" />
-                    {isHindi ? "भारतीय मार्केट वीडियो" : "India Market Videos"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  {indiaVideoSources.map((source) => (
-                    <div 
-                      key={source.id}
-                      className="flex items-center justify-between p-2 rounded hover-elevate"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Video className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">{source.name}</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs text-red-500 border-red-200">
-                        LIVE
-                      </Badge>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
+            <BusinessVideosSection isHindi={isHindi} />
           </TabsContent>
         </Tabs>
 
