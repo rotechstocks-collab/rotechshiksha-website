@@ -46,6 +46,10 @@ const moreNavItems: NavItem[] = [
   { labelKey: "nav.pricing", href: "/pricing" },
   { labelKey: "nav.lessons", href: "/beginner-course" },
   { labelKey: "nav.learningLevels", href: "/level-1" },
+  { labelKey: "nav.economicCalendar", href: "/economic-calendar" },
+  { labelKey: "nav.brokers", href: "/compare-brokers" },
+  { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards" },
+  { labelKey: "nav.paperTrade", href: "/paper-trade" },
 ];
 
 export function Header() {
