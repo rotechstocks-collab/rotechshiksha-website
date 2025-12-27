@@ -301,3 +301,143 @@ export const level4Quiz: QuizData = {
   nextLevelPath: "/learn/level-5",
   nextLevelText: "➡ Go to Level 5",
 };
+
+export const level5Quiz: QuizData = {
+  levelId: 5,
+  topic: "Mutual Funds & SIP (Beginner Friendly)",
+  questions: [
+    {
+      id: 1,
+      question: "Mutual Fund kya hota hai?",
+      options: [
+        "Direct stock trading",
+        "Sabka paisa mila kar invest karna",
+        "Fixed deposit",
+        "Daily profit scheme",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 2,
+      question: "Mutual fund ka paisa kaun manage karta hai?",
+      options: [
+        "Government",
+        "Investor khud",
+        "Professional fund manager",
+        "Broker",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 3,
+      question: "SIP ka full form kya hai?",
+      options: [
+        "Safe Investment Plan",
+        "Systematic Investment Plan",
+        "Stock Income Program",
+        "Simple Interest Plan",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 4,
+      question: "SIP beginners ke liye kyun achha hota hai?",
+      options: [
+        "Ek saath zyada paisa lagta hai",
+        "Discipline aur regular investment sikhata hai",
+        "Guaranteed return deta hai",
+        "Risk bilkul nahi hota",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 5,
+      question: "Priya Rohit ko SIP ke baare me kya samjhati hai?",
+      options: [
+        "SIP se turant ameer ban jaoge",
+        "SIP long-term habit banata hai",
+        "SIP me risk nahi hota",
+        "SIP sirf experts ke liye hai",
+      ],
+      correctIndex: 1,
+    },
+  ],
+  successMessage: {
+    title: "🎉 Fantastic!",
+    rohitText: "Ab Rohit samajh gaya hai ki small steps se bhi big future banta hai.",
+    priyaQuote: "Consistency hi SIP ka asli magic hai.",
+  },
+  retryMessage: "Thoda aur practice chahiye. Rohit bhi pehle confuse hota tha, par revise karke strong bana.",
+  nextLevelPath: "/learn/level-6",
+  nextLevelText: "➡ Go to Level 6",
+};
+
+export const level6Quiz: QuizData = {
+  levelId: 6,
+  topic: "Advanced Concepts & Market Awareness",
+  questions: [
+    {
+      id: 1,
+      question: "Diversification ka matlab kya hota hai?",
+      options: [
+        "Ek hi stock me paisa lagana",
+        "Risk ko spread karna alag-alag investments me",
+        "Sirf safe options choose karna",
+        "Trading fast karna",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 2,
+      question: "Portfolio ka matlab kya hai?",
+      options: [
+        "Trading app",
+        "Saare investments ka collection",
+        "Bank account",
+        "Profit report",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 3,
+      question: "News aur market ka kya relation hai?",
+      options: [
+        "News ka koi effect nahi",
+        "News se short-term movement ho sakta hai",
+        "News sirf traders ke liye hoti hai",
+        "News ignore karni chahiye",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 4,
+      question: "Rohit Level 6 me kya seekhta hai?",
+      options: [
+        "Har news pe trade karo",
+        "Awareness rakho, panic mat karo",
+        "Market perfect predict hota hai",
+        "Risk ignore karo",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 5,
+      question: "Smart investor ka next step kya hota hai?",
+      options: [
+        "Blind confidence",
+        "Zyada trading",
+        "Practice aur observation (paper trading)",
+        "Tips follow karna",
+      ],
+      correctIndex: 2,
+    },
+  ],
+  successMessage: {
+    title: "🎉 Well Done!",
+    rohitText: "Ab Rohit market ko sirf profit nahi, ek system ki tarah dekhta hai.",
+    priyaQuote: "Awareness tumhara sabse strong armour hai.",
+  },
+  retryMessage: "Thoda aur practice chahiye. Rohit bhi pehle confuse hota tha, par revise karke strong bana.",
+  nextLevelPath: "/learn/level-7",
+  nextLevelText: "➡ Go to Level 7",
+};
