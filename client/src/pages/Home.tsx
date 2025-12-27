@@ -26,7 +26,7 @@ import {
   Quote,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
-import { CharacterAvatar, CharacterIntro } from "@/components/Characters";
+import { CharacterAvatar, CharacterIntro, HeroCharacters } from "@/components/Characters";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 
@@ -203,31 +203,33 @@ export default function Home() {
             </Badge>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 tracking-tight">
-              {isHindi ? "Stock Market सीखो" : "Learn Stock Market"}
+              Stock Market Seekho
               <br />
-              <span className="text-primary">{isHindi ? "बिल्कुल Zero से" : "From Zero"}</span>
+              <span className="text-primary">— Bilkul Zero Se</span>
             </h1>
             
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
               {isHindi 
-                ? "चाहे आपको share market की 'S' भी नहीं पता – यहां से शुरू करो। Simple Hindi में, step-by-step।"
-                : "Even if you know nothing about the stock market – start here. Simple Hindi, step-by-step learning."}
+                ? "Simple Hindi + Story-based learning with Priya & Rohit."
+                : "Simple Hindi + Story-based learning with Priya & Rohit."}
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
               <Link href="/beginner-course" data-testid="link-start-learning-hero">
                 <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8 shadow-lg" data-testid="button-start-learning-hero">
                   <Play className="w-5 h-5" />
-                  {isHindi ? "सीखना शुरू करें (Free)" : "Start Learning (Free)"}
+                  {isHindi ? "Free Course शुरू करें" : "Start Free Course"}
                 </Button>
               </Link>
-              <Link href="/courses" data-testid="link-explore-courses">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8" data-testid="button-explore-courses">
-                  {isHindi ? "Courses देखें" : "Explore Courses"}
-                  <ArrowRight className="w-5 h-5" />
+              <Link href="/calculators" data-testid="link-explore-tools">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8" data-testid="button-explore-tools">
+                  <Calculator className="w-5 h-5" />
+                  {isHindi ? "Tools देखें" : "Explore Tools"}
                 </Button>
               </Link>
             </div>
+            
+            <HeroCharacters isHindi={isHindi} />
             
             <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5">

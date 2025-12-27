@@ -52,24 +52,11 @@ interface NavItem {
   children?: NavChild[];
 }
 
-const learnNavItems: NavChild[] = [
-  { labelKey: "nav.courses", href: "/courses", icon: GraduationCap, description: "All course levels" },
-  { labelKey: "nav.learningLevels", href: "/level-1", icon: BarChart3, description: "Level-wise learning" },
-  { labelKey: "nav.lessons", href: "/beginner-course", icon: BookOpen, description: "Start from basics" },
-  { labelKey: "nav.educationalVideos", href: "/educational-videos", icon: TrendingUp, description: "Video tutorials" },
-];
-
 const toolsNavItems: NavChild[] = [
   { labelKey: "nav.calculators", href: "/calculators", icon: Calculator, description: "SIP, CAGR, Brokerage" },
   { labelKey: "nav.paperTrade", href: "/paper-trade", icon: LineChart, description: "Practice trading" },
   { labelKey: "nav.brokers", href: "/compare-brokers", icon: Scale, description: "Compare brokers" },
-  { labelKey: "nav.loansAndCreditCards", href: "/loans-credit-cards", icon: CreditCard, description: "Financial products" },
-];
-
-const marketNavItems: NavChild[] = [
-  { labelKey: "nav.liveBusinessNews", href: "/live-news", icon: Newspaper, description: "Real-time news" },
   { labelKey: "nav.economicCalendar", href: "/economic-calendar", icon: Calendar, description: "Market events" },
-  { labelKey: "nav.blog", href: "/blog", icon: FileText, description: "Articles & insights" },
 ];
 
 export function Header() {
@@ -198,11 +185,25 @@ export function Header() {
               </Button>
             </Link>
             
-            <NavDropdown 
-              label={t("nav.learn") || "Learn"} 
-              items={learnNavItems} 
-              testId="nav-learn-dropdown"
-            />
+            <Link href="/courses">
+              <Button
+                variant="ghost"
+                className={`font-medium ${isActive("/courses") ? "bg-accent text-accent-foreground" : ""}`}
+                data-testid="nav-courses"
+              >
+                {t("nav.courses")}
+              </Button>
+            </Link>
+            
+            <Link href="/beginner-course">
+              <Button
+                variant="ghost"
+                className={`font-medium ${isActive("/beginner-course") || isActive("/level-1") ? "bg-accent text-accent-foreground" : ""}`}
+                data-testid="nav-learning-path"
+              >
+                {t("nav.learningPath") || "Learning Path"}
+              </Button>
+            </Link>
             
             <NavDropdown 
               label={t("nav.tools") || "Tools"} 
@@ -210,11 +211,25 @@ export function Header() {
               testId="nav-tools-dropdown"
             />
             
-            <NavDropdown 
-              label={t("nav.market") || "Market"} 
-              items={marketNavItems} 
-              testId="nav-market-dropdown"
-            />
+            <Link href="/blog">
+              <Button
+                variant="ghost"
+                className={`font-medium ${isActive("/blog") ? "bg-accent text-accent-foreground" : ""}`}
+                data-testid="nav-blog"
+              >
+                {t("nav.blog")}
+              </Button>
+            </Link>
+            
+            <Link href="/live-news">
+              <Button
+                variant="ghost"
+                className={`font-medium ${isActive("/live-news") || isActive("/market-news") ? "bg-accent text-accent-foreground" : ""}`}
+                data-testid="nav-news"
+              >
+                {t("nav.news") || "News"}
+              </Button>
+            </Link>
             
             <Link href="/pricing">
               <Button
@@ -322,11 +337,35 @@ export function Header() {
                       </button>
                     </Link>
                     
-                    <MobileNavSection 
-                      title={t("nav.learn") || "Learn"} 
-                      items={learnNavItems} 
-                      onClose={() => setMobileMenuOpen(false)} 
-                    />
+                    <Link href="/courses">
+                      <button
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                          isActive("/courses")
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-foreground hover:bg-accent/50"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        data-testid="mobile-nav-courses"
+                      >
+                        <GraduationCap className="w-4 h-4" />
+                        <span className="text-sm font-medium">{t("nav.courses")}</span>
+                      </button>
+                    </Link>
+                    
+                    <Link href="/beginner-course">
+                      <button
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                          isActive("/beginner-course") || isActive("/level-1")
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-foreground hover:bg-accent/50"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        data-testid="mobile-nav-learning-path"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        <span className="text-sm font-medium">{t("nav.learningPath") || "Learning Path"}</span>
+                      </button>
+                    </Link>
                     
                     <MobileNavSection 
                       title={t("nav.tools") || "Tools"} 
@@ -334,11 +373,35 @@ export function Header() {
                       onClose={() => setMobileMenuOpen(false)} 
                     />
                     
-                    <MobileNavSection 
-                      title={t("nav.market") || "Market"} 
-                      items={marketNavItems} 
-                      onClose={() => setMobileMenuOpen(false)} 
-                    />
+                    <Link href="/blog">
+                      <button
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                          isActive("/blog")
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-foreground hover:bg-accent/50"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        data-testid="mobile-nav-blog"
+                      >
+                        <FileText className="w-4 h-4" />
+                        <span className="text-sm font-medium">{t("nav.blog")}</span>
+                      </button>
+                    </Link>
+                    
+                    <Link href="/live-news">
+                      <button
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                          isActive("/live-news") || isActive("/market-news")
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-foreground hover:bg-accent/50"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        data-testid="mobile-nav-news"
+                      >
+                        <Newspaper className="w-4 h-4" />
+                        <span className="text-sm font-medium">{t("nav.news") || "News"}</span>
+                      </button>
+                    </Link>
                     
                     <Link href="/pricing">
                       <button

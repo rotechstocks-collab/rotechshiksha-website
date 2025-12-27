@@ -17,20 +17,22 @@ const characterData = {
     nameHi: "प्रिया",
     role: "Your Learning Companion",
     roleHi: "आपकी सीखने की साथी",
-    color: "from-violet-500 to-purple-600",
-    bgColor: "bg-violet-100 dark:bg-violet-900/30",
-    textColor: "text-violet-700 dark:text-violet-300",
-    borderColor: "border-violet-200 dark:border-violet-800",
+    color: "from-emerald-500 to-green-600",
+    bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
+    textColor: "text-emerald-700 dark:text-emerald-300",
+    borderColor: "border-emerald-200 dark:border-emerald-800",
+    lightBg: "bg-emerald-50 dark:bg-emerald-950/20",
   },
   rohit: {
     name: "Rohit",
     nameHi: "रोहित",
     role: "Fellow Learner",
     roleHi: "साथी सीखने वाला",
-    color: "from-blue-500 to-indigo-600",
-    bgColor: "bg-blue-100 dark:bg-blue-900/30",
-    textColor: "text-blue-700 dark:text-blue-300",
-    borderColor: "border-blue-200 dark:border-blue-800",
+    color: "from-slate-600 to-slate-800",
+    bgColor: "bg-slate-100 dark:bg-slate-900/30",
+    textColor: "text-slate-700 dark:text-slate-300",
+    borderColor: "border-slate-200 dark:border-slate-700",
+    lightBg: "bg-slate-50 dark:bg-slate-950/20",
   },
 };
 
@@ -121,12 +123,12 @@ export function StoryCard({ character, type, title, children, isHindi = false }:
   const config = typeConfig[type];
 
   return (
-    <Card className={`${data.bgColor} ${data.borderColor} border overflow-hidden`}>
+    <Card className={`${data.bgColor} ${data.borderColor} border overflow-visible`}>
       <CardContent className="p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <CharacterAvatar character={character} mood={config.mood} size="md" />
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className={`font-semibold ${data.textColor}`}>{data.name}</span>
               <span className="text-xs text-muted-foreground">{config.label}</span>
               <TypeIcon type={type} className="w-3.5 h-3.5 text-muted-foreground" />
@@ -168,8 +170,8 @@ export function Dialogue({ exchanges }: DialogueProps) {
             <div
               className={`max-w-[85%] rounded-lg px-4 py-2.5 ${
                 exchange.character === "priya"
-                  ? "bg-violet-100 dark:bg-violet-900/30 text-violet-900 dark:text-violet-100"
-                  : "bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100"
+                  ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100"
+                  : "bg-slate-100 dark:bg-slate-900/30 text-slate-900 dark:text-slate-100"
               }`}
             >
               <p className="text-sm leading-relaxed">{exchange.message}</p>
@@ -188,12 +190,12 @@ interface CharacterIntroProps {
 export function CharacterIntro({ isHindi = false }: CharacterIntroProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <Card className="bg-violet-50 dark:bg-violet-950/20 border-violet-200 dark:border-violet-800">
+      <Card className="bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800">
         <CardContent className="p-5">
           <div className="flex items-center gap-4 mb-3">
             <CharacterAvatar character="priya" size="lg" />
             <div>
-              <h3 className="font-bold text-lg text-violet-700 dark:text-violet-300">
+              <h3 className="font-bold text-lg text-emerald-700 dark:text-emerald-300">
                 {isHindi ? "प्रिया" : "Priya"}
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -203,18 +205,18 @@ export function CharacterIntro({ isHindi = false }: CharacterIntroProps) {
           </div>
           <p className="text-sm text-foreground/80 leading-relaxed">
             {isHindi
-              ? "मैं एक अनुभवी investor हूं जो complex concepts को simple तरीके से explain करती हूं। मेरे साथ step-by-step सीखें!"
+              ? "मैं एक अनुभवी investor हूं जो complex concepts को simple तरीके से explain करती हूं। मेरे साथ step-by-step सीखो!"
               : "I'm an experienced investor who explains complex concepts in simple terms. Learn step-by-step with me!"}
           </p>
         </CardContent>
       </Card>
       
-      <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+      <Card className="bg-slate-50 dark:bg-slate-950/20 border-slate-200 dark:border-slate-700">
         <CardContent className="p-5">
           <div className="flex items-center gap-4 mb-3">
             <CharacterAvatar character="rohit" size="lg" />
             <div>
-              <h3 className="font-bold text-lg text-blue-700 dark:text-blue-300">
+              <h3 className="font-bold text-lg text-slate-700 dark:text-slate-300">
                 {isHindi ? "रोहित" : "Rohit"}
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -229,6 +231,40 @@ export function CharacterIntro({ isHindi = false }: CharacterIntroProps) {
           </p>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+export function HeroCharacters({ isHindi = false }: { isHindi?: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-6 py-4">
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+          P
+        </div>
+        <div className="text-center">
+          <p className="font-semibold text-emerald-700 dark:text-emerald-300">
+            {isHindi ? "प्रिया" : "Priya"}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {isHindi ? "Expert Guide" : "Expert Guide"}
+          </p>
+        </div>
+      </div>
+      
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+          R
+        </div>
+        <div className="text-center">
+          <p className="font-semibold text-slate-700 dark:text-slate-300">
+            {isHindi ? "रोहित" : "Rohit"}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {isHindi ? "Just Like You" : "Just Like You"}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

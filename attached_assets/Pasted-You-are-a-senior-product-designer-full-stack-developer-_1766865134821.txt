@@ -1,0 +1,109 @@
+You are a senior product designer + full stack developer.
+Redesign and restructure my website (rotechshiksha.com) to look like a modern professional stock market education platform similar to Zerodha Varsity + Groww, but keeping my content and pages.
+
+IMPORTANT RULES:
+1) Do NOT remove any existing page or route.
+2) You may reorganize navigation and move sections between pages.
+3) Improve UI/UX, responsiveness, typography, spacing, and consistency.
+4) Keep fast-loading clean design (flat minimal professional).
+5) Maintain all existing features: courses, levels, blog, calculators, economic calendar, live news, broker comparison, paper trading, pricing, FAQ.
+6) Priya and Rohit are the same age, professional friends. Never portray them as siblings (brother-sister).
+
+GOALS:
+- Increase conversions for beginners
+- Improve trust, retention, and readability
+- Make the learning journey clear
+- Add product-like polish (consistent design system)
+
+TASKS TO DO:
+
+A) GLOBAL DESIGN SYSTEM
+- Create consistent typography system (h1,h2,h3, body, captions).
+- Create consistent spacing system (8px/16px/24px/32px/48px).
+- Create consistent button styles (primary, secondary, outline).
+- Create consistent card styles (radius, shadow, padding).
+- Apply across all pages.
+
+B) HOMEPAGE (HIGH IMPACT)
+- Create strong hero section:
+  Title: "Stock Market Seekho — Bilkul Zero Se"
+  Subtitle: "Simple Hindi + Story-based learning with Priya & Rohit."
+  Add two CTA buttons:
+    Primary: "Start Free Course"
+    Secondary: "Explore Tools"
+- Below hero, add "Why Rotech Shiksha?" section with 3 feature cards:
+  1) Beginner Friendly Learning
+  2) Story-based Hindi Explanation
+  3) Tools + Practice
+- Add "Learning Path Preview" section showing Level 1 → Level 2 → Advanced
+- Add "Trust" section:
+  show stats placeholders like learners count, lessons, hours saved.
+- Add a footer with quick links and contact.
+
+C) NAVIGATION RESTRUCTURE (DO NOT DELETE ANY PAGE)
+- Make top nav clean and minimal:
+  Home, Courses, Learning Path, Tools, Blog, News, Pricing
+- Put secondary items inside dropdown or footer links:
+  Economic Calendar, Broker Compare, Paper Trading, FAQ
+
+D) COURSES + LEARNING PATH IMPROVEMENT
+- Reduce unnecessary white space.
+- Make cards larger and easier to scan.
+- Add progress tracker bar at top.
+- Locked courses should show clear reason: "Unlock after completing Level 1"
+- Add “Continue Learning” button to resume last lesson.
+
+E) LESSON PAGES TEMPLATE (Story Layout)
+Standardize every lesson page into this structure:
+1) Rohit asks question/confusion (short)
+2) Priya explains in simple Hindi (clear blocks)
+3) Real-world example highlight box
+4) Quick Summary box
+5) Mini quiz (3 questions)
+6) Next/Previous buttons
+Keep content, only restructure UI.
+
+F) BLOG SEO & READABILITY
+- Add auto Table of Contents
+- Add reading time + updated date
+- Add related articles at bottom
+- Add FAQ section with schema markup
+- Add internal links to relevant courses/tools
+
+G) LIVE NEWS COPYRIGHT SAFE
+- Show only headline + 1-2 line snippet
+- Always show original source name + publish date
+- Add "Read Full Article" button linking to original website
+- Add disclaimer: "We show summaries; rights belong to publishers."
+
+H) USER PROGRESS + DASHBOARD
+- Add "My Learning" dashboard page
+- Track lesson completion and progress % using localStorage
+- Show completed lessons list and "Continue Learning"
+- Add simple onboarding popup: "Choose your level: Beginner / Intermediate"
+
+I) MOBILE OPTIMIZATION
+- Ensure everything works on 360px width
+- Increase readability on mobile
+- Add hamburger menu
+- Ensure buttons are thumb friendly
+
+J) PRIYA & ROHIT CHARACTER SYSTEM
+- Use flat minimal professional illustrations.
+- Priya theme = green tone, professional office look.
+- Rohit theme = modern stylish office look (shirt + blazer).
+- Use these characters consistently:
+  Homepage hero (both)
+  Lesson pages (Priya explains, Rohit asks)
+  Tools & calculators page (small character illustration)
+  Blog pages (small illustration at top)
+- Provide a clear folder structure for assets:
+  /assets/characters/priya/
+  /assets/characters/rohit/
+  /assets/characters/icons/
+- Use SVG or PNG.
+
+Finally:
+- Give me a summary of what changes you made
+- Ensure no route/page is missing
+- Ensure the redesign is consistent across the entire website
