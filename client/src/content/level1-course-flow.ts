@@ -22,6 +22,14 @@ export const level1Flow: LessonFlow[] = [
   },
   {
     lessonNumber: 2,
+    slug: "share-kya-hota-hai",
+    title: "Share kya hota hai?",
+    goal: "Share = company ka chhota hissa – chai dukaan story se samjhao",
+    duration: "6 min",
+    keyOutcome: "Share khareedna = company ka thoda owner banna",
+  },
+  {
+    lessonNumber: 3,
     slug: "paise-invest-kyu",
     title: "Paise ko invest kyu karna chahiye?",
     goal: "Samjhao ki sirf bachana kaafi nahi – paisa grow hona chahiye",
@@ -29,20 +37,12 @@ export const level1Flow: LessonFlow[] = [
     keyOutcome: "Inflation aur purchasing power ka basic concept clear",
   },
   {
-    lessonNumber: 3,
+    lessonNumber: 4,
     slug: "stock-market-kya-hai",
     title: "Stock market kya hota hai?",
     goal: "Stock market ka simple definition – bazaar jaisa concept",
     duration: "10 min",
     keyOutcome: "Beginner ko pata chale ki stock market ek organized marketplace hai",
-  },
-  {
-    lessonNumber: 4,
-    slug: "share-kya-hai",
-    title: "Share, Company aur Ownership ka matlab",
-    goal: "Share = company ka chhota hissa – ownership concept clear",
-    duration: "10 min",
-    keyOutcome: "Share khareedna = company ka thoda owner banna",
   },
   {
     lessonNumber: 5,
@@ -77,6 +77,11 @@ export const level1Flow: LessonFlow[] = [
     keyOutcome: "Confidence build, ready for practical learning in Level 2",
   },
 ];
+
+// Note: The lesson flow now includes 8 lessons with the new "Share kya hota hai?" 
+// lesson added as Lesson 2, replacing the previous share-kya-hai (Lesson 4).
+// Old structure: Intro → Why Invest → What is Stock Market → Share & Ownership → ...
+// New structure: Intro → Share kya hai → Why Invest → What is Stock Market → ...
 
 // Level 1 Overview
 export const level1Overview = {
@@ -113,15 +118,15 @@ export const level1LessonSummary = [
   },
   {
     lesson: 2,
-    oneLineSummary: "Sirf bachana kaafi nahi – inflation beats savings",
+    oneLineSummary: "Share khareedna = company ka thoda owner banna",
   },
   {
     lesson: 3,
-    oneLineSummary: "Stock market = shares ka organized bazaar",
+    oneLineSummary: "Sirf bachana kaafi nahi – inflation beats savings",
   },
   {
     lesson: 4,
-    oneLineSummary: "Share khareedna = company ka thoda owner banna",
+    oneLineSummary: "Stock market = shares ka organized bazaar",
   },
   {
     lesson: 5,

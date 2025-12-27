@@ -12,7 +12,7 @@ export const beginnerLessons: Record<string, LessonData> = {
     title: "Stock Market ka Introduction – Bina Darr ke",
     duration: "7 min",
     prevLesson: undefined,
-    nextLesson: { slug: "paise-invest-kyu", title: "Paise ko invest kyu karna chahiye?" },
+    nextLesson: { slug: "share-kya-hota-hai", title: "Share kya hota hai?" },
     scenes: [
       {
         id: "intro-welcome",
@@ -132,8 +132,8 @@ export const beginnerLessons: Record<string, LessonData> = {
         type: "concept",
         title: "Aage Kya Hai?",
         content: [
-          "Bahut accha Rohit! Agle lesson me hum samjhenge: Paise ko invest kyu karna chahiye?",
-          "Hum dekhenge ki sirf bank me paisa rakhna kyu kaafi nahi hai, aur kaise tumhara paisa time ke saath kamzor pad sakta hai agar sahi jagah invest na karo.",
+          "Bahut accha Rohit! Agle lesson me hum samjhenge: Share kya hota hai?",
+          "Hum dekhenge ki jab tu share khareedte hai, toh actually kya ho raha hai – ek simple kahani ke through.",
           "Ye ek bahut important foundation lesson hai. Iske baad sab cheezein aur clear hone lagenge.",
           "Tab tak ke liye – congratulations! Tumne pehla step le liya. Bahut logon me ye himmat nahi hoti. Tu aage badh raha hai.",
         ],
@@ -153,13 +153,183 @@ export const beginnerLessons: Record<string, LessonData> = {
     ],
   },
 
+  "share-kya-hota-hai": {
+    slug: "share-kya-hota-hai",
+    moduleNumber: 1,
+    lessonNumber: 2,
+    title: "Share kya hota hai?",
+    duration: "6 min",
+    prevLesson: { slug: "stock-market-introduction", title: "Stock Market ka Introduction" },
+    nextLesson: { slug: "paise-invest-kyu", title: "Paise ko invest kyu karna chahiye?" },
+    scenes: [
+      {
+        id: "l2-intro",
+        type: "concept",
+        title: "Aaj Ka Sawaal",
+        content: [
+          "Pichle lesson me humne jaana ki stock market kya hai – ek organized bazaar jahan companies ke shares bikte hain.",
+          "Par ek important sawaal reh gaya: Ye 'share' actually hota kya hai?",
+          "Sab log bolte hain 'share kharido', 'share becho' – par matlab kya hai iska?",
+          "Aaj hum isi ko samjhenge – ekdum simple tarike se, ek kahani ke through.",
+        ],
+      },
+      {
+        id: "l2-rohit-question",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Priya, mujhe ek cheez samajh nahi aayi. Ye share exactly kya hota hai?",
+          "Log kehte hain 'maine Reliance ka share kharida' – par iska matlab kya? Kya mujhe Reliance ki koi cheez milti hai?",
+        ],
+      },
+      {
+        id: "l2-priya-intro",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Bahut accha sawaal hai Rohit! Chal ek simple kahani se samajhte hain.",
+          "Soch, tere mohalle me ek ladka hai – Shyam. Usne decide kiya ki wo chai ki dukaan kholega.",
+        ],
+      },
+      {
+        id: "l2-story-start",
+        type: "concept",
+        title: "Shyam ki Chai Dukaan",
+        content: [
+          "Shyam ne ₹1 lakh lagake ek chai ki dukaan kholi. Dukaan acchi chali. Log aane lage. Profit hone laga.",
+          "Ek saal baad, Shyam sochta hai – 'Ek aur branch kholu. Par mere paas sirf ₹50,000 bache hain. ₹50,000 aur chahiye.'",
+          "Ab Shyam ke paas do options hain:",
+          "1. Bank se loan le (par interest dena padega)",
+          "2. Kisi partner ko dukaan me hissa de",
+        ],
+      },
+      {
+        id: "l2-partnership",
+        type: "concept",
+        title: "Partnership ka Idea",
+        content: [
+          "Shyam decide karta hai – main apni dukaan ko 100 equal hisson me baantunga.",
+          "Har hissa = ₹1,000 ka. Total value = ₹1 lakh.",
+          "Ab wo logon ko offer karta hai: 'Meri dukaan me invest karo, dukaan ka hissa lo!'",
+        ],
+      },
+      {
+        id: "l2-rohit-buys",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Matlab agar main ₹10,000 dun, toh mujhe 10 hisse milenge?",
+        ],
+      },
+      {
+        id: "l2-priya-confirms",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Bilkul sahi! Aur ye 10 hisse stock market ki bhasha me kehlaate hain – '10 shares'.",
+          "Tu us chai dukaan ka 10% maalik ban gaya!",
+        ],
+      },
+      {
+        id: "l2-share-definition",
+        type: "concept",
+        title: "Share ka Simple Matlab",
+        content: [
+          "Share = Company ka chhota hissa.",
+          "Jab tu kisi company ka share khareedte hai, tu us company ka thoda sa maalik ban jaata hai.",
+          "1 share kharida = thoda maalik. 100 shares kharide = zyada maalik.",
+          "Ye ownership ka concept hai – tu sirf paisa nahi de raha, tu business me partner ban raha hai.",
+        ],
+      },
+      {
+        id: "l2-ownership-benefits",
+        type: "concept",
+        title: "Maalik Banne ke Fayde",
+        content: [
+          "Ab soch – ek saal baad Shyam ki dukaan ne ₹20,000 ka profit kamaya.",
+          "Kyunki tu 10% maalik hai, tujhe bhi 10% profit milega = ₹2,000!",
+          "Ye paisa tujhe mila bina kuch kaam kiye – sirf isliye kyunki tu dukaan ka hissa-daar hai.",
+          "Stock market me isko 'dividend' kehte hain – jab company apna profit shareholders me baant ti hai.",
+        ],
+      },
+      {
+        id: "l2-value-growth",
+        type: "concept",
+        title: "Share ki Value Badhna",
+        content: [
+          "Aur ek fayda hai. Soch – 2 saal baad Shyam ki dukaan bahut famous ho gayi. Ab 5 branches hain!",
+          "Pehle dukaan ki value thi ₹1 lakh. Ab company ki value ho gayi ₹2 lakh.",
+          "Matlab har share jo ₹1,000 ka tha, ab ₹2,000 ka ho gaya!",
+          "Tere 10 shares pehle ₹10,000 ke the. Ab wo ₹20,000 ke hain!",
+          "Tu ne kuch nahi kiya – sirf wait kiya. Company badi hui, tere shares ki value bhi badhi.",
+        ],
+      },
+      {
+        id: "l2-real-companies",
+        type: "concept",
+        title: "Real Companies me Same Concept",
+        content: [
+          "Ab chai dukaan ki jagah soch – Reliance, TCS, Infosys, HDFC Bank.",
+          "Ye sab badi companies hain. Par concept bilkul same hai!",
+          "Jab tu Reliance ka 1 share khareedte hai – tu Reliance ka thoda sa maalik ban jaata hai.",
+          "Company accha kaam kare – tere share ki value badhti hai.",
+          "Company profit baante – tujhe dividend milta hai.",
+          "Sirf farak ye hai ki ye companies bahut badi hain, aur unke shares stock exchange pe bikte hain.",
+        ],
+      },
+      {
+        id: "l2-rohit-realization",
+        type: "dialogue",
+        speaker: "rohit",
+        content: [
+          "Priya, ye toh bahut simple hai! Matlab jab main share khareedte hun, main actually us company ka thoda owner ban jaata hun?",
+          "Ye toh accha feeling hai – main kisi real business ka hissa hun!",
+        ],
+      },
+      {
+        id: "l2-priya-closing",
+        type: "dialogue",
+        speaker: "priya",
+        content: [
+          "Bilkul sahi samjha! Share kharidna = Company me partnership lena.",
+          "Tu Tata ka share khareedega – tu Tata ka thoda maalik.",
+          "Tu HDFC ka share khareedega – tu HDFC ka thoda maalik.",
+          "Ye ownership feeling important hai. Jab tu samjhega ki tu real business me invest kar raha hai – tab sahi decisions le payega.",
+        ],
+      },
+      {
+        id: "l2-next-preview",
+        type: "concept",
+        title: "Aage Kya Hai?",
+        content: [
+          "Bahut accha! Ab tu jaanta hai ki share kya hota hai. Ye foundation bahut important hai.",
+          "Agle lesson me hum samjhenge: Paise ko invest kyu karna chahiye?",
+          "Hum dekhenge ki sirf bank me rakhna kyu kaafi nahi hai, aur tumhara paisa kaise time ke saath kamzor pad sakta hai.",
+          "Tab tak ke liye – congratulations! Tu aage badh raha hai!",
+        ],
+      },
+      {
+        id: "l2-summary",
+        type: "summary",
+        title: "Is Lesson Se Seekha",
+        content: [
+          "Share = Company ka chhota hissa",
+          "Share khareedna = Company ka thoda maalik banna",
+          "Company profit kare = Tujhe dividend mil sakta hai",
+          "Company grow kare = Tere share ki value badh sakti hai",
+          "Ye ownership hai – tu real business me partner ban raha hai",
+        ],
+      },
+    ],
+  },
+
   "paise-invest-kyu": {
     slug: "paise-invest-kyu",
     moduleNumber: 1,
-    lessonNumber: 2,
+    lessonNumber: 3,
     title: "Paise ko invest kyu karna chahiye?",
     duration: "10 min",
-    prevLesson: { slug: "stock-market-introduction", title: "Stock Market ka Introduction" },
+    prevLesson: { slug: "share-kya-hota-hai", title: "Share kya hota hai?" },
     nextLesson: { slug: "stock-market-kya-hai", title: "Stock market kya hota hai?" },
     scenes: [
       {
@@ -313,11 +483,11 @@ export const beginnerLessons: Record<string, LessonData> = {
   "stock-market-kya-hai": {
     slug: "stock-market-kya-hai",
     moduleNumber: 1,
-    lessonNumber: 3,
+    lessonNumber: 4,
     title: "Stock market kya hota hai?",
     duration: "10 min",
     prevLesson: { slug: "paise-invest-kyu", title: "Paise ko invest kyu karna chahiye?" },
-    nextLesson: { slug: "share-kya-hai", title: "Share kya hota hai?" },
+    nextLesson: { slug: "sensex-nifty", title: "Sensex aur Nifty simple samjhaav" },
     scenes: [
       {
         id: "m1l2-intro",
@@ -457,7 +627,7 @@ export const beginnerLessons: Record<string, LessonData> = {
           "Stock market ek bazaar hai jahan companies ke shares – matlab chhote chhote ownership hisse – kharide aur beche jaate hain.",
           "Jab tu share khareedte hai, toh tu company ka thoda maalik ban jaata hai. Company accha karti hai toh tujhe fayda, nahi karti toh nuksaan bhi ho sakta hai.",
           "India me NSE aur BSE do main exchanges hain jahan ye sab hota hai. Ab ye sab online hai – phone se bhi ho jaata hai.",
-          "Ab basic idea ho gaya! Agle lesson me hum 'share' concept ko aur deep me samjhenge.",
+          "Ab basic idea ho gaya! Agle lesson me hum Sensex aur Nifty samjhenge – market ke health indicators.",
         ],
       },
       {
@@ -475,174 +645,8 @@ export const beginnerLessons: Record<string, LessonData> = {
     ],
   },
 
-  "share-kya-hai": {
-    slug: "share-kya-hai",
-    moduleNumber: 1,
-    lessonNumber: 4,
-    title: "Share, Company aur Ownership ka simple matlab",
-    duration: "10 min",
-    prevLesson: { slug: "stock-market-kya-hai", title: "Stock market kya hota hai?" },
-    nextLesson: { slug: "sensex-nifty", title: "Sensex aur Nifty simple samjhaav" },
-    scenes: [
-      {
-        id: "m1l3-intro",
-        type: "concept",
-        title: "Aaj Ka Topic – Company, Share aur Ownership",
-        content: [
-          "Pichle lesson me humne samjha ki stock market ek bazaar hai jahan shares bikte hain. Par abhi tak hum 'share' word use kar rahe the bina usse properly samjhe.",
-          "Aaj hum teen important cheezein clear karenge: Company kya hoti hai? Share kya hota hai? Aur ownership ka matlab kya hai?",
-          "Ye sab bahut simple concepts hain – bas daily life examples se samjhna hai. Koi heavy words nahi, koi legal gyaan nahi. Seedha samjho.",
-        ],
-      },
-      {
-        id: "m1l3-s1",
-        type: "dialogue",
-        speaker: "rohit",
-        content: [
-          "Priya, ye company exactly kya hoti hai? Matlab Reliance company hai, Tata company hai – par company ka matlab kya hai?",
-        ],
-      },
-      {
-        id: "m1l3-s2",
-        type: "dialogue",
-        speaker: "priya",
-        content: [
-          "Dekh Rohit, company ek business hai – jo kuch banata hai ya kuch service deta hai, aur usse paisa kamata hai.",
-          "Jaise tu sochle – Parle-G biscuit banata hai, Airtel network service deta hai, Zomato khana deliver karta hai. Ye sab companies hain.",
-        ],
-      },
-      {
-        id: "m1l3-s3",
-        type: "concept",
-        title: "Company Ka Simple Matlab",
-        content: [
-          "Company ek organized business hai jo legally registered hota hai. Iska ek naam hota hai, kaam hota hai, aur goal hota hai – paisa kamana aur grow karna.",
-          "Chhoti company ho ya badi – sab ka basic idea same hai: Kuch karo, paisa kamao, aur business ko aage badhao.",
-          "Jab company bahut badi ho jaati hai aur usse aur paisa chahiye grow karne ke liye – toh wo public se paisa maangti hai. Iske badle wo apna hissa deti hai – jise share kehte hain.",
-        ],
-      },
-      {
-        id: "m1l3-s4",
-        type: "dialogue",
-        speaker: "rohit",
-        content: [
-          "Accha, toh share matlab company ka hissa hai. Par ye hissa exactly kaise kaam karta hai?",
-        ],
-      },
-      {
-        id: "m1l3-s5",
-        type: "example",
-        title: "Shyam Ki Mithai Ki Dukaan",
-        content: [
-          "Soch, Shyam ne ek mithai ki dukaan kholi. Usne 2 lakh rupaye lagaye – poori dukaan uski hai. 100% ownership.",
-          "Ek saal baad dukaan acchi chali. Ab Shyam ek aur branch kholna chahta hai. Par uske paas sirf 1 lakh hai, aur 1 lakh aur chahiye.",
-          "Toh Shyam ne apne dost Raju ko bola – 'Tu 1 lakh laga. Badme jo profit hoga, uska 33% tujhe milega. Tu bhi dukaan ka hissedar banega.'",
-          "Raju maan gaya. Ab dukaan ke 2 owners hain – Shyam (67%) aur Raju (33%). Raju ka ye 33% hissa hi ek tarah ka 'share' hai.",
-          "Bade companies me ye hissa crores chhote chhote pieces me bant jaata hai – jinhe shares kehte hain. Tu 1 share bhi khareed sakta hai.",
-        ],
-      },
-      {
-        id: "m1l3-s6",
-        type: "dialogue",
-        speaker: "rohit",
-        content: [
-          "Oh! Toh jab main ek share khareedte hun, main basically us company ka chhota sa hissedar ban jaata hun?",
-        ],
-      },
-      {
-        id: "m1l3-s7",
-        type: "dialogue",
-        speaker: "priya",
-        content: [
-          "Bilkul sahi! Legally tu us company ka part-owner hai. Bahut chhota hissa – shayad 0.00001% – par owner zaroor hai.",
-          "Aur is ownership ke saath kuch cheezein aati hain. Chalo wo bhi samajh lete hain.",
-        ],
-      },
-      {
-        id: "m1l3-s8",
-        type: "concept",
-        title: "Ownership Se Kya Milta Hai?",
-        content: [
-          "Jab tu kisi company ka share khareedte hai, toh tu 'shareholder' ban jaata hai. Iska matlab kuch basic cheezein tujhe milti hain:",
-          "1. Company ki Growth ka Fayda: Agar company accha kaam kare aur grow kare, toh share ki value badh sakti hai. Teri investment ki value bhi badhti hai.",
-          "2. Dividend (Bonus Profit): Kuch companies apne profit ka thoda hissa shareholders ko deti hain. Ise 'dividend' kehte hain – ye ek tarah ka bonus hai.",
-          "3. Voting Rights: Bade decisions me shareholders ki vote hoti hai. Par ye mostly bade investors ke liye relevant hai – abhi tujhe isse zyada concern nahi lena.",
-          "Par yaad rakh – agar company ka kaam theek na chale, toh share ki value gir bhi sakti hai. Ownership ka matlab hai – fayda bhi tera, nuksaan bhi tera.",
-        ],
-      },
-      {
-        id: "m1l3-s9",
-        type: "dialogue",
-        speaker: "rohit",
-        content: [
-          "Ek doubt hai Priya. Agar main share khareedte hun aur company doob gayi – toh kya mujhe uska karza bhi chukana padega?",
-        ],
-      },
-      {
-        id: "m1l3-s10",
-        type: "concept",
-        title: "Ek Common Galat Soch Clear Karo",
-        content: [
-          "Nahi Rohit! Ye ek bahut common confusion hai. Share kharidne se tu company ka limited owner hai – matlab teri liability sirf utni hai jitna tune invest kiya.",
-          "Agar company doob bhi gayi, toh maximum tere share ki value zero ho jayegi. Par tujhe company ka koi karza nahi chukana padega.",
-          "Isliye shares ko 'limited liability' kehte hain. Tu sirf wohi kho sakta hai jo tune lagaya – usse zyada nahi.",
-          "Ye actually ek protection hai investors ke liye. Par phir bhi – hamesha soch samajh ke invest karo. Bina research ke paisa mat lagao.",
-        ],
-      },
-      {
-        id: "m1l3-s11",
-        type: "example",
-        title: "Factory Ka Example",
-        content: [
-          "Soch ek factory hai jo mobile covers banati hai. Factory ki value 10 crore hai. Owner ne decide kiya ki wo 50% public ko bechega.",
-          "Toh 5 crore ki value ke shares market me aaye – 10 lakh shares of 50 rupaye each.",
-          "Tu agar 100 shares khareedte hai (5000 rupaye lagake), toh tu us factory ka 0.001% owner hai.",
-          "Factory acchi chale toh tere shares 60-70 rupaye ke ho sakte hain. Kharab chale toh 30-40 ke bhi ho sakte hain. Ye market hai – up-down hota rehta hai.",
-        ],
-      },
-      {
-        id: "m1l3-s12",
-        type: "dialogue",
-        speaker: "rohit",
-        content: [
-          "Samajh gaya! Company matlab business, share matlab uska chhota hissa, aur ownership matlab main bhi us business ka thoda maalik hun.",
-        ],
-      },
-      {
-        id: "m1l3-s13",
-        type: "dialogue",
-        speaker: "priya",
-        content: [
-          "Perfect summary Rohit! Ab tera basic clear hai. Aage hum Sensex aur Nifty samjhenge – jo market ke health indicators hain.",
-          "Dhire dhire sab clear hota jayega. Bas learning mindset rakho aur patience rakho.",
-        ],
-      },
-      {
-        id: "m1l3-conclusion",
-        type: "concept",
-        title: "Aaj Ka Takeaway",
-        content: [
-          "Company ek registered business hai jo kuch banata ya service deta hai aur paisa kamata hai.",
-          "Share company ka chhota ownership hissa hai. Jab tu share khareedte hai, toh tu us company ka thoda maalik ban jaata hai.",
-          "Ownership ke saath growth ka fayda bhi milta hai aur risk bhi hota hai. Company acchi chale toh fayda, buri chale toh nuksaan.",
-          "Par teri liability limited hai – sirf jo tune lagaya wo kho sakta hai, usse zyada nahi.",
-          "Ab company aur share ka basic idea ho gaya! Agle lesson me Sensex aur Nifty samjhenge.",
-        ],
-      },
-      {
-        id: "m1l3-summary",
-        type: "summary",
-        title: "Is Lesson Se Seekha",
-        content: [
-          "Company ek organized business hai jo legally registered hota hai",
-          "Share matlab company ka chhota ownership hissa",
-          "Share kharidne se tu shareholder ban jaata hai – company ka partial owner",
-          "Ownership ke saath fayda bhi milta hai aur risk bhi – dono tera",
-          "Teri liability limited hai – sirf invested amount kho sakta hai",
-        ],
-      },
-    ],
-  },
+  // Note: Old share-kya-hai lesson removed from main flow. 
+  // New lesson "share-kya-hota-hai" (Lesson 2) covers share concept with chai dukaan story.
 
   "sensex-nifty": {
     slug: "sensex-nifty",
@@ -650,7 +654,7 @@ export const beginnerLessons: Record<string, LessonData> = {
     lessonNumber: 5,
     title: "Sensex aur Nifty simple samjhaav",
     duration: "8 min",
-    prevLesson: { slug: "share-kya-hai", title: "Share kya hota hai?" },
+    prevLesson: { slug: "stock-market-kya-hai", title: "Stock market kya hota hai?" },
     nextLesson: { slug: "demat-account", title: "Demat Account kya hota hai?" },
     scenes: [
       {
@@ -1852,9 +1856,9 @@ export const moduleStructure = [
     title: "Stock Market ki Shuruaat",
     lessons: [
       "stock-market-introduction",
+      "share-kya-hota-hai",
       "paise-invest-kyu",
       "stock-market-kya-hai",
-      "share-kya-hai",
       "sensex-nifty",
     ],
   },
