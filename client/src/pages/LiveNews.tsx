@@ -493,14 +493,22 @@ function NewsCardSkeleton() {
 function VideoCardSkeleton() {
   return (
     <Card className="overflow-hidden">
-      <Skeleton className="aspect-video w-full" />
-      <CardContent className="p-3 space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-2/3" />
-        <div className="flex gap-2">
-          <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-5 w-20" />
+      <div className="aspect-video w-full bg-gradient-to-br from-muted to-muted-foreground/10 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-2">
+          <Video className="w-10 h-10 text-muted-foreground/30" />
+          <div className="w-16 h-1 bg-muted-foreground/20 rounded-full overflow-hidden">
+            <div className="h-full bg-primary/30 animate-pulse" style={{ width: '60%' }} />
+          </div>
         </div>
+      </div>
+      <CardContent className="p-3 space-y-3">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-5 w-5 rounded-full" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+        <Skeleton className="h-8 w-full rounded-md" />
       </CardContent>
     </Card>
   );
@@ -531,9 +539,20 @@ function formatVideoTimeAgo(dateString: string, isHindi: boolean): string {
   }
 }
 
+const verifiedChannels = [
+  "cnbc awaaz", "cnbc-tv18", "cnbc tv18", "zee business", "et now", 
+  "bloomberg quint", "moneycontrol", "ndtv profit", "bq prime",
+  "reuters", "bloomberg", "yahoo finance", "cnbc"
+];
+
+function isVerifiedChannel(channelName: string): boolean {
+  return verifiedChannels.some(vc => channelName.toLowerCase().includes(vc));
+}
+
 function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const isLive = video.duration === "LIVE";
+  const isVerified = isVerifiedChannel(video.channelName);
   
   const getYouTubeUrl = () => {
     if (video.videoId === "live_stream") {
@@ -560,8 +579,13 @@ function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean 
         >
           <div className="relative aspect-video overflow-hidden bg-muted">
             {!imageLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Video className="w-12 h-12 text-muted-foreground animate-pulse" />
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/10">
+                <div className="flex flex-col items-center gap-2">
+                  <Video className="w-10 h-10 text-muted-foreground/50" />
+                  <div className="w-16 h-1 bg-muted-foreground/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-primary/50 animate-pulse" style={{ width: '60%' }} />
+                  </div>
+                </div>
               </div>
             )}
             <img
@@ -578,7 +602,7 @@ function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
             
             <div className="absolute top-2 left-2 flex gap-1">
-              <Badge variant="secondary" className="text-xs bg-black/70 text-white">
+              <Badge variant="secondary" className="text-xs bg-black/70 text-white border-0">
                 {langBadge}
               </Badge>
               {isLive && (
@@ -589,9 +613,9 @@ function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean 
               )}
             </div>
             
-            {!isLive && (
+            {!isLive && video.duration && (
               <div className="absolute bottom-2 right-2">
-                <Badge variant="secondary" className="text-xs bg-black/80 text-white">
+                <Badge variant="secondary" className="text-xs bg-black/80 text-white border-0">
                   {video.duration}
                 </Badge>
               </div>
@@ -603,6 +627,14 @@ function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean 
                 {formatVideoTimeAgo(video.publishedAt, isHindi)}
               </span>
             </div>
+            
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg">
+                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
           </div>
           
           <CardContent className="p-3 space-y-2">
@@ -612,16 +644,25 @@ function VideoCard({ video, isHindi }: { video: BusinessVideo; isHindi: boolean 
             
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1 text-xs text-muted-foreground min-w-0">
-                <Tv className="w-3 h-3 flex-shrink-0" />
+                <div className="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                  <Tv className="w-3 h-3 text-red-500" />
+                </div>
                 <span className="truncate">{video.channelName}</span>
+                {isVerified && (
+                  <svg className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                  </svg>
+                )}
               </div>
-              <span className="text-xs text-muted-foreground flex-shrink-0">{video.viewCount} views</span>
+              {video.viewCount && (
+                <span className="text-xs text-muted-foreground flex-shrink-0">{video.viewCount}</span>
+              )}
             </div>
             
             <Button 
               variant="outline" 
               size="sm" 
-              className="w-full mt-2"
+              className="w-full mt-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
               data-testid={`video-watch-${video.id}`}
             >
               <ExternalLink className="w-3 h-3 mr-2" />
@@ -747,12 +788,24 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
           </div>
           
           {(!data?.videos || data.videos.length === 0) && (
-            <Card>
-              <CardContent className="py-8 text-center">
-                <Video className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">
-                  {isHindi ? "कोई वीडियो नहीं मिला" : "No videos found"}
+            <Card className="border-dashed">
+              <CardContent className="py-12 text-center">
+                <div className="relative inline-block mb-4">
+                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                    <Video className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                  <RefreshCw className="w-5 h-5 text-primary animate-spin absolute -bottom-1 -right-1" />
+                </div>
+                <p className="text-lg font-medium mb-2">
+                  {isHindi ? "लेटेस्ट बिज़नेस वीडियो लोड हो रहे हैं..." : "Latest business videos are loading..."}
                 </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {isHindi ? "कृपया कुछ सेकंड प्रतीक्षा करें" : "Please wait a few seconds"}
+                </p>
+                <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+                  <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`} />
+                  {isHindi ? "रिफ्रेश करें" : "Refresh"}
+                </Button>
               </CardContent>
             </Card>
           )}
