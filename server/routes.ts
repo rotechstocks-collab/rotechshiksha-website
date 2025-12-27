@@ -1835,6 +1835,119 @@ export async function registerRoutes(
   // Start economic calendar refresh job
   startCalendarRefreshJob();
 
+  // ==================== LEARNING PROGRESS ROUTES ====================
+  
+  // Get learning progress and quiz history
+  app.get("/api/progress", async (req: Request, res: Response) => {
+    try {
+      const sessionId = req.sessionID || req.session.id;
+      const userId = req.session.userId;
+      
+      const progress = await storage.getProgressBySession(sessionId);
+      const quizAttempts = await storage.getQuizAttemptsBySession(sessionId);
+      
+      // Calculate completed levels
+      const completedLevels = Array.from(new Set(progress.map(p => p.levelId)));
+      const progressPercentage = Math.round((completedLevels.length / 8) * 100);
+      
+      // Get best scores per level
+      const bestScores: Record<number, number> = {};
+      quizAttempts.forEach(attempt => {
+        if (!bestScores[attempt.levelId] || attempt.score > bestScores[attempt.levelId]) {
+          bestScores[attempt.levelId] = attempt.score;
+        }
+      });
+      
+      res.json({
+        completedLevels,
+        progressPercentage,
+        quizAttempts,
+        bestScores,
+        totalLevels: 8
+      });
+    } catch (error) {
+      console.error("Get progress error:", error);
+      res.status(500).json({ message: "Failed to get progress" });
+    }
+  });
+
+  // Mark level as complete
+  app.post("/api/progress/complete", async (req: Request, res: Response) => {
+    try {
+      const sessionId = req.sessionID || req.session.id;
+      const userId = req.session.userId;
+      const { levelId } = req.body;
+      
+      if (!levelId || levelId < 1 || levelId > 8) {
+        return res.status(400).json({ message: "Invalid level ID" });
+      }
+      
+      const progress = await storage.markLevelComplete(sessionId, levelId, userId);
+      res.json({ success: true, progress });
+    } catch (error) {
+      console.error("Mark complete error:", error);
+      res.status(500).json({ message: "Failed to mark level complete" });
+    }
+  });
+
+  // Save quiz attempt
+  app.post("/api/quiz/attempt", async (req: Request, res: Response) => {
+    try {
+      const sessionId = req.sessionID || req.session.id;
+      const userId = req.session.userId;
+      const { levelId, score, correctAnswers, totalQuestions } = req.body;
+      
+      if (levelId === undefined || score === undefined || correctAnswers === undefined || totalQuestions === undefined) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+      
+      if (typeof levelId !== 'number' || typeof score !== 'number' || typeof correctAnswers !== 'number' || typeof totalQuestions !== 'number') {
+        return res.status(400).json({ message: "Invalid field types" });
+      }
+      
+      const attempt = await storage.saveQuizAttempt(
+        sessionId,
+        levelId,
+        score,
+        correctAnswers,
+        totalQuestions,
+        userId
+      );
+      
+      res.json({ success: true, attempt });
+    } catch (error) {
+      console.error("Save quiz attempt error:", error);
+      res.status(500).json({ message: "Failed to save quiz attempt" });
+    }
+  });
+
+  // Get quiz history for a specific level
+  app.get("/api/quiz/history/:levelId", async (req: Request, res: Response) => {
+    try {
+      const sessionId = req.sessionID || req.session.id;
+      const levelId = parseInt(req.params.levelId);
+      
+      const attempts = await storage.getQuizAttemptsBySession(sessionId, levelId);
+      const levelAttempts = attempts.filter(a => a.levelId === levelId);
+      
+      const bestScore = levelAttempts.length > 0 
+        ? Math.max(...levelAttempts.map(a => a.score))
+        : null;
+      
+      const lastAttempt = levelAttempts[0] || null;
+      
+      res.json({
+        attempts: levelAttempts,
+        bestScore,
+        lastAttempt,
+        attemptCount: levelAttempts.length
+      });
+    } catch (error) {
+      console.error("Get quiz history error:", error);
+      res.status(500).json({ message: "Failed to get quiz history" });
+    }
+  });
+
   // ==================== PAPER TRADING ROUTES ====================
   
   // Get or create paper trading account

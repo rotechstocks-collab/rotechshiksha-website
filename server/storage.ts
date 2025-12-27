@@ -10,6 +10,8 @@ import {
   paperTradingAccounts,
   paperTrades,
   paperHoldings,
+  learningProgress,
+  quizAttempts,
   type User,
   type InsertUser,
   type Lead,
@@ -29,6 +31,8 @@ import {
   type PaperTradingAccount,
   type PaperTrade,
   type PaperHolding,
+  type LearningProgress,
+  type QuizAttempt,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -96,6 +100,15 @@ export interface IStorage {
   reduceHolding(accountId: string, symbol: string, quantity: number, priceInPaise: number): Promise<void>;
   getPaperTrades(accountId: string): Promise<PaperTrade[]>;
   recordPaperTrade(accountId: string, symbol: string, stockName: string, type: string, quantity: number, price: number, totalValue: number): Promise<PaperTrade>;
+
+  // Learning Progress
+  getProgressBySession(sessionId: string): Promise<LearningProgress[]>;
+  markLevelComplete(sessionId: string, levelId: number, userId?: string): Promise<LearningProgress>;
+  
+  // Quiz Attempts
+  getQuizAttemptsBySession(sessionId: string, levelId?: number): Promise<QuizAttempt[]>;
+  saveQuizAttempt(sessionId: string, levelId: number, score: number, correctAnswers: number, totalQuestions: number, userId?: string): Promise<QuizAttempt>;
+  getLastQuizAttempt(sessionId: string, levelId: number): Promise<QuizAttempt | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -437,6 +450,65 @@ export class DatabaseStorage implements IStorage {
       totalValue
     }).returning();
     return trade;
+  }
+
+  // Learning Progress
+  async getProgressBySession(sessionId: string): Promise<LearningProgress[]> {
+    return db.select().from(learningProgress)
+      .where(eq(learningProgress.sessionId, sessionId))
+      .orderBy(desc(learningProgress.completedAt));
+  }
+
+  async markLevelComplete(sessionId: string, levelId: number, userId?: string): Promise<LearningProgress> {
+    const id = randomUUID();
+    const [progress] = await db.insert(learningProgress).values({
+      id,
+      sessionId,
+      levelId,
+      userId: userId || null
+    }).returning();
+    return progress;
+  }
+
+  // Quiz Attempts
+  async getQuizAttemptsBySession(sessionId: string, levelId?: number): Promise<QuizAttempt[]> {
+    const results = await db.select().from(quizAttempts)
+      .where(eq(quizAttempts.sessionId, sessionId))
+      .orderBy(desc(quizAttempts.createdAt));
+    
+    if (levelId !== undefined) {
+      return results.filter(a => a.levelId === levelId);
+    }
+    return results;
+  }
+
+  async getLastQuizAttempt(sessionId: string, levelId: number): Promise<QuizAttempt | undefined> {
+    const [attempt] = await db.select().from(quizAttempts)
+      .where(eq(quizAttempts.sessionId, sessionId))
+      .orderBy(desc(quizAttempts.createdAt))
+      .limit(1);
+    return attempt || undefined;
+  }
+
+  async saveQuizAttempt(sessionId: string, levelId: number, score: number, correctAnswers: number, totalQuestions: number, userId?: string): Promise<QuizAttempt> {
+    const existingAttempts = await db.select().from(quizAttempts)
+      .where(eq(quizAttempts.sessionId, sessionId));
+    
+    const levelAttempts = existingAttempts.filter(a => a.levelId === levelId);
+    const attemptNumber = levelAttempts.length + 1;
+
+    const id = randomUUID();
+    const [attempt] = await db.insert(quizAttempts).values({
+      id,
+      sessionId,
+      userId: userId || null,
+      levelId,
+      score,
+      correctAnswers,
+      totalQuestions,
+      attemptNumber
+    }).returning();
+    return attempt;
   }
 }
 

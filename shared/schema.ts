@@ -162,6 +162,28 @@ export const paperHoldings = pgTable("paper_holdings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Learning Progress - Track user's learning journey
+export const learningProgress = pgTable("learning_progress", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  sessionId: text("session_id").notNull(), // For non-logged in users
+  userId: varchar("user_id", { length: 36 }), // For logged in users (optional)
+  levelId: integer("level_id").notNull(), // 1-8
+  completedAt: timestamp("completed_at").defaultNow(),
+});
+
+// Quiz Attempts - Track quiz scores and improvement
+export const quizAttempts = pgTable("quiz_attempts", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  sessionId: text("session_id").notNull(),
+  userId: varchar("user_id", { length: 36 }),
+  levelId: integer("level_id").notNull(),
+  score: integer("score").notNull(), // Percentage 0-100
+  correctAnswers: integer("correct_answers").notNull(),
+  totalQuestions: integer("total_questions").notNull(),
+  attemptNumber: integer("attempt_number").notNull().default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
 export const insertOtpSchema = createInsertSchema(otps).omit({ id: true });
@@ -176,6 +198,8 @@ export const insertInvestorInterestSchema = createInsertSchema(investorInterests
 export const insertPaperTradingAccountSchema = createInsertSchema(paperTradingAccounts).omit({ id: true, createdAt: true, updatedAt: true });
 export const insertPaperTradeSchema = createInsertSchema(paperTrades).omit({ id: true, createdAt: true });
 export const insertPaperHoldingSchema = createInsertSchema(paperHoldings).omit({ id: true, updatedAt: true });
+export const insertLearningProgressSchema = createInsertSchema(learningProgress).omit({ id: true, completedAt: true });
+export const insertQuizAttemptSchema = createInsertSchema(quizAttempts).omit({ id: true, createdAt: true });
 
 // Types
 export type User = typeof users.$inferSelect;
@@ -204,6 +228,10 @@ export type PaperTrade = typeof paperTrades.$inferSelect;
 export type InsertPaperTrade = z.infer<typeof insertPaperTradeSchema>;
 export type PaperHolding = typeof paperHoldings.$inferSelect;
 export type InsertPaperHolding = z.infer<typeof insertPaperHoldingSchema>;
+export type LearningProgress = typeof learningProgress.$inferSelect;
+export type InsertLearningProgress = z.infer<typeof insertLearningProgressSchema>;
+export type QuizAttempt = typeof quizAttempts.$inferSelect;
+export type InsertQuizAttempt = z.infer<typeof insertQuizAttemptSchema>;
 
 // Lead capture form schema with validation
 export const leadFormSchema = z.object({

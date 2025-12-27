@@ -24,6 +24,7 @@ import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationW
 import { LessonScene } from "@/content/lessons/types";
 import LessonQuiz from "@/components/LessonQuiz";
 import { level1Quiz } from "@/content/quizzes/quiz-data";
+import { LearningProgress } from "@/components/LearningProgress";
 
 export default function Level1Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
@@ -242,6 +243,11 @@ export default function Level1Lesson() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-3xl mx-auto">
+          {/* Learning Progress Indicator */}
+          <div className="mb-6">
+            <LearningProgress currentLevel={1} />
+          </div>
+
           <StaggerContainer className="space-y-4">
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
