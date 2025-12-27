@@ -17,9 +17,9 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-background pt-28">
       <SEOHead
-        title="Market Gyaan (Blog) - Stock Market Articles | Rotech Shiksha"
-        description="Share market ke baare me simple Hindi articles. Beginners ke liye easy guides aur Rohit-Priya stories."
-        keywords="stock market blog hindi, share market articles, investing guide hindi, market gyaan"
+        title="Market Gyaan – Stock Market Blog in Hindi | Rotech Shiksha"
+        description="Stock market articles in simple Hinglish. Beginner questions answered, no trading tips. Educational content only."
+        keywords="stock market blog hindi, share market articles, investing guide hindi, market gyaan, beginner stock questions"
       />
 
       <section className="py-12 lg:py-16">

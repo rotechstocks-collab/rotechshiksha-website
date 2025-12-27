@@ -20,9 +20,9 @@ export default function FAQ() {
   return (
     <div className="min-h-screen bg-background pt-28">
       <SEOHead
-        title="Beginner FAQ - Common Questions | Rotech Shiksha"
-        description="Stock market beginners ke common questions. Simple Hindi me answers. Kya safe hai? Kitna paisa chahiye? Sab kuch yahan."
-        keywords="stock market faq hindi, share market questions, beginner doubts, rotech shiksha faq"
+        title="Stock Market FAQ for Beginners – Rotech Shiksha"
+        description="Common beginner questions answered honestly in Hinglish. Is it safe? How much money needed? No sales pitch, just education."
+        keywords="stock market faq hindi, share market questions, beginner doubts, is stock market safe, how to start investing"
       />
 
       <section className="py-12 lg:py-16">
