@@ -89,8 +89,10 @@ function App() {
             <AuthProvider>
             <TooltipProvider>
               <HreflangTags />
-              <LiveTicker />
-              <div className="min-h-screen bg-background pt-11 safe-area-top">
+              <div className="hidden md:block">
+                <LiveTicker />
+              </div>
+              <div className="min-h-screen bg-background md:pt-11 safe-area-top">
                 <Header />
                 <main className="pt-0">
                   <Router />

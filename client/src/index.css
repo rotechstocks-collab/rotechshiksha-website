@@ -146,6 +146,33 @@
   body {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    font-size: 16px;
+  }
+  
+  /* Input fields - larger touch targets */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+  
+  /* Slider thumb - larger for touch */
+  [role="slider"] {
+    min-height: 44px;
+  }
+  
+  /* Better spacing for cards on mobile */
+  .mobile-card-spacing {
+    padding: 1rem;
+  }
+  
+  /* Ensure text doesn't get too small */
+  p, span, label {
+    min-font-size: 14px;
   }
 }
 
