@@ -107,20 +107,26 @@ const globalVideoSources = [
   {
     id: "reuters",
     name: "Reuters Business",
-    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLJaF4HNr0FDvJwf3Mc9XFmfQSAD5B9W_t&autoplay=0",
+    channelUrl: "https://www.youtube.com/@Reuters",
     description: "Global business news from Reuters"
   },
   {
     id: "bloomberg",
     name: "Bloomberg",
-    embedUrl: "https://www.youtube.com/embed/dp8PhLsUcFE?autoplay=0",
+    channelUrl: "https://www.youtube.com/@Bloomberg",
     description: "Bloomberg Markets & Finance"
   },
   {
     id: "yahoo",
     name: "Yahoo Finance",
-    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLLfPm1Wx-r1TP5FPiRvAVJWHdxDWDZ5HQ&autoplay=0",
+    channelUrl: "https://www.youtube.com/@YahooFinance",
     description: "Yahoo Finance latest coverage"
+  },
+  {
+    id: "cnbc",
+    name: "CNBC",
+    channelUrl: "https://www.youtube.com/@CNBC",
+    description: "CNBC business news"
   },
 ];
 
@@ -128,26 +134,38 @@ const indiaVideoSources = [
   {
     id: "cnbc-tv18",
     name: "CNBC TV18",
-    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLRobyhBNydbVmhPjLxeO1IVfzMKVq2nE1&autoplay=0",
+    channelUrl: "https://www.youtube.com/@CNBC-TV18",
     description: "Live business news from India"
   },
   {
     id: "et-now",
     name: "ET Now",
-    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLe5fMNDMYxFHbMEAdQrHkMxCTxT7cTVmu&autoplay=0",
+    channelUrl: "https://www.youtube.com/@ETNOWlive",
     description: "Economic Times coverage"
   },
   {
     id: "zee-business",
     name: "Zee Business",
-    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLubMQr-EwQjO1gJnLQvJfVL5jS2U3bXHc&autoplay=0",
+    channelUrl: "https://www.youtube.com/@ZeeBusiness",
     description: "Hindi business news"
   },
   {
     id: "moneycontrol",
     name: "MoneyControl",
-    embedUrl: "https://www.youtube.com/embed/videoseries?list=PLbuFOeSP2s3WlDl1-SaJIm1ddaQ9c-UrO&autoplay=0",
+    channelUrl: "https://www.youtube.com/@MoneycontrolCom",
     description: "MoneyControl market updates"
+  },
+  {
+    id: "ndtv-profit",
+    name: "NDTV Profit",
+    channelUrl: "https://www.youtube.com/@NDTVProfitIndia",
+    description: "NDTV Profit news"
+  },
+  {
+    id: "bq-prime",
+    name: "BQ Prime",
+    channelUrl: "https://www.youtube.com/@BQPrime",
+    description: "Bloomberg Quint India"
   },
 ];
 
@@ -173,15 +191,14 @@ function formatTimeAgoIST(dateString: string, isHindi: boolean): string {
     if (diffSecs < 60) {
       return isHindi ? "अभी" : "Just now";
     }
-    if (diffMins < 5) {
-      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} min ago`;
-    }
     if (diffMins < 60) {
-      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} min ago`;
+      const minText = diffMins === 1 ? "min" : "mins";
+      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
     }
-    if (diffHours < 24) {
-      const hourText = diffHours === 1 ? "hour" : "hours";
-      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours} ${hourText} ago`;
+    if (diffHours <= 48) {
+      const totalMins = diffHours * 60 + (diffMins % 60);
+      const minText = totalMins === 1 ? "min" : "mins";
+      return isHindi ? `${totalMins} मिनट पहले` : `${totalMins} ${minText} ago`;
     }
     const dayText = diffDays === 1 ? "day" : "days";
     return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
@@ -358,13 +375,8 @@ function NewsCard({
 function LiveVideoSection({ isHindi }: { isHindi: boolean }) {
   const [isOpen, setIsOpen] = useState(true);
   const [videoType, setVideoType] = useState<"india" | "global">("india");
-  const [selectedVideo, setSelectedVideo] = useState(indiaVideoSources[0]);
 
   const currentSources = videoType === "india" ? indiaVideoSources : globalVideoSources;
-
-  useEffect(() => {
-    setSelectedVideo(currentSources[0]);
-  }, [videoType]);
 
   return (
     <Card className="mb-6">
@@ -378,7 +390,7 @@ function LiveVideoSection({ isHindi }: { isHindi: boolean }) {
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                 </div>
                 <CardTitle className="text-base">
-                  {isHindi ? "लाइव मार्केट वीडियो" : "Live Market Videos"}
+                  {isHindi ? "लाइव मार्केट चैनल" : "Live Market Channels"}
                 </CardTitle>
                 <Badge variant="outline" className="text-xs text-red-500 border-red-200">
                   <Radio className="w-3 h-3 mr-1" />
@@ -415,34 +427,42 @@ function LiveVideoSection({ isHindi }: { isHindi: boolean }) {
               </Button>
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {currentSources.map((source) => (
-                <Button
+                <a
                   key={source.id}
-                  variant={selectedVideo.id === source.id ? "secondary" : "ghost"}
-                  size="sm"
-                  onClick={() => setSelectedVideo(source)}
-                  data-testid={`video-source-${source.id}`}
+                  href={source.channelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                  data-testid={`live-channel-${source.id}`}
                 >
-                  <Video className="w-3 h-3 mr-1" />
-                  {source.name}
-                </Button>
+                  <Card className="hover-elevate overflow-visible h-full">
+                    <CardContent className="p-3 flex flex-col items-center text-center gap-2">
+                      <div className="relative">
+                        <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                          <Tv className="w-6 h-6 text-red-500" />
+                        </div>
+                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse border-2 border-background" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm line-clamp-1">{source.name}</p>
+                        <p className="text-xs text-muted-foreground line-clamp-1">{source.description}</p>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        <ExternalLink className="w-3 h-3 mr-1" />
+                        {isHindi ? "देखें" : "Watch"}
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                </a>
               ))}
             </div>
             
-            <div className="aspect-video w-full rounded-lg overflow-hidden bg-muted">
-              <iframe
-                src={selectedVideo.embedUrl}
-                title={selectedVideo.name}
-                className="w-full h-full"
-                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
-            </div>
-            
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              {selectedVideo.description}
+            <p className="text-xs text-muted-foreground mt-3 text-center">
+              {isHindi 
+                ? "क्लिक करें और YouTube पर लाइव देखें"
+                : "Click to watch live on YouTube"}
             </p>
           </CardContent>
         </CollapsibleContent>
@@ -495,11 +515,13 @@ function formatVideoTimeAgo(dateString: string, isHindi: boolean): string {
     const diffDays = Math.floor(diffHours / 24);
     
     if (diffMins < 60) {
-      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} min ago`;
+      const minText = diffMins === 1 ? "min" : "mins";
+      return isHindi ? `${diffMins} मिनट पहले` : `${diffMins} ${minText} ago`;
     }
-    if (diffHours < 24) {
-      const hourText = diffHours === 1 ? "hour" : "hours";
-      return isHindi ? `${diffHours} घंटे पहले` : `${diffHours} ${hourText} ago`;
+    if (diffHours <= 48) {
+      const totalMins = diffHours * 60 + (diffMins % 60);
+      const minText = totalMins === 1 ? "min" : "mins";
+      return isHindi ? `${totalMins} मिनट पहले` : `${totalMins} ${minText} ago`;
     }
     const dayText = diffDays === 1 ? "day" : "days";
     return isHindi ? `${diffDays} दिन पहले` : `${diffDays} ${dayText} ago`;
@@ -638,17 +660,22 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
         <span className="text-sm text-muted-foreground mr-1">
           {isHindi ? "भाषा:" : "Language:"}
         </span>
-        {videoLanguages.map((lang) => (
-          <Button
-            key={lang.code}
-            variant={videoLang === lang.code ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setVideoLang(lang.code)}
-            data-testid={`video-lang-${lang.code}`}
-          >
-            {isHindi ? lang.labelHi : lang.labelEn}
-          </Button>
-        ))}
+        {videoLanguages.map((lang) => {
+          const hasVideos = lang.code === "all" || 
+            (data?.availableLanguages && data.availableLanguages.includes(lang.code));
+          if (!hasVideos && data?.availableLanguages) return null;
+          return (
+            <Button
+              key={lang.code}
+              variant={videoLang === lang.code ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setVideoLang(lang.code)}
+              data-testid={`video-lang-${lang.code}`}
+            >
+              {isHindi ? lang.labelHi : lang.labelEn}
+            </Button>
+          );
+        })}
         <Button
           variant="ghost"
           size="sm"
@@ -743,7 +770,7 @@ function BusinessVideosSection({ isHindi }: { isHindi: boolean }) {
 export default function LiveNews() {
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [newsLang, setNewsLang] = useState<"en" | "hi" | "gu" | "mr" | "ta">("en");
+  const [newsLang, setNewsLang] = useState<"en" | "hi" | "gu" | "mr" | "ta" | "te">("en");
   const [refreshCountdown, setRefreshCountdown] = useState(300);
 
   const isHindi = language === "hi" || newsLang === "hi";
@@ -863,6 +890,14 @@ export default function LiveNews() {
                     data-testid="news-lang-ta"
                   >
                     தமிழ்
+                  </Button>
+                  <Button
+                    variant={newsLang === "te" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setNewsLang("te")}
+                    data-testid="news-lang-te"
+                  >
+                    తెలుగు
                   </Button>
                 </div>
                 
