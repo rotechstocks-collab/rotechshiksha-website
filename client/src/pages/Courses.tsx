@@ -24,6 +24,7 @@ import {
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { SEOHead } from "@/components/SEOHead";
 import { useEffect, useState } from "react";
+import { getProgress, UserProgress, isLevelUnlocked, isLevelCompleted } from "@/lib/progress";
 
 interface LevelCourseData {
   level: number;
@@ -260,52 +261,45 @@ function LevelCard({ course, index }: { course: LevelCourse; index: number }) {
   );
 }
 
-// localStorage key for progress tracking
-const PROGRESS_KEY = "rotech-learning-progress";
-
-interface UserProgress {
-  completedLevels: number[];
-  currentLevel: number;
-  lastVisited: string;
-}
-
-function getProgress(): UserProgress {
-  if (typeof window === "undefined") {
-    return { completedLevels: [], currentLevel: 1, lastVisited: new Date().toISOString() };
-  }
-  try {
-    const saved = localStorage.getItem(PROGRESS_KEY);
-    if (saved) {
-      return JSON.parse(saved);
-    }
-  } catch (e) {
-    console.error("Error reading progress:", e);
-  }
-  return { completedLevels: [], currentLevel: 1, lastVisited: new Date().toISOString() };
-}
-
 export default function Courses() {
   const [progress, setProgress] = useState<UserProgress>(getProgress);
   const totalLevels = levelCoursesData.length;
   const completedCount = progress.completedLevels.length;
   const progressPercent = Math.round((completedCount / totalLevels) * 100);
 
+  // Refresh progress from localStorage on mount and when storage changes
+  useEffect(() => {
+    const refreshProgress = () => {
+      setProgress(getProgress());
+    };
+    
+    // Listen for storage changes from other tabs
+    window.addEventListener("storage", refreshProgress);
+    
+    // Listen for custom event from same tab (when quiz is completed)
+    window.addEventListener("rotech-progress-updated", refreshProgress);
+    
+    // Also refresh on focus (when user returns from lesson page)
+    window.addEventListener("focus", refreshProgress);
+    
+    return () => {
+      window.removeEventListener("storage", refreshProgress);
+      window.removeEventListener("rotech-progress-updated", refreshProgress);
+      window.removeEventListener("focus", refreshProgress);
+    };
+  }, []);
+
   // Compute unlock status dynamically based on progress
   // Level 1 is always unlocked, subsequent levels unlock when previous is completed
   const levelCourses: LevelCourse[] = levelCoursesData.map(course => ({
     ...course,
-    isUnlocked: course.level === 1 || progress.completedLevels.includes(course.level - 1),
-    isCompleted: progress.completedLevels.includes(course.level),
+    isUnlocked: isLevelUnlocked(course.level, progress),
+    isCompleted: isLevelCompleted(course.level, progress),
   }));
 
   // Get current level info for Continue Learning (first incomplete unlocked level)
   const nextUnlockedLevel = levelCourses.find(c => c.isUnlocked && !c.isCompleted) || levelCourses[0];
   const currentLevelData = levelCoursesData.find(c => c.level === nextUnlockedLevel.level) || levelCoursesData[0];
-
-  // Update localStorage when progress changes
-  useEffect(() => {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
-  }, [progress]);
 
   return (
     <div className="min-h-screen bg-background">

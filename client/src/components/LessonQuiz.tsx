@@ -11,38 +11,17 @@ import {
   Award,
   Sparkles,
   PartyPopper,
-  TrendingUp,
-  Clock,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QuizData } from "@/content/quizzes/quiz-data";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-
-interface QuizHistoryData {
-  attempts: Array<{
-    id: string;
-    score: number;
-    correctAnswers: number;
-    totalQuestions: number;
-    attemptNumber: number;
-    createdAt: string;
-  }>;
-  bestScore: number | null;
-  lastAttempt: {
-    score: number;
-    correctAnswers: number;
-    totalQuestions: number;
-    createdAt: string;
-  } | null;
-  attemptCount: number;
-}
+import { markLevelComplete, getProgress } from "@/lib/progress";
 
 interface LessonQuizProps {
   quizData: QuizData;
+  onLevelComplete?: (levelId: number) => void;
 }
 
-export default function LessonQuiz({ quizData }: LessonQuizProps) {
+export default function LessonQuiz({ quizData, onLevelComplete }: LessonQuizProps) {
   const { levelId, questions, successMessage, retryMessage, nextLevelPath, nextLevelText } = quizData;
   const totalQuestions = questions.length;
 
@@ -53,32 +32,7 @@ export default function LessonQuiz({ quizData }: LessonQuizProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [confettiPieces, setConfettiPieces] = useState<Array<{ id: number; x: number; delay: number; color: string }>>([]);
-
-  // Fetch quiz history
-  const { data: quizHistory } = useQuery<QuizHistoryData>({
-    queryKey: ['/api/quiz/history', levelId],
-  });
-
-  // Save quiz attempt mutation
-  const saveAttemptMutation = useMutation({
-    mutationFn: async (data: { levelId: number; score: number; correctAnswers: number; totalQuestions: number }) => {
-      return apiRequest('POST', '/api/quiz/attempt', data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/quiz/history', levelId] });
-      queryClient.invalidateQueries({ queryKey: ['/api/progress'] });
-    }
-  });
-
-  // Mark level complete mutation
-  const markCompleteMutation = useMutation({
-    mutationFn: async (levelId: number) => {
-      return apiRequest('POST', '/api/progress/complete', { levelId });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/progress'] });
-    }
-  });
+  const [levelCompleted, setLevelCompleted] = useState(false);
 
   const currentQ = questions[currentQuestion];
   const isLastQuestion = currentQuestion === totalQuestions - 1;
@@ -125,17 +79,11 @@ export default function LessonQuiz({ quizData }: LessonQuizProps) {
   const handleSubmit = () => {
     setIsSubmitted(true);
     
-    // Save quiz attempt to backend
-    saveAttemptMutation.mutate({
-      levelId,
-      score,
-      correctAnswers: correctCount,
-      totalQuestions
-    });
-    
     // Mark level complete if passing score (70%+)
     if (score >= 70) {
-      markCompleteMutation.mutate(levelId);
+      markLevelComplete(levelId);
+      setLevelCompleted(true);
+      onLevelComplete?.(levelId);
     }
     
     if (isPerfectScore) {
@@ -268,29 +216,6 @@ export default function LessonQuiz({ quizData }: LessonQuizProps) {
           Q{currentQuestion + 1}/{totalQuestions}
         </Badge>
       </div>
-
-      {/* Last Attempt Info */}
-      {quizHistory?.lastAttempt && !isSubmitted && (
-        <div className="flex flex-wrap items-center gap-3 p-3 rounded-lg bg-muted/50 text-sm">
-          <div className="flex items-center gap-1.5">
-            <Clock className="w-4 h-4 text-muted-foreground" />
-            <span className="text-muted-foreground">Last attempt:</span>
-            <span className="font-medium">{quizHistory.lastAttempt.score}%</span>
-          </div>
-          {quizHistory.bestScore !== null && quizHistory.bestScore > quizHistory.lastAttempt.score && (
-            <div className="flex items-center gap-1.5">
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-              <span className="text-muted-foreground">Best:</span>
-              <span className="font-medium text-emerald-600 dark:text-emerald-400">{quizHistory.bestScore}%</span>
-            </div>
-          )}
-          {quizHistory.attemptCount > 1 && (
-            <span className="text-muted-foreground">
-              ({quizHistory.attemptCount} attempts)
-            </span>
-          )}
-        </div>
-      )}
 
       <div className="flex gap-1">
         {questions.map((_, index) => (
