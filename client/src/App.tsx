@@ -42,6 +42,8 @@ import Level8Lesson from "@/pages/lessons/Level8Lesson";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import FAQ from "@/pages/FAQ";
+import BeginnerCourse from "@/pages/BeginnerCourse";
+import BeginnerLesson from "@/pages/BeginnerLesson";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -75,6 +77,8 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/faq" component={FAQ} />
+      <Route path="/beginner-course" component={BeginnerCourse} />
+      <Route path="/beginner-course/:slug" component={BeginnerLesson} />
       <Route component={NotFound} />
     </Switch>
   );
