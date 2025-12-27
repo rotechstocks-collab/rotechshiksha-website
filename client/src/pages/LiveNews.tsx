@@ -394,7 +394,7 @@ export default function LiveNews() {
                     <Newspaper className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   </div>
-                  {isHindi ? "लाइव न्यूज़" : "Live News"}
+                  {isHindi ? "लाइव बिज़नेस न्यूज़" : "Live Business News"}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
                   {isHindi 
