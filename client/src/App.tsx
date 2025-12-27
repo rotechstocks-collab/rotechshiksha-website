@@ -44,6 +44,7 @@ import BlogPost from "@/pages/BlogPost";
 import FAQ from "@/pages/FAQ";
 import BeginnerCourse from "@/pages/BeginnerCourse";
 import BeginnerLesson from "@/pages/BeginnerLesson";
+import Level1Course from "@/pages/Level1Course";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -79,6 +80,7 @@ function Router() {
       <Route path="/faq" component={FAQ} />
       <Route path="/beginner-course" component={BeginnerCourse} />
       <Route path="/beginner-course/:slug" component={BeginnerLesson} />
+      <Route path="/level-1" component={Level1Course} />
       <Route component={NotFound} />
     </Switch>
   );
