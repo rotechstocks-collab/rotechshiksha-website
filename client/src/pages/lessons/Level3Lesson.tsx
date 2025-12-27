@@ -25,6 +25,8 @@ import { level3Bilingual } from "@/content/lessons/level3-bilingual";
 import { useLessonLanguage } from "@/context/LessonLanguageContext";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { LessonScene } from "@/content/lessons/types";
+import LessonQuiz from "@/components/LessonQuiz";
+import { level3Quiz } from "@/content/quizzes/quiz-data";
 
 export default function Level3Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
@@ -223,7 +225,14 @@ export default function Level3Lesson() {
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
 
+          {/* Quiz Section */}
           <FadeInUp delay={0.3}>
+            <div className="mt-10">
+              <LessonQuiz quizData={level3Quiz} />
+            </div>
+          </FadeInUp>
+
+          <FadeInUp delay={0.4}>
             <Card className="mt-10 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 border-purple-200 dark:border-purple-800">
               <CardContent className="py-6 text-center">
                 <Shield className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-3" />

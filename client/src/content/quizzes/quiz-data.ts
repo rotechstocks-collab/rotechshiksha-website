@@ -161,3 +161,143 @@ export const level2Quiz: QuizData = {
   nextLevelPath: "/learn/level-3",
   nextLevelText: "➡ Go to Level 3",
 };
+
+export const level3Quiz: QuizData = {
+  levelId: 3,
+  topic: "Investment vs Trading & Planning",
+  questions: [
+    {
+      id: 1,
+      question: "Rohit ko Level 3 me sabse badi seekh kya milti hai?",
+      options: [
+        "Daily trading karo",
+        "Bina plan ke market dangerous hai",
+        "Tips follow karo",
+        "Zyada risk lo",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 2,
+      question: "Investment ka matlab kya hota hai?",
+      options: [
+        "Roz buy-sell",
+        "Short-term profit",
+        "Long-term soch ke paisa lagana",
+        "Gambling",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 3,
+      question: "Trading kis type ke logon ke liye hoti hai?",
+      options: [
+        "Har beginner ke liye",
+        "Bina knowledge ke",
+        "Jinke paas discipline aur plan ho",
+        "Sirf luck ke liye",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 4,
+      question: "Priya Rohit ko plan banane ke liye kya bolti hai?",
+      options: [
+        "Market suno",
+        "News follow karo",
+        "Goal clear rakho aur risk samjho",
+        "Sab paisa ek jagah lagao",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 5,
+      question: "Beginner ke liye sabse safe approach kya hai?",
+      options: [
+        "Trading",
+        "Investment with planning",
+        "Intraday",
+        "Option buying",
+      ],
+      correctIndex: 1,
+    },
+  ],
+  successMessage: {
+    title: "🎉 Great Job!",
+    rohitText: "Ab Rohit bina plan ke market me entry nahi karta.",
+    priyaQuote: "Jeet unki hoti hai jo soch ke chalte hain, jaldi me nahi.",
+  },
+  retryMessage: "Koi baat nahi, Rohit bhi pehli baar me confuse hua tha. Thoda revise karke dobara try karo.",
+  nextLevelPath: "/learn/level-4",
+  nextLevelText: "➡ Go to Level 4",
+};
+
+export const level4Quiz: QuizData = {
+  levelId: 4,
+  topic: "Risk Management (Emotional Focus)",
+  questions: [
+    {
+      id: 1,
+      question: "Risk management ka matlab kya hota hai?",
+      options: [
+        "Risk ignore karna",
+        "Risk ko samajhkar control me rakhna",
+        "Zyada profit banana",
+        "Dar ke market chhod dena",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 2,
+      question: "Market girne par Rohit kya seekhta hai?",
+      options: [
+        "Sab paisa nikal lo",
+        "Ghabrana sahi hai",
+        "Loss bhi learning ka hissa hota hai",
+        "Dobara kabhi invest na karo",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 3,
+      question: "Stop-loss ka main purpose kya hai?",
+      options: [
+        "Profit badhana",
+        "Loss ko limit karna",
+        "Market predict karna",
+        "Trading fast karna",
+      ],
+      correctIndex: 1,
+    },
+    {
+      id: 4,
+      question: "Priya Rohit ko loss ke baad kya samjhati hai?",
+      options: [
+        "Revenge trade karo",
+        "Market bekaar hai",
+        "Discipline sabse zaroori hai",
+        "Tips lo",
+      ],
+      correctIndex: 2,
+    },
+    {
+      id: 5,
+      question: "Successful investor ka sabse strong weapon kya hota hai?",
+      options: [
+        "Luck",
+        "Capital",
+        "Emotional control",
+        "Speed",
+      ],
+      correctIndex: 2,
+    },
+  ],
+  successMessage: {
+    title: "🎉 Proud Moment!",
+    rohitText: "Market girne ke baad bhi Rohit shaant rehta hai.",
+    priyaQuote: "Jo apne emotions jeet leta hai, wahi market jeet paata hai.",
+  },
+  retryMessage: "Koi baat nahi, Rohit bhi pehli baar me confuse hua tha. Thoda revise karke dobara try karo.",
+  nextLevelPath: "/learn/level-5",
+  nextLevelText: "➡ Go to Level 5",
+};
