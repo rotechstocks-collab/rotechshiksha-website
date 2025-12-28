@@ -44,5 +44,5 @@ integrations = ["javascript_database:1.0.0"]
 [userenv]
 
 [userenv.shared]
-OTP_TEST_MODE = "true"
+OTP_TEST_MODE = "false"
 TEST_OTP = "123456"

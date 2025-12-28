@@ -1,0 +1,22 @@
+# Robots.txt for Rotech Shiksha
+# https://rotechshiksha.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /payment/
+Disallow: /api/
+
+# Disallow duplicate/alias routes (canonical versions preferred)
+Disallow: /new
+Disallow: /tools
+Disallow: /educational-videos
+
+# Crawl delay for polite crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://rotechshiksha.com/sitemap.xml
