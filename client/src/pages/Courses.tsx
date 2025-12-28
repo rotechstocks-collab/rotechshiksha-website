@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { CharacterTip } from "@/components/characters/CharacterTip";
 import { characterCopy } from "@/content/characterCopy";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
+import { CharacterDuo } from "@/components/characters/CharacterCard";
 import {
   BookOpen,
   TrendingUp,
@@ -434,6 +435,29 @@ export default function Courses() {
                 <span className="font-medium text-foreground">40+ lessons</span> available for free
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Meet Your Guides Section */}
+      <section className="py-10 bg-muted/30">
+        <div className="section-container">
+          <div className="text-center mb-8">
+            <h2 className="text-xl lg:text-2xl font-bold text-foreground mb-2">
+              Tumhare Learning Partners
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Priya samjhayegi, Rohit tumhare jaisa sawaal karega
+            </p>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <CharacterDuo
+              priyaQuote="Har concept ko simple Hindi mein samjhaungi. Koi bhi doubt ho toh batao!"
+              rohitQuote="Main bhi tum jaisa confused tha - ab dheere dheere samajh aa raha hai!"
+              priyaRole="Teri Mentor"
+              rohitRole="Fellow Learner"
+              variant="default"
+            />
           </div>
         </div>
       </section>

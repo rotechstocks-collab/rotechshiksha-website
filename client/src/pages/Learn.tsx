@@ -17,9 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
+import { CharacterDuo } from "@/components/characters/CharacterCard";
 import { useLanguage } from "@/context/LanguageContext";
-import priyaAvatar from "@assets/generated_images/premium_priya_avatar_clean_vector.png";
-import rohitAvatar from "@assets/generated_images/rohit_avatar_matching_priya_style.png";
 
 const learningLevels = [
   {
@@ -200,41 +199,16 @@ export default function Learn() {
             </p>
           </motion.div>
 
-          {/* Character Intro with Avatars */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-3xl mx-auto mb-8"
-          >
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 p-6 bg-card rounded-lg border">
-              <div className="flex items-center gap-4">
-                <img 
-                  src={priyaAvatar} 
-                  alt="Priya - Your Mentor" 
-                  className="w-16 h-16 rounded-full object-cover border-2 border-emerald-500"
-                  loading="lazy"
-                />
-                <div className="text-left">
-                  <p className="font-semibold text-emerald-700 dark:text-emerald-400">Priya</p>
-                  <p className="text-sm text-muted-foreground">Teri Friendly Mentor</p>
-                </div>
-              </div>
-              <div className="hidden md:block w-px h-12 bg-border" />
-              <div className="flex items-center gap-4">
-                <img 
-                  src={rohitAvatar} 
-                  alt="Rohit - Fellow Learner" 
-                  className="w-16 h-16 rounded-full object-cover border-2 border-blue-500"
-                  loading="lazy"
-                />
-                <div className="text-left">
-                  <p className="font-semibold text-blue-700 dark:text-blue-400">Rohit</p>
-                  <p className="text-sm text-muted-foreground">Tera Learning Partner</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          {/* Character Duo Section */}
+          <div className="max-w-3xl mx-auto">
+            <CharacterDuo
+              priyaQuote="Main tere saath hoon har step pe. Koi sawaal ho toh puchh!"
+              rohitQuote="Chal yaar, saath mein seekhte hain. Tu bhi meri tarah confused tha shuru mein?"
+              priyaRole="Teri Mentor"
+              rohitRole="Tera Learning Partner"
+              variant="horizontal"
+            />
+          </div>
         </div>
       </section>
 

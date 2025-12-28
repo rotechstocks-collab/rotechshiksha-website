@@ -47,6 +47,7 @@ import { CharacterIntro, HeroCharacters } from "@/components/Characters";
 import { CharacterAvatar } from "@/components/characters/CharacterAvatar";
 import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
+import { CharacterDuo } from "@/components/characters/CharacterCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
