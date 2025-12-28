@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { CharacterTip } from "@/components/characters/CharacterTip";
+import { characterCopy } from "@/content/characterCopy";
 import {
   BookOpen,
   TrendingUp,
@@ -332,8 +333,8 @@ export default function Courses() {
               <CharacterTip
                 character="priya"
                 pose="point"
-                title="Chinta mat karo, ek step mein shuru karo!"
-                message="Main tumhe har level mein guide karungi. Basics se start karo, fir slowly advanced topics pe jaao. Koi jaldi nahi hai!"
+                title={characterCopy.courses.tipTitle}
+                message={characterCopy.courses.tipMessage}
               />
             </div>
 

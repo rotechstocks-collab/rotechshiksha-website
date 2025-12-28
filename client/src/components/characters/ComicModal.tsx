@@ -5,33 +5,13 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { characterAssets } from '@/lib/characterAssets';
+import { characterCopy } from '@/content/characterCopy';
 import { ArrowRight } from 'lucide-react';
 
 interface ComicModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const comicPanels = [
-  {
-    character: 'rohit' as const,
-    pose: 'confused' as const,
-    text: 'Main trading start karna chahta hoon, par kahan se shuru karun?',
-    translation: 'I want to start trading, but where should I begin?'
-  },
-  {
-    character: 'priya' as const,
-    pose: 'point' as const,
-    text: 'Pehle basics samjho - market kaise kaam karta hai, charts padhna seekho.',
-    translation: 'First understand the basics - how market works, learn to read charts.'
-  },
-  {
-    character: 'priya' as const,
-    pose: 'clipboard' as const,
-    text: 'Fir paper trading karo - bina paisa lagaye practice karo!',
-    translation: 'Then do paper trading - practice without risking real money!'
-  }
-];
 
 function getPoseImage(character: 'priya' | 'rohit', pose: string): string {
   if (character === 'priya') {
@@ -54,7 +34,7 @@ export function ComicModal({ open, onOpenChange }: ComicModalProps) {
         </DialogHeader>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
-          {comicPanels.map((panel, index) => (
+          {characterCopy.comicPanels.map((panel, index) => (
             <div 
               key={index}
               className="relative bg-gradient-to-b from-muted/50 to-muted rounded-lg p-4 border"
@@ -78,12 +58,9 @@ export function ComicModal({ open, onOpenChange }: ComicModalProps) {
                 <p className="text-sm font-medium text-foreground mb-1">
                   "{panel.text}"
                 </p>
-                <p className="text-xs text-muted-foreground italic">
-                  {panel.translation}
-                </p>
               </div>
               
-              {index < comicPanels.length - 1 && (
+              {index < characterCopy.comicPanels.length - 1 && (
                 <div className="hidden md:flex absolute -right-2 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-10">
                   <ArrowRight className="w-4 h-4 text-muted-foreground" />
                 </div>

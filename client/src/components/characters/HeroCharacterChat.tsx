@@ -4,33 +4,16 @@ import { Link } from 'wouter';
 import { ArrowRight, BookOpen, Calculator } from 'lucide-react';
 import { CharacterChat } from './CharacterChat';
 import { motion } from 'framer-motion';
+import { characterCopy } from '@/content/characterCopy';
 
 interface HeroCharacterChatProps {
   className?: string;
 }
 
-const heroConversation = [
-  {
-    character: 'rohit' as const,
-    pose: 'confused' as const,
-    message: "Yaar, mujhe trading seekhni hai par samajh nahi aa raha kahan se shuru karun?"
-  },
-  {
-    character: 'priya' as const,
-    pose: 'point' as const,
-    message: "Simple hai! Pehle basics samjho - stock kya hai, market kaise kaam karta hai. Fir step-by-step aage badho."
-  },
-  {
-    character: 'rohit' as const,
-    pose: 'idea' as const,
-    message: "Lekin kya yeh free hai? Aur Hindi mein milega?"
-  },
-  {
-    character: 'priya' as const,
-    pose: 'smile' as const,
-    message: "Haan! Yahan sab kuch Hinglish mein hai aur beginners ke liye bilkul free. Chalo start karein!"
-  }
-];
+const heroConversation = characterCopy.homepage.heroConversation.map(item => ({
+  character: item.character,
+  message: item.message,
+}));
 
 export function HeroCharacterChat({ className = '' }: HeroCharacterChatProps) {
   return (
@@ -52,14 +35,14 @@ export function HeroCharacterChat({ className = '' }: HeroCharacterChatProps) {
           <Link href="/courses" className="flex-1">
             <Button className="w-full" data-testid="button-hero-start-learning">
               <BookOpen className="w-4 h-4 mr-2" />
-              Start Learning
+              {characterCopy.buttons.startLearning}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
           <Link href="/calculators" className="flex-1">
             <Button variant="outline" className="w-full" data-testid="button-hero-calculators">
               <Calculator className="w-4 h-4 mr-2" />
-              Try Calculators
+              {characterCopy.buttons.tryCalculators}
             </Button>
           </Link>
         </div>

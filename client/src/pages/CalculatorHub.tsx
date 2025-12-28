@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { CharacterTip } from "@/components/characters/CharacterTip";
+import { characterCopy } from "@/content/characterCopy";
 import {
   Calculator,
   PiggyBank,
@@ -253,8 +254,8 @@ export default function CalculatorHub() {
           <CharacterTip
             character="priya"
             pose="clipboard"
-            title="SIP ya Lumpsum mein confuse ho?"
-            message="Investing mein sabse pehle yeh samjho ki aapka goal kya hai. SIP monthly investing ke liye hai, Lumpsum ek baar mein invest karne ke liye. Calculator use karo aur dekho!"
+            title={characterCopy.calculators.tipTitle}
+            message={characterCopy.calculators.tipMessage}
           />
         </div>
 

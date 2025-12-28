@@ -424,23 +424,21 @@ export default function Home() {
                   <CharacterAvatar character="rohit" size="lg" />
                   <div className="md:hidden">
                     <p className="font-semibold text-foreground">Rohit</p>
-                    <p className="text-xs text-muted-foreground">{isHindi ? "शायद आप भी" : "Maybe you too"}</p>
+                    <p className="text-xs text-muted-foreground">Shayad aap bhi</p>
                   </div>
                 </div>
                 <div className="flex-1">
                   <div className="hidden md:flex items-center gap-2 mb-2">
                     <p className="font-semibold text-foreground text-lg">Rohit</p>
                     <Badge variant="outline" className="text-xs border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300">
-                      {isHindi ? "शायद आप भी" : "Maybe you too"}
+                      Shayad aap bhi
                     </Badge>
                   </div>
                   <p className="text-foreground/90 leading-relaxed">
-                    {isHindi 
-                      ? `"मैं एक आम आदमी हूं – नौकरी करता हूं, थोड़ी savings हैं, लेकिन stock market से डरता था। फिर मैंने Priya से सीखा – simple Hindi में, बिना jargon के। आज मैं confident हूं।"`
-                      : `"I'm a regular guy – working job, some savings, but was scared of stock market. Then I learned from Priya – in simple Hindi, no jargon. Today I'm confident."`}
+                    "Main ek normal job karne wala banda hoon. Thodi savings thi, par stock market se darr lagta tha. Phir Priya se simple Hindi me seekha — bina jargon. Aaj main confident hoon."
                   </p>
                   <p className="text-primary font-medium mt-3">
-                    {isHindi ? "आपकी भी बारी है।" : "Your turn now."}
+                    Aapki bhi baari hai.
                   </p>
                 </div>
               </div>
