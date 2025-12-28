@@ -647,6 +647,8 @@ export default function Home() {
       <StoryIntro
         priyaLine="Yaar Rohit, investing kahan se start karun? Simple hai! Free course se shuru kar - basics se advanced tak!"
         rohitLine="Perfect! Ek hi platform pe sab kuch! Chal shuru karte hain!"
+        priyaEmotion="excited"
+        rohitEmotion="warning"
       />
 
       <section className="py-10 md:py-14">
@@ -663,7 +665,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <div className="flex items-center gap-4 mb-4">
-                <CharacterAvatar character="priya" size="lg" />
+                <CharacterAvatar character="priya" size="lg" emotion="excited" />
                 <div>
                   <h3 className="font-semibold text-slate-900 dark:text-white">Priya</h3>
                   <p className="text-sm text-emerald-600 dark:text-emerald-400">Your Expert Guide</p>
@@ -676,7 +678,7 @@ export default function Home() {
             
             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <div className="flex items-center gap-4 mb-4">
-                <CharacterAvatar character="rohit" size="lg" />
+                <CharacterAvatar character="rohit" size="lg" emotion="warning" />
                 <div>
                   <h3 className="font-semibold text-slate-900 dark:text-white">Rohit</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Fellow Learner (Just Like You)</p>
