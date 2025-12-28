@@ -1,6 +1,9 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import session from "express-session";
+import helmet from "helmet";
+import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
 import { leadFormSchema, otpVerifySchema } from "@shared/schema";
 import axios from "axios";
@@ -17,9 +20,13 @@ function generateOtp(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Testing mode configuration via environment variables
+// SECURITY: Production mode check - NO test OTP fallback in production
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" && !IS_PRODUCTION;
+
+// Whitelist of mobile numbers allowed to use test OTP (dev/testing only)
+const TEST_OTP_WHITELIST = (process.env.TEST_OTP_WHITELIST || "").split(",").filter(Boolean);
 const TEST_OTP = process.env.TEST_OTP || "123456";
-const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" || process.env.NODE_ENV !== "production";
 
 // Alpha Vantage API configuration
 const ALPHAVANTAGE_API_KEY = process.env.ALPHAVANTAGE_API_KEY || "";
@@ -418,21 +425,93 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // Session middleware
+  // SECURITY: Validate SESSION_SECRET in production
+  const sessionSecret = process.env.SESSION_SECRET;
+  if (IS_PRODUCTION && !sessionSecret) {
+    console.error("FATAL: SESSION_SECRET environment variable is required in production!");
+    process.exit(1);
+  }
+
+  // SECURITY: Helmet for security headers
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.youtube.com", "https://s.tradingview.com"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        imgSrc: ["'self'", "data:", "https:", "blob:"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com", "https://s.tradingview.com"],
+        connectSrc: ["'self'", "https://gnews.io", "https://www.alphavantage.co", "https://query1.finance.yahoo.com"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  }));
+
+  // SECURITY: CORS configuration
+  const allowedOrigins = [
+    "https://rotechshiksha.com",
+    "https://www.rotechshiksha.com",
+    "https://rotech-solutions--rotechstocks.replit.app",
+  ];
+  
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (same-origin, server-to-server, mobile apps)
+      if (!origin) {
+        return callback(null, true);
+      }
+      // In development, allow all origins for easier testing
+      if (!IS_PRODUCTION) {
+        return callback(null, true);
+      }
+      // In production, only allow specific origins
+      if (allowedOrigins.includes(origin) || origin.endsWith('.replit.dev') || origin.endsWith('.replit.app')) {
+        return callback(null, true);
+      }
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  }));
+
+  // SECURITY: Rate limiting for auth endpoints
+  const authRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // 5 requests per window
+    message: { message: "Too many authentication attempts. Please try again after 15 minutes." },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // General API rate limiter
+  const apiRateLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 100, // 100 requests per minute
+    message: { message: "Too many requests. Please slow down." },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  app.use("/api/", apiRateLimiter);
+
+  // Session middleware with SECURE configuration
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || "rotech-multi-solution-secret",
+      secret: sessionSecret || "dev-only-secret-do-not-use-in-production",
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: false,
+        secure: IS_PRODUCTION, // Only secure in production (requires HTTPS)
+        httpOnly: true,
+        sameSite: "strict",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       },
     })
   );
 
-  // Auth Routes
-  app.post("/api/auth/send-otp", async (req: Request, res: Response) => {
+  // Auth Routes (with rate limiting)
+  app.post("/api/auth/send-otp", authRateLimiter, async (req: Request, res: Response) => {
     try {
       const result = leadFormSchema.safeParse(req.body);
       if (!result.success) {
@@ -480,7 +559,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/auth/resend-otp", async (req: Request, res: Response) => {
+  app.post("/api/auth/resend-otp", authRateLimiter, async (req: Request, res: Response) => {
     try {
       const { mobile } = req.body;
       if (!mobile) {
@@ -510,7 +589,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/auth/verify-otp", async (req: Request, res: Response) => {
+  app.post("/api/auth/verify-otp", authRateLimiter, async (req: Request, res: Response) => {
     try {
       const result = otpVerifySchema.safeParse(req.body);
       if (!result.success) {
@@ -519,56 +598,40 @@ export async function registerRoutes(
 
       const { mobile, otp } = result.data;
 
-      // Check if using test OTP (always accepted in testing mode)
+      // SECURITY: Test OTP only allowed in testing mode AND for whitelisted numbers
       const isTestOtp = otp === TEST_OTP;
+      const isMobileWhitelisted = TEST_OTP_WHITELIST.includes(mobile);
+      const canUseTestOtp = IS_TESTING_MODE && isTestOtp && (isMobileWhitelisted || TEST_OTP_WHITELIST.length === 0);
 
       // Get stored OTP
       const storedOtp = await storage.getOtpByMobile(mobile);
       
-      // Allow verification if test OTP is used OR real OTP matches
+      // SECURITY: Strict OTP validation - no TEST_OTP fallback in production
       let otpValid = false;
       
-      if (isTestOtp && IS_TESTING_MODE) {
-        // Accept test OTP in testing mode
+      if (canUseTestOtp) {
+        // Accept test OTP ONLY in testing mode for whitelisted numbers
         otpValid = true;
-        console.log(`Test OTP accepted for ${mobile}`);
+        console.log(`[DEV ONLY] Test OTP accepted for ${mobile}`);
       } else if (storedOtp) {
-        // Verify real OTP
+        // Verify real OTP only
         if (storedOtp.isUsed) {
-          // Check if test OTP can be used instead
-          if (!isTestOtp) {
-            return res.status(400).json({ 
-              message: `OTP already used. Please request a new one or use test OTP: ${TEST_OTP}`,
-              testMode: IS_TESTING_MODE 
-            });
-          }
-          otpValid = isTestOtp;
+          return res.status(400).json({ 
+            message: "OTP already used. Please request a new one."
+          });
         } else if (new Date() > storedOtp.expiresAt) {
-          // Check if test OTP can be used instead
-          if (!isTestOtp) {
-            return res.status(400).json({ 
-              message: `OTP expired. Please request a new one or use test OTP: ${TEST_OTP}`,
-              testMode: IS_TESTING_MODE 
-            });
-          }
-          otpValid = isTestOtp;
+          return res.status(400).json({ 
+            message: "OTP expired. Please request a new one."
+          });
         } else if (storedOtp.otp === otp) {
           otpValid = true;
-          // Mark real OTP as used
           await storage.markOtpUsed(storedOtp.id);
-        } else if (isTestOtp) {
-          // Real OTP didn't match but test OTP was used
-          otpValid = true;
         }
-      } else if (isTestOtp) {
-        // No stored OTP but test OTP used
-        otpValid = true;
       }
 
       if (!otpValid) {
         return res.status(400).json({ 
-          message: `Invalid OTP. Please try again or use test OTP: ${TEST_OTP}`,
-          testMode: IS_TESTING_MODE 
+          message: "Invalid OTP. Please check and try again."
         });
       }
 

@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,120 +16,124 @@ import { LiveChat } from "@/components/LiveChat";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { HreflangTags } from "@/components/HreflangTags";
 import { LiveTicker } from "@/components/LiveTicker";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { PageLoadingSkeleton } from "@/components/LoadingSkeleton";
 
 import Home from "@/pages/Home";
-import About from "@/pages/About";
-import Courses from "@/pages/Courses";
-import CalculatorHub from "@/pages/CalculatorHub";
-import GenericCalculator from "@/pages/GenericCalculator";
-import BrokerageCalculatorPage from "@/pages/BrokerageCalculatorPage";
-import PricingPage from "@/pages/PricingPage";
-import Payment from "@/pages/Payment";
-import Dashboard from "@/pages/Dashboard";
-import Admin from "@/pages/Admin";
-import Login from "@/pages/Login";
-import BrokerComparison from "@/pages/BrokerComparison";
-import EconomicCalendar from "@/pages/EconomicCalendar";
-import PaperTrade from "@/pages/PaperTrade";
-import EducationalVideos from "@/pages/EducationalVideos";
-import LoansAndCreditCards from "@/pages/LoansAndCreditCards";
-import LiveMarket from "@/pages/LiveMarket";
-import Level1Lesson from "@/pages/lessons/Level1Lesson";
-import Level2Lesson from "@/pages/lessons/Level2Lesson";
-import Level3Lesson from "@/pages/lessons/Level3Lesson";
-import Level4Lesson from "@/pages/lessons/Level4Lesson";
-import Level5Lesson from "@/pages/lessons/Level5Lesson";
-import Level6Lesson from "@/pages/lessons/Level6Lesson";
-import Level7Lesson from "@/pages/lessons/Level7Lesson";
-import Level8Lesson from "@/pages/lessons/Level8Lesson";
-import Blog from "@/pages/Blog";
-import BlogPost from "@/pages/BlogPost";
-import FAQ from "@/pages/FAQ";
-import BeginnerCourse from "@/pages/BeginnerCourse";
-import BeginnerLesson from "@/pages/BeginnerLesson";
-import Level1Course from "@/pages/Level1Course";
-import MarketNews from "@/pages/MarketNews";
-import LiveNews from "@/pages/LiveNews";
 import NotFound from "@/pages/not-found";
+
+const About = lazy(() => import("@/pages/About"));
+const Courses = lazy(() => import("@/pages/Courses"));
+const CalculatorHub = lazy(() => import("@/pages/CalculatorHub"));
+const GenericCalculator = lazy(() => import("@/pages/GenericCalculator"));
+const BrokerageCalculatorPage = lazy(() => import("@/pages/BrokerageCalculatorPage"));
+const PricingPage = lazy(() => import("@/pages/PricingPage"));
+const Payment = lazy(() => import("@/pages/Payment"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Admin = lazy(() => import("@/pages/Admin"));
+const Login = lazy(() => import("@/pages/Login"));
+const BrokerComparison = lazy(() => import("@/pages/BrokerComparison"));
+const EconomicCalendar = lazy(() => import("@/pages/EconomicCalendar"));
+const PaperTrade = lazy(() => import("@/pages/PaperTrade"));
+const EducationalVideos = lazy(() => import("@/pages/EducationalVideos"));
+const LoansAndCreditCards = lazy(() => import("@/pages/LoansAndCreditCards"));
+const LiveMarket = lazy(() => import("@/pages/LiveMarket"));
+const Level1Lesson = lazy(() => import("@/pages/lessons/Level1Lesson"));
+const Level2Lesson = lazy(() => import("@/pages/lessons/Level2Lesson"));
+const Level3Lesson = lazy(() => import("@/pages/lessons/Level3Lesson"));
+const Level4Lesson = lazy(() => import("@/pages/lessons/Level4Lesson"));
+const Level5Lesson = lazy(() => import("@/pages/lessons/Level5Lesson"));
+const Level6Lesson = lazy(() => import("@/pages/lessons/Level6Lesson"));
+const Level7Lesson = lazy(() => import("@/pages/lessons/Level7Lesson"));
+const Level8Lesson = lazy(() => import("@/pages/lessons/Level8Lesson"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const BlogPost = lazy(() => import("@/pages/BlogPost"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
+const BeginnerCourse = lazy(() => import("@/pages/BeginnerCourse"));
+const BeginnerLesson = lazy(() => import("@/pages/BeginnerLesson"));
+const Level1Course = lazy(() => import("@/pages/Level1Course"));
+const MarketNews = lazy(() => import("@/pages/MarketNews"));
+const LiveNews = lazy(() => import("@/pages/LiveNews"));
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/courses" component={Courses} />
-      <Route path="/courses/:level" component={Courses} />
-      <Route path="/learn" component={BeginnerCourse} />
-      <Route path="/learn/level-1" component={Level1Lesson} />
-      <Route path="/learn/level-2" component={Level2Lesson} />
-      <Route path="/learn/level-3" component={Level3Lesson} />
-      <Route path="/learn/level-4" component={Level4Lesson} />
-      <Route path="/learn/level-5" component={Level5Lesson} />
-      <Route path="/learn/level-6" component={Level6Lesson} />
-      <Route path="/learn/level-7" component={Level7Lesson} />
-      <Route path="/learn/level-8" component={Level8Lesson} />
-      <Route path="/compare-brokers" component={BrokerComparison} />
-      <Route path="/economic-calendar" component={EconomicCalendar} />
-      <Route path="/paper-trade" component={PaperTrade} />
-      <Route path="/videos" component={EducationalVideos} />
-      <Route path="/educational-videos" component={EducationalVideos} />
-      <Route path="/tools" component={CalculatorHub} />
-      <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
-      <Route path="/live-market" component={LiveMarket} />
-      <Route path="/calculators" component={CalculatorHub} />
-      <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
-      <Route path="/calculators/:id" component={GenericCalculator} />
-      <Route path="/pricing" component={PricingPage} />
-      <Route path="/payment/:planId" component={Payment} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/admin" component={Admin} />
-      <Route path="/login" component={Login} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/blog/:slug" component={BlogPost} />
-      <Route path="/faq" component={FAQ} />
-      <Route path="/new" component={LiveNews} />
-      <Route path="/beginner-course" component={BeginnerCourse} />
-      <Route path="/beginner-course/:slug" component={BeginnerLesson} />
-      <Route path="/level-1" component={Level1Course} />
-      <Route path="/market-news" component={MarketNews} />
-      <Route path="/live-news" component={LiveNews} />
-      <Route path="/:rest*" component={NotFound} />
-    </Switch>
+    <Suspense fallback={<PageLoadingSkeleton />}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/courses" component={Courses} />
+        <Route path="/courses/:level" component={Courses} />
+        <Route path="/learn" component={BeginnerCourse} />
+        <Route path="/learn/level-1" component={Level1Lesson} />
+        <Route path="/learn/level-2" component={Level2Lesson} />
+        <Route path="/learn/level-3" component={Level3Lesson} />
+        <Route path="/learn/level-4" component={Level4Lesson} />
+        <Route path="/learn/level-5" component={Level5Lesson} />
+        <Route path="/learn/level-6" component={Level6Lesson} />
+        <Route path="/learn/level-7" component={Level7Lesson} />
+        <Route path="/learn/level-8" component={Level8Lesson} />
+        <Route path="/compare-brokers" component={BrokerComparison} />
+        <Route path="/economic-calendar" component={EconomicCalendar} />
+        <Route path="/paper-trade" component={PaperTrade} />
+        <Route path="/videos" component={EducationalVideos} />
+        <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
+        <Route path="/live-market" component={LiveMarket} />
+        <Route path="/calculators" component={CalculatorHub} />
+        <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
+        <Route path="/calculators/:id" component={GenericCalculator} />
+        <Route path="/pricing" component={PricingPage} />
+        <Route path="/payment/:planId" component={Payment} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/admin" component={Admin} />
+        <Route path="/login" component={Login} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:slug" component={BlogPost} />
+        <Route path="/faq" component={FAQ} />
+        <Route path="/beginner-course" component={BeginnerCourse} />
+        <Route path="/beginner-course/:slug" component={BeginnerLesson} />
+        <Route path="/level-1" component={Level1Course} />
+        <Route path="/market-news" component={MarketNews} />
+        <Route path="/live-news" component={LiveNews} />
+        <Route path="/:rest*" component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <LanguageProvider>
-          <LessonLanguageProvider>
-            <AuthProvider>
-            <TooltipProvider>
-              <HreflangTags />
-              <div className="hidden md:block">
-                <LiveTicker />
-              </div>
-              <div className="min-h-screen bg-background safe-area-top">
-                <Header />
-                <main className="pt-14 md:pt-[104px]">
-                  <Router />
-                </main>
-                <Footer />
-                <div className="h-20 md:hidden" aria-hidden="true" />
-                <MobileBottomNav />
-                <div className="safe-area-bottom" />
-                <AuthModal />
-                <LiveChat />
-                <WhatsAppButton />
-              </div>
-              <Toaster />
-            </TooltipProvider>
-          </AuthProvider>
-          </LessonLanguageProvider>
-        </LanguageProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <LanguageProvider>
+            <LessonLanguageProvider>
+              <AuthProvider>
+                <TooltipProvider>
+                  <HreflangTags />
+                  <div className="hidden md:block">
+                    <LiveTicker />
+                  </div>
+                  <div className="min-h-screen bg-background safe-area-top">
+                    <Header />
+                    <main className="pt-14 md:pt-[104px]">
+                      <Router />
+                    </main>
+                    <Footer />
+                    <div className="h-20 md:hidden" aria-hidden="true" />
+                    <MobileBottomNav />
+                    <div className="safe-area-bottom" />
+                    <AuthModal />
+                    <LiveChat />
+                    <WhatsAppButton />
+                  </div>
+                  <Toaster />
+                </TooltipProvider>
+              </AuthProvider>
+            </LessonLanguageProvider>
+          </LanguageProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
