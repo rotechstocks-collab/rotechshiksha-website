@@ -18,6 +18,7 @@ import {
 import { SEOHead } from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
+import { LessonHook, ToolBox, PriyaSummary, RohitActionStep, DownloadNotes } from "@/components/lessons/VarsityComponents";
 
 export interface LessonScene {
   id: string;
@@ -219,11 +220,38 @@ export function BeginnerLessonLayout({ lesson }: BeginnerLessonLayoutProps) {
 
       <section className="py-8 lg:py-12">
         <div className="max-w-3xl mx-auto px-4">
+          <LessonHook
+            priyaLine="Aaj hum ek important concept samjhenge – dhyan se padho!"
+            rohitLine="Haan Priya, main ready hoon seekhne ke liye!"
+          />
+
+          <ToolBox />
+
           <StaggerContainer>
             <div className="space-y-6">
               {lesson.scenes.map((scene, index) => renderScene(scene, index))}
             </div>
           </StaggerContainer>
+
+          <PriyaSummary
+            points={[
+              "Aaj ka concept samajh liya – basics clear ho gaye.",
+              "Practical example se theory connect hui.",
+              "Ab agle lesson mein aur deep dive karenge.",
+            ]}
+          />
+
+          <RohitActionStep
+            action="Aaj jo seekha usse apne notes mein likho aur ek calculator try karo."
+            description="Practice se hi confidence aata hai!"
+            buttonText="Calculators Try Karo"
+            buttonHref="/calculators"
+          />
+
+          <DownloadNotes
+            lessonSlug={lesson.slug}
+            lessonTitle={lesson.title}
+          />
         </div>
       </section>
 

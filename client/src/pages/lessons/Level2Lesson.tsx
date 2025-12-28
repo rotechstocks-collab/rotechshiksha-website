@@ -25,6 +25,7 @@ import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationW
 import { LessonScene } from "@/content/lessons/types";
 import LessonQuiz from "@/components/LessonQuiz";
 import { level2Quiz } from "@/content/quizzes/quiz-data";
+import { LessonHook, ToolBox, PriyaSummary, RohitActionStep, DownloadNotes } from "@/components/lessons/VarsityComponents";
 
 export default function Level2Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
@@ -243,9 +244,43 @@ export default function Level2Lesson() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-3xl mx-auto">
+          <LessonHook
+            priyaLine="Aaj hum Index, IPO aur market structure samjhenge – yeh building blocks hain investing ke!"
+            rohitLine="Sensex aur Nifty ke baare mein suna hai, par samajh nahi aata tha. Ab clear ho jayega!"
+          />
+
+          <ToolBox
+            tools={[
+              { name: "Brokerage Calculator", href: "/calculators/brokerage" },
+              { name: "CAGR Calculator", href: "/calculators/cagr" },
+            ]}
+          />
+
           <StaggerContainer className="space-y-4">
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
+
+          <PriyaSummary
+            points={[
+              "Sensex mein top 30 companies hain, Nifty mein top 50.",
+              "IPO tab hota hai jab company pehli baar public ko shares bechti hai.",
+              "Market structure samajhna zaroori hai – NSE, BSE, Indices.",
+              "Brokers ke through hi trading hoti hai – demat account zaroori.",
+            ]}
+            title="Priya ka Summary"
+          />
+
+          <RohitActionStep
+            action="Brokerage calculator kholo aur dekho ki ₹10,000 ka trade karne mein kitna charge lagta hai."
+            description="Hidden charges pata chalne se better decisions le paunga!"
+            buttonText="Brokerage Calculator Try Karo"
+            buttonHref="/calculators/brokerage"
+          />
+
+          <DownloadNotes
+            lessonSlug="level-2-index-ipo"
+            lessonTitle="Index, IPO & Market Structure"
+          />
 
           {/* Quiz Section */}
           <FadeInUp delay={0.3}>

@@ -25,6 +25,7 @@ import { LessonScene } from "@/content/lessons/types";
 import LessonQuiz from "@/components/LessonQuiz";
 import { level1Quiz } from "@/content/quizzes/quiz-data";
 import { LearningProgress } from "@/components/LearningProgress";
+import { LessonHook, ToolBox, PriyaSummary, RohitActionStep, DownloadNotes } from "@/components/lessons/VarsityComponents";
 
 export default function Level1Lesson() {
   const { lessonLang, toggleLanguage, labels } = useLessonLanguage();
@@ -248,9 +249,43 @@ export default function Level1Lesson() {
             <LearningProgress currentLevel={1} />
           </div>
 
+          <LessonHook
+            priyaLine="Aaj hum stock market ki shuruaat karenge – bilkul basics se. Koi confusion nahi hoga!"
+            rohitLine="Yaar finally! Main bahut excited hoon seekhne ke liye. Chal shuru karte hain!"
+          />
+
+          <ToolBox
+            tools={[
+              { name: "SIP Calculator", href: "/calculators/sip" },
+              { name: "Lumpsum Calculator", href: "/calculators/lumpsum" },
+            ]}
+          />
+
           <StaggerContainer className="space-y-4">
             {scenes.map((scene, index) => renderScene(scene, index))}
           </StaggerContainer>
+
+          <PriyaSummary
+            points={[
+              "Stock market ek marketplace hai jahan shares kharide-beche jaate hain.",
+              "Share ka matlab hai company mein chhota sa ownership.",
+              "Long-term investing se wealth create hoti hai.",
+              "Risk samajhna zaroori hai – never invest more than you can afford to lose.",
+            ]}
+            title="Priya ka Summary"
+          />
+
+          <RohitActionStep
+            action="SIP calculator kholo aur dekho ki ₹1000/month invest karne se 10 saal mein kitna ban sakta hai."
+            description="Main bhi yahi try karunga – numbers dekh ke motivation milta hai!"
+            buttonText="SIP Calculator Try Karo"
+            buttonHref="/calculators/sip"
+          />
+
+          <DownloadNotes
+            lessonSlug="level-1-basics"
+            lessonTitle="Stock Market Basics"
+          />
 
           {/* Quiz Section */}
           <FadeInUp delay={0.3}>
