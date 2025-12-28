@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
+import { CharacterTip } from "@/components/characters/CharacterTip";
 import {
   BookOpen,
   TrendingUp,
@@ -325,6 +326,15 @@ export default function Courses() {
               <p className="text-base lg:text-lg text-muted-foreground max-w-xl mx-auto">
                 8 levels mein complete stock market education — bilkul beginners ke liye
               </p>
+            </div>
+
+            <div className="max-w-2xl mx-auto mb-6">
+              <CharacterTip
+                character="priya"
+                pose="point"
+                title="Chinta mat karo, ek step mein shuru karo!"
+                message="Main tumhe har level mein guide karungi. Basics se start karo, fir slowly advanced topics pe jaao. Koi jaldi nahi hai!"
+              />
             </div>
 
             {/* Progress Bar */}

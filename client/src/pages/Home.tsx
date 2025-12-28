@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { CharacterAvatar, CharacterIntro, HeroCharacters } from "@/components/Characters";
+import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
@@ -345,7 +346,16 @@ export default function Home() {
             </div>
             
             <HeroCharacters isHindi={isHindi} />
-            
+          </motion.div>
+          
+          <HeroCharacterChat className="mt-8 max-w-2xl mx-auto" />
+          
+          <motion.div 
+            className="text-center mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <CheckCircle className="w-4 h-4 text-emerald-500" />

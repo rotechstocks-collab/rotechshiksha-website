@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { CharacterTip } from "@/components/characters/CharacterTip";
 import {
   Calculator,
   PiggyBank,
@@ -247,6 +248,15 @@ export default function CalculatorHub() {
             Plan investments, calculate taxes, and make informed financial decisions
           </p>
         </motion.div>
+
+        <div className="max-w-2xl mx-auto mb-10">
+          <CharacterTip
+            character="priya"
+            pose="clipboard"
+            title="SIP ya Lumpsum mein confuse ho?"
+            message="Investing mein sabse pehle yeh samjho ki aapka goal kya hai. SIP monthly investing ke liye hai, Lumpsum ek baar mein invest karne ke liye. Calculator use karo aur dekho!"
+          />
+        </div>
 
         <section className="mb-16">
           <h2 className="text-xl font-semibold text-foreground mb-6">Popular Calculators</h2>

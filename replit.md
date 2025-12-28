@@ -6,6 +6,25 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Character System Integration (Priya & Rohit)
+  - Mascot characters for interactive storytelling-based learning in Hinglish
+  - **Priya**: Helpful guide who explains concepts and encourages learners
+  - **Rohit**: Fellow learner who asks questions users might have
+  - 8 character poses extracted from sprite sheets using sharp:
+    - Priya: point, think, clipboard, smile
+    - Rohit: confused, thumb, idea, write
+  - Character components in `client/src/components/characters/`:
+    - CharacterTip: Reusable tip cards with character avatars
+    - CharacterChat: Conversational chat-style messages between characters
+    - ComicModal: Story-based comic panels for teaching concepts
+    - HeroCharacterChat: Featured conversation on homepage
+  - Integration points:
+    - Homepage: HeroCharacterChat below hero section with Priya/Rohit conversation
+    - CalculatorHub: CharacterTip explaining SIP vs Lumpsum
+    - Courses: CharacterTip encouraging step-by-step learning
+  - Character poses stored in `client/public/characters/poses/`
+  - Import helper: `getPoseUrl(character, pose)` from poses/index.ts
+
 - **Dec 2024**: Security Hardening & Production Readiness
   - **TEST OTP Backdoor Removed**: Test OTP only works when ALL THREE conditions are met:
     - OTP_TEST_MODE=true (dev only, never works in production)
