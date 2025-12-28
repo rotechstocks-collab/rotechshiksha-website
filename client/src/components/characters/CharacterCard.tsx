@@ -2,8 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-import priyaAvatar from "@/assets/characters/priya_main.png";
-import rohitAvatar from "@/assets/characters/rohit_main.png";
+import priyaAvatar from "@/assets/characters/priya_main_transparent.png";
+import rohitAvatar from "@/assets/characters/rohit_main_transparent.png";
 
 interface CharacterCardProps {
   name: "priya" | "rohit";

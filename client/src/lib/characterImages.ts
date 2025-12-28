@@ -1,5 +1,5 @@
-import priyaAvatar from "@/assets/characters/priya_main.png";
-import rohitAvatar from "@/assets/characters/rohit_main.png";
+import priyaAvatar from "@/assets/characters/priya_main_transparent.png";
+import rohitAvatar from "@/assets/characters/rohit_main_transparent.png";
 
 export const characterImages = {
   priya: {

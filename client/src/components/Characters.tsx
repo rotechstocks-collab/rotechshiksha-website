@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, HelpCircle, Sparkles, MessageCircle, BookOpen, FileText } from "lucide-react";
-import priyaAvatar from "@/assets/characters/priya_main.png";
-import rohitAvatar from "@/assets/characters/rohit_main.png";
+import priyaAvatar from "@/assets/characters/priya_main_transparent.png";
+import rohitAvatar from "@/assets/characters/rohit_main_transparent.png";
 
 type CharacterType = "priya" | "rohit";
 type CharacterMood = "explaining" | "questioning" | "celebrating" | "thinking" | "neutral";
