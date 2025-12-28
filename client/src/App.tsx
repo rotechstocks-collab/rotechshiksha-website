@@ -58,6 +58,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/courses" component={Courses} />
       <Route path="/courses/:level" component={Courses} />
+      <Route path="/learn" component={BeginnerCourse} />
       <Route path="/learn/level-1" component={Level1Lesson} />
       <Route path="/learn/level-2" component={Level2Lesson} />
       <Route path="/learn/level-3" component={Level3Lesson} />
@@ -69,7 +70,9 @@ function Router() {
       <Route path="/compare-brokers" component={BrokerComparison} />
       <Route path="/economic-calendar" component={EconomicCalendar} />
       <Route path="/paper-trade" component={PaperTrade} />
+      <Route path="/videos" component={EducationalVideos} />
       <Route path="/educational-videos" component={EducationalVideos} />
+      <Route path="/tools" component={CalculatorHub} />
       <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
       <Route path="/live-market" component={LiveMarket} />
       <Route path="/calculators" component={CalculatorHub} />
@@ -83,12 +86,13 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/faq" component={FAQ} />
+      <Route path="/new" component={LiveNews} />
       <Route path="/beginner-course" component={BeginnerCourse} />
       <Route path="/beginner-course/:slug" component={BeginnerLesson} />
       <Route path="/level-1" component={Level1Course} />
       <Route path="/market-news" component={MarketNews} />
       <Route path="/live-news" component={LiveNews} />
-      <Route component={NotFound} />
+      <Route path="/:rest*" component={NotFound} />
     </Switch>
   );
 }
