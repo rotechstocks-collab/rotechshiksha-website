@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 import { useLanguage } from "@/context/LanguageContext";
-import priyaAvatar from "@assets/generated_images/priya_mentor_avatar_green_blazer.png";
+import priyaAvatar from "@assets/generated_images/premium_priya_avatar_clean_vector.png";
 import rohitAvatar from "@assets/generated_images/rohit_avatar_matching_priya_style.png";
 
 const learningLevels = [
