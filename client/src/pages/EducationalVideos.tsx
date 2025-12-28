@@ -713,6 +713,18 @@ export default function EducationalVideos() {
         </section>
       )}
 
+      <section className="py-6 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-card/30">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 text-center">
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <span className="font-medium">Legal Disclaimer:</span> All videos are embedded from YouTube using the official embed player. 
+              All rights belong to the respective creators and channels. We do not host, download, or modify any video content. 
+              Videos with embedding disabled are not shown.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <Dialog open={!!activeVideo} onOpenChange={() => setActiveVideo(null)}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden">
           <DialogHeader className="p-4 pb-0">
@@ -741,21 +753,28 @@ export default function EducationalVideos() {
                     <Badge className={`border-0 ${levelColors[activeVideo.level]}`}>
                       {activeVideo.level}
                     </Badge>
-                    <span className="text-sm text-slate-500">{activeVideo.channelName}</span>
                   </div>
-                  <a
-                    href={`https://www.youtube.com/watch?v=${activeVideo.youtubeId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex"
-                    data-testid="link-watch-on-youtube"
-                  >
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <ExternalLink className="w-4 h-4" />
-                      Watch on YouTube
-                    </Button>
-                  </a>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+                      {activeVideo.channelName}
+                    </span>
+                    <a
+                      href={`https://www.youtube.com/watch?v=${activeVideo.youtubeId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex"
+                      data-testid="link-watch-on-youtube"
+                    >
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Youtube className="w-4 h-4 text-red-600" />
+                        Watch on YouTube
+                      </Button>
+                    </a>
+                  </div>
                 </div>
+                <p className="text-xs text-slate-400 dark:text-slate-500 pt-2 border-t border-gray-100 dark:border-gray-800">
+                  Video credit: {activeVideo.channelName} on YouTube. All rights reserved to the creator.
+                </p>
               </div>
             </div>
           )}
