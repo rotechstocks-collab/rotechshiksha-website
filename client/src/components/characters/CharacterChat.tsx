@@ -30,7 +30,7 @@ export function CharacterChat({ messages, className = '' }: CharacterChatProps) 
                 src={imageUrl}
                 alt={characterName}
                 loading="lazy"
-                className="w-12 h-12 md:w-16 md:h-16 object-contain"
+                className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
               />
             </div>
             <div 

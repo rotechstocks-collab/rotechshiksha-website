@@ -257,7 +257,7 @@ export default function Home() {
               <img
                 src={characterImages.priya.default}
                 alt="Priya - Expert Guide"
-                className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
+                className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
                 loading="lazy"
                 data-testid="img-homepage-priya"
               />
@@ -271,7 +271,7 @@ export default function Home() {
               <img
                 src={characterImages.rohit.default}
                 alt="Rohit - Just Like You"
-                className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
+                className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
                 loading="lazy"
                 data-testid="img-homepage-rohit"
               />
@@ -436,7 +436,7 @@ export default function Home() {
                   <img
                     src={characterImages.rohit.default}
                     alt="Rohit - Just Like You"
-                    className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
+                    className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
                     loading="lazy"
                     data-testid="img-testimonial-rohit"
                   />

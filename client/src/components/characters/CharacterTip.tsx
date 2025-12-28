@@ -36,7 +36,7 @@ export function CharacterTip({
             src={imageUrl}
             alt={`${characterName} - ${pose}`}
             loading="lazy"
-            className="w-16 h-16 md:w-20 md:h-20 object-contain"
+            className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
             data-testid={`img-character-${character}-${pose}`}
           />
         </div>
