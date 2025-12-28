@@ -29,12 +29,12 @@ import {
   X,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
-import { CharacterAvatar, CharacterIntro, HeroCharacters } from "@/components/Characters";
+import { CharacterIntro, HeroCharacters } from "@/components/Characters";
+import { CharacterAvatar } from "@/components/characters/CharacterAvatar";
 import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
-import { characterImages } from "@/lib/characterImages";
 
 // Check if this is the user's first visit
 const FIRST_VISIT_KEY = "rotech-first-visit-complete";
@@ -254,13 +254,7 @@ export default function Home() {
           
           <div className="space-y-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-              <img
-                src={characterImages.priya.default}
-                alt="Priya - Expert Guide"
-                className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
-                loading="lazy"
-                data-testid="img-homepage-priya"
-              />
+              <CharacterAvatar character="priya" size="lg" />
               <div>
                 <p className="font-medium text-foreground">Priya se Milo</p>
                 <p className="text-sm text-muted-foreground">Tumhari Guide (Friend)</p>
@@ -268,13 +262,7 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
-              <img
-                src={characterImages.rohit.default}
-                alt="Rohit - Just Like You"
-                className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
-                loading="lazy"
-                data-testid="img-homepage-rohit"
-              />
+              <CharacterAvatar character="rohit" size="lg" />
               <div>
                 <p className="font-medium text-foreground">Rohit se Milo</p>
                 <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala (Friend)</p>
@@ -433,13 +421,7 @@ export default function Home() {
             <CardContent className="p-6 sm:p-8">
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 <div className="flex gap-3 items-center md:items-start">
-                  <img
-                    src={characterImages.rohit.default}
-                    alt="Rohit - Just Like You"
-                    className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
-                    loading="lazy"
-                    data-testid="img-testimonial-rohit"
-                  />
+                  <CharacterAvatar character="rohit" size="lg" />
                   <div className="md:hidden">
                     <p className="font-semibold text-foreground">Rohit</p>
                     <p className="text-xs text-muted-foreground">{isHindi ? "शायद आप भी" : "Maybe you too"}</p>

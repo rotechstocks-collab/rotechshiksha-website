@@ -1,8 +1,8 @@
-import { getPoseUrl, type PriyaPose, type RohitPose } from '@/../public/characters/poses';
+import { CharacterAvatar } from './CharacterAvatar';
 
 interface ChatMessage {
   character: 'priya' | 'rohit';
-  pose: PriyaPose | RohitPose;
+  pose?: string;
   message: string;
 }
 
@@ -17,7 +17,6 @@ export function CharacterChat({ messages, className = '' }: CharacterChatProps) 
       {messages.map((msg, index) => {
         const isRohit = msg.character === 'rohit';
         const characterName = isRohit ? 'Rohit' : 'Priya';
-        const imageUrl = getPoseUrl(msg.character, msg.pose);
         
         return (
           <div
@@ -26,12 +25,7 @@ export function CharacterChat({ messages, className = '' }: CharacterChatProps) 
             data-testid={`chat-message-${index}`}
           >
             <div className="flex-shrink-0">
-              <img
-                src={imageUrl}
-                alt={characterName}
-                loading="lazy"
-                className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
-              />
+              <CharacterAvatar character={msg.character} size="md" />
             </div>
             <div 
               className={`flex-1 max-w-[75%] ${isRohit ? '' : 'text-right'}`}

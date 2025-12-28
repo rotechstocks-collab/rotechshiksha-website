@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getPoseUrl, type PriyaPose, type RohitPose } from '@/../public/characters/poses';
+import { CharacterAvatar } from './CharacterAvatar';
 import { ComicModal } from './ComicModal';
 import { Lightbulb } from 'lucide-react';
 
 interface CharacterTipProps {
   character: 'priya' | 'rohit';
-  pose: PriyaPose | RohitPose;
+  pose?: string;
   title: string;
   message: string;
   actionLabel?: string;
@@ -17,7 +17,6 @@ interface CharacterTipProps {
 
 export function CharacterTip({
   character,
-  pose,
   title,
   message,
   actionLabel,
@@ -25,20 +24,13 @@ export function CharacterTip({
   showComicButton = false
 }: CharacterTipProps) {
   const [showComic, setShowComic] = useState(false);
-  const imageUrl = getPoseUrl(character, pose);
   const characterName = character === 'priya' ? 'Priya' : 'Rohit';
 
   return (
     <>
       <Card className="p-4 flex items-start gap-4 bg-gradient-to-r from-background to-muted/30">
         <div className="flex-shrink-0">
-          <img
-            src={imageUrl}
-            alt={`${characterName} - ${pose}`}
-            loading="lazy"
-            className="h-14 w-14 rounded-full object-contain bg-white shadow-sm border border-gray-200 p-1"
-            data-testid={`img-character-${character}-${pose}`}
-          />
+          <CharacterAvatar character={character} size="lg" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
