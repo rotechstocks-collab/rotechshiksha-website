@@ -253,9 +253,7 @@ export default function Home() {
           
           <div className="space-y-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-              <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-800 flex items-center justify-center">
-                <CharacterAvatar character="priya" size="sm" />
-              </div>
+              <CharacterAvatar character="priya" size="md" />
               <div>
                 <p className="font-medium text-foreground">Priya se Milo</p>
                 <p className="text-sm text-muted-foreground">Tumhari Guide (Friend)</p>
@@ -263,9 +261,7 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
-              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                <CharacterAvatar character="rohit" size="sm" />
-              </div>
+              <CharacterAvatar character="rohit" size="md" />
               <div>
                 <p className="font-medium text-foreground">Rohit se Milo</p>
                 <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala (Friend)</p>

@@ -22,6 +22,8 @@ const characterData = {
     textColor: "text-emerald-700 dark:text-emerald-300",
     borderColor: "border-emerald-200 dark:border-emerald-800",
     lightBg: "bg-emerald-50 dark:bg-emerald-950/20",
+    avatarImage: "/characters/poses/priya-smile.png",
+    altText: "Priya - Expert Guide",
   },
   rohit: {
     name: "Rohit",
@@ -33,6 +35,8 @@ const characterData = {
     textColor: "text-slate-700 dark:text-slate-300",
     borderColor: "border-slate-200 dark:border-slate-700",
     lightBg: "bg-slate-50 dark:bg-slate-950/20",
+    avatarImage: "/characters/poses/rohit-thumb.png",
+    altText: "Rohit - Just Like You",
   },
 };
 
@@ -55,16 +59,20 @@ const MoodIcon = ({ mood, className = "w-4 h-4" }: { mood: CharacterMood; classN
 export function CharacterAvatar({ character, mood = "neutral", size = "md", showName = false }: CharacterProps) {
   const data = characterData[character];
   const sizeClasses = {
-    sm: "w-8 h-8 text-xs",
-    md: "w-12 h-12 text-sm",
-    lg: "w-16 h-16 text-base",
+    sm: "w-8 h-8",
+    md: "w-12 h-12",
+    lg: "w-16 h-16",
   };
 
   return (
     <div className="flex items-center gap-2">
-      <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br ${data.color} flex items-center justify-center text-white font-bold shadow-md`}>
-        {data.name.charAt(0)}
-      </div>
+      <img
+        src={data.avatarImage}
+        alt={data.altText}
+        loading="lazy"
+        className={`${sizeClasses[size]} rounded-full object-cover shadow-md ring-2 ring-white dark:ring-slate-800`}
+        data-testid={`img-avatar-${character}`}
+      />
       {showName && (
         <div>
           <p className={`font-medium ${data.textColor}`}>{data.name}</p>
