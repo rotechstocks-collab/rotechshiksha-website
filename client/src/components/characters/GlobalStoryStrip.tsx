@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const PRIYA_AVATAR = "/characters/priya.png";
-const ROHIT_AVATAR = "/characters/rohit.png";
+const PRIYA_AVATAR = "/characters/priya_transparent.png";
+const ROHIT_AVATAR = "/characters/rohit_transparent.png";
 
 interface GlobalStoryStripProps {
   className?: string;
