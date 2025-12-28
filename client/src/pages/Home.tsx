@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Link } from "wouter";
 import {
@@ -27,17 +28,32 @@ import {
   BarChart3,
   Quote,
   X,
+  Download,
+  FileText,
+  Compass,
+  Layers,
+  Wrench,
+  Zap,
+  Clock,
+  Mail,
+  Phone,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  Check,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { CharacterIntro, HeroCharacters } from "@/components/Characters";
 import { CharacterAvatar } from "@/components/characters/CharacterAvatar";
 import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
 import { useLanguage } from "@/context/LanguageContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
+import { useToast } from "@/hooks/use-toast";
 
-// Check if this is the user's first visit
 const FIRST_VISIT_KEY = "rotech-first-visit-complete";
+const LEAD_STORAGE_KEY = "rotech-pdf-leads";
+
 function isFirstVisit(): boolean {
   if (typeof window === "undefined") return false;
   return !localStorage.getItem(FIRST_VISIT_KEY);
@@ -47,11 +63,11 @@ function markVisitComplete(): void {
   localStorage.setItem(FIRST_VISIT_KEY, "true");
 }
 
-const calculators = [
-  { id: "sip", name: "SIP Calculator", nameHi: "SIP कैलकुलेटर", icon: <PiggyBank className="w-5 h-5" />, color: "bg-emerald-500" },
-  { id: "lumpsum", name: "Lumpsum", nameHi: "लम्पसम", icon: <Wallet className="w-5 h-5" />, color: "bg-blue-500" },
-  { id: "cagr", name: "CAGR", nameHi: "CAGR", icon: <TrendingUp className="w-5 h-5" />, color: "bg-purple-500" },
-  { id: "brokerage", name: "Brokerage", nameHi: "ब्रोकरेज", icon: <Calculator className="w-5 h-5" />, color: "bg-amber-500" },
+const stats = [
+  { value: "10,000+", label: "Learners", labelHi: "सीखने वाले" },
+  { value: "8", label: "Free Levels", labelHi: "Free Levels" },
+  { value: "100%", label: "Free", labelHi: "Free" },
+  { value: "4.8", label: "Rating", labelHi: "Rating" },
 ];
 
 const whyLearnHere = [
@@ -84,82 +100,167 @@ const whyLearnHere = [
   },
 ];
 
-const learningPath = [
+const exploreModules = [
   {
-    level: 1,
+    title: "Courses",
+    titleHi: "Courses",
+    description: "8-level beginner to advanced course",
+    descriptionHi: "Beginner se advanced tak 8 levels",
+    icon: <GraduationCap className="w-6 h-6" />,
+    href: "/courses",
+    color: "text-blue-600",
+    bgColor: "bg-blue-100",
+  },
+  {
+    title: "Learning Path",
+    titleHi: "Learning Path",
+    description: "Step-by-step guided journey",
+    descriptionHi: "Step-by-step guided journey",
+    icon: <Compass className="w-6 h-6" />,
+    href: "/beginner-course",
+    color: "text-emerald-600",
+    bgColor: "bg-emerald-100",
+  },
+  {
+    title: "Tools",
+    titleHi: "Tools",
+    description: "Calculators, paper trading, compare",
+    descriptionHi: "Calculators, paper trading, compare",
+    icon: <Wrench className="w-6 h-6" />,
+    href: "/calculators",
+    color: "text-purple-600",
+    bgColor: "bg-purple-100",
+  },
+  {
+    title: "Market Gyaan",
+    titleHi: "Market Gyaan",
+    description: "Tips, strategies & insights",
+    descriptionHi: "Tips, strategies & insights",
+    icon: <BookOpen className="w-6 h-6" />,
+    href: "/blog",
+    color: "text-amber-600",
+    bgColor: "bg-amber-100",
+  },
+  {
+    title: "News",
+    titleHi: "News",
+    description: "Latest market updates",
+    descriptionHi: "Latest market updates",
+    icon: <Newspaper className="w-6 h-6" />,
+    href: "/live-news",
+    color: "text-rose-600",
+    bgColor: "bg-rose-100",
+  },
+];
+
+const learningRoadmap = [
+  {
+    step: 1,
     title: "Basics Samjho",
     titleHi: "Basics समझो",
     description: "Stock market kya hai, shares kaise kaam karte hain",
     descriptionHi: "Stock market क्या है, shares कैसे काम करते हैं",
-    lessons: 5,
-    route: "/beginner-course",
+    icon: <BookOpen className="w-5 h-5" />,
     color: "bg-emerald-500",
     lightBg: "bg-emerald-50 dark:bg-emerald-950/30",
   },
   {
-    level: 2,
-    title: "Investing Seekho",
-    titleHi: "Investing सीखो",
-    description: "Demat account, brokers, pehla share kaise khareedein",
-    descriptionHi: "Demat account, brokers, पहला share कैसे खरीदें",
-    lessons: 5,
-    route: "/beginner-course",
+    step: 2,
+    title: "Practice with Tools",
+    titleHi: "Tools se Practice",
+    description: "Paper trading, SIP calculator, brokerage compare",
+    descriptionHi: "Paper trading, SIP calculator, brokerage compare",
+    icon: <Calculator className="w-5 h-5" />,
     color: "bg-blue-500",
     lightBg: "bg-blue-50 dark:bg-blue-950/30",
   },
   {
-    level: 3,
-    title: "Smart Investor Bano",
-    titleHi: "Smart Investor बनो",
-    description: "Portfolio banana, risk samajhna, long-term growth",
-    descriptionHi: "Portfolio बनाना, risk समझना, long-term growth",
-    lessons: 3,
-    route: "/beginner-course",
+    step: 3,
+    title: "Advanced & Strategies",
+    titleHi: "Advanced & Strategies",
+    description: "Technical analysis, algo trading, portfolio building",
+    descriptionHi: "Technical analysis, algo trading, portfolio building",
+    icon: <TrendingUp className="w-5 h-5" />,
     color: "bg-purple-500",
     lightBg: "bg-purple-50 dark:bg-purple-950/30",
   },
 ];
 
-const tools = [
+const mostUsedTools = [
   { 
-    name: "Calculators", 
-    nameHi: "कैलकुलेटर",
-    description: "SIP, CAGR, Brokerage", 
-    descriptionHi: "SIP, CAGR, ब्रोकरेज",
-    icon: <Calculator className="w-5 h-5" />, 
-    href: "/calculators",
-    color: "text-emerald-600 dark:text-emerald-400",
-    bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
+    name: "SIP Calculator", 
+    nameHi: "SIP Calculator",
+    description: "Monthly investment growth calculate karo", 
+    icon: <PiggyBank className="w-5 h-5" />, 
+    href: "/calculators?calc=sip",
+    color: "text-emerald-600",
+    bgColor: "bg-emerald-100",
   },
   { 
     name: "Paper Trade", 
-    nameHi: "पेपर ट्रेड",
-    description: "Practice without risk", 
-    descriptionHi: "बिना risk के practice",
+    nameHi: "Paper Trade",
+    description: "Bina risk ke trading practice karo", 
     icon: <LineChart className="w-5 h-5" />, 
     href: "/paper-trade",
-    color: "text-blue-600 dark:text-blue-400",
-    bgColor: "bg-blue-100 dark:bg-blue-900/30",
+    color: "text-blue-600",
+    bgColor: "bg-blue-100",
   },
   { 
-    name: "Live News", 
-    nameHi: "लाइव न्यूज़",
-    description: "Real-time market news", 
-    descriptionHi: "Real-time मार्केट न्यूज़",
-    icon: <Newspaper className="w-5 h-5" />, 
-    href: "/live-news",
-    color: "text-amber-600 dark:text-amber-400",
-    bgColor: "bg-amber-100 dark:bg-amber-900/30",
-  },
-  { 
-    name: "Compare Brokers", 
-    nameHi: "ब्रोकर तुलना",
-    description: "Find the best broker", 
-    descriptionHi: "सबसे अच्छा broker खोजें",
+    name: "Broker Compare", 
+    nameHi: "Broker Compare",
+    description: "Best broker select karo charges dekho", 
     icon: <BarChart3 className="w-5 h-5" />, 
-    href: "/compare-brokers",
-    color: "text-purple-600 dark:text-purple-400",
-    bgColor: "bg-purple-100 dark:bg-purple-900/30",
+    href: "/brokers",
+    color: "text-purple-600",
+    bgColor: "bg-purple-100",
+  },
+  { 
+    name: "CAGR Calculator", 
+    nameHi: "CAGR Calculator",
+    description: "Long term returns calculate karo", 
+    icon: <TrendingUp className="w-5 h-5" />, 
+    href: "/calculators?calc=cagr",
+    color: "text-amber-600",
+    bgColor: "bg-amber-100",
+  },
+];
+
+const faqs = [
+  {
+    question: "Kya ye course beginners ke liye hai?",
+    questionHi: "क्या ये course beginners के लिए है?",
+    answer: "Haan, bilkul! Yeh course zero knowledge se start hota hai. Koi prior experience ki zaroorat nahi. Simple Hindi mein step-by-step samjhayenge.",
+    answerHi: "हां, बिल्कुल! यह course zero knowledge से start होता है। कोई prior experience की ज़रूरत नहीं। Simple Hindi में step-by-step समझाएंगे।",
+  },
+  {
+    question: "Course kitne din mein complete hoga?",
+    questionHi: "Course कितने दिन में complete होगा?",
+    answer: "Apni speed pe depend karta hai. Agar daily 30 min doge, toh 2-3 weeks mein complete ho jayega. Lifetime access hai toh jaldi koi rush nahi.",
+    answerHi: "अपनी speed पर depend करता है। अगर daily 30 min दोगे, तो 2-3 weeks में complete हो जाएगा। Lifetime access है तो जल्दी कोई rush नहीं।",
+  },
+  {
+    question: "Kya investment tips milenge?",
+    questionHi: "क्या investment tips मिलेंगे?",
+    answer: "Nahi, hum SEBI registered advisor nahi hain. Yeh education platform hai - stock market samjhna sikhate hain, tips nahi dete. Decision aap khud loge.",
+    answerHi: "नहीं, हम SEBI registered advisor नहीं हैं। यह education platform है - stock market समझना सिखाते हैं, tips नहीं देते। Decision आप खुद लोगे।",
+  },
+  {
+    question: "Kya payment karna padega?",
+    questionHi: "क्या payment करना पड़ेगा?",
+    answer: "Abhi sab kuch FREE hai! 8 complete levels, calculators, paper trading - sab free. Future mein kuch premium features aa sakte hain, par core learning free rahega.",
+    answerHi: "अभी सब कुछ FREE है! 8 complete levels, calculators, paper trading - सब free। Future में कुछ premium features आ सकते हैं, पर core learning free रहेगा।",
+  },
+  {
+    question: "Mobile app hai kya?",
+    questionHi: "Mobile app है क्या?",
+    answer: "Abhi website hai jo mobile friendly hai. App jaldi aane wala hai. Browser mein bookmark kar lo - same experience milega.",
+    answerHi: "अभी website है जो mobile friendly है। App जल्दी आने वाला है। Browser में bookmark कर लो - same experience मिलेगा।",
+  },
+  {
+    question: "Priya aur Rohit kaun hain?",
+    questionHi: "Priya और Rohit कौन हैं?",
+    answer: "Priya tumhari guide hai jo concepts explain karti hai. Rohit tumhare jaisa learner hai jo sawal poochta hai. Dono ke saath story-based learning hai!",
+    answerHi: "Priya तुम्हारी guide है जो concepts explain करती है। Rohit तुम्हारे जैसा learner है जो सवाल पूछता है। दोनों के साथ story-based learning है!",
   },
 ];
 
@@ -187,12 +288,167 @@ const testimonials = [
   },
 ];
 
-const stats = [
-  { value: "10,000+", label: "Learners", labelHi: "सीखने वाले" },
-  { value: "8", label: "Free Lessons", labelHi: "Free पाठ" },
-  { value: "100%", label: "Free", labelHi: "Free" },
-  { value: "4.8", label: "Rating", labelHi: "रेटिंग" },
-];
+function FAQItem({ faq, isHindi }: { faq: typeof faqs[0]; isHindi: boolean }) {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+        data-testid={`faq-toggle-${faq.question.slice(0, 20)}`}
+      >
+        <span className="font-medium text-slate-900 dark:text-white pr-4">
+          {isHindi ? faq.questionHi : faq.question}
+        </span>
+        {isOpen ? (
+          <ChevronUp className="w-5 h-5 text-slate-500 flex-shrink-0" />
+        ) : (
+          <ChevronDown className="w-5 h-5 text-slate-500 flex-shrink-0" />
+        )}
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              {isHindi ? faq.answerHi : faq.answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
+  const [contact, setContact] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contact.trim()) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch("/api/leads/pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: contact.trim() }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setPdfUrl(data.pdfUrl || "/pdf/stock-market-beginner-checklist.pdf");
+        toast({
+          title: "Dhanyavaad!",
+          description: "PDF ready hai - abhi download karo!",
+        });
+      } else {
+        const leads = JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY) || "[]");
+        leads.push({ contact: contact.trim(), timestamp: new Date().toISOString() });
+        localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads));
+        setPdfUrl("/pdf/stock-market-beginner-checklist.pdf");
+        toast({
+          title: "Dhanyavaad!",
+          description: "PDF ready hai!",
+        });
+      }
+    } catch (error) {
+      const leads = JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY) || "[]");
+      leads.push({ contact: contact.trim(), timestamp: new Date().toISOString() });
+      localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads));
+      setPdfUrl("/pdf/stock-market-beginner-checklist.pdf");
+      toast({
+        title: "Dhanyavaad!",
+        description: "PDF ready hai!",
+      });
+    }
+    
+    setIsSubmitting(false);
+  };
+
+  if (pdfUrl) {
+    return (
+      <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 text-center">
+        <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Check className="w-6 h-6 text-emerald-600" />
+        </div>
+        <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
+          Dhanyavaad!
+        </h3>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Tumhara PDF ready hai. Abhi download karo!
+        </p>
+        <a 
+          href={pdfUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex"
+          data-testid="link-download-pdf"
+        >
+          <Button className="gap-2">
+            <Download className="w-4 h-4" />
+            Download PDF
+          </Button>
+        </a>
+        <p className="text-xs text-slate-500 mt-3">
+          PDF WhatsApp/Email pe bhi bhej diya jayega
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800 rounded-2xl p-6 md:p-8">
+      <div className="flex items-start gap-4 mb-5">
+        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center flex-shrink-0">
+          <FileText className="w-6 h-6 text-blue-600" />
+        </div>
+        <div>
+          <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1">
+            Free PDF: Stock Market Beginner Checklist
+          </h3>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Simple Hinglish mein actionable steps – perfect for beginners
+          </p>
+        </div>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <Input
+          type="text"
+          placeholder="Email ya WhatsApp number"
+          value={contact}
+          onChange={(e) => setContact(e.target.value)}
+          className="bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700"
+          data-testid="input-lead-capture"
+        />
+        <Button 
+          type="submit" 
+          className="w-full gap-2"
+          disabled={isSubmitting || !contact.trim()}
+          data-testid="button-send-pdf"
+        >
+          <Download className="w-4 h-4" />
+          {isSubmitting ? "Sending..." : "Send me Free PDF"}
+        </Button>
+      </form>
+      
+      <p className="text-xs text-slate-500 dark:text-slate-500 mt-3 text-center">
+        No spam. Sirf learning updates. Unsubscribe anytime.
+      </p>
+    </div>
+  );
+}
 
 export default function Home() {
   const { language } = useLanguage();
@@ -200,7 +456,6 @@ export default function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [progress, setProgress] = useState<UserProgress | null>(null);
 
-  // Show welcome popup for first-time visitors (slight delay for better UX)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isFirstVisit()) {
@@ -210,7 +465,6 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Load user progress for Continue Learning feature
   useEffect(() => {
     setProgress(getProgress());
   }, []);
@@ -220,27 +474,32 @@ export default function Home() {
     setShowWelcome(false);
   };
 
-  // Calculate continue learning destination based on completed levels
-  // Since progress tracks completed levels (not individual lessons), 
-  // we use currentLevel which is the next level to work on
   const getContinueUrl = (): string | null => {
     if (!progress) return null;
-    // Show continue option if user has any progress (has completed at least one level)
-    // or if currentLevel is > 1 (indicating progress)
     if (progress.completedLevels.length === 0 && progress.currentLevel <= 1) return null;
-    // Link to the current level they should be working on
     const targetLevel = progress.currentLevel;
     if (targetLevel <= 8) {
       return `/courses/level${targetLevel}/lesson1`;
     }
-    // If all levels complete, return to course overview
     return "/courses";
   };
   const continueUrl = getContinueUrl();
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* First-time visitor Welcome Popup */}
+    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
       <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
@@ -265,7 +524,7 @@ export default function Home() {
               <CharacterAvatar character="rohit" size="lg" />
               <div>
                 <p className="font-medium text-foreground">Rohit se Milo</p>
-                <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala (Friend)</p>
+                <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala</p>
               </div>
             </div>
             
@@ -298,14 +557,20 @@ export default function Home() {
           </div>
         </DialogContent>
       </Dialog>
+
       <SEOHead
-        title="Stock Market Seekho – Bilkul Zero Se | Rotech Shiksha"
-        description="Simple Hindi mein stock market seekho. Beginner-friendly free course with step-by-step learning. No prior knowledge needed."
-        keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
+        title="Stock Market Seekho Hindi Mein – Bilkul Zero Se | Rotech Shiksha"
+        description="Simple Hindi mein stock market seekho. Free beginner course with Priya & Rohit. Step-by-step learning for Indian investors. No prior knowledge needed."
+        keywords="stock market course in hindi, stock market learning for beginners, share market basics hindi, learn investing india, rotech shiksha, free stock market course"
       />
       
-      <section className="section-padding">
-        <div className="section-container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      
+      <section className="py-14 md:py-20">
+        <div className="max-w-6xl mx-auto px-4">
           <motion.div 
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -317,18 +582,19 @@ export default function Home() {
               100% FREE • Hindi Mein • Beginners Ke Liye
             </Badge>
             
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
               Stock Market Seekho
               <br />
               <span className="text-primary">— Bilkul Zero Se</span>
             </h1>
             
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-8">
+            <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto mb-8">
               Simple Hindi + Story-based learning with Priya & Rohit ke saath.
+              No jargon, no confusion – sirf clear understanding.
             </p>
             
-            <div className="soft-card inline-block p-6 sm:p-8 mb-8">
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm inline-block p-6 md:p-8 mb-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/beginner-course" data-testid="link-start-learning-hero">
                   <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-start-learning-hero">
                     <Play className="w-5 h-5" />
@@ -343,115 +609,305 @@ export default function Home() {
                 </Link>
               </div>
               
-              <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  No signup required
+              <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
+                <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <CheckCircle className="w-3 h-3 text-emerald-500" />
+                  No Signup Required
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  Education only
+                <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <CheckCircle className="w-3 h-3 text-emerald-500" />
+                  Education Only
+                </span>
+                <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <CheckCircle className="w-3 h-3 text-emerald-500" />
+                  Beginner Friendly
                 </span>
               </div>
             </div>
-            
-            <HeroCharacters isHindi={isHindi} />
           </motion.div>
           
-          <HeroCharacterChat className="mt-8 max-w-2xl mx-auto" />
-          
           <motion.div 
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12 max-w-xl mx-auto"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10 max-w-xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {stats.map((stat, index) => (
-              <div key={index} className="soft-card p-4 text-center">
-                <p className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground">{isHindi ? stat.labelHi : stat.label}</p>
+              <div key={index} className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-4 text-center">
+                <p className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">{isHindi ? stat.labelHi : stat.label}</p>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Continue Learning Banner for returning users */}
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              Meet Your Learning Companions
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              Priya explains, Rohit asks doubts you might have
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <CharacterAvatar character="priya" size="lg" />
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">Priya</h3>
+                  <p className="text-sm text-emerald-600 dark:text-emerald-400">Your Expert Guide</p>
+                </div>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                "Main tumhe stock market simple Hindi mein samjhaungi. Koi jargon nahi, koi confusion nahi. Step by step seekhenge!"
+              </p>
+            </div>
+            
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <CharacterAvatar character="rohit" size="lg" />
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">Rohit</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Fellow Learner (Just Like You)</p>
+                </div>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                "Main bhi tum jaisa beginner hoon. Jo sawal tumhare mann mein aaye, main Priya se poochunga – taaki hum dono samjhein!"
+              </p>
+            </div>
+          </div>
+          
+          <HeroCharacterChat className="max-w-2xl mx-auto" />
+        </div>
+      </section>
+
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div>
+              <LeadCaptureSection isHindi={isHindi} />
+            </div>
+            
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-4">
+                PDF mein kya hai?
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  "5 steps to start investing",
+                  "Common mistakes se kaise bache",
+                  "Best apps & tools list",
+                  "Glossary of basic terms",
+                  "Weekly learning checklist"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                    <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {continueUrl && progress && progress.completedLevels.length > 0 && (
         <section className="py-4">
           <div className="max-w-4xl mx-auto px-4">
-            <Card className="bg-primary/5 border-primary/20 overflow-hidden">
-              <CardContent className="p-4 sm:p-5">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Play className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground">
-                        Wapas Aane Par Swagat Hai!
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {progress.completedLevels.length} levels complete ho gaye | Jahaan chhoda tha wahaan se shuru karo
-                      </p>
-                    </div>
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Play className="w-5 h-5 text-primary" />
                   </div>
-                  <Link href={continueUrl}>
-                    <Button className="gap-2 min-h-[44px]" data-testid="button-continue-learning-home">
-                      <Play className="w-4 h-4" />
-                      Aage Badho
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </Link>
+                  <div>
+                    <p className="font-semibold text-slate-900 dark:text-white">
+                      Wapas Aane Par Swagat Hai!
+                    </p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      {progress.completedLevels.length} levels complete | Jahaan chhoda tha wahaan se shuru karo
+                    </p>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+                <Link href={continueUrl}>
+                  <Button className="gap-2 min-h-[44px]" data-testid="button-continue-learning-home">
+                    <Play className="w-4 h-4" />
+                    Aage Badho
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       )}
 
-      <section className="py-10 sm:py-14">
-        <div className="max-w-4xl mx-auto px-4">
-          <Card className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border-amber-200/50 dark:border-amber-800/30 overflow-hidden">
-            <CardContent className="p-6 sm:p-8">
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="flex gap-3 items-center md:items-start">
-                  <CharacterAvatar character="rohit" size="lg" />
-                  <div className="md:hidden">
-                    <p className="font-semibold text-foreground">Rohit</p>
-                    <p className="text-xs text-muted-foreground">Shayad aap bhi</p>
+      <section className="py-10 md:py-14">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 mb-3">
+              <Layers className="w-3.5 h-3.5 mr-1.5" />
+              Explore Learning
+            </Badge>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              Apni Learning Journey Choose Karo
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              Jo topic samajhna hai, woh select karo
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {exploreModules.map((module, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                viewport={{ once: true }}
+              >
+                <Link href={module.href} data-testid={`link-module-${module.title.toLowerCase().replace(' ', '-')}`}>
+                  <div 
+                    className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-5 text-center cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 h-full"
+                    data-testid={`card-module-${module.title.toLowerCase().replace(' ', '-')}`}
+                  >
+                    <div className={`w-12 h-12 ${module.bgColor} rounded-xl flex items-center justify-center mx-auto mb-3`}>
+                      <span className={module.color}>{module.icon}</span>
+                    </div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-1">
+                      {isHindi ? module.titleHi : module.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {isHindi ? module.descriptionHi : module.description}
+                    </p>
                   </div>
-                </div>
-                <div className="flex-1">
-                  <div className="hidden md:flex items-center gap-2 mb-2">
-                    <p className="font-semibold text-foreground text-lg">Rohit</p>
-                    <Badge variant="outline" className="text-xs border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300">
-                      Shayad aap bhi
-                    </Badge>
-                  </div>
-                  <p className="text-foreground/90 leading-relaxed">
-                    "Main ek normal job karne wala banda hoon. Thodi savings thi, par stock market se darr lagta tha. Phir Priya se simple Hindi me seekha — bina jargon. Aaj main confident hoon."
-                  </p>
-                  <p className="text-primary font-medium mt-3">
-                    Aapki bhi baari hai.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 mb-3">
+              <Compass className="w-3.5 h-3.5 mr-1.5" />
+              Your Learning Roadmap
+            </Badge>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              3 Simple Steps Mein Seekho
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              Step by step follow karo, confusion nahi hoga
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {learningRoadmap.map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full relative">
+                  <div className={`w-10 h-10 ${step.color} text-white rounded-xl flex items-center justify-center font-bold text-lg mb-4`}>
+                    {step.step}
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">
+                    {isHindi ? step.titleHi : step.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {isHindi ? step.descriptionHi : step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href="/beginner-course">
+              <Button size="lg" className="gap-2" data-testid="button-start-roadmap">
+                <Play className="w-4 h-4" />
+                Learning Shuru Karo
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 mb-3">
+              <Wrench className="w-3.5 h-3.5 mr-1.5" />
+              Most Used Tools
+            </Badge>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              Practice Karo, Confidence Badhaao
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              Free tools se apni skills test karo
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {mostUsedTools.map((tool, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                viewport={{ once: true }}
+              >
+                <Link href={tool.href} data-testid={`link-tool-${tool.name.toLowerCase().replace(' ', '-')}`}>
+                  <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-5 cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-4">
+                    <div className={`w-12 h-12 ${tool.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                      <span className={tool.color}>{tool.icon}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-0.5">
+                        {isHindi ? tool.nameHi : tool.name}
+                      </h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 truncate">
+                        {tool.description}
+                      </p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href="/calculators">
+              <Button variant="outline" className="gap-2" data-testid="button-explore-all-tools">
+                Explore All Tools
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800 mb-3">
               {isHindi ? "क्यों यहां सीखें?" : "Why Learn Here?"}
             </Badge>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
               {isHindi ? "Course के बाद आप..." : "After This Course..."}
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-slate-600 dark:text-slate-400">
               {isHindi ? "ये 3 चीज़ें ज़रूर होंगी" : "These 3 things will definitely happen"}
             </p>
           </div>
@@ -465,14 +921,14 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="soft-card-hover h-full p-6" data-testid={`card-why-${index}`}>
+                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full hover:shadow-md transition-shadow" data-testid={`card-why-${index}`}>
                   <div className={`w-14 h-14 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}>
                     <span className={item.color}>{item.icon}</span>
                   </div>
-                  <h3 className="font-bold text-lg text-foreground mb-2">
+                  <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">
                     {isHindi ? item.titleHi : item.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm">
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
                     {isHindi ? item.descriptionHi : item.description}
                   </p>
                 </div>
@@ -482,114 +938,88 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-padding bg-muted/20">
-        <div className="section-container">
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
-            <Badge className="pastel-card-blue px-3 py-1 text-blue-700 dark:text-blue-300 mb-3">
-              <GraduationCap className="w-3.5 h-3.5 mr-1.5" />
-              {isHindi ? "Step-by-Step सीखें" : "Step-by-Step Learning"}
+            <Badge className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 mb-3">
+              <Star className="w-3.5 h-3.5 mr-1.5" />
+              Learners Love Us
             </Badge>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              {isHindi ? "Beginner Learning Path" : "Beginner Learning Path"}
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              Real Stories, Real Results
             </h2>
-            <p className="text-muted-foreground">
-              {isHindi ? "एक-एक step follow करो, confusion नहीं होगा" : "Follow each step, no confusion"}
-            </p>
           </div>
 
-          <div className="space-y-4">
-            {learningPath.map((level, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((testimonial, index) => (
               <motion.div
-                key={level.level}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Link href={level.route} data-testid={`link-level-${level.level}`}>
-                  <div 
-                    className="soft-card-hover cursor-pointer group p-5 sm:p-6"
-                    data-testid={`card-level-${level.level}`}
-                  >
-                    <div className="flex items-center gap-4 sm:gap-5">
-                      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${level.color} text-white flex items-center justify-center font-bold text-xl flex-shrink-0`}>
-                        {level.level}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-lg text-foreground mb-1">
-                          {isHindi ? level.titleHi : level.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">
-                          {isHindi ? level.descriptionHi : level.description}
-                        </p>
-                        <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-                          <BookOpen className="w-4 h-4" />
-                          <span>{level.lessons} {isHindi ? "पाठ" : "lessons"}</span>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-muted-foreground/50 group-hover:text-primary transition-colors flex-shrink-0" />
+                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm mb-4">
+                    "{isHindi ? testimonial.textHi : testimonial.text}"
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-sm font-semibold text-slate-600 dark:text-slate-300">
+                      {testimonial.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm text-slate-900 dark:text-white">{testimonial.name}</p>
+                      <p className="text-xs text-slate-500">{testimonial.location}</p>
                     </div>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link href="/beginner-course" data-testid="link-start-path">
-              <Button size="lg" className="gap-2 min-h-[52px] px-8" data-testid="button-start-path">
-                <Play className="w-5 h-5" />
-                {isHindi ? "Level 1 से शुरू करें" : "Start with Level 1"}
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
 
-      <section className="section-padding">
-        <div className="section-container">
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
-            <Badge className="pastel-card-green px-3 py-1 text-emerald-700 dark:text-emerald-300 mb-3">
-              {isHindi ? "Free Tools" : "Free Tools"}
+            <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 mb-3">
+              <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
+              Aksar Pooche Gaye Sawal
             </Badge>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              {isHindi ? "हमारे Tools" : "Our Tools"}
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              Frequently Asked Questions
             </h2>
-            <p className="text-muted-foreground">
-              {isHindi ? "Investing आसान बनाने के लिए" : "To make investing easier"}
+            <p className="text-slate-600 dark:text-slate-400">
+              Common doubts ke answers
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {tools.map((tool, index) => (
-              <motion.div
-                key={tool.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                viewport={{ once: true }}
-              >
-                <Link href={tool.href} data-testid={`link-tool-${tool.name.toLowerCase().replace(' ', '-')}`}>
-                  <div className="soft-card-hover cursor-pointer h-full p-5 text-center" data-testid={`card-tool-${index}`}>
-                    <div className={`w-12 h-12 rounded-2xl ${tool.bgColor} flex items-center justify-center mx-auto mb-3`}>
-                      <span className={tool.color}>{tool.icon}</span>
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-1">
-                      {isHindi ? tool.nameHi : tool.name}
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      {isHindi ? tool.descriptionHi : tool.description}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
+          <div className="space-y-3">
+            {faqs.map((faq, index) => (
+              <FAQItem key={index} faq={faq} isHindi={isHindi} />
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 text-center">
-            <Link href="/calculators" data-testid="link-all-calculators">
-              <Button variant="outline" className="gap-2" data-testid="button-all-calculators">
-                {isHindi ? "सभी Calculators देखें" : "View All Calculators"}
+      <section className="py-10 md:py-14">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-gradient-to-r from-primary/10 to-blue-500/10 border border-primary/20 rounded-2xl p-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+              Ready to Start Your Journey?
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-lg mx-auto">
+              Aaj hi shuru karo – FREE hai, simple hai, aur tumhare future ke liye important hai.
+            </p>
+            <Link href="/beginner-course">
+              <Button size="lg" className="gap-2" data-testid="button-final-cta">
+                <Play className="w-5 h-5" />
+                FREE Course Shuru Karo
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -597,122 +1027,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-padding bg-muted/20">
-        <div className="section-container">
-          <div className="text-center mb-10">
-            <Badge className="pastel-card-yellow px-3 py-1 text-amber-700 dark:text-amber-300 mb-3">
-              <Star className="w-3.5 h-3.5 mr-1.5" />
-              {isHindi ? "Learners की राय" : "What Learners Say"}
-            </Badge>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              {isHindi ? "10,000+ लोगों ने सीखा" : "10,000+ Have Learned"}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="soft-card h-full p-5" data-testid={`card-testimonial-${index}`}>
-                  <div className="flex gap-1 mb-3">
-                    {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <Quote className="w-8 h-8 text-muted-foreground/20 mb-2" />
-                  <p className="text-foreground/90 leading-relaxed mb-4">
-                    {isHindi ? testimonial.textHi : testimonial.text}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Users className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm text-foreground">{testimonial.name}</p>
-                      <p className="text-xs text-muted-foreground">{testimonial.location}</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="section-container text-center">
-          <div className="soft-card inline-block p-8 sm:p-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              {isHindi ? "आज ही शुरू करें" : "Start Today"}
-            </h2>
-            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              {isHindi 
-                ? "10,000+ लोग पहले ही सीख चुके हैं। अब आपकी बारी है। 100% Free, कोई signup नहीं।"
-                : "10,000+ people have already learned. Now it's your turn. 100% Free, no signup required."}
-            </p>
-            <Link href="/beginner-course" data-testid="link-cta-start">
-              <Button size="lg" className="gap-2 min-h-[52px] text-base px-8" data-testid="button-cta-start">
-                <Play className="w-5 h-5" />
-                {isHindi ? "Free में सीखना शुरू करें" : "Start Learning for Free"}
-              </Button>
-            </Link>
-            <p className="text-xs text-muted-foreground mt-4">
-              {isHindi 
-                ? "Education only • No tips • No stock recommendations"
-                : "Education only • No tips • No stock recommendations"}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-6 sm:py-8">
-        <div className="section-container">
-          <div className="grid grid-cols-2 gap-4">
-            <Link href="/blog" data-testid="link-blog-home">
-              <div className="soft-card-hover cursor-pointer h-full p-5 flex items-center gap-4" data-testid="card-blog-home">
-                <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                  <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-semibold text-foreground">
-                    {isHindi ? "Market Gyaan" : "Market Gyaan"}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {isHindi ? "Simple articles" : "Simple articles"}
-                  </p>
-                </div>
-              </div>
-            </Link>
-            <Link href="/faq" data-testid="link-faq-home">
-              <div className="soft-card-hover cursor-pointer h-full p-5 flex items-center gap-4" data-testid="card-faq-home">
-                <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
-                  <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-semibold text-foreground">
-                    {isHindi ? "Beginner FAQ" : "Beginner FAQ"}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {isHindi ? "Common questions" : "Common questions"}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-4 bg-muted/50 border-t border-border/30">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            <strong>Disclaimer:</strong> {isHindi 
-              ? "यह website सिर्फ educational purpose के लिए है। हम investment advice या trading tips नहीं देते। Invest करने से पहले अपनी research करें।"
-              : "This website is for educational purpose only. We do not provide investment advice or trading tips. Please do your own research before investing."}
+      <section className="py-6 border-t border-gray-200 dark:border-slate-800">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
+            <strong>Disclaimer:</strong> This platform is independent and not affiliated with Zerodha, Groww, or any broker. 
+            We provide education only – no investment advice. Always do your own research before investing.
           </p>
         </div>
       </section>

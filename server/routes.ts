@@ -1951,6 +1951,60 @@ export async function registerRoutes(
     }
   });
 
+  // PDF Lead Capture (simple email/phone only)
+  app.post("/api/leads/pdf", async (req: Request, res: Response) => {
+    try {
+      const { contact } = req.body;
+      
+      if (!contact || contact.trim().length < 5) {
+        return res.status(400).json({ message: "Please enter valid email or phone number" });
+      }
+      
+      const trimmedContact = contact.trim();
+      const isPhone = /^[6-9]\d{9}$/.test(trimmedContact);
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedContact);
+      
+      if (!isPhone && !isEmail) {
+        return res.status(400).json({ message: "Please enter valid email or 10-digit mobile number" });
+      }
+      
+      // PDF download URL (publicly accessible)
+      const pdfUrl = "/pdf/stock-market-beginner-checklist.pdf";
+      
+      // Generate unique placeholder mobile for email-only leads
+      // Using 10-digit format: 0000XXXXXX where X is timestamp last 6 digits
+      const uniqueMobile = isPhone ? trimmedContact : `0000${Date.now().toString().slice(-6)}`;
+      
+      // Store as lead with minimal info
+      const leadData = {
+        fullName: "PDF Download",
+        mobile: uniqueMobile,
+        email: isEmail ? trimmedContact : null,
+        experience: "beginner",
+        source: "pdf-download",
+        notes: `PDF Checklist requested via: ${trimmedContact}`,
+      };
+      
+      // Check if phone lead already exists
+      if (isPhone) {
+        const existingLead = await storage.getLeadByMobile(trimmedContact);
+        if (existingLead) {
+          return res.json({ 
+            message: "success", 
+            existing: true,
+            pdfUrl 
+          });
+        }
+      }
+      
+      await storage.createLead(leadData);
+      res.json({ message: "success", pdfUrl });
+    } catch (error) {
+      console.error("PDF lead capture error:", error);
+      res.status(500).json({ message: "Failed to process request" });
+    }
+  });
+
   // Admin Routes
   app.get("/api/admin/leads", async (req: Request, res: Response) => {
     try {
