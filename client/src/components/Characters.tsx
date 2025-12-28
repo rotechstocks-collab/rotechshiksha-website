@@ -247,29 +247,37 @@ export function HeroCharacters({ isHindi = false }: { isHindi?: boolean }) {
   return (
     <div className="flex items-center justify-center gap-6 py-4">
       <div className="flex flex-col items-center gap-2">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
-          P
-        </div>
+        <img
+          src="/characters/avatars/priya.png"
+          alt="Priya - Expert Guide"
+          loading="lazy"
+          className="w-20 h-20 rounded-full object-contain bg-white shadow-lg border-2 border-emerald-200 dark:border-emerald-700 p-1"
+          data-testid="img-hero-priya"
+        />
         <div className="text-center">
           <p className="font-semibold text-emerald-700 dark:text-emerald-300">
-            {isHindi ? "प्रिया" : "Priya"}
+            Priya
           </p>
           <p className="text-xs text-muted-foreground">
-            {isHindi ? "Expert Guide" : "Expert Guide"}
+            Expert Guide
           </p>
         </div>
       </div>
       
       <div className="flex flex-col items-center gap-2">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
-          R
-        </div>
+        <img
+          src="/characters/avatars/rohit.png"
+          alt="Rohit - Aapke Jaisa"
+          loading="lazy"
+          className="w-20 h-20 rounded-full object-contain bg-white shadow-lg border-2 border-slate-200 dark:border-slate-600 p-1"
+          data-testid="img-hero-rohit"
+        />
         <div className="text-center">
           <p className="font-semibold text-slate-700 dark:text-slate-300">
-            {isHindi ? "रोहित" : "Rohit"}
+            Rohit
           </p>
           <p className="text-xs text-muted-foreground">
-            {isHindi ? "Just Like You" : "Just Like You"}
+            Aapke Jaisa
           </p>
         </div>
       </div>
