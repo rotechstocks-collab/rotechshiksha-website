@@ -76,6 +76,7 @@ function Router() {
         <Route path="/economic-calendar" component={EconomicCalendar} />
         <Route path="/paper-trade" component={PaperTrade} />
         <Route path="/videos" component={EducationalVideos} />
+        <Route path="/educational-videos" component={EducationalVideos} />
         <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
         <Route path="/live-market" component={LiveMarket} />
         <Route path="/calculators" component={CalculatorHub} />

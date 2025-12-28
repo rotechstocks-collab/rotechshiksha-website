@@ -22,8 +22,8 @@ const characterData = {
     textColor: "text-emerald-700 dark:text-emerald-300",
     borderColor: "border-emerald-200 dark:border-emerald-800",
     lightBg: "bg-emerald-50 dark:bg-emerald-950/20",
-    avatarImage: "/characters/poses/priya-smile.png",
-    altText: "Priya - Expert Guide",
+    avatarImage: "/characters/avatars/priya.png",
+    altText: "Priya avatar",
   },
   rohit: {
     name: "Rohit",
@@ -35,8 +35,8 @@ const characterData = {
     textColor: "text-slate-700 dark:text-slate-300",
     borderColor: "border-slate-200 dark:border-slate-700",
     lightBg: "bg-slate-50 dark:bg-slate-950/20",
-    avatarImage: "/characters/poses/rohit-thumb.png",
-    altText: "Rohit - Just Like You",
+    avatarImage: "/characters/avatars/rohit.png",
+    altText: "Rohit avatar",
   },
 };
 
@@ -70,7 +70,7 @@ export function CharacterAvatar({ character, mood = "neutral", size = "md", show
         src={data.avatarImage}
         alt={data.altText}
         loading="lazy"
-        className={`${sizeClasses[size]} rounded-full object-cover shadow-md ring-2 ring-white dark:ring-slate-800`}
+        className={`${sizeClasses[size]} rounded-full object-contain bg-white border border-gray-200 shadow-sm p-1`}
         data-testid={`img-avatar-${character}`}
       />
       {showName && (
