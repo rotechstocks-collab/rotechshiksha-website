@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
+import priyaAvatar from "@/assets/characters/priya_main.png";
+import rohitAvatar from "@/assets/characters/rohit_main.png";
 
 interface CharacterCardProps {
   name: "priya" | "rohit";
@@ -14,7 +16,7 @@ const characterData = {
   priya: {
     displayName: "Priya",
     color: "emerald",
-    imagePath: "/characters/priya_main.png",
+    imagePath: priyaAvatar,
     fallbackInitial: "P",
     borderColor: "border-emerald-500",
     bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
@@ -24,7 +26,7 @@ const characterData = {
   rohit: {
     displayName: "Rohit",
     color: "blue",
-    imagePath: "/characters/rohit_main.png",
+    imagePath: rohitAvatar,
     fallbackInitial: "R",
     borderColor: "border-blue-500",
     bgColor: "bg-blue-50 dark:bg-blue-900/20",

@@ -3,9 +3,11 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import priyaAvatar from "@/assets/characters/priya_main.png";
+import rohitAvatar from "@/assets/characters/rohit_main.png";
 
-const PRIYA_AVATAR = "/characters/priya_main.png";
-const ROHIT_AVATAR = "/characters/rohit_main.png";
+const PRIYA_AVATAR = priyaAvatar;
+const ROHIT_AVATAR = rohitAvatar;
 
 interface GlobalStoryStripProps {
   className?: string;
