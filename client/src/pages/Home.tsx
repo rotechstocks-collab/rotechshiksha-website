@@ -846,6 +846,15 @@ export default function Home() {
               </Button>
             </Link>
           </div>
+
+          <div className="mt-8 flex justify-center">
+            <a href="/pdf/stock-market-beginner-checklist.pdf" download target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="lg" className="gap-2" data-testid="button-download-checklist-home">
+                <Download className="w-4 h-4" />
+                Download Beginner Checklist PDF
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
 

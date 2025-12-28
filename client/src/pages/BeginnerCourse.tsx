@@ -19,6 +19,7 @@ import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationW
 import { CharacterIntro } from "@/components/Characters";
 import { useLanguage } from "@/context/LanguageContext";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
+import { Download } from "lucide-react";
 
 interface Lesson {
   id: string;
@@ -140,12 +141,20 @@ export default function BeginnerCourse() {
                 </div>
               </div>
 
-              <Link href="/beginner-course/paise-invest-kyu" data-testid="link-start-course">
-                <Button size="lg" className="gap-2" data-testid="button-start-course">
-                  <Play className="w-4 h-4" />
-                  {isHindi ? "Course शुरू करें – Lesson 1" : "Start Course – Lesson 1"}
-                </Button>
-              </Link>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link href="/beginner-course/paise-invest-kyu" data-testid="link-start-course">
+                  <Button size="lg" className="gap-2" data-testid="button-start-course">
+                    <Play className="w-4 h-4" />
+                    {isHindi ? "Course शुरू करें – Lesson 1" : "Start Course – Lesson 1"}
+                  </Button>
+                </Link>
+                <a href="/pdf/stock-market-beginner-checklist.pdf" download target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="lg" className="gap-2" data-testid="button-download-checklist-course">
+                    <Download className="w-4 h-4" />
+                    Download Beginner Checklist PDF
+                  </Button>
+                </a>
+              </div>
             </div>
           </FadeInUp>
         </div>

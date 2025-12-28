@@ -14,6 +14,7 @@ import {
   MessageCircle,
   Shield,
   Home,
+  Download,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { motion } from "framer-motion";
@@ -252,6 +253,15 @@ export function BeginnerLessonLayout({ lesson }: BeginnerLessonLayoutProps) {
             lessonSlug={lesson.slug}
             lessonTitle={lesson.title}
           />
+
+          <div className="mt-6 flex justify-center">
+            <a href="/pdf/stock-market-beginner-checklist.pdf" download target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="gap-2" data-testid="button-download-checklist-lesson">
+                <Download className="w-4 h-4" />
+                Download Beginner Checklist PDF
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
 
