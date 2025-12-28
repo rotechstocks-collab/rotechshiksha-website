@@ -21,6 +21,7 @@ const characterData = {
     roleHi: "आपकी सीखने की साथी",
     color: "from-emerald-500 to-green-600",
     bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
+    gradientBg: "bg-gradient-to-br from-emerald-100 via-emerald-50 to-green-100 dark:from-emerald-900/40 dark:via-emerald-800/30 dark:to-green-900/40",
     textColor: "text-emerald-700 dark:text-emerald-300",
     borderColor: "border-emerald-200 dark:border-emerald-800",
     lightBg: "bg-emerald-50 dark:bg-emerald-950/20",
@@ -34,6 +35,7 @@ const characterData = {
     roleHi: "साथी सीखने वाला",
     color: "from-slate-600 to-slate-800",
     bgColor: "bg-slate-100 dark:bg-slate-900/30",
+    gradientBg: "bg-gradient-to-br from-blue-100 via-blue-50 to-sky-100 dark:from-blue-900/40 dark:via-blue-800/30 dark:to-sky-900/40",
     textColor: "text-slate-700 dark:text-slate-300",
     borderColor: "border-slate-200 dark:border-slate-700",
     lightBg: "bg-slate-50 dark:bg-slate-950/20",
@@ -65,16 +67,23 @@ export function CharacterAvatar({ character, mood = "neutral", size = "md", show
     md: "w-12 h-12",
     lg: "w-16 h-16",
   };
+  const paddingClasses = {
+    sm: "p-0.5",
+    md: "p-1",
+    lg: "p-1.5",
+  };
 
   return (
     <div className="flex items-center gap-2">
-      <img
-        src={data.avatarImage}
-        alt={data.altText}
-        loading="lazy"
-        className={`${sizeClasses[size]} rounded-full object-contain bg-white border border-gray-200 shadow-sm p-1`}
-        data-testid={`img-avatar-${character}`}
-      />
+      <div className={`${sizeClasses[size]} rounded-full ${data.gradientBg} ${data.borderColor} border shadow-sm ${paddingClasses[size]}`}>
+        <img
+          src={data.avatarImage}
+          alt={data.altText}
+          loading="lazy"
+          className="w-full h-full rounded-full object-contain"
+          data-testid={`img-avatar-${character}`}
+        />
+      </div>
       {showName && (
         <div>
           <p className={`font-medium ${data.textColor}`}>{data.name}</p>
@@ -249,13 +258,15 @@ export function HeroCharacters({ isHindi = false }: { isHindi?: boolean }) {
   return (
     <div className="flex items-center justify-center gap-6 py-4">
       <div className="flex flex-col items-center gap-2">
-        <img
-          src={priyaAvatar}
-          alt="Priya - Expert Guide"
-          loading="lazy"
-          className="w-20 h-20 rounded-full object-contain bg-white shadow-lg border-2 border-emerald-200 dark:border-emerald-700 p-1"
-          data-testid="img-hero-priya"
-        />
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-100 via-emerald-50 to-green-100 dark:from-emerald-900/40 dark:via-emerald-800/30 dark:to-green-900/40 shadow-lg border-2 border-emerald-200 dark:border-emerald-700 p-1.5">
+          <img
+            src={priyaAvatar}
+            alt="Priya - Expert Guide"
+            loading="lazy"
+            className="w-full h-full rounded-full object-contain"
+            data-testid="img-hero-priya"
+          />
+        </div>
         <div className="text-center">
           <p className="font-semibold text-emerald-700 dark:text-emerald-300">
             Priya
@@ -267,13 +278,15 @@ export function HeroCharacters({ isHindi = false }: { isHindi?: boolean }) {
       </div>
       
       <div className="flex flex-col items-center gap-2">
-        <img
-          src={rohitAvatar}
-          alt="Rohit - Aapke Jaisa"
-          loading="lazy"
-          className="w-20 h-20 rounded-full object-contain bg-white shadow-lg border-2 border-slate-200 dark:border-slate-600 p-1"
-          data-testid="img-hero-rohit"
-        />
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 via-blue-50 to-sky-100 dark:from-blue-900/40 dark:via-blue-800/30 dark:to-sky-900/40 shadow-lg border-2 border-slate-200 dark:border-slate-600 p-1.5">
+          <img
+            src={rohitAvatar}
+            alt="Rohit - Aapke Jaisa"
+            loading="lazy"
+            className="w-full h-full rounded-full object-contain"
+            data-testid="img-hero-rohit"
+          />
+        </div>
         <div className="text-center">
           <p className="font-semibold text-slate-700 dark:text-slate-300">
             Rohit

@@ -20,6 +20,7 @@ const characterData = {
     fallbackInitial: "P",
     borderColor: "border-emerald-500",
     bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
+    gradientBg: "bg-gradient-to-br from-emerald-100 via-emerald-50 to-green-100 dark:from-emerald-900/40 dark:via-emerald-800/30 dark:to-green-900/40",
     textColor: "text-emerald-700 dark:text-emerald-300",
     badgeColor: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
   },
@@ -30,6 +31,7 @@ const characterData = {
     fallbackInitial: "R",
     borderColor: "border-blue-500",
     bgColor: "bg-blue-50 dark:bg-blue-900/20",
+    gradientBg: "bg-gradient-to-br from-blue-100 via-blue-50 to-sky-100 dark:from-blue-900/40 dark:via-blue-800/30 dark:to-sky-900/40",
     textColor: "text-blue-700 dark:text-blue-300",
     badgeColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
   }
@@ -41,11 +43,11 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
   if (variant === "compact") {
     return (
       <div className="flex items-center gap-3 p-3 rounded-lg bg-card border">
-        <div className="relative flex-shrink-0">
+        <div className={`relative flex-shrink-0 w-12 h-12 rounded-full ${character.gradientBg} border-2 ${character.borderColor} p-1 shadow-sm`}>
           <img
             src={character.imagePath}
             alt={`${character.displayName} - ${role}`}
-            className={`w-12 h-12 rounded-full object-cover border-2 ${character.borderColor}`}
+            className="w-full h-full rounded-full object-contain"
             loading="lazy"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -55,7 +57,7 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
             }}
           />
           <div 
-            className={`w-12 h-12 rounded-full ${character.bgColor} items-center justify-center hidden border-2 ${character.borderColor}`}
+            className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
           >
             <span className={`text-lg font-bold ${character.textColor}`}>
               {character.fallbackInitial}
@@ -88,11 +90,11 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
         <Card className="overflow-visible">
           <CardContent className="p-4 md:p-6">
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="relative flex-shrink-0">
+              <div className={`relative flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-full ${character.gradientBg} border-2 ${character.borderColor} p-1.5 shadow-lg`}>
                 <img
                   src={character.imagePath}
                   alt={`${character.displayName} - ${role}`}
-                  className={`w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-3 ${character.borderColor} shadow-lg`}
+                  className="w-full h-full rounded-full object-contain"
                   loading="lazy"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -102,7 +104,7 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
                   }}
                 />
                 <div 
-                  className={`w-20 h-20 md:w-24 md:h-24 rounded-full ${character.bgColor} items-center justify-center hidden border-3 ${character.borderColor}`}
+                  className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
                 >
                   <span className={`text-2xl font-bold ${character.textColor}`}>
                     {character.fallbackInitial}
@@ -141,11 +143,11 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
     >
       <Card className="h-full text-center overflow-visible">
         <CardContent className="pt-6 pb-6">
-          <div className="relative inline-block mb-4">
+          <div className={`relative inline-block mb-4 w-24 h-24 md:w-28 md:h-28 rounded-full ${character.gradientBg} border-2 ${character.borderColor} p-1.5 shadow-lg mx-auto`}>
             <img
               src={character.imagePath}
               alt={`${character.displayName} - ${role}`}
-              className={`w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-3 ${character.borderColor} shadow-lg mx-auto`}
+              className="w-full h-full rounded-full object-contain"
               loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
@@ -155,7 +157,7 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
               }}
             />
             <div 
-              className={`w-24 h-24 md:w-28 md:h-28 rounded-full ${character.bgColor} items-center justify-center hidden border-3 ${character.borderColor} mx-auto`}
+              className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
             >
               <span className={`text-3xl font-bold ${character.textColor}`}>
                 {character.fallbackInitial}
@@ -230,13 +232,18 @@ export function CharacterAvatar({ name, size = "md" }: { name: "priya" | "rohit"
     md: "w-12 h-12",
     lg: "w-16 h-16"
   };
+  const paddingClasses = {
+    sm: "p-0.5",
+    md: "p-1",
+    lg: "p-1.5"
+  };
 
   return (
-    <div className="relative inline-block">
+    <div className={`relative inline-block ${sizeClasses[size]} rounded-full ${character.gradientBg} border-2 ${character.borderColor} ${paddingClasses[size]} shadow-sm`}>
       <img
         src={character.imagePath}
         alt={character.displayName}
-        className={`${sizeClasses[size]} rounded-full object-cover border-2 ${character.borderColor}`}
+        className="w-full h-full rounded-full object-contain"
         loading="lazy"
         onError={(e) => {
           const target = e.target as HTMLImageElement;
@@ -246,7 +253,7 @@ export function CharacterAvatar({ name, size = "md" }: { name: "priya" | "rohit"
         }}
       />
       <div 
-        className={`${sizeClasses[size]} rounded-full ${character.bgColor} items-center justify-center hidden border-2 ${character.borderColor}`}
+        className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
       >
         <span className={`font-bold ${character.textColor}`}>
           {character.fallbackInitial}

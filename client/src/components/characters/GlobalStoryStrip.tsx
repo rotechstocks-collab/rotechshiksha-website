@@ -32,26 +32,30 @@ export function GlobalStoryStrip({ className = "" }: GlobalStoryStripProps) {
               <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
                 <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                   <div className="flex -space-x-2 flex-shrink-0">
-                    <img
-                      src={PRIYA_AVATAR}
-                      alt="Priya"
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-emerald-400 object-cover bg-emerald-100"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
-                    <img
-                      src={ROHIT_AVATAR}
-                      alt="Rohit"
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-blue-400 object-cover bg-blue-100"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-100 via-emerald-50 to-green-100 dark:from-emerald-900/40 dark:via-emerald-800/30 dark:to-green-900/40 border-2 border-emerald-400 p-0.5 shadow-sm">
+                      <img
+                        src={PRIYA_AVATAR}
+                        alt="Priya"
+                        className="w-full h-full rounded-full object-contain"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-100 via-blue-50 to-sky-100 dark:from-blue-900/40 dark:via-blue-800/30 dark:to-sky-900/40 border-2 border-blue-400 p-0.5 shadow-sm">
+                      <img
+                        src={ROHIT_AVATAR}
+                        alt="Rohit"
+                        className="w-full h-full rounded-full object-contain"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    </div>
                   </div>
                   
                   <div className="flex-1 min-w-0 hidden sm:block">
@@ -115,18 +119,22 @@ export function GlobalStoryStrip({ className = "" }: GlobalStoryStripProps) {
                 data-testid="button-expand-story-strip"
               >
                 <div className="flex -space-x-1">
-                  <img
-                    src={PRIYA_AVATAR}
-                    alt="Priya"
-                    className="w-5 h-5 rounded-full border border-emerald-400 object-cover bg-emerald-100"
-                    loading="lazy"
-                  />
-                  <img
-                    src={ROHIT_AVATAR}
-                    alt="Rohit"
-                    className="w-5 h-5 rounded-full border border-blue-400 object-cover bg-blue-100"
-                    loading="lazy"
-                  />
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/40 dark:to-green-900/40 border border-emerald-400 p-0.5">
+                    <img
+                      src={PRIYA_AVATAR}
+                      alt="Priya"
+                      className="w-full h-full rounded-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-900/40 dark:to-sky-900/40 border border-blue-400 p-0.5">
+                    <img
+                      src={ROHIT_AVATAR}
+                      alt="Rohit"
+                      className="w-full h-full rounded-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
                 <span>Priya & Rohit ke saath seekho</span>
                 <ChevronDown className="w-3 h-3" />
