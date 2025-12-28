@@ -34,6 +34,7 @@ import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
+import { characterImages } from "@/lib/characterImages";
 
 // Check if this is the user's first visit
 const FIRST_VISIT_KEY = "rotech-first-visit-complete";
@@ -254,7 +255,7 @@ export default function Home() {
           <div className="space-y-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
               <img
-                src="/characters/poses/priya-smile.png"
+                src={characterImages.priya.default}
                 alt="Priya - Expert Guide"
                 className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
                 loading="lazy"
@@ -268,7 +269,7 @@ export default function Home() {
             
             <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
               <img
-                src="/characters/poses/rohit-thumb.png"
+                src={characterImages.rohit.default}
                 alt="Rohit - Just Like You"
                 className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
                 loading="lazy"
@@ -433,7 +434,7 @@ export default function Home() {
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 <div className="flex gap-3 items-center md:items-start">
                   <img
-                    src="/characters/poses/rohit-thumb.png"
+                    src={characterImages.rohit.default}
                     alt="Rohit - Just Like You"
                     className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
                     loading="lazy"
