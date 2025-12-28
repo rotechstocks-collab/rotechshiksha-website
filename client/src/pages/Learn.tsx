@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 import { useLanguage } from "@/context/LanguageContext";
 import priyaAvatar from "@assets/generated_images/priya_mentor_avatar_green_blazer.png";
-import rohitAvatar from "@assets/generated_images/rohit_learner_avatar_navy_blazer.png";
+import rohitAvatar from "@assets/generated_images/rohit_avatar_matching_priya_style.png";
 
 const learningLevels = [
   {
