@@ -1,10 +1,20 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, HelpCircle, Sparkles, MessageCircle, BookOpen, FileText } from "lucide-react";
+import { EmotionAvatar } from "./characters/EmotionAvatar";
+import { CharacterEmotion } from "@/utils/characterEmotions";
 import priyaAvatar from "@/assets/characters/priya_main_transparent.png";
 import rohitAvatar from "@/assets/characters/rohit_main_transparent.png";
 
 type CharacterType = "priya" | "rohit";
 type CharacterMood = "explaining" | "questioning" | "celebrating" | "thinking" | "neutral";
+
+const moodToEmotion: Record<CharacterMood, CharacterEmotion> = {
+  explaining: "smile",
+  questioning: "confused",
+  celebrating: "excited",
+  thinking: "think",
+  neutral: "neutral",
+};
 
 interface CharacterProps {
   character: CharacterType;
@@ -62,28 +72,12 @@ const MoodIcon = ({ mood, className = "w-4 h-4" }: { mood: CharacterMood; classN
 
 export function CharacterAvatar({ character, mood = "neutral", size = "md", showName = false }: CharacterProps) {
   const data = characterData[character];
-  const sizeClasses = {
-    sm: "w-8 h-8",
-    md: "w-12 h-12",
-    lg: "w-16 h-16",
-  };
-  const paddingClasses = {
-    sm: "p-0.5",
-    md: "p-1",
-    lg: "p-1.5",
-  };
+  const emotion = moodToEmotion[mood];
+  const sizeMap = { sm: "sm" as const, md: "md" as const, lg: "lg" as const };
 
   return (
     <div className="flex items-center gap-2">
-      <div className={`${sizeClasses[size]} rounded-full ${data.gradientBg} ${data.borderColor} border shadow-sm ${paddingClasses[size]}`}>
-        <img
-          src={data.avatarImage}
-          alt={data.altText}
-          loading="lazy"
-          className="w-full h-full rounded-full object-contain"
-          data-testid={`img-avatar-${character}`}
-        />
-      </div>
+      <EmotionAvatar character={character} emotion={emotion} size={sizeMap[size]} />
       {showName && (
         <div>
           <p className={`font-medium ${data.textColor}`}>{data.name}</p>

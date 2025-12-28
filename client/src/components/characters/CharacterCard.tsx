@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
+import { EmotionAvatar } from "./EmotionAvatar";
+import { CharacterEmotion, getEmotionStyles } from "@/utils/characterEmotions";
 import priyaAvatar from "@/assets/characters/priya_main_transparent.png";
 import rohitAvatar from "@/assets/characters/rohit_main_transparent.png";
 
@@ -10,6 +12,7 @@ interface CharacterCardProps {
   role: string;
   quote: string;
   variant?: "default" | "compact" | "horizontal";
+  emotion?: CharacterEmotion;
 }
 
 const characterData = {
@@ -37,33 +40,13 @@ const characterData = {
   }
 };
 
-export function CharacterCard({ name, role, quote, variant = "default" }: CharacterCardProps) {
+export function CharacterCard({ name, role, quote, variant = "default", emotion = "neutral" }: CharacterCardProps) {
   const character = characterData[name];
 
   if (variant === "compact") {
     return (
       <div className="flex items-center gap-3 p-3 rounded-lg bg-card border">
-        <div className={`relative flex-shrink-0 w-12 h-12 rounded-full ${character.gradientBg} border-2 ${character.borderColor} p-1 shadow-sm`}>
-          <img
-            src={character.imagePath}
-            alt={`${character.displayName} - ${role}`}
-            className="w-full h-full rounded-full object-contain"
-            loading="lazy"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const fallback = target.nextElementSibling as HTMLElement;
-              if (fallback) fallback.style.display = 'flex';
-            }}
-          />
-          <div 
-            className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
-          >
-            <span className={`text-lg font-bold ${character.textColor}`}>
-              {character.fallbackInitial}
-            </span>
-          </div>
-        </div>
+        <EmotionAvatar character={name} emotion={emotion} size="md" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <span className={`font-semibold ${character.textColor}`}>
@@ -90,27 +73,7 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
         <Card className="overflow-visible">
           <CardContent className="p-4 md:p-6">
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className={`relative flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-full ${character.gradientBg} border-2 ${character.borderColor} p-1.5 shadow-lg`}>
-                <img
-                  src={character.imagePath}
-                  alt={`${character.displayName} - ${role}`}
-                  className="w-full h-full rounded-full object-contain"
-                  loading="lazy"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const fallback = target.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div 
-                  className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
-                >
-                  <span className={`text-2xl font-bold ${character.textColor}`}>
-                    {character.fallbackInitial}
-                  </span>
-                </div>
-              </div>
+              <EmotionAvatar character={name} emotion={emotion} size="xl" />
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
                   <h3 className={`text-xl font-bold ${character.textColor}`}>
@@ -143,26 +106,8 @@ export function CharacterCard({ name, role, quote, variant = "default" }: Charac
     >
       <Card className="h-full text-center overflow-visible">
         <CardContent className="pt-6 pb-6">
-          <div className={`relative inline-block mb-4 w-24 h-24 md:w-28 md:h-28 rounded-full ${character.gradientBg} border-2 ${character.borderColor} p-1.5 shadow-lg mx-auto`}>
-            <img
-              src={character.imagePath}
-              alt={`${character.displayName} - ${role}`}
-              className="w-full h-full rounded-full object-contain"
-              loading="lazy"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const fallback = target.nextElementSibling as HTMLElement;
-                if (fallback) fallback.style.display = 'flex';
-              }}
-            />
-            <div 
-              className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
-            >
-              <span className={`text-3xl font-bold ${character.textColor}`}>
-                {character.fallbackInitial}
-              </span>
-            </div>
+          <div className="flex justify-center mb-4">
+            <EmotionAvatar character={name} emotion={emotion} size="xl" />
           </div>
           
           <h3 className={`text-xl font-bold mb-1 ${character.textColor}`}>
@@ -190,6 +135,8 @@ interface CharacterDuoProps {
   priyaRole?: string;
   rohitRole?: string;
   variant?: "default" | "compact" | "horizontal";
+  priyaEmotion?: CharacterEmotion;
+  rohitEmotion?: CharacterEmotion;
 }
 
 export function CharacterDuo({ 
@@ -197,13 +144,15 @@ export function CharacterDuo({
   rohitQuote, 
   priyaRole = "Teri Mentor", 
   rohitRole = "Tera Learning Partner",
-  variant = "default"
+  variant = "default",
+  priyaEmotion = "neutral",
+  rohitEmotion = "neutral"
 }: CharacterDuoProps) {
   if (variant === "compact") {
     return (
       <div className="space-y-3">
-        <CharacterCard name="priya" role={priyaRole} quote={priyaQuote} variant="compact" />
-        <CharacterCard name="rohit" role={rohitRole} quote={rohitQuote} variant="compact" />
+        <CharacterCard name="priya" role={priyaRole} quote={priyaQuote} variant="compact" emotion={priyaEmotion} />
+        <CharacterCard name="rohit" role={rohitRole} quote={rohitQuote} variant="compact" emotion={rohitEmotion} />
       </div>
     );
   }
@@ -211,54 +160,29 @@ export function CharacterDuo({
   if (variant === "horizontal") {
     return (
       <div className="space-y-4">
-        <CharacterCard name="priya" role={priyaRole} quote={priyaQuote} variant="horizontal" />
-        <CharacterCard name="rohit" role={rohitRole} quote={rohitQuote} variant="horizontal" />
+        <CharacterCard name="priya" role={priyaRole} quote={priyaQuote} variant="horizontal" emotion={priyaEmotion} />
+        <CharacterCard name="rohit" role={rohitRole} quote={rohitQuote} variant="horizontal" emotion={rohitEmotion} />
       </div>
     );
   }
 
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      <CharacterCard name="priya" role={priyaRole} quote={priyaQuote} />
-      <CharacterCard name="rohit" role={rohitRole} quote={rohitQuote} />
+      <CharacterCard name="priya" role={priyaRole} quote={priyaQuote} emotion={priyaEmotion} />
+      <CharacterCard name="rohit" role={rohitRole} quote={rohitQuote} emotion={rohitEmotion} />
     </div>
   );
 }
 
-export function CharacterAvatar({ name, size = "md" }: { name: "priya" | "rohit"; size?: "sm" | "md" | "lg" }) {
-  const character = characterData[name];
-  const sizeClasses = {
-    sm: "w-8 h-8",
-    md: "w-12 h-12",
-    lg: "w-16 h-16"
-  };
-  const paddingClasses = {
-    sm: "p-0.5",
-    md: "p-1",
-    lg: "p-1.5"
-  };
-
-  return (
-    <div className={`relative inline-block ${sizeClasses[size]} rounded-full ${character.gradientBg} border-2 ${character.borderColor} ${paddingClasses[size]} shadow-sm`}>
-      <img
-        src={character.imagePath}
-        alt={character.displayName}
-        className="w-full h-full rounded-full object-contain"
-        loading="lazy"
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.style.display = 'none';
-          const fallback = target.nextElementSibling as HTMLElement;
-          if (fallback) fallback.style.display = 'flex';
-        }}
-      />
-      <div 
-        className={`w-full h-full rounded-full ${character.bgColor} items-center justify-center hidden absolute inset-0`}
-      >
-        <span className={`font-bold ${character.textColor}`}>
-          {character.fallbackInitial}
-        </span>
-      </div>
-    </div>
-  );
+export function CharacterAvatar({ 
+  name, 
+  size = "md", 
+  emotion = "neutral" 
+}: { 
+  name: "priya" | "rohit"; 
+  size?: "sm" | "md" | "lg"; 
+  emotion?: CharacterEmotion;
+}) {
+  const sizeMap = { sm: "sm" as const, md: "md" as const, lg: "lg" as const };
+  return <EmotionAvatar character={name} emotion={emotion} size={sizeMap[size]} />;
 }
