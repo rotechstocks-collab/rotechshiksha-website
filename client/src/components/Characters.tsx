@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, HelpCircle, Sparkles, MessageCircle, BookOpen, FileText } from "lucide-react";
+import priyaAvatar from "@/assets/characters/priya_main.png";
+import rohitAvatar from "@/assets/characters/rohit_main.png";
 
 type CharacterType = "priya" | "rohit";
 type CharacterMood = "explaining" | "questioning" | "celebrating" | "thinking" | "neutral";
@@ -22,7 +24,7 @@ const characterData = {
     textColor: "text-emerald-700 dark:text-emerald-300",
     borderColor: "border-emerald-200 dark:border-emerald-800",
     lightBg: "bg-emerald-50 dark:bg-emerald-950/20",
-    avatarImage: "/characters/avatars/priya.png",
+    avatarImage: priyaAvatar,
     altText: "Priya avatar",
   },
   rohit: {
@@ -35,7 +37,7 @@ const characterData = {
     textColor: "text-slate-700 dark:text-slate-300",
     borderColor: "border-slate-200 dark:border-slate-700",
     lightBg: "bg-slate-50 dark:bg-slate-950/20",
-    avatarImage: "/characters/avatars/rohit.png",
+    avatarImage: rohitAvatar,
     altText: "Rohit avatar",
   },
 };
@@ -248,7 +250,7 @@ export function HeroCharacters({ isHindi = false }: { isHindi?: boolean }) {
     <div className="flex items-center justify-center gap-6 py-4">
       <div className="flex flex-col items-center gap-2">
         <img
-          src="/characters/avatars/priya.png"
+          src={priyaAvatar}
           alt="Priya - Expert Guide"
           loading="lazy"
           className="w-20 h-20 rounded-full object-contain bg-white shadow-lg border-2 border-emerald-200 dark:border-emerald-700 p-1"
@@ -266,7 +268,7 @@ export function HeroCharacters({ isHindi = false }: { isHindi?: boolean }) {
       
       <div className="flex flex-col items-center gap-2">
         <img
-          src="/characters/avatars/rohit.png"
+          src={rohitAvatar}
           alt="Rohit - Aapke Jaisa"
           loading="lazy"
           className="w-20 h-20 rounded-full object-contain bg-white shadow-lg border-2 border-slate-200 dark:border-slate-600 p-1"

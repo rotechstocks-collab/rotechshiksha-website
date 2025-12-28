@@ -1,20 +1,23 @@
+import priyaAvatar from "@/assets/characters/priya_main.png";
+import rohitAvatar from "@/assets/characters/rohit_main.png";
+
 export const characterAssets = {
   avatars: {
-    priya: "/characters/avatars/priya.png",
-    rohit: "/characters/avatars/rohit.png",
+    priya: priyaAvatar,
+    rohit: rohitAvatar,
   },
   poses: {
     priya: {
-      smile: "/characters/poses/priya-smile.png",
-      point: "/characters/poses/priya-point.png",
-      think: "/characters/poses/priya-think.png",
-      clipboard: "/characters/poses/priya-clipboard.png",
+      smile: priyaAvatar,
+      point: priyaAvatar,
+      think: priyaAvatar,
+      clipboard: priyaAvatar,
     },
     rohit: {
-      thumb: "/characters/poses/rohit-thumb.png",
-      confused: "/characters/poses/rohit-confused.png",
-      idea: "/characters/poses/rohit-idea.png",
-      write: "/characters/poses/rohit-write.png",
+      thumb: rohitAvatar,
+      confused: rohitAvatar,
+      idea: rohitAvatar,
+      write: rohitAvatar,
     }
   }
 } as const;
