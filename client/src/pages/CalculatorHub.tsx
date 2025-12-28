@@ -230,25 +230,28 @@ export default function CalculatorHub() {
   const popularCalcs = calculators.filter(c => c.popular);
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-background">
-      <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            <Calculator className="w-4 h-4" />
-            20+ Free Tools
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-            Financial Calculators
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Plan investments, calculate taxes, and make informed financial decisions
-          </p>
-        </motion.div>
+    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+      <section className="section">
+        <div className="page-container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-4">
+              <Calculator className="w-4 h-4" />
+              20+ Free Tools
+            </span>
+            <h1 className="varsity-h1 mb-3">
+              Financial Calculators
+            </h1>
+            <p className="varsity-body max-w-2xl mx-auto">
+              Apne investment plan karo, tax calculate karo, aur informed decisions lo.
+              <br />
+              <span className="text-sm text-slate-500">Sab FREE hai - koi signup nahi chahiye.</span>
+            </p>
+          </motion.div>
 
         <div className="max-w-2xl mx-auto mb-10">
           <CharacterTip
@@ -337,7 +340,8 @@ export default function CalculatorHub() {
             </section>
           );
         })}
-      </div>
+        </div>
+      </section>
     </div>
   );
 }
