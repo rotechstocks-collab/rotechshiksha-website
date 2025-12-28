@@ -54,6 +54,7 @@ const BeginnerLesson = lazy(() => import("@/pages/BeginnerLesson"));
 const Level1Course = lazy(() => import("@/pages/Level1Course"));
 const MarketNews = lazy(() => import("@/pages/MarketNews"));
 const LiveNews = lazy(() => import("@/pages/LiveNews"));
+const Learn = lazy(() => import("@/pages/Learn"));
 
 function Router() {
   return (
@@ -63,7 +64,8 @@ function Router() {
         <Route path="/about" component={About} />
         <Route path="/courses" component={Courses} />
         <Route path="/courses/:level" component={Courses} />
-        <Route path="/learn" component={BeginnerCourse} />
+        <Route path="/learn" component={Learn} />
+        <Route path="/learning-path" component={Learn} />
         <Route path="/learn/level-1" component={Level1Lesson} />
         <Route path="/learn/level-2" component={Level2Lesson} />
         <Route path="/learn/level-3" component={Level3Lesson} />
