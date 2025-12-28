@@ -4,7 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { getPoseUrl } from '@/../public/characters/poses';
+import { characterAssets } from '@/lib/characterAssets';
 import { ArrowRight } from 'lucide-react';
 
 interface ComicModalProps {
@@ -33,6 +33,16 @@ const comicPanels = [
   }
 ];
 
+function getPoseImage(character: 'priya' | 'rohit', pose: string): string {
+  if (character === 'priya') {
+    const priyaPoses = characterAssets.poses.priya;
+    return priyaPoses[pose as keyof typeof priyaPoses] || priyaPoses.smile;
+  } else {
+    const rohitPoses = characterAssets.poses.rohit;
+    return rohitPoses[pose as keyof typeof rohitPoses] || rohitPoses.thumb;
+  }
+}
+
 export function ComicModal({ open, onOpenChange }: ComicModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -56,7 +66,7 @@ export function ComicModal({ open, onOpenChange }: ComicModalProps) {
               
               <div className="flex justify-center mb-3 pt-4">
                 <img
-                  src={getPoseUrl(panel.character, panel.pose)}
+                  src={getPoseImage(panel.character, panel.pose)}
                   alt={panel.character}
                   className="w-20 h-20 object-contain"
                   loading="lazy"

@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { CharacterAvatar } from './CharacterAvatar';
 import { ComicModal } from './ComicModal';
 import { Lightbulb } from 'lucide-react';
+import { features } from '@/config/features';
 
 interface CharacterTipProps {
   character: 'priya' | 'rohit';
@@ -25,6 +26,8 @@ export function CharacterTip({
 }: CharacterTipProps) {
   const [showComic, setShowComic] = useState(false);
   const characterName = character === 'priya' ? 'Priya' : 'Rohit';
+  
+  const shouldShowComicButton = showComicButton && features.comics;
 
   return (
     <>
@@ -49,7 +52,7 @@ export function CharacterTip({
                 {actionLabel}
               </Button>
             )}
-            {showComicButton && (
+            {shouldShowComicButton && (
               <Button 
                 variant="outline" 
                 size="sm"
@@ -63,7 +66,7 @@ export function CharacterTip({
         </div>
       </Card>
       
-      {showComicButton && (
+      {shouldShowComicButton && (
         <ComicModal 
           open={showComic} 
           onOpenChange={setShowComic}

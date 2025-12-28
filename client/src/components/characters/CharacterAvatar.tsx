@@ -1,10 +1,7 @@
+import { characterAssets } from '@/lib/characterAssets';
+
 type CharacterName = "priya" | "rohit";
 type AvatarSize = "sm" | "md" | "lg";
-
-const AVATAR_PATHS = {
-  priya: "/characters/avatars/priya.png",
-  rohit: "/characters/avatars/rohit.png",
-} as const;
 
 const SIZE_CLASSES = {
   sm: "w-8 h-8",
@@ -23,7 +20,7 @@ export function CharacterAvatar({
   size = "md", 
   className = "" 
 }: CharacterAvatarProps) {
-  const imagePath = AVATAR_PATHS[character];
+  const imagePath = characterAssets.avatars[character];
   const sizeClass = SIZE_CLASSES[size];
   const characterName = character === "priya" ? "Priya" : "Rohit";
 
