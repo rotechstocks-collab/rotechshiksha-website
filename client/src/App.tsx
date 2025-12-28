@@ -10,6 +10,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { LessonLanguageProvider } from "@/context/LessonLanguageContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { GlobalStoryStrip } from "@/components/characters/GlobalStoryStrip";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
@@ -116,6 +117,7 @@ function App() {
                   <MarketTicker />
                   <div className="min-h-screen bg-background safe-area-top">
                     <Header />
+                    <GlobalStoryStrip />
                     <main className="pt-14 md:pt-[102px]">
                       <Router />
                     </main>
