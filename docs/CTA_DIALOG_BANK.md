@@ -1,416 +1,430 @@
-# Rotech Shiksha - CTA Dialog Bank
+# CTA Dialog Bank - Rotech Shiksha
 
-50 Hinglish CTA dialogues for website pages using Priya and Rohit characters.
+Priya aur Rohit ke saath engaging CTAs for different pages.
+
+**Character Notes:**
+- **Priya**: Friendly, witty, professional mentor. Kabhi kabhi comic bhi.
+- **Rohit**: Curious learner, practical thinker. Kabhi funny, kabhi serious.
+- Dono **friends** hain, same age group mein. (NOT siblings)
 
 ---
 
 ## 1. Home Page CTA Dialogues (10)
 
-### H1 - Hero Welcome
-**Rohit:** Yaar Priya, investing kahan se start karun?  
-**Priya:** Simple hai! Free course se shuru kar - basics se advanced tak!
-
-**Button:** Start Free Course
-
----
-
-### H2 - Value Proposition
-**Priya:** Rohit, yahan calculators, courses, live market - sab ek jagah hai!  
-**Rohit:** Perfect! Ek hi platform pe sab kuch!
-
-**Button:** Explore Features
+### CTA 1.1
+**Priya:** Rohit, tu abhi bhi soch raha hai ya shuru karega?  
+**Rohit:** Yaar dar lagta hai, paise doob gaye toh?  
+**Priya:** Isliye toh pehle seekhte hain, phir invest karte hain. Chal!  
+**Button:** Seekhna Shuru Karo
 
 ---
 
-### H3 - Social Proof
-**Rohit:** Aur log bhi use karte hain ye?  
-**Priya:** 10,000+ learners already smart investing seekh rahe hain!
-
-**Button:** Join Community
-
----
-
-### H4 - Quick Win
-**Priya:** 5 minute mein apna future wealth calculate karna hai?  
-**Rohit:** Haan! Jaldi batao kaise!
-
-**Button:** Try SIP Calculator
+### CTA 1.2
+**Rohit:** Priya, mere dost ne crypto mein paisa lagaya aur doob gaya.  
+**Priya:** Knowledge ke bina investing gambling hai. Pehle basics clear kar.  
+**Rohit:** Theek hai, chal start karte hain.  
+**Button:** Free Course Dekho
 
 ---
 
-### H5 - Beginner Hook
-**Rohit:** Mujhe stocks ka zero knowledge hai...  
-**Priya:** Bilkul perfect! Humara beginner course exactly tere liye hai!
-
-**Button:** Start Beginner Module
-
----
-
-### H6 - Free Content
-**Priya:** 50+ curated videos, 10+ calculators - sab FREE!  
-**Rohit:** Free mein itna sab? Sign me up!
-
-**Button:** Access Free Tools
+### CTA 1.3
+**Priya:** 5 saal baad tujhe regret hoga ki tune aaj shuru nahi kiya.  
+**Rohit:** Itna serious? Abhi se?  
+**Priya:** Compounding ka jaadu time ke saath hi kaam karta hai, bhai.  
+**Button:** Aaj Hi Seekho
 
 ---
 
-### H7 - Trust Building
-**Rohit:** Ye authentic content hai na? Bakwaas nahi?  
-**Priya:** Simple Hindi mein, practical examples ke saath. No jargon, no bakwaas!
-
-**Button:** Read Student Reviews
-
----
-
-### H8 - Action Oriented
-**Priya:** Sochna band, karna shuru!  
-**Rohit:** Chal, aaj se start karte hain!
-
-**Button:** Begin Journey Today
+### CTA 1.4
+**Rohit:** Stock market toh ameer logon ke liye hai na?  
+**Priya:** Nahi yaar, ₹100 se bhi start ho sakta hai. Myth mat maano.  
+**Rohit:** Sach mein? Toh batao kaise!  
+**Button:** Basics Se Shuru Karo
 
 ---
 
-### H9 - Learning Path
-**Rohit:** Itna content hai... kahan se start karun?  
-**Priya:** Level 1 se! Step by step guide milega!
-
-**Button:** See Learning Path
+### CTA 1.5
+**Priya:** Tera savings account kitna interest de raha hai?  
+**Rohit:** 3-4% shayad...  
+**Priya:** Inflation 6% hai. Tu actually paisa kho raha hai! Seekh aur invest kar.  
+**Button:** Investing Seekho
 
 ---
 
-### H10 - Newsletter
-**Priya:** Weekly market insights direct inbox mein chahiye?  
-**Rohit:** Haan! Mujhe updated rehna hai!
+### CTA 1.6
+**Rohit:** Mujhe lagta hai main late ho gaya investing ke liye.  
+**Priya:** Warren Buffett ne bola tha – best time to invest was yesterday, second best is today.  
+**Rohit:** Wah, deep! Chal start karte hain.  
+**Button:** Abhi Shuru Karo
 
-**Button:** Subscribe Free
+---
+
+### CTA 1.7
+**Priya:** Tu har mahine Zomato pe kitna spend karta hai?  
+**Rohit:** Zyada mat bol, guilty feel hota hai.  
+**Priya:** Wahi paisa SIP mein daalo, 10 saal mein gaadi aa jayegi.  
+**Button:** SIP Calculator Try Karo
+
+---
+
+### CTA 1.8
+**Rohit:** Yaar market samajh mein nahi aata, bohot confusing hai.  
+**Priya:** Tabhi toh step-by-step lessons hain. Ek ek karke clear hoga sab.  
+**Rohit:** Okay, let's do this!  
+**Button:** Lessons Dekho
+
+---
+
+### CTA 1.9
+**Priya:** Rohit, future secure karna hai ya YOLO life jeeni hai?  
+**Rohit:** Dono! Pehle secure, phir YOLO.  
+**Priya:** Smart thinking. Chal wealth building seekhte hain.  
+**Button:** Journey Start Karo
+
+---
+
+### CTA 1.10
+**Rohit:** Priya, ek honest sawaal – ye free hai ya koi catch hai?  
+**Priya:** 100% free hai yaar. Catch sirf yeh hai ki tujhe mehnat karni padegi.  
+**Rohit:** Deal done!  
+**Button:** Free Mein Seekho
 
 ---
 
 ## 2. Learn Page CTA Dialogues (10)
 
-### L1 - Video Library
-**Rohit:** Reading se bore ho gaya... video hai?  
-**Priya:** 50+ handpicked videos hain! Chal dekhte hain!
-
-**Button:** Watch Video Lessons
-
----
-
-### L2 - Basics Module
-**Priya:** Stock market kya hai? Pehle ye samajh le!  
-**Rohit:** Basic se start - smart move!
-
-**Button:** Start With Basics
+### CTA 2.1
+**Priya:** Aaj ka lesson complete kiya?  
+**Rohit:** Almost... YouTube distract kar diya.  
+**Priya:** Focus yaar! Ek lesson daily = 1 mahine mein pro.  
+**Button:** Lesson Continue Karo
 
 ---
 
-### L3 - Continue Learning
-**Rohit:** Kal ka lesson kahan ruka tha?  
-**Priya:** Yahan se continue kar - sab saved hai!
-
-**Button:** Resume Learning
-
----
-
-### L4 - Interactive Quiz
-**Priya:** Seekha kitna? Quiz se check kar!  
-**Rohit:** Challenge accepted!
-
-**Button:** Take Quick Quiz
+### CTA 2.2
+**Rohit:** Yaar ye technical analysis bohot heavy lag raha hai.  
+**Priya:** Isliye pehle basics karo. Jo samajh mein aaye, wahi karo.  
+**Rohit:** Makes sense.  
+**Button:** Basics Se Shuru Karo
 
 ---
 
-### L5 - Bookmark Feature
-**Rohit:** Ye topic baad mein padhna hai...  
-**Priya:** Bookmark kar le! Jab time ho tab padh!
-
-**Button:** Save for Later
-
----
-
-### L6 - Topic Search
-**Priya:** Koi specific topic dhundh raha hai?  
-**Rohit:** Haan, SIP ke baare mein sab kuch!
-
-**Button:** Search Topics
+### CTA 2.3
+**Priya:** Consistency key hai. Roz 15 min, that's all.  
+**Rohit:** 15 min? Itna kam?  
+**Priya:** Haan, lekin daily. Chal aaj ka lesson khatam kar.  
+**Button:** 15 Min Lesson Karo
 
 ---
 
-### L7 - Playlist Feature
-**Rohit:** Related videos ek saath dekhne hain...  
-**Priya:** Playlist mein sab organized hai. Binge-watch kar!
-
-**Button:** Browse Playlists
-
----
-
-### L8 - Downloadable Notes
-**Priya:** Notes chahiye offline padhne ke liye?  
-**Rohit:** Yes please! Travel mein padhunga!
-
-**Button:** Download Notes
+### CTA 2.4
+**Rohit:** Priya, maine 3 lessons complete kar liye!  
+**Priya:** Proud of you! Ab quiz de aur confidence check kar.  
+**Rohit:** Quiz? Tension ho gayi.  
+**Button:** Quiz Attempt Karo
 
 ---
 
-### L9 - Ask Question
-**Rohit:** Ek doubt hai... kahan puchu?  
-**Priya:** Ask section mein likh! Answer milega!
-
-**Button:** Ask Your Doubt
+### CTA 2.5
+**Priya:** Pata hai successful investors mein common kya hai?  
+**Rohit:** Paisa?  
+**Priya:** Nahi, patience aur knowledge. Paisa toh result hai.  
+**Button:** Knowledge Build Karo
 
 ---
 
-### L10 - Complete Module
-**Priya:** Module khatam kiya? Certificate le!  
-**Rohit:** Resume mein daal dunga!
+### CTA 2.6
+**Rohit:** Yaar Nifty aur Sensex mein confusion hai abhi bhi.  
+**Priya:** Koi baat nahi, Level 2 mein crystal clear ho jayega.  
+**Rohit:** Okay, usse complete karta hoon.  
+**Button:** Level 2 Shuru Karo
 
-**Button:** Get Certificate
+---
+
+### CTA 2.7
+**Priya:** Notes banaye tune?  
+**Rohit:** Notes? Old school nahi hai ye?  
+**Priya:** Revise karne mein help karta hai. PDF download kar, easy hai.  
+**Button:** Notes PDF Download Karo
+
+---
+
+### CTA 2.8
+**Rohit:** Priya, mujhe practical experience chahiye, sirf theory nahi.  
+**Priya:** Isliye calculators hain. SIP, brokerage sab try kar.  
+**Rohit:** Nice! Let's do it.  
+**Button:** Calculator Try Karo
+
+---
+
+### CTA 2.9
+**Priya:** Ek lesson skip kiya tune. Kya hua?  
+**Rohit:** Boring lag raha tha...  
+**Priya:** Boring wala hi exam mein aata hai. Chal complete kar.  
+**Button:** Lesson Complete Karo
+
+---
+
+### CTA 2.10
+**Rohit:** Priya, main sach mein investor ban paunga?  
+**Priya:** 100%. Bas consistent reh aur seekhta reh.  
+**Rohit:** Motivation mil gaya. Let's go!  
+**Button:** Aage Badho
 
 ---
 
 ## 3. Courses Page CTA Dialogues (10)
 
-### C1 - Course Overview
-**Rohit:** Kaunsa course mere liye sahi hai?  
-**Priya:** Level check kar - beginner se advanced tak options hain!
-
-**Button:** View All Courses
-
----
-
-### C2 - Beginner Course
-**Priya:** Zero knowledge? No problem!  
-**Rohit:** Perfect starting point!
-
-**Button:** Start Beginner Course
+### CTA 3.1
+**Priya:** Beginner ho? Start from Level 1. No shortcuts.  
+**Rohit:** Lekin main seedha options trading seekhna chahta hoon.  
+**Priya:** Pehle walk karna seekh, phir running. Trust the process.  
+**Button:** Level 1 Start Karo
 
 ---
 
-### C3 - Intermediate Course
-**Rohit:** Basics ho gaye. Aage kya?  
-**Priya:** Portfolio building aur stock selection seekh!
-
-**Button:** Go Intermediate
-
----
-
-### C4 - Advanced Course
-**Priya:** Ready for F&O aur complex strategies?  
-**Rohit:** Level up time!
-
-**Button:** Unlock Advanced
+### CTA 3.2
+**Rohit:** Itne saare courses hain, kahaan se shuru karoon?  
+**Priya:** Simple – zero se shuru. Beginner course is perfect for you.  
+**Rohit:** Okay boss!  
+**Button:** Beginner Course Dekho
 
 ---
 
-### C5 - Technical Analysis
-**Rohit:** Charts padhna seekhna hai properly!  
-**Priya:** Candlesticks se MACD tak - sab covered!
-
-**Button:** Learn Technical Analysis
-
----
-
-### C6 - Fundamental Analysis
-**Priya:** Company ki real value kaise pata kare?  
-**Rohit:** Balance sheet padhna sikhao!
-
-**Button:** Master Fundamentals
+### CTA 3.3
+**Priya:** Tu kaunsa level pe hai – Noob, Learning, ya Pro?  
+**Rohit:** Honestly? Confused level pe hoon.  
+**Priya:** Tab toh basics se shuru kar. Confusion khatam hogi.  
+**Button:** Basics Course Join Karo
 
 ---
 
-### C7 - Free Preview
-**Rohit:** Pehle dekh lun course kaisa hai?  
-**Priya:** Free preview available hai - try kar!
-
-**Button:** Watch Free Preview
-
----
-
-### C8 - Course Comparison
-**Priya:** Confused kaunsa lena hai?  
-**Rohit:** Side by side compare karna hai!
-
-**Button:** Compare Courses
+### CTA 3.4
+**Rohit:** Priya, ye Algo Trading wala course kab unlock hoga?  
+**Priya:** Pehle fundamentals clear kar. Advanced baad mein aayega.  
+**Rohit:** Fair enough.  
+**Button:** Fundamentals Complete Karo
 
 ---
 
-### C9 - Lifetime Access
-**Rohit:** Ek baar liya toh permanent?  
-**Priya:** Haan! Lifetime access + future updates free!
-
-**Button:** Get Lifetime Access
-
----
-
-### C10 - Certificate Benefit
-**Priya:** Course complete karne pe verified certificate!  
-**Rohit:** LinkedIn pe daal dunga!
-
-**Button:** Enroll & Get Certified
+### CTA 3.5
+**Priya:** Har level ek skill unlock karta hai.  
+**Rohit:** Game jaisa hai matlab?  
+**Priya:** Exactly! Level up karo, rewards milenge.  
+**Button:** Level Up Karo
 
 ---
 
-## 4. Calculators/Tools Page CTA Dialogues (10)
-
-### T1 - Calculator Hub
-**Rohit:** Maths se darr lagta hai...  
-**Priya:** Calculators sab kar denge! Tu sirf numbers daal!
-
-**Button:** Open Calculator Hub
+### CTA 3.6
+**Rohit:** Yaar ek course complete ho gaya, ab next kya?  
+**Priya:** Congrats! Ab intermediate level try kar.  
+**Rohit:** Let's level up!  
+**Button:** Intermediate Course Start Karo
 
 ---
 
-### T2 - SIP Calculator
-**Priya:** Monthly Rs 5000 se kitna banega 20 saal mein?  
-**Rohit:** Calculate karte hain!
-
-**Button:** Try SIP Calculator
-
----
-
-### T3 - Lumpsum Calculator
-**Rohit:** Ek saath invest karun toh?  
-**Priya:** Lumpsum returns yahan calculate kar!
-
-**Button:** Calculate Lumpsum
+### CTA 3.7
+**Priya:** Screener use karna aata hai?  
+**Rohit:** Screener? Laptop ka screen?  
+**Priya:** Nahi yaar, stock screener. Advanced course mein sikhate hain.  
+**Button:** Advanced Course Explore Karo
 
 ---
 
-### T4 - Risk-Reward Calculator
-**Priya:** Trade karne se pehle risk check kar!  
-**Rohit:** Smart trader ki pehchaan!
-
-**Button:** Check Risk-Reward
-
----
-
-### T5 - Brokerage Calculator
-**Rohit:** Broker kitna kha raha hai mera?  
-**Priya:** Hidden charges yahan dekh - surprise mat kha!
-
-**Button:** Calculate Brokerage
+### CTA 3.8
+**Rohit:** Priya, IPO kaise apply karte hain?  
+**Priya:** Level 2 mein detailed lesson hai. Complete karo.  
+**Rohit:** Chalo IPO samajhte hain.  
+**Button:** IPO Lesson Dekho
 
 ---
 
-### T6 - EMI Calculator
-**Priya:** Loan ki EMI kitni aayegi?  
-**Rohit:** Budget plan karna hai pehle!
-
-**Button:** Calculate EMI
-
----
-
-### T7 - Position Size Calculator
-**Rohit:** Ek trade mein kitna daalna chahiye?  
-**Priya:** Position size calculate kar - over-trading se bach!
-
-**Button:** Find Position Size
+### CTA 3.9
+**Priya:** Certificate milega course complete karne pe?  
+**Rohit:** Sach mein? LinkedIn pe daal dunga!  
+**Priya:** Pehle complete toh kar.  
+**Button:** Course Complete Karo
 
 ---
 
-### T8 - Compare Tools
-**Priya:** SIP vs Lumpsum - kya better?  
-**Rohit:** Comparison se clear hoga!
-
-**Button:** Compare Side by Side
-
----
-
-### T9 - Save Calculation
-**Rohit:** Ye result save karna hai...  
-**Priya:** Download kar ya bookmark kar - tera data safe!
-
-**Button:** Save Results
+### CTA 3.10
+**Rohit:** Priya, ye course kitne din mein complete hoga?  
+**Priya:** Teri speed pe depend karta hai. Avg 2-3 weeks mein ho jata hai.  
+**Rohit:** Challenge accepted!  
+**Button:** Challenge Start Karo
 
 ---
 
-### T10 - Share Results
-**Priya:** Dost ko bhi dikhana hai ye magic number?  
-**Rohit:** Haan, usko bhi motivate karunga!
+## 4. Calculators/Tools CTA Dialogues (10)
 
-**Button:** Share Calculation
-
----
-
-## 5. Blog/News/Market Page CTA Dialogues (10)
-
-### M1 - Live Market
-**Rohit:** Aaj market kaisa chal raha hai?  
-**Priya:** Live ticker dekh - real-time updates!
-
-**Button:** View Live Market
+### CTA 4.1
+**Priya:** SIP calculator try kiya?  
+**Rohit:** Nahi, mujhe maths se darr lagta hai.  
+**Priya:** Calculator hai yaar, tu sirf numbers daal, magic dekh.  
+**Button:** SIP Calculator Try Karo
 
 ---
 
-### M2 - Latest News
-**Priya:** Market move ka reason jaanna hai?  
-**Rohit:** News se hi pata chalega!
-
-**Button:** Read Latest News
-
----
-
-### M3 - Hindi News
-**Rohit:** English mein mushkil ho raha hai...  
-**Priya:** Hindi news bhi available hai!
-
-**Button:** Switch to Hindi
+### CTA 4.2
+**Rohit:** ₹5000 monthly invest karu toh 10 saal mein kitna banega?  
+**Priya:** Calculator mein check kar, khud hi shock ho jayega.  
+**Rohit:** Okay, dekhte hain!  
+**Button:** Abhi Calculate Karo
 
 ---
 
-### M4 - Economic Calendar
-**Priya:** RBI policy, GDP data - kab aayega?  
-**Rohit:** Important dates miss nahi karne!
-
-**Button:** View Economic Calendar
-
----
-
-### M5 - IPO Section
-**Rohit:** New IPO aaya hai? Apply karun?  
-**Priya:** Pehle analysis padh, phir decide kar!
-
-**Button:** Check IPO Details
+### CTA 4.3
+**Priya:** Brokerage kitna cut hota hai pata hai?  
+**Rohit:** Kuch percent shayad... zyada nahi hota.  
+**Priya:** Hidden charges bhi hote hain. Calculator se check kar.  
+**Button:** Brokerage Calculator Open Karo
 
 ---
 
-### M6 - Blog Article
-**Priya:** Deep analysis chahiye kisi topic pe?  
-**Rohit:** Detailed article padhunga!
-
-**Button:** Read Full Article
-
----
-
-### M7 - Market Analysis
-**Rohit:** Nifty kyun gira aaj?  
-**Priya:** Expert analysis yahan dekh!
-
-**Button:** See Market Analysis
+### CTA 4.4
+**Rohit:** Priya, lumpsum better hai ya SIP?  
+**Priya:** Dono ke scenarios calculator mein compare kar.  
+**Rohit:** Smart idea!  
+**Button:** Compare Karo
 
 ---
 
-### M8 - Sector News
-**Priya:** IT sector mein kya ho raha hai?  
-**Rohit:** Sector specific news chahiye!
-
-**Button:** Filter by Sector
-
----
-
-### M9 - Watchlist Add
-**Rohit:** Ye stock track karna hai...  
-**Priya:** Watchlist mein add kar! Alerts milenge!
-
-**Button:** Add to Watchlist
+### CTA 4.5
+**Priya:** Risk-reward ratio samjha?  
+**Rohit:** Thoda thoda...  
+**Priya:** Calculator use kar, practically samajh aayega.  
+**Button:** Risk Calculator Try Karo
 
 ---
 
-### M10 - Set Alert
-**Priya:** Price Rs 2400 hit kare toh batana hai?  
-**Rohit:** Haan, miss nahi karna opportunity!
+### CTA 4.6
+**Rohit:** Yaar position size kaise decide karte hain?  
+**Priya:** Guesswork nahi, calculation se. Tool hai mere paas.  
+**Rohit:** Show me!  
+**Button:** Position Size Calculator
 
-**Button:** Set Price Alert
+---
+
+### CTA 4.7
+**Priya:** CAGR pata hai apni investment ka?  
+**Rohit:** CAGR matlab?  
+**Priya:** Compounded Annual Growth Rate. Calculator mein nikaal.  
+**Button:** CAGR Calculate Karo
+
+---
+
+### CTA 4.8
+**Rohit:** Priya, EMI calculator bhi hai kya?  
+**Priya:** Haan, loans section mein. Financial planning ke liye useful hai.  
+**Rohit:** Loan lena toh door ki baat hai, lekin dekh leta hoon.  
+**Button:** EMI Calculator Dekho
+
+---
+
+### CTA 4.9
+**Priya:** Inflation calculator try kiya?  
+**Rohit:** Inflation? Wo toh har jagah hai.  
+**Priya:** Exactly. Dekh tere ₹1 lakh ki value 10 saal baad kya hogi.  
+**Button:** Inflation Calculator
+
+---
+
+### CTA 4.10
+**Rohit:** Ye saare tools free hain?  
+**Priya:** Bilkul free. Use kar, practice kar, expert ban.  
+**Rohit:** Tera platform toh sahi hai yaar!  
+**Button:** All Tools Explore Karo
+
+---
+
+## 5. Blog/News/Market CTA Dialogues (10)
+
+### CTA 5.1
+**Priya:** Aaj market red hai, darr gaya?  
+**Rohit:** Thoda panic ho gaya honestly.  
+**Priya:** News padh, samajh, phir react kar. Emotional decisions mat le.  
+**Button:** Market News Padho
+
+---
+
+### CTA 5.2
+**Rohit:** Priya, RBI ne interest rate badha diya, kya hoga?  
+**Priya:** Detailed analysis dekh blog mein. Simple bhasha mein samjhaya hai.  
+**Button:** Blog Article Padho
+
+---
+
+### CTA 5.3
+**Priya:** IPO calendar dekha? Kuch interesting aa raha hai.  
+**Rohit:** IPO? Mujhe toh pata hi nahi chalta kab kya aa raha hai.  
+**Priya:** Isliye IPO tracker hai. Updated rehta hai.  
+**Button:** IPO Calendar Dekho
+
+---
+
+### CTA 5.4
+**Rohit:** Economic calendar kya hota hai?  
+**Priya:** Important events jaise GDP, inflation data – sab ek jagah.  
+**Rohit:** Oh nice, market move karne wale events!  
+**Button:** Economic Calendar Check Karo
+
+---
+
+### CTA 5.5
+**Priya:** FII aur DII data dekha aaj ka?  
+**Rohit:** FII DII matlab?  
+**Priya:** Foreign aur Domestic investors ka flow. Market direction batata hai.  
+**Button:** FII/DII Data Dekho
+
+---
+
+### CTA 5.6
+**Rohit:** Priya, breaking news ke liye kaun sa source reliable hai?  
+**Priya:** Platform pe verified sources se news aati hai. Fake news se bach.  
+**Rohit:** Trustworthy hai matlab.  
+**Button:** Live News Dekho
+
+---
+
+### CTA 5.7
+**Priya:** Quarterly results season hai. Tracking kar raha hai?  
+**Rohit:** Results? Kaise track karu?  
+**Priya:** Earnings calendar dekh, sab listed hai.  
+**Button:** Earnings Calendar Dekho
+
+---
+
+### CTA 5.8
+**Rohit:** Market mein volatility badh gayi hai, kya karun?  
+**Priya:** Panic nahi, analysis. News section mein expert views hain.  
+**Rohit:** Okay, cool head rakhta hoon.  
+**Button:** Expert Analysis Padho
+
+---
+
+### CTA 5.9
+**Priya:** Budget ke baad kya expect karna chahiye?  
+**Rohit:** Mujhe budget samajh nahi aata itna.  
+**Priya:** Simple explainer hai blog mein. Padh le, clear ho jayega.  
+**Button:** Budget Explainer Padho
+
+---
+
+### CTA 5.10
+**Rohit:** Priya, global markets bhi affect karte hain India ko?  
+**Priya:** Haan, US markets especially. Global news section mein sab milega.  
+**Rohit:** Interesting! Dekh leta hoon.  
+**Button:** Global Markets News
+
+---
+
+## Usage Guidelines
+
+1. **Rotation**: Rotate CTAs weekly to keep content fresh
+2. **A/B Testing**: Test different CTAs to see which performs better
+3. **Context**: Use relevant CTAs based on user journey stage
+4. **Mobile**: Ensure buttons are tap-friendly (min 44px height)
+5. **Tone**: Keep Hinglish natural, not forced
 
 ---
 
@@ -421,30 +435,9 @@
 | Home Page | 10 | Welcome, Trust, Action |
 | Learn Page | 10 | Content, Progress, Engagement |
 | Courses Page | 10 | Levels, Benefits, Enrollment |
-| Calculators | 10 | Tools, Results, Sharing |
+| Calculators/Tools | 10 | Tools, Results, Sharing |
 | Blog/News/Market | 10 | Updates, Analysis, Tracking |
 
 ---
 
-## Usage Guidelines
-
-1. **Placement:** CTAs should appear at natural scroll points
-2. **A/B Testing:** Test different dialogues for same placement
-3. **Mobile:** Keep to 2 lines max on mobile
-4. **Animation:** Fade-in dialogues for engagement
-5. **Consistency:** Same CTA button style across pages
-
----
-
-## Button Style Guide
-
-| Button Type | Use Case | Example |
-|-------------|----------|---------|
-| Primary | Main action | Start Course, Try Calculator |
-| Secondary | Alternative | Learn More, See Details |
-| Outline | Soft action | Read Article, Watch Video |
-| Ghost | Minimal | View All, Compare |
-
----
-
-*All content original | Created for Rotech Shiksha | December 2024*
+*All content 100% original | Created for Rotech Shiksha | December 2024*
