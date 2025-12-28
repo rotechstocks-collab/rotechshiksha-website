@@ -14,7 +14,7 @@ const characterData = {
   priya: {
     displayName: "Priya",
     color: "emerald",
-    imagePath: "/characters/priya_transparent.png",
+    imagePath: "/characters/priya_main.png",
     fallbackInitial: "P",
     borderColor: "border-emerald-500",
     bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
@@ -24,7 +24,7 @@ const characterData = {
   rohit: {
     displayName: "Rohit",
     color: "blue",
-    imagePath: "/characters/rohit_transparent.png",
+    imagePath: "/characters/rohit_main.png",
     fallbackInitial: "R",
     borderColor: "border-blue-500",
     bgColor: "bg-blue-50 dark:bg-blue-900/20",
