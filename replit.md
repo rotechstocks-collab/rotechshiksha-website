@@ -6,6 +6,24 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Security Hardening & Production Readiness
+  - **TEST OTP Backdoor Removed**: Test OTP only works when ALL THREE conditions are met:
+    - OTP_TEST_MODE=true (dev only, never works in production)
+    - TEST_OTP env var is explicitly set
+    - Mobile number is in TEST_OTP_WHITELIST
+  - **Session Security**: SESSION_SECRET is mandatory (server exits if not set)
+    - Cookies: httpOnly=true, sameSite=strict, secure in production
+    - 30-day session expiry
+  - **Rate Limiting**: 
+    - Auth endpoints: 5 requests per 15 minutes per IP
+    - General API: 200 requests per 15 minutes per IP
+  - **CORS Hardened**: Strict allowlist in production (rotechshiksha.com, replit.app)
+  - **Security Headers**: Helmet with CSP, X-Frame-Options, X-Content-Type-Options
+  - **Error Handler Fixed**: Server no longer crashes on errors (removed throw statement)
+  - **ErrorBoundary**: Frontend crashes show friendly Hindi error UI with reload button
+  - **Code Splitting**: React.lazy for all routes except Home (faster initial load)
+  - **SEO Enhanced**: Canonical URLs, Open Graph tags, JSON-LD structured data
+
 - **Dec 2024**: Mobile-First & Performance Optimizations
   - Professional logo implementation across entire site (header, footer, mobile menu, favicon)
   - Comprehensive mobile hamburger menu with language selector, theme toggle, and login

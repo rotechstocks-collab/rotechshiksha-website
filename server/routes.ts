@@ -25,8 +25,10 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const IS_TESTING_MODE = process.env.OTP_TEST_MODE === "true" && !IS_PRODUCTION;
 
 // Whitelist of mobile numbers allowed to use test OTP (dev/testing only)
+// SECURITY: If whitelist is empty, test OTP will NOT work even in dev mode
 const TEST_OTP_WHITELIST = (process.env.TEST_OTP_WHITELIST || "").split(",").filter(Boolean);
-const TEST_OTP = process.env.TEST_OTP || "123456";
+// SECURITY: No default test OTP - must be explicitly set in env
+const TEST_OTP = process.env.TEST_OTP;
 
 // Alpha Vantage API configuration
 const ALPHAVANTAGE_API_KEY = process.env.ALPHAVANTAGE_API_KEY || "";
@@ -425,10 +427,11 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // SECURITY: Validate SESSION_SECRET in production
+  // SECURITY: Validate SESSION_SECRET is ALWAYS required
   const sessionSecret = process.env.SESSION_SECRET;
-  if (IS_PRODUCTION && !sessionSecret) {
-    console.error("FATAL: SESSION_SECRET environment variable is required in production!");
+  if (!sessionSecret) {
+    console.error("FATAL: SESSION_SECRET environment variable is required!");
+    console.error("Set SESSION_SECRET in your environment variables before starting the server.");
     process.exit(1);
   }
 
@@ -448,12 +451,18 @@ export async function registerRoutes(
     crossOriginEmbedderPolicy: false,
   }));
 
-  // SECURITY: CORS configuration
-  const allowedOrigins = [
-    "https://rotechshiksha.com",
-    "https://www.rotechshiksha.com",
-    "https://rotech-solutions--rotechstocks.replit.app",
-  ];
+  // SECURITY: CORS configuration - strict allowlist only
+  const allowedOrigins = IS_PRODUCTION
+    ? [
+        "https://rotechshiksha.com",
+        "https://www.rotechshiksha.com",
+        "https://rotech-solutions--rotechstocks.replit.app",
+      ]
+    : [
+        "http://localhost:5000",
+        "http://localhost:5173",
+        "http://localhost:3000",
+      ];
   
   app.use(cors({
     origin: (origin, callback) => {
@@ -461,12 +470,12 @@ export async function registerRoutes(
       if (!origin) {
         return callback(null, true);
       }
-      // In development, allow all origins for easier testing
-      if (!IS_PRODUCTION) {
+      // Only allow origins in the explicit allowlist
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      // In production, only allow specific origins
-      if (allowedOrigins.includes(origin) || origin.endsWith('.replit.dev') || origin.endsWith('.replit.app')) {
+      // In development, also allow Replit preview URLs dynamically
+      if (!IS_PRODUCTION && (origin.endsWith('.replit.dev') || origin.endsWith('.replit.app'))) {
         return callback(null, true);
       }
       console.warn(`CORS blocked origin: ${origin}`);
@@ -486,8 +495,8 @@ export async function registerRoutes(
 
   // General API rate limiter
   const apiRateLimiter = rateLimit({
-    windowMs: 60 * 1000, // 1 minute
-    max: 100, // 100 requests per minute
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200, // 200 requests per 15 minutes per IP
     message: { message: "Too many requests. Please slow down." },
     standardHeaders: true,
     legacyHeaders: false,
@@ -498,7 +507,7 @@ export async function registerRoutes(
   // Session middleware with SECURE configuration
   app.use(
     session({
-      secret: sessionSecret || "dev-only-secret-do-not-use-in-production",
+      secret: sessionSecret, // Guaranteed to exist - server exits if not set
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -550,8 +559,8 @@ export async function registerRoutes(
       res.json({ 
         message: "OTP sent successfully", 
         mobile,
-        testMode: IS_TESTING_MODE,
-        testOtpHint: IS_TESTING_MODE ? `Testing mode: Use OTP ${TEST_OTP}` : undefined
+        testMode: IS_TESTING_MODE && !!TEST_OTP,
+        testOtpHint: (IS_TESTING_MODE && TEST_OTP) ? `Testing mode: Use OTP ${TEST_OTP}` : undefined
       });
     } catch (error) {
       console.error("Send OTP error:", error);
@@ -580,8 +589,8 @@ export async function registerRoutes(
 
       res.json({ 
         message: "OTP resent successfully",
-        testMode: IS_TESTING_MODE,
-        testOtpHint: IS_TESTING_MODE ? `Testing mode: Use OTP ${TEST_OTP}` : undefined
+        testMode: IS_TESTING_MODE && !!TEST_OTP,
+        testOtpHint: (IS_TESTING_MODE && TEST_OTP) ? `Testing mode: Use OTP ${TEST_OTP}` : undefined
       });
     } catch (error) {
       console.error("Resend OTP error:", error);
@@ -599,9 +608,10 @@ export async function registerRoutes(
       const { mobile, otp } = result.data;
 
       // SECURITY: Test OTP only allowed in testing mode AND for whitelisted numbers
-      const isTestOtp = otp === TEST_OTP;
-      const isMobileWhitelisted = TEST_OTP_WHITELIST.includes(mobile);
-      const canUseTestOtp = IS_TESTING_MODE && isTestOtp && (isMobileWhitelisted || TEST_OTP_WHITELIST.length === 0);
+      // All THREE conditions must be true: testing mode, OTP set, AND mobile whitelisted
+      const isTestOtp = TEST_OTP && otp === TEST_OTP;
+      const isMobileWhitelisted = TEST_OTP_WHITELIST.length > 0 && TEST_OTP_WHITELIST.includes(mobile);
+      const canUseTestOtp = IS_TESTING_MODE && isTestOtp && isMobileWhitelisted;
 
       // Get stored OTP
       const storedOtp = await storage.getOtpByMobile(mobile);
