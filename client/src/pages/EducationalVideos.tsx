@@ -24,6 +24,7 @@ import {
   ExternalLink,
   History,
   ChevronRight,
+  ChevronDown,
   BookOpen,
   TrendingUp,
   BarChart3,
@@ -31,11 +32,16 @@ import {
   Lightbulb,
   PiggyBank,
   LineChart,
+  Plus,
 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { SEOHead } from "@/components/SEOHead";
 import { CharacterAvatar } from "@/components/characters/CharacterAvatar";
 import { useLanguage } from "@/context/LanguageContext";
-import { videos, playlists, categories, levels, type Video, type Playlist } from "@/data/videos";
+import { videos, playlists, categories, levels, type VideoItem, type Playlist, getAllVideos, saveLocalVideo, getPlaylistNames } from "@/data/videos";
+import { extractYouTubeId } from "@/utils/youtube";
 
 const WATCH_HISTORY_KEY = "rotech_video_history";
 const CONTINUE_WATCHING_KEY = "rotech_continue_watching";
@@ -62,7 +68,7 @@ const levelColors: Record<string, string> = {
   "Advanced": "bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300",
 };
 
-function VideoCard({ video, onPlay }: { video: Video; onPlay: (video: Video) => void }) {
+function VideoCard({ video, onPlay }: { video: VideoItem; onPlay: (video: VideoItem) => void }) {
   const thumbnailUrl = `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`;
   
   return (
@@ -145,7 +151,7 @@ function PlaylistSidebar({
           <BookOpen className="w-5 h-5" />
           <div>
             <span className="font-medium block">{playlist.name}</span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">{playlist.videos.length} videos</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">{playlist.videoIds.length} videos</span>
           </div>
         </button>
       ))}
@@ -156,15 +162,28 @@ function PlaylistSidebar({
 export default function EducationalVideos() {
   const { language } = useLanguage();
   const isHindi = language === "hi";
+  const { toast } = useToast();
   
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedLevel, setSelectedLevel] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeVideo, setActiveVideo] = useState<Video | null>(null);
+  const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const [continueWatching, setContinueWatching] = useState<WatchProgress | null>(null);
   const [watchHistory, setWatchHistory] = useState<string[]>([]);
   const [showMobilePlaylists, setShowMobilePlaylists] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [customVideos, setCustomVideos] = useState<VideoItem[]>([]);
+  
+  const [newVideo, setNewVideo] = useState({
+    title: "",
+    description: "",
+    youtubeUrl: "",
+    channelName: "",
+    category: "Basics" as const,
+    playlistName: "Beginner Stock Market Series",
+    level: "Beginner" as const,
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -182,9 +201,71 @@ export default function EducationalVideos() {
         setWatchHistory(JSON.parse(history));
       }
     } catch (e) {}
+    
+    try {
+      const custom = localStorage.getItem("rotech_custom_videos");
+      if (custom) {
+        setCustomVideos(JSON.parse(custom));
+      }
+    } catch (e) {}
   }, []);
 
-  const handlePlayVideo = (video: Video) => {
+  const handleAddVideo = () => {
+    if (!newVideo.title || !newVideo.youtubeUrl) {
+      toast({
+        title: "Required fields missing",
+        description: "Title aur YouTube URL daalna zaroori hai",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const youtubeId = extractYouTubeId(newVideo.youtubeUrl);
+    if (!youtubeId) {
+      toast({
+        title: "Invalid YouTube URL",
+        description: "Sahi YouTube URL daalo",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const video: VideoItem = {
+      id: `custom-${Date.now()}`,
+      title: newVideo.title,
+      description: newVideo.description || "No description",
+      youtubeUrl: newVideo.youtubeUrl,
+      youtubeId,
+      channelName: newVideo.channelName || "Unknown Channel",
+      category: newVideo.category,
+      playlistName: newVideo.playlistName,
+      level: newVideo.level,
+    };
+    
+    const updatedCustom = [...customVideos, video];
+    setCustomVideos(updatedCustom);
+    localStorage.setItem("rotech_custom_videos", JSON.stringify(updatedCustom));
+    
+    setNewVideo({
+      title: "",
+      description: "",
+      youtubeUrl: "",
+      channelName: "",
+      category: "Basics",
+      playlistName: "Beginner Stock Market Series",
+      level: "Beginner",
+    });
+    
+    setShowAddForm(false);
+    toast({
+      title: "Video added!",
+      description: "Naya video successfully add ho gaya",
+    });
+  };
+
+  const allVideos = [...videos, ...customVideos];
+
+  const handlePlayVideo = (video: VideoItem) => {
     setActiveVideo(video);
     
     if (typeof window === "undefined") return;
@@ -205,10 +286,10 @@ export default function EducationalVideos() {
     } catch (e) {}
   };
 
-  const filteredVideos = videos.filter((video) => {
+  const filteredVideos = allVideos.filter((video) => {
     if (selectedPlaylist) {
       const playlist = playlists.find(p => p.id === selectedPlaylist);
-      if (!playlist?.videos.includes(video.id)) return false;
+      if (!playlist?.videoIds.includes(video.id)) return false;
     }
     
     if (selectedCategory !== "All" && video.category !== selectedCategory) return false;
@@ -227,12 +308,14 @@ export default function EducationalVideos() {
   });
 
   const continueWatchingVideo = continueWatching 
-    ? videos.find(v => v.id === continueWatching.videoId) 
+    ? allVideos.find(v => v.id === continueWatching.videoId) 
     : null;
 
   const historyVideos = watchHistory
-    .map(id => videos.find(v => v.id === id))
-    .filter(Boolean) as Video[];
+    .map(id => allVideos.find(v => v.id === id))
+    .filter(Boolean) as VideoItem[];
+  
+  const playlistNames = getPlaylistNames();
 
   return (
     <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
@@ -258,13 +341,134 @@ export default function EducationalVideos() {
             </div>
           </div>
 
-          <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 flex items-start gap-3">
+          <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 flex items-start gap-3 mb-6">
             <CharacterAvatar character="priya" size="sm" />
             <div>
               <p className="text-sm text-emerald-800 dark:text-emerald-200">
                 <span className="font-semibold">Priya:</span> Videos ke saath course bhi follow karo to clarity fast milegi!
               </p>
             </div>
+          </div>
+
+          <div className="bg-white dark:bg-card border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+            <button
+              onClick={() => setShowAddForm(!showAddForm)}
+              className="w-full flex items-center justify-between p-4 hover-elevate"
+              data-testid="button-toggle-add-form"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                  <Plus className="w-4 h-4 text-blue-600" />
+                </div>
+                <span className="font-medium text-slate-900 dark:text-white">Add New Video (Quick Form)</span>
+              </div>
+              <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${showAddForm ? "rotate-180" : ""}`} />
+            </button>
+            
+            {showAddForm && (
+              <div className="p-4 pt-0 border-t border-gray-100 dark:border-gray-800">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="video-title">Title *</Label>
+                    <Input
+                      id="video-title"
+                      placeholder="Video title (Hinglish)"
+                      value={newVideo.title}
+                      onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
+                      data-testid="input-video-title"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="video-url">YouTube URL *</Label>
+                    <Input
+                      id="video-url"
+                      placeholder="https://youtube.com/watch?v=..."
+                      value={newVideo.youtubeUrl}
+                      onChange={(e) => setNewVideo({ ...newVideo, youtubeUrl: e.target.value })}
+                      data-testid="input-video-url"
+                    />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="video-desc">Description</Label>
+                    <Textarea
+                      id="video-desc"
+                      placeholder="Short description (Hinglish)"
+                      value={newVideo.description}
+                      onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
+                      rows={2}
+                      data-testid="input-video-desc"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="video-channel">Channel Name</Label>
+                    <Input
+                      id="video-channel"
+                      placeholder="YouTube channel name"
+                      value={newVideo.channelName}
+                      onChange={(e) => setNewVideo({ ...newVideo, channelName: e.target.value })}
+                      data-testid="input-video-channel"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Category</Label>
+                    <Select 
+                      value={newVideo.category} 
+                      onValueChange={(val) => setNewVideo({ ...newVideo, category: val as typeof newVideo.category })}
+                    >
+                      <SelectTrigger data-testid="select-new-category">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Playlist</Label>
+                    <Select 
+                      value={newVideo.playlistName} 
+                      onValueChange={(val) => setNewVideo({ ...newVideo, playlistName: val })}
+                    >
+                      <SelectTrigger data-testid="select-new-playlist">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {playlistNames.map((name) => (
+                          <SelectItem key={name} value={name}>{name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Level</Label>
+                    <Select 
+                      value={newVideo.level} 
+                      onValueChange={(val) => setNewVideo({ ...newVideo, level: val as typeof newVideo.level })}
+                    >
+                      <SelectTrigger data-testid="select-new-level">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {levels.map((level) => (
+                          <SelectItem key={level} value={level}>{level}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="flex justify-end mt-4 gap-2">
+                  <Button variant="outline" onClick={() => setShowAddForm(false)} data-testid="button-cancel-add">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleAddVideo} className="gap-2" data-testid="button-save-video">
+                    <Plus className="w-4 h-4" />
+                    Add Video
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -330,6 +534,7 @@ export default function EducationalVideos() {
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="All">All Categories</SelectItem>
                   {categories.map((cat) => (
                     <SelectItem key={cat} value={cat}>
                       {cat}
@@ -343,6 +548,7 @@ export default function EducationalVideos() {
                   <SelectValue placeholder="Level" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="All">All Levels</SelectItem>
                   {levels.map((level) => (
                     <SelectItem key={level} value={level}>
                       {level}
@@ -354,6 +560,15 @@ export default function EducationalVideos() {
           </div>
 
           <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+            <Button
+              variant={selectedCategory === "All" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedCategory("All")}
+              className="flex-shrink-0"
+              data-testid="chip-category-all"
+            >
+              All
+            </Button>
             {categories.map((cat) => (
               <Button
                 key={cat}
