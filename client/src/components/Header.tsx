@@ -156,7 +156,7 @@ export function Header() {
     >
       <style>{`
         @media (min-width: 768px) {
-          header { top: 44px !important; }
+          header { top: 38px !important; }
         }
       `}</style>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8" style={{ paddingLeft: 'max(0.75rem, env(safe-area-inset-left))', paddingRight: 'max(0.75rem, env(safe-area-inset-right))' }}>

@@ -15,7 +15,7 @@ import { AuthModal } from "@/components/AuthModal";
 import { LiveChat } from "@/components/LiveChat";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { HreflangTags } from "@/components/HreflangTags";
-import { LiveTicker } from "@/components/LiveTicker";
+import { MarketTicker } from "@/components/market/MarketTicker";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PageLoadingSkeleton } from "@/components/LoadingSkeleton";
 
@@ -110,12 +110,10 @@ function App() {
               <AuthProvider>
                 <TooltipProvider>
                   <HreflangTags />
-                  <div className="hidden md:block">
-                    <LiveTicker />
-                  </div>
+                  <MarketTicker />
                   <div className="min-h-screen bg-background safe-area-top">
                     <Header />
-                    <main className="pt-14 md:pt-[104px]">
+                    <main className="pt-14 md:pt-[102px]">
                       <Router />
                     </main>
                     <Footer />
