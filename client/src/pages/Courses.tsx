@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { CharacterTip } from "@/components/characters/CharacterTip";
 import { characterCopy } from "@/content/characterCopy";
+import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 import {
   BookOpen,
   TrendingUp,
@@ -311,6 +312,11 @@ export default function Courses() {
         keywords="stock market course hindi, share market course, learn trading india, beginner stock market"
       />
 
+      <StoryIntro
+        priyaLine="Yahan 8 levels hain – basics se leke advanced tak. Ek-ek step follow karo, Level 1 se start karo!"
+        rohitLine="Perfect! Step-by-step seekhenge toh confusion nahi hoga. Chal shuru karte hain!"
+      />
+
       {/* Hero Section - Tighter spacing */}
       <section className="section-padding border-b">
         <div className="section-container">
@@ -431,6 +437,21 @@ export default function Courses() {
           </div>
         </div>
       </section>
+
+      <CTABlock
+        priyaLine="Level 1 se shuru karo aur step-by-step advanced tak jaao!"
+        rohitLine="Haan, ek level complete karne ke baad next unlock hoga – maza aayega!"
+        primaryButton={{
+          text: "Level 1 Se Shuru Karo",
+          href: "/learn/level-1",
+          testId: "button-courses-cta-primary"
+        }}
+        secondaryButton={{
+          text: "Calculators Dekho",
+          href: "/calculators",
+          testId: "button-courses-cta-secondary"
+        }}
+      />
 
       {/* Disclaimer - Compact */}
       <section className="py-6 border-t bg-muted/30">

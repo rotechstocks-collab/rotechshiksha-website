@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { CharacterIntro } from "@/components/Characters";
 import { useLanguage } from "@/context/LanguageContext";
+import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 
 interface Lesson {
   id: string;
@@ -100,6 +101,11 @@ export default function BeginnerCourse() {
         title="Beginner Stock Market Course – Rotech Shiksha"
         description="Learn stock market basics step by step in simple Hinglish. Complete beginner course with 13 lessons across 3 modules."
         keywords="stock market course hindi, beginner investing course, share market basics, learn investing india"
+      />
+
+      <StoryIntro
+        priyaLine="Stock market seekhna hai? Bilkul basics se shuru karte hain – koi confusion nahi hoga!"
+        rohitLine="Yaar mujhe bhi zero se start karna hai. Chal saath mein seekhte hain!"
       />
 
       <section className="py-12 lg:py-16 bg-slate-50 dark:bg-card/30">
@@ -226,6 +232,21 @@ export default function BeginnerCourse() {
           </StaggerContainer>
         </div>
       </section>
+
+      <CTABlock
+        priyaLine="Pehla lesson padhne ke baad tujhe confidence aayega – chal shuru karte hain!"
+        rohitLine="Haan! Simple Hindi mein toh main bhi samajh jaunga!"
+        primaryButton={{
+          text: "Pehla Lesson Shuru Karo",
+          href: "/beginner-course/paise-invest-kyu",
+          testId: "button-beginner-cta-primary"
+        }}
+        secondaryButton={{
+          text: "Calculators Try Karo",
+          href: "/calculators",
+          testId: "button-beginner-cta-secondary"
+        }}
+      />
 
       <section className="py-8 border-t">
         <div className="max-w-4xl mx-auto px-4">

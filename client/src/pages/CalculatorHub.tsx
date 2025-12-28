@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { CharacterTip } from "@/components/characters/CharacterTip";
 import { characterCopy } from "@/content/characterCopy";
+import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 import {
   Calculator,
   PiggyBank,
@@ -231,6 +232,11 @@ export default function CalculatorHub() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+      <StoryIntro
+        priyaLine="Investing se pehle calculation important hai. Yeh tools try kar – returns pata chal jayega!"
+        rohitLine="SIP calculator se shuru karta hoon – kitna invest karna chahiye yeh samajh aayega!"
+      />
+
       <section className="section">
         <div className="page-container">
           <motion.div
@@ -342,6 +348,21 @@ export default function CalculatorHub() {
         })}
         </div>
       </section>
+
+      <CTABlock
+        priyaLine="Calculator use karne ke baad courses bhi dekh – investing samajh aayegi!"
+        rohitLine="Haan, pehle calculate karo, phir seekho – best approach hai!"
+        primaryButton={{
+          text: "Course Dekho",
+          href: "/courses",
+          testId: "button-calc-cta-primary"
+        }}
+        secondaryButton={{
+          text: "SIP Calculator Try Karo",
+          href: "/calculators/sip",
+          testId: "button-calc-cta-secondary"
+        }}
+      />
     </div>
   );
 }

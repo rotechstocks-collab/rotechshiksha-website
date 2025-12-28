@@ -46,6 +46,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { CharacterIntro, HeroCharacters } from "@/components/Characters";
 import { CharacterAvatar } from "@/components/characters/CharacterAvatar";
 import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
+import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
@@ -642,6 +643,11 @@ export default function Home() {
         </div>
       </section>
 
+      <StoryIntro
+        priyaLine="Yaar Rohit, investing kahan se start karun? Simple hai! Free course se shuru kar - basics se advanced tak!"
+        rohitLine="Perfect! Ek hi platform pe sab kuch! Chal shuru karte hain!"
+      />
+
       <section className="py-10 md:py-14">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
@@ -1007,25 +1013,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-gradient-to-r from-primary/10 to-blue-500/10 border border-primary/20 rounded-2xl p-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-lg mx-auto">
-              Aaj hi shuru karo – FREE hai, simple hai, aur tumhare future ke liye important hai.
-            </p>
-            <Link href="/beginner-course">
-              <Button size="lg" className="gap-2" data-testid="button-final-cta">
-                <Play className="w-5 h-5" />
-                FREE Course Shuru Karo
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTABlock
+        priyaLine="Sochna band, karna shuru! Aaj hi shuru karo – FREE hai!"
+        rohitLine="Chal, aaj se start karte hain!"
+        primaryButton={{
+          text: "FREE Course Shuru Karo",
+          href: "/beginner-course",
+          testId: "button-final-cta-primary"
+        }}
+        secondaryButton={{
+          text: "Tools Dekho",
+          href: "/calculators",
+          testId: "button-final-cta-secondary"
+        }}
+      />
 
       <section className="py-6 border-t border-gray-200 dark:border-slate-800">
         <div className="max-w-4xl mx-auto px-4 text-center">
