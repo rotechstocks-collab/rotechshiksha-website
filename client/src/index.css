@@ -386,23 +386,52 @@
   }
 }
 
-/* ===== ZERODHA VARSITY SOFT CARD SYSTEM ===== */
+/* ===== ZERODHA VARSITY DESIGN SYSTEM ===== */
 @layer components {
-  /* Soft Card - Clean, minimal, premium feel */
+  /* ===== TYPOGRAPHY SCALE ===== */
+  .varsity-h1 {
+    @apply text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white;
+  }
+  .varsity-h2 {
+    @apply text-2xl md:text-3xl font-semibold tracking-tight text-slate-900 dark:text-white;
+  }
+  .varsity-h3 {
+    @apply text-xl md:text-2xl font-semibold tracking-tight text-slate-900 dark:text-white;
+  }
+  .varsity-body {
+    @apply text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed;
+  }
+  .varsity-small {
+    @apply text-sm text-slate-500 dark:text-slate-400;
+  }
+
+  /* ===== LAYOUT UTILITIES ===== */
+  .page-container {
+    @apply max-w-6xl mx-auto px-4;
+  }
+  .section {
+    @apply py-12 md:py-16;
+  }
+  .section-sm {
+    @apply py-8 md:py-12;
+  }
+
+  /* ===== SOFT CARD SYSTEM ===== */
+  .card-soft {
+    @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow;
+  }
   .soft-card {
     @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm;
   }
-
-  /* Soft Card with Hover - Very subtle border change on hover */
   .soft-card-hover {
     @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm 
            transition-all duration-200 ease-out;
   }
   .soft-card-hover:hover {
-    @apply shadow-sm border-gray-300 dark:border-slate-600;
+    @apply shadow-md border-gray-300 dark:border-slate-600;
   }
 
-  /* Pastel category cards */
+  /* ===== PASTEL CATEGORY CARDS ===== */
   .pastel-card-blue {
     @apply bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 rounded-2xl;
   }
@@ -419,12 +448,28 @@
     @apply bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 rounded-2xl;
   }
 
-  /* Section container - consistent max-width and padding */
+  /* ===== BUTTONS (Varsity Style) ===== */
+  .btn-varsity-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl transition-colors shadow-sm;
+  }
+  .btn-varsity-secondary {
+    @apply bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-slate-700;
+  }
+
+  /* ===== TRUST BADGES ===== */
+  .trust-badge {
+    @apply inline-flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .hero-section {
+    @apply bg-gradient-to-b from-slate-50 to-white dark:from-slate-900/50 dark:to-background;
+  }
+
+  /* Legacy utilities for compatibility */
   .section-container {
     @apply max-w-6xl mx-auto px-4;
   }
-
-  /* Section padding - responsive */
   .section-padding {
     @apply py-10 md:py-16;
   }
