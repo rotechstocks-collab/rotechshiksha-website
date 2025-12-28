@@ -253,7 +253,13 @@ export default function Home() {
           
           <div className="space-y-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-              <CharacterAvatar character="priya" size="md" />
+              <img
+                src="/characters/poses/priya-smile.png"
+                alt="Priya - Expert Guide"
+                className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
+                loading="lazy"
+                data-testid="img-homepage-priya"
+              />
               <div>
                 <p className="font-medium text-foreground">Priya se Milo</p>
                 <p className="text-sm text-muted-foreground">Tumhari Guide (Friend)</p>
@@ -261,7 +267,13 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
-              <CharacterAvatar character="rohit" size="md" />
+              <img
+                src="/characters/poses/rohit-thumb.png"
+                alt="Rohit - Just Like You"
+                className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
+                loading="lazy"
+                data-testid="img-homepage-rohit"
+              />
               <div>
                 <p className="font-medium text-foreground">Rohit se Milo</p>
                 <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala (Friend)</p>
@@ -420,7 +432,13 @@ export default function Home() {
             <CardContent className="p-6 sm:p-8">
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 <div className="flex gap-3 items-center md:items-start">
-                  <CharacterAvatar character="rohit" size="lg" />
+                  <img
+                    src="/characters/poses/rohit-thumb.png"
+                    alt="Rohit - Just Like You"
+                    className="h-16 w-16 rounded-full object-cover shadow-sm border border-gray-200 dark:border-gray-700"
+                    loading="lazy"
+                    data-testid="img-testimonial-rohit"
+                  />
                   <div className="md:hidden">
                     <p className="font-semibold text-foreground">Rohit</p>
                     <p className="text-xs text-muted-foreground">{isHindi ? "शायद आप भी" : "Maybe you too"}</p>
