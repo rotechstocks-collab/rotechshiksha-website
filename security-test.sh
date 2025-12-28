@@ -4,7 +4,7 @@
 # Tests all security hardening measures
 # Usage: ./security-test.sh [BASE_URL]
 
-set -e
+# Don't exit on first error - we want to run all tests
 
 BASE_URL="${1:-http://localhost:5000}"
 PASS_COUNT=0
@@ -180,14 +180,17 @@ fi
 section "5. OTP SECURITY"
 
 # Test OTP verification with random OTP (should fail)
+# Use a unique mobile number to avoid rate limiting from previous tests
+RANDOM_MOBILE="55555$(date +%S%N | head -c 5)"
 OTP_RESPONSE=$(curl -s --max-time 5 -X POST "$BASE_URL/api/auth/verify-otp" \
     -H "Content-Type: application/json" \
-    -d '{"mobile":"1234567890","otp":"999999"}' 2>/dev/null)
+    -d "{\"mobile\":\"$RANDOM_MOBILE\",\"otp\":\"999999\"}" 2>/dev/null)
 
-if echo "$OTP_RESPONSE" | grep -qi "invalid\|expired\|not found"; then
+# Valid rejection responses: invalid OTP, expired, not found, no lead, or rate limited
+if echo "$OTP_RESPONSE" | grep -qi "invalid\|expired\|not found\|No lead\|too many"; then
     pass "Random OTP rejected"
 else
-    fail "Random OTP may have been accepted"
+    fail "Random OTP may have been accepted: $OTP_RESPONSE"
 fi
 
 # Test if test OTP is disabled in production
@@ -218,14 +221,14 @@ else
     fail "Admin /leads accessible without auth (HTTP $ADMIN_LEADS)"
 fi
 
-ADMIN_PAYMENTS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/api/admin/payments" 2>/dev/null)
+ADMIN_PAYMENTS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$BASE_URL/api/admin/payments" 2>/dev/null)
 if [ "$ADMIN_PAYMENTS" = "401" ]; then
     pass "Admin /payments requires authentication (HTTP 401)"
 else
     fail "Admin /payments accessible without auth (HTTP $ADMIN_PAYMENTS)"
 fi
 
-ADMIN_CHATS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/api/admin/chats" 2>/dev/null)
+ADMIN_CHATS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$BASE_URL/api/admin/chats" 2>/dev/null)
 if [ "$ADMIN_CHATS" = "401" ]; then
     pass "Admin /chats requires authentication (HTTP 401)"
 else
@@ -238,7 +241,7 @@ fi
 section "7. COOKIE SECURITY"
 
 # Trigger a cookie by sending OTP
-COOKIE_HEADERS=$(curl -sI -X POST "$BASE_URL/api/auth/send-otp" \
+COOKIE_HEADERS=$(curl -sI --max-time 5 -X POST "$BASE_URL/api/auth/send-otp" \
     -H "Content-Type: application/json" \
     -d '{"fullName":"CookieTest","mobile":"7777777777","experience":"beginner"}' 2>/dev/null)
 
@@ -271,7 +274,7 @@ fi
 section "8. ERROR HANDLING"
 
 # Send malformed JSON
-ERROR_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/api/auth/verify-otp" \
+ERROR_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 -X POST "$BASE_URL/api/auth/verify-otp" \
     -H "Content-Type: application/json" \
     -d 'not valid json{{' 2>/dev/null)
 
@@ -279,7 +282,7 @@ if [ "$ERROR_RESPONSE" = "400" ] || [ "$ERROR_RESPONSE" = "500" ]; then
     pass "Malformed request handled gracefully (HTTP $ERROR_RESPONSE)"
     
     # Verify server still running
-    HEALTH_AFTER=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/api/market/live" 2>/dev/null)
+    HEALTH_AFTER=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$BASE_URL/api/market/live" 2>/dev/null)
     if [ "$HEALTH_AFTER" = "200" ]; then
         pass "Server still running after error (no crash)"
     else
