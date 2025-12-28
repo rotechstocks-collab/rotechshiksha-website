@@ -304,42 +304,55 @@ export default function Home() {
         keywords="stock market hindi, share market basics, learn investing india, beginner stock market, rotech shiksha"
       />
       
-      <section className="pt-12 pb-10 sm:pt-16 sm:pb-14 lg:pt-20 lg:pb-16 bg-gradient-to-b from-slate-50 via-white to-background dark:from-slate-900/50 dark:via-background dark:to-background">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="section-padding">
+        <div className="section-container">
           <motion.div 
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Badge className="bg-primary/10 text-primary border-primary/20 mb-4 text-sm px-4 py-1">
+            <Badge className="bg-primary/10 text-primary border-primary/20 mb-4 text-sm px-4 py-1.5">
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
               100% FREE • Hindi Mein • Beginners Ke Liye
             </Badge>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4">
               Stock Market Seekho
               <br />
               <span className="text-primary">— Bilkul Zero Se</span>
             </h1>
             
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-8">
               Simple Hindi + Story-based learning with Priya & Rohit ke saath.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-              <Link href="/beginner-course" data-testid="link-start-learning-hero">
-                <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8 shadow-lg" data-testid="button-start-learning-hero">
-                  <Play className="w-5 h-5" />
-                  FREE Course Shuru Karo
-                </Button>
-              </Link>
-              <Link href="/calculators" data-testid="link-explore-tools">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[56px] text-lg px-8" data-testid="button-explore-tools">
-                  <Calculator className="w-5 h-5" />
-                  Tools Dekho
-                </Button>
-              </Link>
+            <div className="soft-card inline-block p-6 sm:p-8 mb-8">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href="/beginner-course" data-testid="link-start-learning-hero">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-start-learning-hero">
+                    <Play className="w-5 h-5" />
+                    FREE Course Shuru Karo
+                  </Button>
+                </Link>
+                <Link href="/calculators" data-testid="link-explore-tools">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-explore-tools">
+                    <Calculator className="w-5 h-5" />
+                    Tools Dekho
+                  </Button>
+                </Link>
+              </div>
+              
+              <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                  No signup required
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                  Education only
+                </span>
+              </div>
             </div>
             
             <HeroCharacters isHindi={isHindi} />
@@ -348,32 +361,14 @@ export default function Home() {
           <HeroCharacterChat className="mt-8 max-w-2xl mx-auto" />
           
           <motion.div 
-            className="text-center mt-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle className="w-4 h-4 text-emerald-500" />
-                {isHindi ? "No signup required" : "No signup required"}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle className="w-4 h-4 text-emerald-500" />
-                {isHindi ? "Education only" : "Education only"}
-              </span>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            className="grid grid-cols-4 gap-4 mt-12 max-w-lg mx-auto"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12 max-w-xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value}</p>
+              <div key={index} className="soft-card p-4 text-center">
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</p>
                 <p className="text-xs sm:text-sm text-muted-foreground">{isHindi ? stat.labelHi : stat.label}</p>
               </div>
             ))}
@@ -447,8 +442,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 sm:py-14 bg-muted/30">
-        <div className="max-w-5xl mx-auto px-4">
+      <section className="section-padding">
+        <div className="section-container">
           <div className="text-center mb-10">
             <Badge className="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800 mb-3">
               {isHindi ? "क्यों यहां सीखें?" : "Why Learn Here?"}
@@ -470,29 +465,27 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full border-0 shadow-sm" data-testid={`card-why-${index}`}>
-                  <CardContent className="p-6">
-                    <div className={`w-14 h-14 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}>
-                      <span className={item.color}>{item.icon}</span>
-                    </div>
-                    <h3 className="font-bold text-lg text-foreground mb-2">
-                      {isHindi ? item.titleHi : item.title}
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed text-sm">
-                      {isHindi ? item.descriptionHi : item.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                <div className="soft-card-hover h-full p-6" data-testid={`card-why-${index}`}>
+                  <div className={`w-14 h-14 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}>
+                    <span className={item.color}>{item.icon}</span>
+                  </div>
+                  <h3 className="font-bold text-lg text-foreground mb-2">
+                    {isHindi ? item.titleHi : item.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed text-sm">
+                    {isHindi ? item.descriptionHi : item.description}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-10 sm:py-14">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="section-padding bg-muted/20">
+        <div className="section-container">
           <div className="text-center mb-10">
-            <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 mb-3">
+            <Badge className="pastel-card-blue px-3 py-1 text-blue-700 dark:text-blue-300 mb-3">
               <GraduationCap className="w-3.5 h-3.5 mr-1.5" />
               {isHindi ? "Step-by-Step सीखें" : "Step-by-Step Learning"}
             </Badge>
@@ -514,31 +507,29 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <Link href={level.route} data-testid={`link-level-${level.level}`}>
-                  <Card 
-                    className={`hover-elevate cursor-pointer group border-0 shadow-sm ${level.lightBg}`}
+                  <div 
+                    className="soft-card-hover cursor-pointer group p-5 sm:p-6"
                     data-testid={`card-level-${level.level}`}
                   >
-                    <CardContent className="p-5 sm:p-6">
-                      <div className="flex items-center gap-4 sm:gap-5">
-                        <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl ${level.color} text-white flex items-center justify-center font-bold text-xl flex-shrink-0`}>
-                          {level.level}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-lg text-foreground mb-1">
-                            {isHindi ? level.titleHi : level.title}
-                          </h3>
-                          <p className="text-muted-foreground text-sm leading-relaxed">
-                            {isHindi ? level.descriptionHi : level.description}
-                          </p>
-                          <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-                            <BookOpen className="w-4 h-4" />
-                            <span>{level.lessons} {isHindi ? "पाठ" : "lessons"}</span>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground/50 group-hover:text-primary transition-colors flex-shrink-0" />
+                    <div className="flex items-center gap-4 sm:gap-5">
+                      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${level.color} text-white flex items-center justify-center font-bold text-xl flex-shrink-0`}>
+                        {level.level}
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-lg text-foreground mb-1">
+                          {isHindi ? level.titleHi : level.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {isHindi ? level.descriptionHi : level.description}
+                        </p>
+                        <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                          <BookOpen className="w-4 h-4" />
+                          <span>{level.lessons} {isHindi ? "पाठ" : "lessons"}</span>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-muted-foreground/50 group-hover:text-primary transition-colors flex-shrink-0" />
+                    </div>
+                  </div>
                 </Link>
               </motion.div>
             ))}
@@ -555,10 +546,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 sm:py-14 bg-muted/30">
-        <div className="max-w-5xl mx-auto px-4">
+      <section className="section-padding">
+        <div className="section-container">
           <div className="text-center mb-10">
-            <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 mb-3">
+            <Badge className="pastel-card-green px-3 py-1 text-emerald-700 dark:text-emerald-300 mb-3">
               {isHindi ? "Free Tools" : "Free Tools"}
             </Badge>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
@@ -579,19 +570,17 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <Link href={tool.href} data-testid={`link-tool-${tool.name.toLowerCase().replace(' ', '-')}`}>
-                  <Card className="hover-elevate cursor-pointer h-full border-0 shadow-sm" data-testid={`card-tool-${index}`}>
-                    <CardContent className="p-5 text-center">
-                      <div className={`w-12 h-12 rounded-xl ${tool.bgColor} flex items-center justify-center mx-auto mb-3`}>
-                        <span className={tool.color}>{tool.icon}</span>
-                      </div>
-                      <h3 className="font-semibold text-foreground mb-1">
-                        {isHindi ? tool.nameHi : tool.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        {isHindi ? tool.descriptionHi : tool.description}
-                      </p>
-                    </CardContent>
-                  </Card>
+                  <div className="soft-card-hover cursor-pointer h-full p-5 text-center" data-testid={`card-tool-${index}`}>
+                    <div className={`w-12 h-12 rounded-2xl ${tool.bgColor} flex items-center justify-center mx-auto mb-3`}>
+                      <span className={tool.color}>{tool.icon}</span>
+                    </div>
+                    <h3 className="font-semibold text-foreground mb-1">
+                      {isHindi ? tool.nameHi : tool.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {isHindi ? tool.descriptionHi : tool.description}
+                    </p>
+                  </div>
                 </Link>
               </motion.div>
             ))}
@@ -608,10 +597,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 sm:py-14">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="section-padding bg-muted/20">
+        <div className="section-container">
           <div className="text-center mb-10">
-            <Badge className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 mb-3">
+            <Badge className="pastel-card-yellow px-3 py-1 text-amber-700 dark:text-amber-300 mb-3">
               <Star className="w-3.5 h-3.5 mr-1.5" />
               {isHindi ? "Learners की राय" : "What Learners Say"}
             </Badge>
@@ -629,94 +618,90 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full border-0 shadow-sm" data-testid={`card-testimonial-${index}`}>
-                  <CardContent className="p-5">
-                    <div className="flex gap-1 mb-3">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
+                <div className="soft-card h-full p-5" data-testid={`card-testimonial-${index}`}>
+                  <div className="flex gap-1 mb-3">
+                    {Array.from({ length: testimonial.rating }).map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <Quote className="w-8 h-8 text-muted-foreground/20 mb-2" />
+                  <p className="text-foreground/90 leading-relaxed mb-4">
+                    {isHindi ? testimonial.textHi : testimonial.text}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Users className="w-4 h-4 text-primary" />
                     </div>
-                    <Quote className="w-8 h-8 text-muted-foreground/20 mb-2" />
-                    <p className="text-foreground/90 leading-relaxed mb-4">
-                      {isHindi ? testimonial.textHi : testimonial.text}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm text-foreground">{testimonial.name}</p>
-                        <p className="text-xs text-muted-foreground">{testimonial.location}</p>
-                      </div>
+                    <div>
+                      <p className="font-medium text-sm text-foreground">{testimonial.name}</p>
+                      <p className="text-xs text-muted-foreground">{testimonial.location}</p>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-10 sm:py-14 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 dark:from-primary/10 dark:via-primary/20 dark:to-primary/10">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-            {isHindi ? "आज ही शुरू करें" : "Start Today"}
-          </h2>
-          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            {isHindi 
-              ? "10,000+ लोग पहले ही सीख चुके हैं। अब आपकी बारी है। 100% Free, कोई signup नहीं।"
-              : "10,000+ people have already learned. Now it's your turn. 100% Free, no signup required."}
-          </p>
-          <Link href="/beginner-course" data-testid="link-cta-start">
-            <Button size="lg" className="gap-2 min-h-[56px] text-lg px-10 shadow-lg" data-testid="button-cta-start">
-              <Play className="w-5 h-5" />
-              {isHindi ? "Free में सीखना शुरू करें" : "Start Learning for Free"}
-            </Button>
-          </Link>
-          <p className="text-xs text-muted-foreground mt-4">
-            {isHindi 
-              ? "Education only • No tips • No stock recommendations"
-              : "Education only • No tips • No stock recommendations"}
-          </p>
+      <section className="section-padding">
+        <div className="section-container text-center">
+          <div className="soft-card inline-block p-8 sm:p-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+              {isHindi ? "आज ही शुरू करें" : "Start Today"}
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+              {isHindi 
+                ? "10,000+ लोग पहले ही सीख चुके हैं। अब आपकी बारी है। 100% Free, कोई signup नहीं।"
+                : "10,000+ people have already learned. Now it's your turn. 100% Free, no signup required."}
+            </p>
+            <Link href="/beginner-course" data-testid="link-cta-start">
+              <Button size="lg" className="gap-2 min-h-[52px] text-base px-8" data-testid="button-cta-start">
+                <Play className="w-5 h-5" />
+                {isHindi ? "Free में सीखना शुरू करें" : "Start Learning for Free"}
+              </Button>
+            </Link>
+            <p className="text-xs text-muted-foreground mt-4">
+              {isHindi 
+                ? "Education only • No tips • No stock recommendations"
+                : "Education only • No tips • No stock recommendations"}
+            </p>
+          </div>
         </div>
       </section>
 
       <section className="py-6 sm:py-8">
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="section-container">
           <div className="grid grid-cols-2 gap-4">
             <Link href="/blog" data-testid="link-blog-home">
-              <Card className="hover-elevate cursor-pointer h-full border-0 shadow-sm" data-testid="card-blog-home">
-                <CardContent className="p-5 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-foreground">
-                      {isHindi ? "Market Gyaan" : "Market Gyaan"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {isHindi ? "Simple articles" : "Simple articles"}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="soft-card-hover cursor-pointer h-full p-5 flex items-center gap-4" data-testid="card-blog-home">
+                <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-foreground">
+                    {isHindi ? "Market Gyaan" : "Market Gyaan"}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {isHindi ? "Simple articles" : "Simple articles"}
+                  </p>
+                </div>
+              </div>
             </Link>
             <Link href="/faq" data-testid="link-faq-home">
-              <Card className="hover-elevate cursor-pointer h-full border-0 shadow-sm" data-testid="card-faq-home">
-                <CardContent className="p-5 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
-                    <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-foreground">
-                      {isHindi ? "Beginner FAQ" : "Beginner FAQ"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {isHindi ? "Common questions" : "Common questions"}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="soft-card-hover cursor-pointer h-full p-5 flex items-center gap-4" data-testid="card-faq-home">
+                <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                  <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-foreground">
+                    {isHindi ? "Beginner FAQ" : "Beginner FAQ"}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {isHindi ? "Common questions" : "Common questions"}
+                  </p>
+                </div>
+              </div>
             </Link>
           </div>
         </div>

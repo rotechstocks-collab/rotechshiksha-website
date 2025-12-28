@@ -157,16 +157,16 @@ const levelCoursesData: LevelCourseData[] = [
 
 function LevelCard({ course, index }: { course: LevelCourse; index: number }) {
   const cardContent = (
-    <Card
-        className={`relative h-full transition-all duration-300 border ${course.borderColor} ${
+    <div
+        className={`relative h-full transition-all duration-200 ${
           course.isUnlocked
-            ? "hover-elevate cursor-pointer bg-white dark:bg-card"
-            : "opacity-70 cursor-not-allowed bg-muted/30"
+            ? "soft-card-hover cursor-pointer"
+            : "soft-card opacity-70 cursor-not-allowed"
         }`}
         data-testid={`card-level-${course.level}`}
       >
         {!course.isUnlocked && (
-          <div className="absolute inset-0 bg-background/50 dark:bg-background/70 rounded-md z-10 flex items-center justify-center">
+          <div className="absolute inset-0 bg-background/50 dark:bg-background/70 rounded-2xl z-10 flex items-center justify-center">
             <div className="text-center p-3">
               <Lock className="w-6 h-6 mx-auto text-muted-foreground mb-1.5" />
               <p className="text-xs text-muted-foreground font-medium">
@@ -176,9 +176,9 @@ function LevelCard({ course, index }: { course: LevelCourse; index: number }) {
           </div>
         )}
 
-        <CardHeader className="p-4 pb-2">
+        <div className="p-4 pb-2">
           <div className="flex items-start justify-between gap-2 mb-2">
-            <div className={`w-11 h-11 rounded-lg ${course.bgColor} ${course.color} flex items-center justify-center flex-shrink-0`}>
+            <div className={`w-11 h-11 rounded-2xl ${course.bgColor} ${course.color} flex items-center justify-center flex-shrink-0`}>
               {course.icon}
             </div>
             <div className="flex flex-col items-end gap-1">
@@ -197,16 +197,16 @@ function LevelCard({ course, index }: { course: LevelCourse; index: number }) {
             </div>
           </div>
 
-          <CardTitle className="text-base leading-snug mb-0.5">
+          <h3 className="text-base font-semibold leading-snug mb-0.5 text-foreground">
             {course.titleHindi}
-          </CardTitle>
+          </h3>
           <p className="text-xs text-muted-foreground">{course.title}</p>
-        </CardHeader>
+        </div>
 
-        <CardContent className="p-4 pt-2">
-          <CardDescription className="text-sm mb-3 min-h-[40px] line-clamp-2">
+        <div className="p-4 pt-2">
+          <p className="text-sm text-muted-foreground mb-3 min-h-[40px] line-clamp-2">
             {course.description}
-          </CardDescription>
+          </p>
 
           <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
             <span className="flex items-center gap-1">
@@ -244,8 +244,8 @@ function LevelCard({ course, index }: { course: LevelCourse; index: number }) {
               </>
             )}
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
   );
 
   if (course.isUnlocked) {
@@ -312,8 +312,8 @@ export default function Courses() {
       />
 
       {/* Hero Section - Tighter spacing */}
-      <section className="py-8 lg:py-12 bg-gradient-to-b from-primary/5 via-background to-background border-b">
-        <div className="max-w-5xl mx-auto px-4">
+      <section className="section-padding border-b">
+        <div className="section-container">
           <FadeInUp>
             <div className="text-center mb-8">
               <Badge variant="outline" className="mb-3 text-primary border-primary/30">
@@ -360,39 +360,37 @@ export default function Courses() {
 
             {/* Continue Learning Card */}
             <div className="max-w-lg mx-auto">
-              <Card className="border-2 border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50/50 to-white dark:from-emerald-950/30 dark:to-card">
-                <CardContent className="p-4 lg:p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center flex-shrink-0">
-                      <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-muted-foreground font-medium">Continue Learning</p>
-                      <p className="text-sm font-semibold text-foreground truncate">
-                        Level {currentLevelData.level}: {currentLevelData.titleHindi}
-                      </p>
-                    </div>
+              <div className="soft-card border-2 border-emerald-200 dark:border-emerald-800 p-4 lg:p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <Link href={currentLevelData.route}>
-                    <Button 
-                      className="w-full min-h-[44px] gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
-                      data-testid="button-continue-learning"
-                    >
-                      <Play className="w-4 h-4" />
-                      Continue Level {currentLevelData.level}
-                      <ArrowRight className="w-4 h-4 ml-auto" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-muted-foreground font-medium">Continue Learning</p>
+                    <p className="text-sm font-semibold text-foreground truncate">
+                      Level {currentLevelData.level}: {currentLevelData.titleHindi}
+                    </p>
+                  </div>
+                </div>
+                <Link href={currentLevelData.route}>
+                  <Button 
+                    className="w-full min-h-[44px] gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+                    data-testid="button-continue-learning"
+                  >
+                    <Play className="w-4 h-4" />
+                    Continue Level {currentLevelData.level}
+                    <ArrowRight className="w-4 h-4 ml-auto" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </FadeInUp>
         </div>
       </section>
 
       {/* Levels Grid - Tighter spacing */}
-      <section className="py-8 lg:py-12">
-        <div className="max-w-6xl mx-auto px-4">
+      <section className="section-padding">
+        <div className="section-container">
           <div className="mb-6">
             <h2 className="text-lg lg:text-xl font-semibold text-foreground mb-1 flex items-center gap-2">
               <ChevronRight className="w-5 h-5 text-primary" />
@@ -436,7 +434,7 @@ export default function Courses() {
 
       {/* Disclaimer - Compact */}
       <section className="py-6 border-t bg-muted/30">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="section-container">
           <div className="flex items-start gap-3 p-3 lg:p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
             <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>

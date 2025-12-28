@@ -230,8 +230,8 @@ export default function CalculatorHub() {
   const popularCalcs = calculators.filter(c => c.popular);
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-white dark:bg-background">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div className="min-h-screen pt-20 pb-16 bg-background">
+      <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -273,10 +273,10 @@ export default function CalculatorHub() {
                 >
                   <Link href={`/calculators/${calc.id}`}>
                     <div
-                      className="bg-white dark:bg-card rounded-xl border border-border/50 p-4 h-full flex flex-col items-center text-center transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 cursor-pointer"
+                      className="soft-card-hover p-4 h-full flex flex-col items-center text-center cursor-pointer"
                       data-testid={`card-calc-${calc.id}`}
                     >
-                      <div className={`w-12 h-12 rounded-xl ${colors.bg} ${colors.icon} flex items-center justify-center mb-3`}>
+                      <div className={`w-12 h-12 rounded-2xl ${colors.bg} ${colors.icon} flex items-center justify-center mb-3`}>
                         {calc.icon}
                       </div>
                       <h3 className="text-sm font-medium text-foreground">{calc.name}</h3>
@@ -314,10 +314,10 @@ export default function CalculatorHub() {
                   >
                     <Link href={`/calculators/${calc.id}`}>
                       <div
-                        className="bg-white dark:bg-card rounded-xl border border-border/50 p-5 h-full flex items-start gap-4 transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 cursor-pointer group"
+                        className="soft-card-hover p-5 h-full flex items-start gap-4 cursor-pointer group"
                         data-testid={`card-calc-${calc.id}`}
                       >
-                        <div className={`w-12 h-12 rounded-xl ${colors.bg} ${colors.icon} flex items-center justify-center shrink-0`}>
+                        <div className={`w-12 h-12 rounded-2xl ${colors.bg} ${colors.icon} flex items-center justify-center shrink-0`}>
                           {calc.icon}
                         </div>
                         <div className="flex-1 min-w-0">

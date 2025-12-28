@@ -1,0 +1,137 @@
+IMPORTANT RULE: Do NOT delete or remove the Market Ticker. It must remain visible across all pages.
+I want you to redesign the Market Ticker into a premium Zerodha Varsity-style ticker with clean UI + great UX + performance.
+
+✅ GOAL
+
+Make ticker feel modern, clean, soft, and premium:
+
+Subtle dark background
+
+Soft colors (no neon)
+
+Smooth scroll
+
+Mobile-friendly
+
+Interactive controls (LIVE badge, refresh, search, speed)
+
+✅ 1) UI DESIGN (Premium Look)
+
+Update ticker styling:
+
+Height: 38px
+
+Background: #0b1220 (premium navy-dark)
+
+Text color: #e5e7eb
+
+Border-bottom: border-b border-white/10
+
+Shadow: shadow-sm
+
+Font size: 12px
+
+Each stock item should look like a “soft chip”:
+
+bg-white/5 rounded-lg px-3 py-1
+
+hover: bg-white/10
+
+Red: #dc2626, Green: #16a34a
+
+Use tabular numbers for prices:
+
+font-variant-numeric: tabular-nums
+
+✅ 2) LEFT SIDE CONTROLS (Professional)
+
+Add a left segment (sticky inside ticker) containing:
+✅ LIVE badge
+
+● LIVE
+
+small green dot + live text
+
+Tooltip: “Live market updates”
+
+✅ Search icon
+
+on click opens small inline search input (not a big modal)
+
+user can type a stock name and ticker should filter to match
+
+✅ Refresh icon
+
+on click re-fetches stock data
+
+show small spinner animation while refreshing
+
+✅ Speed toggle (3 steps only)
+Add a simple toggle:
+
+Slow
+
+Normal (default)
+
+Fast
+
+Save selected speed in localStorage so user preference stays.
+
+✅ 3) UX REQUIREMENTS
+
+Ticker scroll should pause on hover (desktop)
+
+On mobile: allow swipe horizontal scrolling
+
+On mobile: show only first 3–4 chips at once (compact mode) but swipe can reveal more
+
+Ensure ticker never overlaps navbar or blocks clicks
+
+✅ 4) PERFORMANCE REQUIREMENTS
+
+Start ticker animation after 1 second delay (setTimeout)
+
+Use CSS animation or requestAnimationFrame for smooth scrolling (no jank)
+
+Prevent layout shift (CLS)
+
+If API fails:
+
+show: “Live market data loading…” (not blank)
+
+keep ticker stable
+
+✅ 5) STRUCTURE (Clean Code)
+
+If ticker is currently inside Navbar, extract it into:
+client/src/components/market/MarketTicker.tsx
+Keep it reusable and isolated.
+Also create helper:
+client/src/lib/tickerUtils.ts
+for:
+
+filter logic
+
+format price
+
+speed config
+
+✅ 6) FINAL VERIFY
+
+Verify:
+✅ Desktop: pause on hover works
+✅ Mobile: swipe works + compact chips show
+✅ Search filters correctly
+✅ Refresh fetches correctly
+✅ Speed toggle works and persists
+✅ Ticker always visible (NOT removed)
+
+Output:
+
+List all files modified
+
+Show MarketTicker.tsx final code
+
+Show tickerUtils.ts if created
+
+Confirm verification completed

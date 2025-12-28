@@ -209,19 +209,19 @@
 
 /* ===== END MOBILE-FIRST OPTIMIZATIONS ===== */
 
-/* LIGHT MODE - Smallcase Inspired Premium Fintech */
+/* LIGHT MODE - Zerodha Varsity Inspired Premium Education */
 :root {
   --button-outline: rgba(0,0,0, .08);
   --badge-outline: rgba(0,0,0, .05);
   --opaque-button-border-intensity: -6;
   --elevate-1: rgba(0,0,0, .02);
   --elevate-2: rgba(0,0,0, .05);
-  --background: 0 0% 100%;
-  --foreground: 215 25% 15%;
-  --border: 220 14% 92%;
+  --background: 218 33% 97%;
+  --foreground: 222 47% 11%;
+  --border: 220 13% 91%;
   --card: 0 0% 100%;
-  --card-foreground: 215 25% 15%;
-  --card-border: 220 14% 90%;
+  --card-foreground: 222 47% 11%;
+  --card-border: 220 13% 91%;
   --sidebar: 30 30% 98%;
   --sidebar-foreground: 215 25% 15%;
   --sidebar-border: 220 14% 92%;
@@ -250,10 +250,10 @@
   --chart-3: 263 60% 65%;
   --chart-4: 45 95% 60%;
   --chart-5: 0 70% 65%;
-  --font-sans: Inter, system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
-  --radius: 0.75rem;
+  --radius: 1rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(210 6% 12% / 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(210 6% 12% / 0.00);
   --shadow-sm: 0px 2px 0px 0px hsl(210 6% 12% / 0.00), 0px 1px 2px -1px hsl(210 6% 12% / 0.00);
@@ -378,7 +378,55 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground leading-relaxed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+/* ===== ZERODHA VARSITY SOFT CARD SYSTEM ===== */
+@layer components {
+  /* Soft Card - Clean, minimal, premium feel */
+  .soft-card {
+    @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm;
+  }
+
+  /* Soft Card with Hover - Very subtle border change on hover */
+  .soft-card-hover {
+    @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm 
+           transition-all duration-200 ease-out;
+  }
+  .soft-card-hover:hover {
+    @apply shadow-sm border-gray-300 dark:border-slate-600;
+  }
+
+  /* Pastel category cards */
+  .pastel-card-blue {
+    @apply bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 rounded-2xl;
+  }
+  .pastel-card-pink {
+    @apply bg-pink-50 dark:bg-pink-950/30 border border-pink-100 dark:border-pink-900/50 rounded-2xl;
+  }
+  .pastel-card-yellow {
+    @apply bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 rounded-2xl;
+  }
+  .pastel-card-purple {
+    @apply bg-purple-50 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/50 rounded-2xl;
+  }
+  .pastel-card-green {
+    @apply bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 rounded-2xl;
+  }
+
+  /* Section container - consistent max-width and padding */
+  .section-container {
+    @apply max-w-6xl mx-auto px-4;
+  }
+
+  /* Section padding - responsive */
+  .section-padding {
+    @apply py-10 md:py-16;
   }
 }
 
