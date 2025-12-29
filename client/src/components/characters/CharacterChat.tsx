@@ -1,9 +1,10 @@
 import { CharacterAvatar } from './CharacterAvatar';
+import { CharacterEmotion } from '@/utils/characterEmotions';
 
 interface ChatMessage {
   character: 'priya' | 'rohit';
-  pose?: string;
   message: string;
+  emotion?: CharacterEmotion;
 }
 
 interface CharacterChatProps {
@@ -25,7 +26,11 @@ export function CharacterChat({ messages, className = '' }: CharacterChatProps) 
             data-testid={`chat-message-${index}`}
           >
             <div className="flex-shrink-0">
-              <CharacterAvatar character={msg.character} size="md" />
+              <CharacterAvatar 
+                character={msg.character} 
+                size="md" 
+                emotion={msg.emotion || "neutral"}
+              />
             </div>
             <div 
               className={`flex-1 max-w-[75%] ${isRohit ? '' : 'text-right'}`}

@@ -80,7 +80,7 @@ export function EmotionAvatar({
         <img
           src={config.avatar}
           alt={`${config.displayName}${hasEmotion ? ` - ${emotion}` : ""}`}
-          className="w-full h-full rounded-full object-contain"
+          className="w-full h-full object-cover rounded-full"
           loading="lazy"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
