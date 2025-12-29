@@ -28,6 +28,7 @@ import {
   Star,
   Users,
   MessageCircle,
+  X,
 } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { SEOHead } from "@/components/SEOHead";
@@ -309,12 +310,102 @@ export default function Courses() {
   const nextUnlockedLevel = levelCourses.find(c => c.isUnlocked && !c.isCompleted) || levelCourses[0];
   const currentLevelData = levelCoursesData.find(c => c.level === nextUnlockedLevel.level) || levelCoursesData[0];
 
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Stock Market Course for Beginners in Hindi",
+    "description": "Free 8-level stock market education course in Hindi. Learn investing from basics to advanced strategies with Priya and Rohit.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Rotech Shiksha",
+      "sameAs": "https://rotechshiksha.com"
+    },
+    "educationalLevel": "Beginner to Advanced",
+    "inLanguage": "hi",
+    "isAccessibleForFree": true,
+    "numberOfCredits": 8,
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "courseWorkload": "P2W"
+    }
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this stock market course free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, all 8 levels of the stock market course are 100% free. There are no hidden charges."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this course suitable for beginners?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, this course starts from zero knowledge and explains everything in simple Hindi (Hinglish)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to complete the course?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If you spend 30 minutes daily, you can complete all 8 levels in 2-3 weeks. You have lifetime access."
+        }
+      }
+    ]
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://rotechshiksha.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Courses",
+        "item": "https://rotechshiksha.com/courses"
+      }
+    ]
+  };
+
+  useEffect(() => {
+    const existingScripts = document.querySelectorAll('script[data-schema]');
+    existingScripts.forEach(script => script.remove());
+
+    const schemas = [courseSchema, faqSchema, breadcrumbSchema];
+    schemas.forEach((schema, index) => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-schema', `schema-${index}`);
+      script.textContent = JSON.stringify(schema);
+      document.head.appendChild(script);
+    });
+
+    return () => {
+      const scripts = document.querySelectorAll('script[data-schema]');
+      scripts.forEach(script => script.remove());
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Learning Path - Rotech Shiksha | Stock Market Education"
-        description="Step-by-step stock market education in Hindi. Learn from basics to advanced level with our structured 8-level learning path."
-        keywords="stock market course hindi, share market course, learn trading india, beginner stock market"
+        title="Free Stock Market Course for Beginners in Hindi | 8 Levels | Rotech Shiksha"
+        description="Learn stock market step-by-step in simple Hindi. Free 8-level course covering basics to advanced strategies. 10,000+ learners. Start learning today!"
+        keywords="stock market course for beginners, stock market basics in Hindi, learn investing step by step, share market course free, stock market learning path, free stock market course india"
       />
 
       <StoryIntro
@@ -326,22 +417,41 @@ export default function Courses() {
         <WhatsAppStrip />
       </div>
 
-      {/* Hero Section - Tighter spacing */}
+      {/* Hero Section - SEO Optimized */}
       <section className="section-padding border-b">
         <div className="section-container">
           <FadeInUp>
             <div className="text-center mb-8">
               <Badge variant="outline" className="mb-3 text-primary border-primary/30">
-                Free Learning Path
+                100% Free • Hindi Mein • Beginners Ke Liye
               </Badge>
 
-              <h1 className="text-2xl lg:text-4xl font-bold text-foreground mb-2">
-                Step-by-Step Learning Journey
+              <h1 className="text-2xl lg:text-4xl font-bold text-foreground mb-3">
+                Free Stock Market Course for Beginners
               </h1>
+              <h2 className="text-lg lg:text-xl text-muted-foreground font-medium mb-4">
+                Simple Hindi Mein Step-by-Step Seekho
+              </h2>
 
-              <p className="text-base lg:text-lg text-muted-foreground max-w-xl mx-auto">
-                8 levels mein complete stock market education — bilkul beginners ke liye
+              <p className="text-base text-muted-foreground max-w-2xl mx-auto mb-6">
+                Zero knowledge se start karo, 8 levels complete karo, aur confident investor bano. 
+                Priya aur Rohit ke saath fun way mein seekho - koi boring lectures nahi!
               </p>
+
+              {/* Key Benefits */}
+              <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+                {[
+                  "No prior knowledge needed",
+                  "Hinglish mein samjhaya gaya", 
+                  "Lifetime free access",
+                  "Certificate available"
+                ].map((benefit, i) => (
+                  <span key={i} className="flex items-center gap-1.5 text-xs bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1.5 rounded-full">
+                    <CheckCircle className="w-3 h-3" />
+                    {benefit}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="max-w-2xl mx-auto mb-6">
@@ -426,13 +536,125 @@ export default function Courses() {
         </div>
       </section>
 
-      {/* Levels Grid - Tighter spacing */}
+      {/* Who is this for / Who is this NOT for */}
+      <section className="py-10 bg-muted/30">
+        <div className="section-container">
+          <h2 className="text-xl lg:text-2xl font-bold text-foreground text-center mb-8">
+            Ye Course Kiske Liye Hai?
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6">
+              <h3 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-4 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                Ye Course Tumhare Liye HAI Agar:
+              </h3>
+              <ul className="space-y-2 text-sm text-emerald-800 dark:text-emerald-200">
+                {[
+                  "Tum stock market ke bare mein kuch nahi jaante",
+                  "Simple Hindi mein seekhna chahte ho",
+                  "Long-term investing ya trading seekhna hai",
+                  "Free mein quality education chahiye",
+                  "Apne paise ke decisions khud lena chahte ho"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6">
+              <h3 className="font-semibold text-red-700 dark:text-red-300 mb-4 flex items-center gap-2">
+                <X className="w-5 h-5" />
+                Ye Course Tumhare Liye NAHI HAI Agar:
+              </h3>
+              <ul className="space-y-2 text-sm text-red-800 dark:text-red-200">
+                {[
+                  "Hot stock tips chahiye (hum SEBI advisor nahi)",
+                  "Get-rich-quick scheme dhundh rahe ho",
+                  "Roz 100% profit expect karte ho",
+                  "Bina mehnat ke paisa kamana hai",
+                  "Tumhe lagta hai trading mein koi risk nahi"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <X className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Outcomes */}
+      <section className="py-10">
+        <div className="section-container">
+          <h2 className="text-xl lg:text-2xl font-bold text-foreground text-center mb-2">
+            Course Complete Karne Ke Baad Kya Hoga?
+          </h2>
+          <p className="text-muted-foreground text-center mb-8">
+            8 levels poore karne ke baad ye sab confident hokar kar paoge
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {[
+              { icon: <TrendingUp className="w-6 h-6" />, title: "Charts Padhna", desc: "Candlesticks, patterns, trends samjhoge" },
+              { icon: <Shield className="w-6 h-6" />, title: "Risk Manage Karna", desc: "Stop-loss, position sizing seekhoge" },
+              { icon: <Target className="w-6 h-6" />, title: "Stocks Analyze Karna", desc: "Fundamental + Technical analysis" },
+              { icon: <Zap className="w-6 h-6" />, title: "Informed Decisions", desc: "Apne paise ke smart decisions loge" },
+            ].map((item, i) => (
+              <div key={i} className="bg-card border rounded-xl p-5 text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 text-primary">
+                  {item.icon}
+                </div>
+                <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>
+                <p className="text-xs text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Course Timeline */}
+      <section className="py-10 bg-gradient-to-b from-primary/5 to-background">
+        <div className="section-container">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-xl lg:text-2xl font-bold text-foreground mb-2">
+              Kitna Time Lagega?
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Tumhari speed pe depend karta hai, par ye ek rough estimate hai
+            </p>
+            <div className="bg-card border rounded-2xl p-6">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-primary">30 min</div>
+                  <div className="text-xs text-muted-foreground">Daily time</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-primary">2-3 weeks</div>
+                  <div className="text-xs text-muted-foreground">Total duration</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-primary">Lifetime</div>
+                  <div className="text-xs text-muted-foreground">Access</div>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-4">
+                Jaldi seekhna hai? Daily 1 hour do - 10 din mein complete. No rush? Apni pace se seekho - lifetime access hai!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Levels Grid */}
       <section className="section-padding">
         <div className="section-container">
           <div className="mb-6">
             <h2 className="text-lg lg:text-xl font-semibold text-foreground mb-1 flex items-center gap-2">
               <ChevronRight className="w-5 h-5 text-primary" />
-              Your Learning Path
+              8 Levels - Complete Learning Path
             </h2>
             <p className="text-sm text-muted-foreground">
               Har level complete karne ke baad next level unlock hoga
