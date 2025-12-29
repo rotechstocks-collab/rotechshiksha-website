@@ -1,0 +1,99 @@
+You are a senior React + Tailwind + Wouter expert developer. You must fix a UI bug without breaking any existing routes, pages, or components.
+
+PROJECT CONTEXT:
+
+Website: rotechshiksha.com (React + TS + Tailwind, Wouter routing)
+
+Header has 2 parts: MarketTicker + Navbar (Header component)
+
+Header is fixed at top.
+
+Main content sometimes has extra top gap depending on zoom level.
+
+At 100% zoom the spacing becomes inconsistent across pages.
+
+The layout must be stable at all zoom levels (90% to 125%).
+
+DO NOT delete any page/route.
+
+DO NOT remove the MarketTicker.
+
+DO NOT use heavy MutationObserver/ResizeObserver/VisualViewport hacks.
+
+DO NOT add any scroll-lock recovery logic.
+
+Make the smallest possible change.
+
+BUG:
+At 100% zoom, page content has extra empty space below header OR content starts too low. Sometimes differs page to page.
+
+GOAL:
+Make main content start EXACTLY below the fixed header (Ticker + Navbar) across all pages reliably.
+
+STRICT FIX STRATEGY:
+
+Use only CSS + minimal React.
+
+Measure header height ONCE using a simple ref and set CSS variable.
+
+Apply padding-top to main container using the CSS variable.
+
+Provide a fallback fixed value for safety.
+
+Ensure no double-padding happens.
+
+Ensure no white screen / crash.
+
+FILES YOU CAN EDIT (ONLY THESE):
+
+client/src/App.tsx
+
+client/src/index.css
+
+REQUIREMENTS:
+
+Implement a clean layout structure:
+
+Fixed header wrapper
+
+Main content wrapper with padding-top = header height
+
+Use useLayoutEffect (not useEffect) for measuring header height.
+
+Use a ref on the header wrapper instead of getElementById.
+
+Set --app-header-height CSS variable on document.documentElement.
+
+Fallback if header ref is missing: set it to 104px.
+
+On window resize, update height (throttled).
+
+Remove all previous header-offset, ResizeObserver, MutationObserver, VisualViewport logic if present.
+
+Must not affect scroll behavior.
+
+Must not change theme/dark mode.
+
+OUTPUT FORMAT:
+Give exact final code blocks for:
+
+App.tsx (only changed part with full component)
+
+index.css additions
+Explain in 3 bullets why it fixes zoom gap.
+
+DO NOT DO:
+
+Do not modify other files
+
+Do not remove any routes
+
+Do not delete components
+
+Do not touch MarketTicker
+
+Do not add any portal cleanup
+
+Do not add scroll lock recovery
+
+Proceed carefully. Output only code + short explanation.
