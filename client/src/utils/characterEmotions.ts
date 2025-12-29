@@ -1,4 +1,4 @@
-import { Smile, Brain, AlertTriangle, PartyPopper, Frown, HelpCircle, Sparkles, Target } from "lucide-react";
+import { Smile, Brain, HelpCircle, Frown, Sparkles, Target, Rocket, Lightbulb } from "lucide-react";
 
 export type CharacterEmotion = 
   | "smile" 
@@ -108,7 +108,7 @@ const emotionBadgeMap: Record<CharacterEmotion, EmotionBadge> = {
     className: "text-orange-600 dark:text-orange-400",
   },
   happy: {
-    icon: PartyPopper,
+    icon: Smile,
     label: "Happy",
     className: "text-green-600 dark:text-green-400",
   },
@@ -123,12 +123,12 @@ const emotionBadgeMap: Record<CharacterEmotion, EmotionBadge> = {
     className: "text-purple-600 dark:text-purple-400",
   },
   excited: {
-    icon: Sparkles,
+    icon: Rocket,
     label: "Excited",
     className: "text-pink-600 dark:text-pink-400",
   },
   serious: {
-    icon: Target,
+    icon: Brain,
     label: "Serious",
     className: "text-slate-600 dark:text-slate-400",
   },

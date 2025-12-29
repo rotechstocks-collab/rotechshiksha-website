@@ -115,11 +115,13 @@ function App() {
                 <TooltipProvider>
                   <HreflangTags />
                   <MarketTicker />
-                  <div className="min-h-screen bg-background safe-area-top">
+                  <div className="min-h-screen bg-background safe-area-top overflow-x-hidden">
                     <Header />
                     <GlobalStoryStrip />
                     <main className="pt-14 md:pt-[102px]">
-                      <Router />
+                      <div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
+                        <Router />
+                      </div>
                     </main>
                     <Footer />
                     <div className="h-20 md:hidden" aria-hidden="true" />

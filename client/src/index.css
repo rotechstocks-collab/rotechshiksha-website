@@ -2,55 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== CHARACTER EMOTION ANIMATIONS (Ring/Glow only - avatar stays fixed) ===== */
-@keyframes ring-pulse-yellow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.5), 0 0 12px 4px rgba(250, 204, 21, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.3), 0 0 20px 8px rgba(250, 204, 21, 0.4); }
+/* ===== GLOBAL LAYOUT & OVERFLOW FIX ===== */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
-@keyframes ring-pulse-blue {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5), 0 0 12px 4px rgba(59, 130, 246, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 0 20px 8px rgba(59, 130, 246, 0.4); }
+/* ===== PREMIUM TYPOGRAPHY (Zerodha/Smallcase vibe) ===== */
+@layer base {
+  html {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      font-size: 17px;
+      line-height: 1.7;
+    }
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  h1 {
+    font-size: 2rem; /* 32px mobile */
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  h2 {
+    font-size: 1.5rem; /* 24px mobile */
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  
+  h3 {
+    font-size: 1.25rem; /* 20px mobile */
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.8rem; /* ~48px desktop */
+    }
+    
+    h2 {
+      font-size: 2.1rem; /* ~36px desktop */
+    }
+    
+    h3 {
+      font-size: 1.65rem; /* ~28px desktop */
+    }
+  }
 }
 
-@keyframes ring-pulse-orange {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5), 0 0 12px 4px rgba(249, 115, 22, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.3), 0 0 20px 8px rgba(249, 115, 22, 0.4); }
+/* ===== CHARACTER EMOTION ANIMATIONS (Premium Zerodha-style - subtle, slow glow) ===== */
+/* Avatar image NEVER moves - only soft ring glow animations */
+
+@keyframes ring-glow-yellow {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(250, 204, 21, 0.15); }
+  50% { box-shadow: 0 0 16px 4px rgba(250, 204, 21, 0.25); }
 }
 
-@keyframes ring-pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5), 0 0 12px 4px rgba(34, 197, 94, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3), 0 0 20px 8px rgba(34, 197, 94, 0.4); }
+@keyframes ring-glow-blue {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(59, 130, 246, 0.15); }
+  50% { box-shadow: 0 0 16px 4px rgba(59, 130, 246, 0.25); }
 }
 
-@keyframes ring-pulse-gray {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(156, 163, 175, 0.4), 0 0 8px 2px rgba(156, 163, 175, 0.2); }
-  50% { box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.2), 0 0 12px 4px rgba(156, 163, 175, 0.3); }
+@keyframes ring-glow-orange {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(249, 115, 22, 0.15); }
+  50% { box-shadow: 0 0 14px 3px rgba(249, 115, 22, 0.2); }
 }
 
-@keyframes ring-pulse-purple {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5), 0 0 12px 4px rgba(168, 85, 247, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.3), 0 0 20px 8px rgba(168, 85, 247, 0.4); }
+@keyframes ring-glow-green {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(34, 197, 94, 0.15); }
+  50% { box-shadow: 0 0 16px 4px rgba(34, 197, 94, 0.25); }
 }
 
-@keyframes ring-pulse-pink {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.5), 0 0 12px 4px rgba(236, 72, 153, 0.3); }
-  50% { box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.3), 0 0 24px 10px rgba(236, 72, 153, 0.5); }
+@keyframes ring-glow-gray {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(156, 163, 175, 0.1); }
+  50% { box-shadow: 0 0 10px 2px rgba(156, 163, 175, 0.15); }
 }
 
-@keyframes ring-pulse-slate {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(100, 116, 139, 0.4), 0 0 8px 2px rgba(100, 116, 139, 0.2); }
-  50% { box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.2), 0 0 12px 4px rgba(100, 116, 139, 0.3); }
+@keyframes ring-glow-purple {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(168, 85, 247, 0.15); }
+  50% { box-shadow: 0 0 14px 3px rgba(168, 85, 247, 0.22); }
 }
 
-.animate-ring-yellow { animation: ring-pulse-yellow 1.5s ease-in-out infinite; }
-.animate-ring-blue { animation: ring-pulse-blue 1.5s ease-in-out infinite; }
-.animate-ring-orange { animation: ring-pulse-orange 1s ease-in-out infinite; }
-.animate-ring-green { animation: ring-pulse-green 1.2s ease-in-out infinite; }
-.animate-ring-gray { animation: ring-pulse-gray 2s ease-in-out infinite; }
-.animate-ring-purple { animation: ring-pulse-purple 1.3s ease-in-out infinite; }
-.animate-ring-pink { animation: ring-pulse-pink 1s ease-in-out infinite; }
-.animate-ring-slate { animation: ring-pulse-slate 2s ease-in-out infinite; }
+@keyframes ring-glow-pink {
+  0%, 100% { box-shadow: 0 0 10px 2px rgba(236, 72, 153, 0.15); }
+  50% { box-shadow: 0 0 18px 4px rgba(236, 72, 153, 0.25); }
+}
+
+@keyframes ring-glow-slate {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(100, 116, 139, 0.1); }
+  50% { box-shadow: 0 0 10px 2px rgba(100, 116, 139, 0.18); }
+}
+
+/* Slower, smoother animations for premium feel */
+.animate-ring-yellow { animation: ring-glow-yellow 2.5s ease-in-out infinite; }
+.animate-ring-blue { animation: ring-glow-blue 3s ease-in-out infinite; }
+.animate-ring-orange { animation: ring-glow-orange 2s ease-in-out infinite; }
+.animate-ring-green { animation: ring-glow-green 2.8s ease-in-out infinite; }
+.animate-ring-gray { animation: ring-glow-gray 3.5s ease-in-out infinite; }
+.animate-ring-purple { animation: ring-glow-purple 2.5s ease-in-out infinite; }
+.animate-ring-pink { animation: ring-glow-pink 2.2s ease-in-out infinite; }
+.animate-ring-slate { animation: ring-glow-slate 3.5s ease-in-out infinite; }
 
 /* RTL (Right-to-Left) Support for Arabic and Urdu */
 [dir="rtl"] {
