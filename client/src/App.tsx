@@ -1,5 +1,5 @@
-import { Switch, Route } from "wouter";
-import { lazy, Suspense, useEffect } from "react";
+import { Switch, Route, useLocation } from "wouter";
+import { lazy, Suspense, useEffect, useCallback } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -106,20 +106,44 @@ function Router() {
 }
 
 function App() {
-  useEffect(() => {
-    const unlockScroll = () => {
-      document.body.style.removeProperty("overflow");
-      document.body.style.removeProperty("padding-right");
-      document.documentElement.style.removeProperty("overflow");
-      document.body.removeAttribute("data-scroll-locked");
-    };
+  const [location] = useLocation();
 
+  const unlockScroll = useCallback(() => {
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("padding-right");
+    document.documentElement.style.removeProperty("overflow");
+    document.body.removeAttribute("data-scroll-locked");
+    document.documentElement.removeAttribute("data-scroll-locked");
+  }, []);
+
+  const hasOpenOverlay = useCallback(() => {
+    return !!document.querySelector(
+      '[data-radix-portal] [data-state="open"], [data-state="open"][role="dialog"], [role="dialog"][data-state="open"]'
+    );
+  }, []);
+
+  const safeUnlockScroll = useCallback(() => {
+    if (!hasOpenOverlay()) {
+      requestAnimationFrame(unlockScroll);
+    }
+  }, [hasOpenOverlay, unlockScroll]);
+
+  useEffect(() => {
+    unlockScroll();
+  }, [location, unlockScroll]);
+
+  useEffect(() => {
     unlockScroll();
 
     const observer = new MutationObserver(() => {
       const bodyOverflow = window.getComputedStyle(document.body).overflow;
-      if (bodyOverflow === "hidden" || document.body.hasAttribute("data-scroll-locked")) {
-        unlockScroll();
+      const hasScrollLock = 
+        bodyOverflow === "hidden" || 
+        document.body.hasAttribute("data-scroll-locked") ||
+        document.documentElement.hasAttribute("data-scroll-locked");
+      
+      if (hasScrollLock) {
+        safeUnlockScroll();
       }
     });
 
@@ -128,17 +152,28 @@ function App() {
       attributeFilter: ["style", "data-scroll-locked"],
     });
 
-    window.addEventListener("keydown", unlockScroll);
-    window.addEventListener("click", unlockScroll);
-    window.addEventListener("resize", unlockScroll);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["style", "data-scroll-locked"],
+    });
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        safeUnlockScroll();
+      }
+    };
+
+    window.addEventListener("focus", safeUnlockScroll);
+    window.addEventListener("resize", safeUnlockScroll);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("keydown", unlockScroll);
-      window.removeEventListener("click", unlockScroll);
-      window.removeEventListener("resize", unlockScroll);
+      window.removeEventListener("focus", safeUnlockScroll);
+      window.removeEventListener("resize", safeUnlockScroll);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [unlockScroll, safeUnlockScroll]);
 
   return (
     <ErrorBoundary>

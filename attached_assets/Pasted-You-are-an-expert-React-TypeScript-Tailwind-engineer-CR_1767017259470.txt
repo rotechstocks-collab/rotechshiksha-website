@@ -1,0 +1,47 @@
+You are an expert React + TypeScript + Tailwind engineer.
+
+CRITICAL BUG:
+On desktop 100% zoom, after interacting with theme toggle / menus / dialogs, page scroll/content appears clipped or disappears. Header already has DropdownMenu modal={false} and Sheet modal={false}, but the issue still returns intermittently.
+
+ROOT CAUSE:
+Radix UI scroll-lock occasionally remains stuck:
+- document.body style overflow / padding-right stays
+- document.documentElement may keep overflow or data-scroll-locked attributes
+
+TASK: Implement a robust global “scroll-lock auto-recovery” in App.tsx.
+
+STEPS:
+1) In client/src/App.tsx create a helper:
+   function unlockScroll() {
+     document.body.style.removeProperty("overflow");
+     document.body.style.removeProperty("padding-right");
+     document.documentElement.style.removeProperty("overflow");
+     document.body.removeAttribute("data-scroll-locked");
+     document.documentElement.removeAttribute("data-scroll-locked");
+   }
+
+2) Call unlockScroll():
+   A) on initial mount
+   B) on every route change (wouter). Use `const [location] = useLocation()` and add useEffect(() => unlockScroll(), [location])
+   C) on window focus + visibilitychange (some locks persist after tab switch)
+
+3) Add a MutationObserver safeguard:
+   - Observe document.body and document.documentElement attributes (style/class)
+   - If body has overflow hidden OR html has data-scroll-locked, schedule unlockScroll() via requestAnimationFrame
+   - BUT do NOT break active modals: only unlock if there is NO open radix overlay:
+     const hasOpenOverlay = () =>
+       !!document.querySelector('[data-radix-portal] [data-state="open"], [data-state="open"][role="dialog"], [role="dialog"][data-state="open"]');
+
+     If !hasOpenOverlay() then unlock.
+
+4) Verify:
+   - Desktop 100% zoom: scrolling works on Pricing page after PricingPlans and everywhere
+   - After theme toggle click: no clipping/disappear
+   - 125% zoom ok
+   - Mobile ok
+   - No routes/pages deleted
+   - Market ticker remains
+
+OUTPUT:
+- Show exact code diff for App.tsx
+- Explain why this permanently prevents stuck scroll-lock
