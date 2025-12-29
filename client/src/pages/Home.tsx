@@ -611,7 +611,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#f7f9fc' }}>
+    <div className="min-h-screen relative bg-background text-foreground">
       <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
