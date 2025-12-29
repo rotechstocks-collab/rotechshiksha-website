@@ -611,7 +611,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative page-bg dark-spotlight-bg">
+    <div className="relative page-bg dark-spotlight-bg">
       <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
@@ -681,7 +681,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      <section className="py-14 md:py-20 relative z-10">
+      <section className="pt-6 md:pt-10 pb-10 relative z-10">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div 
             className="text-center"

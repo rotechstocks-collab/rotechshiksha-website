@@ -76,7 +76,7 @@ const trustBadges = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen relative page-bg dark-spotlight-bg">
+    <div className="relative page-bg dark-spotlight-bg">
       <SEOHead
         title="Pricing Plans - Free vs Paid | Rotech Shiksha Stock Market Course"
         description="Compare Rotech Shiksha pricing plans. Free Starter, Pro Learner, Elite Mentorship. 8 levels FREE forever. Upgrade for personal mentorship & live sessions."
@@ -84,7 +84,7 @@ export default function PricingPage() {
       />
 
       {/* Hero Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-b from-primary/5 to-background relative z-10">
+      <section className="pt-6 md:pt-10 pb-8 bg-gradient-to-b from-primary/5 to-background relative z-10">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 mb-4">
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />

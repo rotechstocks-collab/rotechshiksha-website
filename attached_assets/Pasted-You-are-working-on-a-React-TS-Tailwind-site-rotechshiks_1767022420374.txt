@@ -1,0 +1,41 @@
+You are working on a React + TS + Tailwind site (rotechshiksha). The header is fixed and already uses dynamic CSS var --app-header-offset set in App.tsx, and main uses pt-[var(--app-header-offset)].
+
+Problem: On multiple pages (Home and Pricing), there is still a huge blank gap/whitespace under the header. It looks like the hero sections are vertically centered or have excessive top padding, so content starts far below the header even though the header-offset is correct.
+
+Task:
+1) Inspect these files and any layout wrappers they use:
+   - client/src/pages/Home.tsx
+   - client/src/pages/PricingPage.tsx (and any components used inside)
+   - Any shared page wrapper component if exists.
+
+2) Find and remove/adjust causes of excessive whitespace such as:
+   - min-h-screen / h-screen / min-h-[100vh] / min-h-[100svh]
+   - flex + items-center + justify-center causing vertical centering
+   - large padding classes like py-24/py-32/pt-24/mt-24 that push content down
+   - extra top padding added again on top of the global main padding-top.
+
+3) Fix layout so that:
+   - The FIRST visible section of each page starts immediately below the fixed header with only a small intentional spacing (e.g., 12–24px).
+   - Pages should be top-aligned, NOT vertically centered.
+   - Maintain responsive design: add a modest top spacing like `pt-6 md:pt-10` inside the page container, NOT huge values.
+   - Do not remove the market ticker. Do not delete any route/page.
+
+4) Implementation guidance (use this approach):
+   - On page root container, use `min-h-[calc(100vh-var(--app-header-offset))]` ONLY if needed, but DO NOT center vertically.
+   - Prefer:
+       `className="w-full pt-6 md:pt-10 pb-16"`
+     and for sections:
+       `className="max-w-6xl mx-auto px-4"`
+   - If the page currently has `flex items-center justify-center`, change to:
+       `flex flex-col items-start justify-start`
+     or remove flex centering entirely.
+
+5) Verification checklist:
+   - Test at zoom 90%, 100%, 125% in desktop.
+   - Home: hero heading should appear right under header (small gap).
+   - Pricing: “Apna Plan Choose Karo” heading should also start right under header (small gap).
+   - No overlap under header, no huge white blank space.
+
+6) Output:
+   - Provide exact code diff edits for Home.tsx and PricingPage.tsx (and any wrapper you modify).
+   - Keep everything else unchanged.
