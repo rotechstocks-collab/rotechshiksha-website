@@ -132,20 +132,34 @@
 - **Tablet**: 640px - 1024px (md, lg)
 - **Desktop**: > 1024px (xl, 2xl)
 
-## Consistent Section Spacing
-- **Hero Section**: pt-12 md:pt-16 pb-10 md:pb-14 (top-aligned, not centered)
-- **Standard Section**: py-10 md:py-12 (balanced vertical rhythm)
-- **Compact Section**: py-8 md:py-10 (tight spacing)
-- **Container Max-Width**: max-w-6xl mx-auto px-4 (full width layouts)
+## Consistent Section Spacing (Premium System)
+Use these CSS utility classes defined in index.css:
+
+- **Page Header**: `.page-header` = pt-10 md:pt-14 pb-10 md:pb-14
+- **Standard Section**: `.section` = py-12 md:py-20
+- **Medium Section**: `.section-sm` = py-10 md:py-14
+- **Compact Section**: `.section-xs` = py-8 md:py-10
+- **Container**: `.page-container` = max-w-6xl mx-auto px-4 md:px-8
 - **Content Max-Width**: max-w-4xl mx-auto px-4 (reading content)
 - **Narrow Content**: max-w-3xl mx-auto px-4 (focused modules)
-- **Card Padding**: p-5 md:p-6 (standard cards)
+- **Card Padding**: p-4 md:p-5 (standard cards)
 - **Gap Between Cards**: gap-4 md:gap-6 (card grids)
 
+## Premium Card System
+- **Premium Card**: `.premium-card` = rounded-2xl, border-slate-200/60, shadow-sm
+- **Premium Card Hover**: `.premium-card-hover` = adds hover:shadow-lg hover:-translate-y-1
+
+## Typography Scale
+- **H1**: `.varsity-h1` = text-3xl md:text-5xl font-bold
+- **H2**: `.varsity-h2` = text-2xl md:text-3xl font-semibold  
+- **H3**: `.varsity-h3` = text-xl md:text-2xl font-semibold
+- **Body**: `.varsity-body` = text-base md:text-lg leading-7 text-slate-600
+
 ## Layout Rules
-- **No min-h-screen** on hero sections (causes excessive whitespace)
-- **No vertical centering** (justify-center) for hero content - use top alignment
-- **Background**: bg-slate-50 dark:bg-background for page body, white cards with subtle borders
+- **No min-h-screen** on internal page containers (causes excessive whitespace)
+- **No vertical centering** for hero content - use top alignment with page-header spacing
+- **Background**: `.page-bg` = bg-slate-50 dark:bg-background for page body
+- **Legal Strip**: `.legal-strip` = clean disclaimer styling
 
 ## Performance Guidelines
 - Use SVG for all illustrations (scalable, small file size)

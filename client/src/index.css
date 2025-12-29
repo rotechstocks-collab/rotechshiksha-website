@@ -532,9 +532,9 @@ html, body {
 
 /* ===== ZERODHA VARSITY DESIGN SYSTEM ===== */
 @layer components {
-  /* ===== TYPOGRAPHY SCALE ===== */
+  /* ===== TYPOGRAPHY SCALE (Premium) ===== */
   .varsity-h1 {
-    @apply text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white;
+    @apply text-3xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white;
   }
   .varsity-h2 {
     @apply text-2xl md:text-3xl font-semibold tracking-tight text-slate-900 dark:text-white;
@@ -543,32 +543,45 @@ html, body {
     @apply text-xl md:text-2xl font-semibold tracking-tight text-slate-900 dark:text-white;
   }
   .varsity-body {
-    @apply text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed;
+    @apply text-base md:text-lg leading-7 text-slate-600 dark:text-slate-400;
   }
   .varsity-small {
     @apply text-sm text-slate-500 dark:text-slate-400;
   }
 
-  /* ===== LAYOUT UTILITIES ===== */
+  /* ===== LAYOUT UTILITIES (Premium Spacing) ===== */
   .page-container {
-    @apply max-w-6xl mx-auto px-4;
+    @apply max-w-6xl mx-auto px-4 md:px-8;
+  }
+  .page-header {
+    @apply pt-10 md:pt-14 pb-10 md:pb-14;
   }
   .section {
-    @apply py-12 md:py-16;
+    @apply py-12 md:py-20;
   }
   .section-sm {
-    @apply py-8 md:py-12;
+    @apply py-10 md:py-14;
+  }
+  .section-xs {
+    @apply py-8 md:py-10;
   }
 
-  /* ===== SOFT CARD SYSTEM ===== */
-  .card-soft {
-    @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow;
+  /* ===== PREMIUM CARD SYSTEM ===== */
+  .premium-card {
+    @apply bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm;
+  }
+  .premium-card-hover {
+    @apply bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm 
+           transition-all duration-200 ease-out;
+  }
+  .premium-card-hover:hover {
+    @apply shadow-lg border-slate-300 dark:border-slate-600 -translate-y-1;
   }
   .soft-card {
-    @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm;
+    @apply bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm;
   }
   .soft-card-hover {
-    @apply bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-sm 
+    @apply bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm 
            transition-all duration-200 ease-out;
   }
   .soft-card-hover:hover {
@@ -600,6 +613,11 @@ html, body {
     @apply bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-slate-700;
   }
 
+  /* ===== LEGAL/DISCLAIMER STRIP ===== */
+  .legal-strip {
+    @apply bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-4 md:p-5;
+  }
+
   /* ===== TRUST BADGES ===== */
   .trust-badge {
     @apply inline-flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400;
@@ -610,12 +628,17 @@ html, body {
     @apply bg-gradient-to-b from-slate-50 to-white dark:from-slate-900/50 dark:to-background;
   }
 
+  /* ===== PAGE BACKGROUND ===== */
+  .page-bg {
+    @apply bg-slate-50 dark:bg-background;
+  }
+
   /* Legacy utilities for compatibility */
   .section-container {
     @apply max-w-6xl mx-auto px-4;
   }
   .section-padding {
-    @apply py-10 md:py-16;
+    @apply py-10 md:py-14;
   }
 }
 
