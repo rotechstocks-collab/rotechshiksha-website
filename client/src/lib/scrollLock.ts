@@ -1,6 +1,9 @@
 /**
  * Utility to clear any stuck scroll locks left by Radix UI components
  * (Sheet, Dialog, Dropdown, etc.) or navigation changes.
+ * 
+ * Important: We only reset styles, we do NOT remove Radix portal containers
+ * as they are reused by Radix for subsequent modals/sheets.
  */
 export function clearScrollLock(): void {
   // Reset body styles that scroll-lock libraries typically set
@@ -19,11 +22,6 @@ export function clearScrollLock(): void {
   document.body.removeAttribute('data-scroll-locked');
   document.documentElement.removeAttribute('data-scroll-locked');
   
-  // Also check for any Radix overlay remnants
-  const overlays = document.querySelectorAll('[data-radix-portal]');
-  overlays.forEach((overlay) => {
-    if (overlay.childElementCount === 0) {
-      overlay.remove();
-    }
-  });
+  // Note: We intentionally do NOT remove [data-radix-portal] nodes
+  // as Radix reuses them for subsequent modals/sheets
 }

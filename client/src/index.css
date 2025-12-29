@@ -9,10 +9,10 @@ html, body {
 }
 
 /* ===== HEADER OFFSET CSS VARIABLE ===== */
-/* Mobile: Header h-14 (56px) at top-0 */
+/* Mobile: Ticker 38px + Header h-14 (56px) = 94px */
 /* Desktop: Ticker 38px + Header h-16 (64px) = 102px */
 :root {
-  --app-header-offset: 56px;
+  --app-header-offset: 94px;
   --app-ticker-height: 38px;
   --app-header-height: 56px;
 }
@@ -20,6 +20,7 @@ html, body {
 @media (min-width: 768px) {
   :root {
     --app-header-offset: 102px;
+    --app-ticker-height: 38px;
     --app-header-height: 64px;
   }
 }
