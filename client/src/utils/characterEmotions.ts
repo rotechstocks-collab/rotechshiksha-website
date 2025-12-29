@@ -103,7 +103,7 @@ const emotionBadgeMap: Record<CharacterEmotion, EmotionBadge> = {
     className: "text-blue-600 dark:text-blue-400",
   },
   warning: {
-    icon: AlertTriangle,
+    icon: HelpCircle,
     label: "Warning",
     className: "text-orange-600 dark:text-orange-400",
   },
