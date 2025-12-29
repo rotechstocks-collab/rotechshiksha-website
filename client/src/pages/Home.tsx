@@ -48,6 +48,7 @@ import { CharacterAvatar } from "@/components/characters/CharacterAvatar";
 import { HeroCharacterChat } from "@/components/characters/HeroCharacterChat";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
 import { CharacterDuo } from "@/components/characters/CharacterCard";
+import { WhatsAppStrip } from "@/components/WhatsAppStrip";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
@@ -650,6 +651,10 @@ export default function Home() {
         priyaEmotion="excited"
         rohitEmotion="warning"
       />
+
+      <div className="max-w-4xl mx-auto px-4 mb-8">
+        <WhatsAppStrip />
+      </div>
 
       <section className="py-10 md:py-14">
         <div className="max-w-4xl mx-auto px-4">

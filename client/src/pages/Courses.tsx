@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { CharacterTip } from "@/components/characters/CharacterTip";
 import { characterCopy } from "@/content/characterCopy";
 import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
+import { WhatsAppStrip } from "@/components/WhatsAppStrip";
 import { CharacterDuo } from "@/components/characters/CharacterCard";
 import {
   BookOpen,
@@ -317,6 +318,10 @@ export default function Courses() {
         priyaLine="Yahan 8 levels hain – basics se leke advanced tak. Ek-ek step follow karo, Level 1 se start karo!"
         rohitLine="Perfect! Step-by-step seekhenge toh confusion nahi hoga. Chal shuru karte hain!"
       />
+
+      <div className="max-w-4xl mx-auto px-4 mb-6">
+        <WhatsAppStrip />
+      </div>
 
       {/* Hero Section - Tighter spacing */}
       <section className="section-padding border-b">
