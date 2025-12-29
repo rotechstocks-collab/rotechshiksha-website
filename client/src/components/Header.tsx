@@ -82,7 +82,7 @@ export function Header() {
   };
 
   const NavDropdown = ({ label, items, testId }: { label: string; items: NavChild[]; testId: string }) => (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -265,7 +265,7 @@ export function Header() {
 
             <div className="hidden lg:block">
               {isAuthenticated ? (
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="gap-2" data-testid="button-user-menu">
                       <User className="w-4 h-4" />
@@ -305,7 +305,7 @@ export function Header() {
               )}
             </div>
 
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} modal={false}>
               <SheetTrigger asChild className="lg:hidden">
                 <Button size="icon" variant="ghost" data-testid="button-mobile-menu" className="h-10 w-10">
                   <Menu className="w-5 h-5" />
