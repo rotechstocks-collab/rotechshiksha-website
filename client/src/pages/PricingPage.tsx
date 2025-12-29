@@ -76,7 +76,7 @@ const trustBadges = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative" style={{ backgroundColor: '#f7f9fc' }}>
       <SEOHead
         title="Pricing Plans - Free vs Paid | Rotech Shiksha Stock Market Course"
         description="Compare Rotech Shiksha pricing plans. Free Starter, Pro Learner, Elite Mentorship. 8 levels FREE forever. Upgrade for personal mentorship & live sessions."
@@ -85,8 +85,8 @@ export default function PricingPage() {
 
       {/* Hero Section */}
       <section className="py-12 md:py-16 bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 mb-4">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 mb-4">
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
             8 Levels FREE Forever
           </Badge>
@@ -112,8 +112,8 @@ export default function PricingPage() {
 
       {/* Priya-Rohit Dialogue */}
       <section className="py-8">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="bg-card dark:bg-card border rounded-2xl p-6">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="bg-white dark:bg-slate-800 border rounded-2xl p-6">
             <div className="flex items-start gap-4 mb-4">
               <CharacterAvatar character="rohit" size="md" />
               <div className="flex-1 bg-blue-50 dark:bg-blue-900/30 rounded-xl rounded-tl-none p-4">
@@ -139,7 +139,7 @@ export default function PricingPage() {
 
       {/* Comparison Table */}
       <section className="py-10">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
               Free vs Paid - Kya Milega?
@@ -149,7 +149,7 @@ export default function PricingPage() {
             </p>
           </div>
           
-          <div className="bg-card dark:bg-card rounded-2xl border shadow-sm p-4 md:p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl border shadow-sm p-4 md:p-6">
             <ComparisonTable />
           </div>
         </div>
@@ -157,7 +157,7 @@ export default function PricingPage() {
 
       {/* Why Upgrade Section */}
       <section className="py-10 bg-gradient-to-b from-background to-primary/5">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
               Paid Plans Kyun Worth Hain?
@@ -200,7 +200,7 @@ export default function PricingPage() {
 
       {/* Testimonials */}
       <section className="py-10">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
               Learners Kya Kehte Hain
@@ -233,9 +233,9 @@ export default function PricingPage() {
 
       {/* FAQ Section */}
       <section className="py-10 bg-muted/30">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-4">
           <div className="text-center mb-8">
-            <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 mb-4">
+            <Badge className="bg-purple-100 text-purple-700 border-purple-200 mb-4">
               <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
               FAQs
             </Badge>
@@ -252,7 +252,7 @@ export default function PricingPage() {
               <AccordionItem 
                 key={index} 
                 value={`faq-${index}`} 
-                className="bg-card dark:bg-card border rounded-xl overflow-hidden"
+                className="bg-white dark:bg-slate-800 border rounded-xl overflow-hidden"
                 data-testid={`faq-${index}`}
               >
                 <AccordionTrigger className="px-6 py-4 text-left hover:no-underline hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
@@ -271,7 +271,7 @@ export default function PricingPage() {
 
       {/* Risk Reversal / Guarantee */}
       <section className="py-10">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-950/30 dark:to-blue-950/30 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 md:p-8">
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/50 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -300,7 +300,7 @@ export default function PricingPage() {
 
       {/* Final CTA */}
       <section className="py-12 bg-primary/5">
-        <div className="max-w-5xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
             Ready to Start?
           </h2>

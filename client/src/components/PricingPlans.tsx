@@ -126,9 +126,9 @@ export function PricingPlans() {
   };
 
   return (
-    <section className="py-12 lg:py-16">
+    <section className="py-12 lg:py-16 relative">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto relative">
           {plans.map((plan) => {
             const colors = colorClasses[plan.color as keyof typeof colorClasses];
             return (

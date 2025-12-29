@@ -1,5 +1,5 @@
 import { Switch, Route } from "wouter";
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -13,29 +13,16 @@ import { Footer } from "@/components/Footer";
 import { GlobalStoryStrip } from "@/components/characters/GlobalStoryStrip";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { AuthModal } from "@/components/AuthModal";
+import { LiveChat } from "@/components/LiveChat";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { HreflangTags } from "@/components/HreflangTags";
+import { MarketTicker } from "@/components/market/MarketTicker";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PageLoadingSkeleton } from "@/components/LoadingSkeleton";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 import Home from "@/pages/Home";
 import NotFound from "@/pages/not-found";
-
-// Lazy-load heavy components for faster initial paint
-const MarketTickerLazy = lazy(() => import("@/components/market/MarketTicker").then(m => ({ default: m.MarketTicker })));
-const LiveChatLazy = lazy(() => import("@/components/LiveChat").then(m => ({ default: m.LiveChat })));
-const WhatsAppButtonLazy = lazy(() => import("@/components/WhatsAppButton").then(m => ({ default: m.WhatsAppButton })));
-
-// Wrapper component that delays mounting of heavy components
-function DelayedMount({ children, delay = 1200 }: { children: React.ReactNode; delay?: number }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), delay);
-    return () => clearTimeout(timer);
-  }, [delay]);
-  if (!mounted) return null;
-  return <>{children}</>;
-}
 
 const About = lazy(() => import("@/pages/About"));
 const Courses = lazy(() => import("@/pages/Courses"));
@@ -129,15 +116,11 @@ function App() {
                 <TooltipProvider>
                   <ScrollToTop />
                   <HreflangTags />
-                  <DelayedMount delay={800}>
-                    <Suspense fallback={<div className="h-10 bg-muted/50 animate-pulse" />}>
-                      <MarketTickerLazy />
-                    </Suspense>
-                  </DelayedMount>
-                  <div className="min-h-screen bg-background safe-area-top overflow-x-hidden">
+                  <MarketTicker />
+                  <div className="min-h-screen bg-background safe-area-top overflow-x-hidden relative">
                     <Header />
                     <GlobalStoryStrip />
-                    <main className="pt-14 md:pt-[102px]">
+                    <main className="pt-14 md:pt-[102px] relative z-0">
                       <div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
                         <Router />
                       </div>
@@ -147,12 +130,8 @@ function App() {
                     <MobileBottomNav />
                     <div className="safe-area-bottom" />
                     <AuthModal />
-                    <DelayedMount delay={1500}>
-                      <Suspense fallback={null}>
-                        <LiveChatLazy />
-                        <WhatsAppButtonLazy />
-                      </Suspense>
-                    </DelayedMount>
+                    <LiveChat />
+                    <WhatsAppButton />
                   </div>
                   <Toaster />
                 </TooltipProvider>

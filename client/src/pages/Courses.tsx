@@ -413,7 +413,7 @@ export default function Courses() {
         rohitLine="Perfect! Step-by-step seekhenge toh confusion nahi hoga. Chal shuru karte hain!"
       />
 
-      <div className="max-w-6xl mx-auto px-4 mb-6">
+      <div className="max-w-4xl mx-auto px-4 mb-6">
         <WhatsAppStrip />
       </div>
 
@@ -542,7 +542,7 @@ export default function Courses() {
           <h2 className="text-xl lg:text-2xl font-bold text-foreground text-center mb-8">
             Ye Course Kiske Liye Hai?
           </h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6">
               <h3 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-4 flex items-center gap-2">
                 <CheckCircle className="w-5 h-5" />
@@ -596,7 +596,7 @@ export default function Courses() {
           <p className="text-muted-foreground text-center mb-8">
             8 levels poore karne ke baad ye sab confident hokar kar paoge
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {[
               { icon: <TrendingUp className="w-6 h-6" />, title: "Charts Padhna", desc: "Candlesticks, patterns, trends samjhoge" },
               { icon: <Shield className="w-6 h-6" />, title: "Risk Manage Karna", desc: "Stop-loss, position sizing seekhoge" },
@@ -618,7 +618,7 @@ export default function Courses() {
       {/* Course Timeline */}
       <section className="py-10 bg-gradient-to-b from-primary/5 to-background">
         <div className="section-container">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-xl lg:text-2xl font-bold text-foreground mb-2">
               Kitna Time Lagega?
             </h2>
@@ -703,7 +703,7 @@ export default function Courses() {
               Priya samjhayegi, Rohit tumhare jaisa sawaal karega
             </p>
           </div>
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <CharacterDuo
               priyaQuote="Har concept ko simple Hindi mein samjhaungi. Koi bhi doubt ho toh batao!"
               rohitQuote="Main bhi tum jaisa confused tha - ab dheere dheere samajh aa raha hai!"

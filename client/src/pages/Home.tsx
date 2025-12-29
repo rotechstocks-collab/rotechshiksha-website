@@ -295,13 +295,13 @@ function FAQItem({ faq, isHindi }: { faq: typeof faqs[0]; isHindi: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   
   return (
-    <div className="bg-card border rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
         data-testid={`faq-toggle-${faq.question.slice(0, 20)}`}
       >
-        <span className="font-medium text-foreground pr-4">
+        <span className="font-medium text-slate-900 dark:text-white pr-4">
           {isHindi ? faq.questionHi : faq.question}
         </span>
         {isOpen ? (
@@ -319,7 +319,7 @@ function FAQItem({ faq, isHindi }: { faq: typeof faqs[0]; isHindi: boolean }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+            <div className="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               {isHindi ? faq.answerHi : faq.answer}
             </div>
           </motion.div>
@@ -611,7 +611,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative" style={{ backgroundColor: '#f7f9fc' }}>
       <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
@@ -682,104 +682,76 @@ export default function Home() {
       />
       
       <section className="py-14 md:py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* 2-Column Hero Layout: Left = Content, Right = Stats/Feature Card */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Column - Headline + CTA */}
-            <motion.div 
-              className="text-center lg:text-left"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Badge className="bg-primary/10 text-primary border-primary/20 mb-4 text-sm px-4 py-1.5">
-                <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-                100% FREE • Hindi Mein • Beginners Ke Liye
-              </Badge>
-              
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4">
-                Stock Market Seekho
-                <br />
-                <span className="text-primary">— Bilkul Zero Se</span>
-              </h1>
-              
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 lg:max-w-xl">
-                Simple Hindi + Story-based learning with Priya & Rohit ke saath.
-                No jargon, no confusion – sirf clear understanding.
-              </p>
-              
-              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm text-muted-foreground mb-6">
-                <span className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  <span className="font-medium">4.8</span> rating
-                </span>
-                <span className="text-muted-foreground/50">•</span>
-                <span><span className="font-medium">10,000+</span> learners</span>
-                <span className="text-muted-foreground/50">•</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-medium">100% Free</span>
-              </div>
+        <div className="max-w-6xl mx-auto px-4">
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Badge className="bg-primary/10 text-primary border-primary/20 mb-4 text-sm px-4 py-1.5">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+              100% FREE • Hindi Mein • Beginners Ke Liye
+            </Badge>
+            
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
+              Stock Market Seekho
+              <br />
+              <span className="text-primary">— Bilkul Zero Se</span>
+            </h1>
+            
+            <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto mb-8">
+              Simple Hindi + Story-based learning with Priya & Rohit ke saath.
+              No jargon, no confusion – sirf clear understanding.
+            </p>
+            
+            <div className="flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-4">
+              <span className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span className="font-medium">4.8</span> rating
+              </span>
+              <span className="text-slate-300 dark:text-slate-600">•</span>
+              <span><span className="font-medium">10,000+</span> learners</span>
+              <span className="text-slate-300 dark:text-slate-600">•</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium">100% Free</span>
+            </div>
 
-              {/* CTA Buttons - Full Width on Desktop */}
-              <div className="flex flex-col sm:flex-row items-center lg:items-start gap-3 mb-4">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm inline-block p-6 md:p-8 mb-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/beginner-course" data-testid="link-start-learning-hero">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-8 btn-glow-primary" data-testid="button-start-learning-hero">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6 btn-glow-primary" data-testid="button-start-learning-hero">
                     <Play className="w-5 h-5" />
                     Start Level 1 Free
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
                 <Link href="/calculators" data-testid="link-explore-tools">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-8" data-testid="button-explore-tools">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-explore-tools">
                     <Calculator className="w-5 h-5" />
                     Explore Tools
                   </Button>
                 </Link>
               </div>
               
-              <p className="text-xs text-muted-foreground text-center lg:text-left">
+              <p className="text-xs text-slate-500 dark:text-slate-500 mt-4 text-center">
                 No signup required • Sirf seekhna hai, invest nahi
               </p>
-            </motion.div>
-            
-            {/* Right Column - Stats + Feature Card */}
-            <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4">
-                {stats.map((stat, index) => (
-                  <div key={index} className="bg-card border rounded-2xl shadow-sm p-4 text-center">
-                    <p className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</p>
-                    <p className="text-sm text-muted-foreground">{isHindi ? stat.labelHi : stat.label}</p>
-                  </div>
-                ))}
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10 max-w-xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {stats.map((stat, index) => (
+              <div key={index} className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-4 text-center">
+                <p className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">{isHindi ? stat.labelHi : stat.label}</p>
               </div>
-              
-              {/* Feature Highlights Card */}
-              <div className="bg-card border rounded-2xl shadow-sm p-6">
-                <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  Yahan Kya Seekhoge?
-                </h3>
-                <ul className="space-y-3 text-sm text-muted-foreground">
-                  {[
-                    "Basics: Stock market kaise kaam karta hai",
-                    "Charts: Candlesticks aur patterns padhna",
-                    "Risk: Safe investing ke tarike",
-                    "Practice: Paper trading se confidence build karo"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
@@ -790,44 +762,44 @@ export default function Home() {
         rohitEmotion="warning"
       />
 
-      <div className="max-w-6xl mx-auto px-4 mb-8">
+      <div className="max-w-4xl mx-auto px-4 mb-8">
         <WhatsAppStrip />
       </div>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
               Meet Your Learning Companions
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-slate-600 dark:text-slate-400">
               Priya explains, Rohit asks doubts you might have
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-card border rounded-2xl shadow-sm p-6">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <div className="flex items-center gap-4 mb-4">
                 <CharacterAvatar character="priya" size="lg" emotion="excited" />
                 <div>
-                  <h3 className="font-semibold text-foreground">Priya</h3>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">Priya</h3>
                   <p className="text-sm text-emerald-600 dark:text-emerald-400">Your Expert Guide</p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 "Main tumhe stock market simple Hindi mein samjhaungi. Koi jargon nahi, koi confusion nahi. Step by step seekhenge!"
               </p>
             </div>
             
-            <div className="bg-card border rounded-2xl shadow-sm p-6">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <div className="flex items-center gap-4 mb-4">
                 <CharacterAvatar character="rohit" size="lg" emotion="warning" />
                 <div>
-                  <h3 className="font-semibold text-foreground">Rohit</h3>
-                  <p className="text-sm text-muted-foreground">Fellow Learner (Just Like You)</p>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">Rohit</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Fellow Learner (Just Like You)</p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 "Main bhi tum jaisa beginner hoon. Jo sawal tumhare mann mein aaye, main Priya se poochunga – taaki hum dono samjhein!"
               </p>
             </div>
@@ -838,14 +810,14 @@ export default function Home() {
       </section>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div>
               <LeadCaptureSection isHindi={isHindi} />
             </div>
             
-            <div className="bg-card border rounded-2xl shadow-sm p-6">
-              <h3 className="font-bold text-lg text-foreground mb-4">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+              <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-4">
                 PDF mein kya hai?
               </h3>
               <ul className="space-y-3">
@@ -856,7 +828,7 @@ export default function Home() {
                   "Glossary of basic terms",
                   "Weekly learning checklist"
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
                     <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                     {item}
                   </li>
@@ -869,7 +841,7 @@ export default function Home() {
 
       {continueUrl && progress && progress.completedLevels.length > 0 && (
         <section className="py-4">
-          <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto px-4">
             <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -945,7 +917,7 @@ export default function Home() {
       </section>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 mb-3">
               <Compass className="w-3.5 h-3.5 mr-1.5" />
@@ -1011,7 +983,7 @@ export default function Home() {
       </section>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 mb-3">
               <Wrench className="w-3.5 h-3.5 mr-1.5" />
@@ -1066,7 +1038,7 @@ export default function Home() {
       </section>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800 mb-3">
               {isHindi ? "क्यों यहां सीखें?" : "Why Learn Here?"}
@@ -1106,7 +1078,7 @@ export default function Home() {
       </section>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 mb-3">
               <Star className="w-3.5 h-3.5 mr-1.5" />
@@ -1152,7 +1124,7 @@ export default function Home() {
       </section>
 
       <section className="py-10 md:py-14">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 mb-3">
               <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
@@ -1189,8 +1161,8 @@ export default function Home() {
         }}
       />
 
-      <section className="py-6 border-t border-border dark:border-border">
-        <div className="max-w-6xl mx-auto px-4 text-center">
+      <section className="py-6 border-t border-gray-200 dark:border-slate-800">
+        <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
             <strong>Disclaimer:</strong> This platform is independent and not affiliated with Zerodha, Groww, or any broker. 
             We provide education only – no investment advice. Always do your own research before investing.
