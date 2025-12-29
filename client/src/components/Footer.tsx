@@ -122,14 +122,14 @@ export function Footer() {
         <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
           <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-4 md:p-5">
             <div className="flex items-start gap-2">
-              <AlertTriangle className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="w-4 h-4 text-slate-500 dark:text-slate-400 flex-shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  <span className="font-medium text-slate-700 dark:text-slate-300">Disclaimer:</span> This website is for educational purposes only. We do not provide investment advice or trading tips.
+                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-6">
+                  <span className="font-medium text-slate-800 dark:text-slate-200">Disclaimer:</span> This platform is for educational purposes only. We do not provide investment advice or trading tips.
                   {!showFullDisclaimer && (
                     <button 
                       onClick={() => setShowFullDisclaimer(true)}
-                      className="ml-1 text-primary hover:underline font-medium inline-flex items-center gap-0.5"
+                      className="ml-1 text-emerald-600 dark:text-emerald-400 hover:underline font-medium inline-flex items-center gap-0.5"
                       data-testid="button-expand-disclaimer"
                     >
                       Read more
@@ -145,13 +145,13 @@ export function Footer() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2">
-                        Invest at your own risk after proper research. No guaranteed returns. Past performance is not indicative of future results. 
+                      <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-6 mt-2">
+                        We are not affiliated with Zerodha, Groww, or any broker. Invest at your own risk after proper research. No guaranteed returns. Past performance is not indicative of future results. 
                         Consult a SEBI registered advisor before making investment decisions. Always do your own research before making any financial decisions.
                       </p>
                       <button 
                         onClick={() => setShowFullDisclaimer(false)}
-                        className="mt-2 text-xs text-primary hover:underline font-medium inline-flex items-center gap-0.5"
+                        className="mt-2 text-xs text-emerald-600 dark:text-emerald-400 hover:underline font-medium inline-flex items-center gap-0.5"
                         data-testid="button-collapse-disclaimer"
                       >
                         Show less

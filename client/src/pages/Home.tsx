@@ -1161,15 +1161,6 @@ export default function Home() {
           testId: "button-final-cta-secondary"
         }}
       />
-
-      <section className="py-6 border-t border-gray-200 dark:border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
-            <strong>Disclaimer:</strong> This platform is independent and not affiliated with Zerodha, Groww, or any broker. 
-            We provide education only – no investment advice. Always do your own research before investing.
-          </p>
-        </div>
-      </section>
     </div>
   );
 }
