@@ -261,10 +261,10 @@ export default function BeginnerCourse() {
 
       <section className="py-6 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-3xl mx-auto px-4">
-          <div className="flex items-start gap-2 p-3 rounded-md bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
-            <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-amber-700/80 dark:text-amber-300/80">
-              <span className="font-medium">Education Only:</span> Rotech Shiksha is an education platform. We do not provide trading tips or investment advice. Always do your own research before making any financial decisions.
+          <div className="flex items-start gap-2 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50">
+            <Shield className="w-4 h-4 text-slate-500 dark:text-slate-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              <span className="font-medium text-slate-700 dark:text-slate-300">Education Only:</span> Rotech Shiksha is an education platform. We do not provide trading tips or investment advice. Always do your own research before making any financial decisions.
             </p>
           </div>
         </div>

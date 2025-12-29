@@ -92,16 +92,14 @@ export default function FAQ() {
             </div>
           </div>
 
-          <Card className="mt-4 bg-amber-50/50 dark:bg-amber-900/10 border-amber-200/50 dark:border-amber-800/30">
-            <CardContent className="py-4 px-4">
-              <div className="flex items-start gap-2.5">
-                <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  <strong>Important:</strong> {disclaimerText}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mt-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200/60 dark:border-slate-700/50 p-4">
+            <div className="flex items-start gap-2.5">
+              <Shield className="w-4 h-4 text-slate-500 dark:text-slate-400 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <span className="font-medium text-slate-700 dark:text-slate-300">Important:</span> {disclaimerText}
+              </p>
+            </div>
+          </div>
 
           <div className="mt-8 p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/15 dark:to-teal-900/15 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/40 mb-3">

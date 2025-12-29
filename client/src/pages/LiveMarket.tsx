@@ -544,19 +544,17 @@ export default function LiveMarket() {
 
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <Card className="bg-amber-500/10 border-amber-500/20">
-            <CardContent className="p-4 flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <div className="text-sm">
-                <p className="font-medium text-amber-700 dark:text-amber-300">Disclaimer</p>
-                <p className="text-amber-600 dark:text-amber-400">
-                  This is for educational purposes only. Market data may be delayed by 15-20 minutes.
-                  Always verify with your broker before making trading decisions.
-                  We do not provide buy/sell recommendations.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-4 flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-medium text-slate-800 dark:text-slate-200">Disclaimer</p>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                This is for educational purposes only. Market data may be delayed by 15-20 minutes.
+                Always verify with your broker before making trading decisions.
+                We do not provide buy/sell recommendations.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>

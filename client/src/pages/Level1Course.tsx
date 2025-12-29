@@ -157,9 +157,9 @@ export default function Level1Course() {
           </FadeInUp>
 
           <FadeInUp delay={0.4}>
-            <div className="mt-12 p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
-              <p className="text-sm text-amber-800 dark:text-amber-200 text-center">
-                <strong>Note:</strong> Rotech Shiksha is an education platform. 
+            <div className="mt-12 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50">
+              <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
+                <span className="font-medium text-slate-700 dark:text-slate-300">Note:</span> Rotech Shiksha is an education platform. 
                 We do not provide trading tips or investment advice.
               </p>
             </div>

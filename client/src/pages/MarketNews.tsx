@@ -227,18 +227,16 @@ function NewsDetailModal({
             {article.summary}
           </p>
 
-          <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-            <CardContent className="py-3 px-4">
-              <div className="flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-amber-800 dark:text-amber-200">
-                  {isHindi 
-                    ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
-                    : "This news is for educational purposes only. No investment advice or buy/sell recommendations are provided."}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200/60 dark:border-slate-700/50 py-3 px-4">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-slate-500 dark:text-slate-400 mt-0.5 flex-shrink-0" />
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isHindi 
+                  ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
+                  : "This news is for educational purposes only. No investment advice or buy/sell recommendations are provided."}
+              </p>
+            </div>
+          </div>
 
           <div className="flex items-center justify-between pt-2 border-t">
             <span className="text-sm text-muted-foreground">
@@ -437,18 +435,16 @@ export default function MarketNews() {
           </CardContent>
         </Card>
 
-        <Card className="mb-6 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-          <CardContent className="py-3 px-4">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-              <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-200">
-                {isHindi 
-                  ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
-                  : "This news is for educational purposes only. No investment advice or buy/sell recommendations are provided."}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="mb-6 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200/60 dark:border-slate-700/50 py-3 px-4">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-slate-500 dark:text-slate-400 mt-0.5 flex-shrink-0" />
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              {isHindi 
+                ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
+                : "This news is for educational purposes only. No investment advice or buy/sell recommendations are provided."}
+            </p>
+          </div>
+        </div>
 
         <LiveVideoSection isHindi={isHindi} />
 

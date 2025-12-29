@@ -642,25 +642,23 @@ export default function LiveNews() {
         )}
 
         <div className="mt-10 space-y-4">
-          <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-            <CardContent className="py-4 px-5">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                <div className="space-y-2">
-                  <p className="text-sm text-amber-800 dark:text-amber-200">
-                    {isHindi 
-                      ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
-                      : "This news is for educational purposes only. No investment advice or buy/sell recommendations."}
-                  </p>
-                  <p className="text-xs text-amber-700 dark:text-amber-300">
-                    {isHindi 
-                      ? "सभी समाचार सामग्री और कॉपीराइट उनके मूल स्रोतों के हैं। Rotech Shiksha कोई भी समाचार सामग्री का स्वामित्व नहीं रखता। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
-                      : "All news content and copyrights belong to their original sources. Rotech Shiksha does not claim ownership of any news content. Clicking any article opens the original source website."}
-                  </p>
-                </div>
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 py-4 px-5">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-slate-500 dark:text-slate-400 mt-0.5 flex-shrink-0" />
+              <div className="space-y-2">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {isHindi 
+                    ? "यह समाचार केवल शैक्षिक उद्देश्यों के लिए है। इसमें कोई निवेश सलाह या खरीद/बिक्री की सिफारिश नहीं है।" 
+                    : "This news is for educational purposes only. No investment advice or buy/sell recommendations."}
+                </p>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
+                  {isHindi 
+                    ? "सभी समाचार सामग्री और कॉपीराइट उनके मूल स्रोतों के हैं। Rotech Shiksha कोई भी समाचार सामग्री का स्वामित्व नहीं रखता। क्लिक करने पर मूल स्रोत वेबसाइट खुलेगी।" 
+                    : "All news content and copyrights belong to their original sources. Rotech Shiksha does not claim ownership of any news content. Clicking any article opens the original source website."}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
             <CardContent className="py-5 px-5">

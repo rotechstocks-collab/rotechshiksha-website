@@ -1,0 +1,99 @@
+Perform a full UI polish and cleanup across the entire React + Tailwind (Vite) website to achieve a minimal, classy Zerodha Varsity-style design.
+
+OBSERVED ISSUES TO FIX (Global):
+1) Excessive vertical whitespace across pages (Home, Blog, Courses, Learning Path, Tools):
+   - Caused by min-h-screen / h-screen / min-h-[vh]
+   - Caused by vertical centering (flex items-center justify-center / grid place-items-center)
+   - Caused by oversized padding (py-20 / py-24 / py-32)
+
+2) Colour inconsistency:
+   - Mixed backgrounds (green / grey / white / yellow alerts)
+   - CTA sections feel heavy instead of calm
+   - Disclaimer boxes look like warning alerts, not legal notes
+
+3) Footer clutter:
+   - Multiple disclaimer blocks repeated in different sections
+   - Footer looks messy and non-premium
+   - Yellow/orange alert style breaks Varsity aesthetic
+
+4) Card & CTA inconsistency:
+   - Card radius, shadows, borders not uniform
+   - Hover and interaction styles inconsistent
+
+5) Typography hierarchy inconsistency:
+   - Headings and subtext sizes differ page to page
+   - Line-heights and contrast need standardization
+
+------------------------------------------------
+
+GLOBAL DESIGN SYSTEM TO APPLY:
+
+A) SPACING (MOST IMPORTANT)
+- REMOVE all min-h-screen / h-screen from internal pages
+- REMOVE vertical centering from page headers
+- Page headers / hero sections:
+  pt-10 md:pt-14
+  pb-8 md:pb-10
+- Normal sections:
+  py-12 md:py-16
+- Container everywhere:
+  max-w-6xl mx-auto px-4 md:px-8
+
+B) BACKGROUND & COLOURS
+- Page background: bg-slate-50 (#F8FAFC)
+- Cards & content blocks: bg-white
+- Borders: border-slate-200/60
+- Dividers: border-slate-200/50
+- Avoid bright yellow/orange/green alert backgrounds unless absolutely necessary
+
+C) TYPOGRAPHY (STANDARDIZE SITE-WIDE)
+- H1: text-3xl md:text-5xl font-bold tracking-tight text-slate-900
+- H2: text-2xl md:text-3xl font-semibold text-slate-900
+- Body text: text-base md:text-lg leading-7 text-slate-600
+- Small text / legal: text-xs md:text-sm text-slate-500
+
+D) CARD SYSTEM (UNIVERSAL)
+Use ONE consistent card style everywhere:
+- rounded-2xl
+- bg-white
+- border border-slate-200/60
+- shadow-sm
+- hover:shadow-lg hover:-translate-y-1
+- transition duration-200 ease-out
+
+E) CTA SECTIONS
+- Reduce heavy coloured backgrounds
+- Use subtle tinted backgrounds (emerald-50 / slate-50)
+- Keep CTAs compact and centered
+- Avoid oversized padding
+
+F) FOOTER & DISCLAIMER (CRITICAL)
+- REMOVE all duplicate disclaimer blocks
+- Keep ONLY ONE disclaimer in the entire footer area
+- Convert disclaimer into a calm “legal strip” (NOT warning alert)
+
+Disclaimer design:
+- rounded-2xl
+- bg-slate-50
+- border border-slate-200/60
+- p-4 md:p-5
+- small muted warning icon
+- short visible text + optional “Read more” expand inside SAME block
+
+Footer spacing:
+- Footer padding: py-10 md:py-12
+- Reduce column gaps
+- Compact copyright line
+
+------------------------------------------------
+
+IMPORTANT CONSTRAINTS:
+- DO NOT change routes, hrefs, or navigation
+- DO NOT remove content, CTAs, sections, or features
+- ONLY improve spacing, colours, typography, layout, and consistency
+- Home page may keep slightly richer design, but internal pages must be compact
+
+OUTPUT:
+- Apply fixes globally across all relevant components/pages
+- Return file-wise changes
+- Clearly mention what spacing/colour/duplicate elements were removed or adjusted

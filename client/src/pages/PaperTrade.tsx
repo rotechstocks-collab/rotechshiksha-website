@@ -266,19 +266,17 @@ export default function PaperTrade() {
               Login to Start Trading
             </Button>
 
-            <Card className="mt-8 bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-left">
-                    <p className="font-semibold text-amber-800 dark:text-amber-200">Educational Disclaimer</p>
-                    <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                      This is a paper trading simulator for educational purposes only. No real trading or investment advice is provided. Virtual trades do not reflect actual market conditions.
-                    </p>
-                  </div>
+            <div className="mt-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-5">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-slate-500 dark:text-slate-400 mt-0.5 flex-shrink-0" />
+                <div className="text-left">
+                  <p className="font-medium text-slate-800 dark:text-slate-200">Educational Disclaimer</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    This is a paper trading simulator for educational purposes only. No real trading or investment advice is provided. Virtual trades do not reflect actual market conditions.
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -645,19 +643,17 @@ export default function PaperTrade() {
           </TabsContent>
         </Tabs>
 
-        <Card className="mt-8 bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="font-semibold text-amber-800 dark:text-amber-200">Educational Disclaimer</p>
-                <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                  This is a paper trading simulator for educational purposes only. No real trading or investment advice is provided. Virtual trades use simulated or delayed prices and do not reflect actual market conditions. Never invest real money based on paper trading results.
-                </p>
-              </div>
+        <div className="mt-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-5">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-slate-500 dark:text-slate-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium text-slate-800 dark:text-slate-200">Educational Disclaimer</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                This is a paper trading simulator for educational purposes only. No real trading or investment advice is provided. Virtual trades use simulated or delayed prices and do not reflect actual market conditions. Never invest real money based on paper trading results.
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       <Dialog open={showTradeDialog} onOpenChange={setShowTradeDialog}>

@@ -759,19 +759,17 @@ export default function LoansAndCreditCards() {
           <EMICalculator />
         </div>
 
-        <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
-          <CardContent className="py-6">
-            <div className="flex items-start gap-4">
-              <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
-              <div className="space-y-2">
-                <h3 className="font-semibold text-amber-800 dark:text-amber-200">{t("loans.disclaimer")}</h3>
-                <p className="text-sm text-amber-700 dark:text-amber-300">
-                  {t("loans.disclaimerText")}
-                </p>
-              </div>
+        <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-5">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-slate-500 dark:text-slate-400 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <h3 className="font-medium text-slate-800 dark:text-slate-200">{t("loans.disclaimer")}</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                {t("loans.disclaimerText")}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
