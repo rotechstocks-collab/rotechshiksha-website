@@ -194,7 +194,7 @@ function App() {
                   <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
                     <Header />
                     <GlobalStoryStrip />
-                    <main className="pt-14 md:pt-[102px] relative z-0 min-h-[100svh] overflow-visible">
+                    <main className="pt-14 md:pt-[102px] relative z-10 min-h-[100svh] overflow-visible">
                       <div className="w-full">
                         <Router />
                       </div>
