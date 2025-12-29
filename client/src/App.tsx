@@ -199,11 +199,11 @@ function AppLayout() {
       <MarketTicker />
       <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden overflow-y-visible relative">
         <Header />
-        <GlobalStoryStrip />
         <main 
           className="relative z-0" 
           style={{ paddingTop: 'var(--app-header-offset)' }}
         >
+          <GlobalStoryStrip />
           <div className="w-full">
             <Router />
           </div>
