@@ -176,7 +176,7 @@ export function Header() {
             </motion.div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             <Link href="/">
               <Button
                 variant="ghost"
@@ -244,12 +244,12 @@ export function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="hidden 2xl:block w-52">
+          <div className="flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
+            <div className="hidden xl:block w-52">
               <StockSearch variant="compact" />
             </div>
             
-            <div className="hidden xl:block">
+            <div className="hidden lg:block">
               <LanguageSelector />
             </div>
             
@@ -258,12 +258,12 @@ export function Header() {
               variant="ghost"
               onClick={toggleTheme}
               data-testid="button-theme-toggle"
-              className="hidden xl:flex"
+              className="hidden lg:flex"
             >
               {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </Button>
 
-            <div className="hidden lg:flex">
+            <div className="flex">
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -306,7 +306,7 @@ export function Header() {
             </div>
 
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild className="lg:hidden">
+              <SheetTrigger asChild className="xl:hidden">
                 <Button size="icon" variant="ghost" data-testid="button-mobile-menu" className="h-10 w-10">
                   <Menu className="w-5 h-5" />
                 </Button>
