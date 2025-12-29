@@ -1,0 +1,101 @@
+Make the entire ROTECH SHIKSHA website FULLY MOBILE-FIRST, RESPONSIVE, and PERFORMANCE OPTIMIZED.
+
+IMPORTANT:
+This website must work perfectly on MOBILE first.
+Desktop is secondary.
+Do NOT design desktop-first.
+
+---
+
+DEVICE SUPPORT:
+- Mobile phones (PRIMARY)
+- Tablets
+- Desktop
+
+RESPONSIVE BREAKPOINTS:
+- Mobile: up to 768px
+- Tablet: 768px – 1024px
+- Desktop: 1024px+
+
+---
+
+MOBILE-FIRST DESIGN RULES:
+- Start layout from small screens first
+- Single-column layout on mobile
+- No horizontal scrolling
+- Proper spacing & padding
+- Readable font sizes
+- Touch-friendly UI
+
+Buttons & CTAs:
+- Minimum height 44px
+- Proper spacing between buttons
+- Easy thumb reach
+
+---
+
+NAVIGATION (VERY IMPORTANT):
+- Desktop: normal navbar
+- Mobile:
+  - Hamburger menu
+  - Tools menu inside hamburger
+  - Language selector inside hamburger
+  - Smooth open/close animation
+
+---
+
+CONTENT & SECTIONS:
+- Cards stack vertically on mobile
+- Comparisons convert to swipeable cards
+- Tables should scroll horizontally only if unavoidable
+- No broken layouts on small screens
+
+---
+
+FORMS & INPUTS:
+- Mobile-optimized input fields
+- Correct keyboard types (email, number, tel)
+- Large tap areas
+- No tiny checkboxes
+
+---
+
+MEDIA HANDLING:
+- Images & videos auto-scale
+- Lazy-load all images and videos
+- No heavy animations on mobile
+- Disable unnecessary background animations on low-end devices
+
+---
+
+PERFORMANCE OPTIMIZATION:
+- Optimize images (compressed)
+- Use lazy loading
+- Avoid blocking scripts
+- Fast load on slow mobile networks
+
+---
+
+TESTING REQUIREMENT:
+Ensure UI works properly on:
+- 360×640
+- 375×667
+- 414×896
+
+No layout breaks allowed.
+
+---
+
+UX QUALITY BENCHMARK:
+Website should feel like a premium mobile app,
+not a zoomed-out desktop website.
+
+Follow modern mobile UX patterns similar to:
+- Zerodha Varsity
+- Groww
+- Smallcase
+
+---
+
+FINAL CONDITION:
+The website must look clean, professional, fast, and perfectly usable on mobile devices.

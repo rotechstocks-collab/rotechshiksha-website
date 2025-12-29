@@ -1,0 +1,102 @@
+PROJECT CONTEXT:
+This is a Live Business News & Videos page for an educational finance website.
+Do NOT break layout, routes, or navigation.
+Follow YouTube, Google News, and copyright policies strictly.
+
+==================================================
+PART 1: NEWS SECTION IMPROVEMENTS
+==================================================
+
+1. TIME FORMAT FIX
+- Convert all timestamps from "12h ago / 15h ago" to minute-based format.
+- Examples:
+  - 1–59 minutes → "1 min ago", "5 mins ago"
+  - 1–24 hours → "65 mins ago", "120 mins ago"
+- Always calculate from publishedAt timestamp.
+
+2. NEWS SOURCES EXPANSION
+- Increase number of Indian business news sources.
+- Add sources such as:
+  Mint
+  Moneycontrol
+  Economic Times
+  Business Standard
+  Financial Express
+  The Hindu BusinessLine
+  CNBC TV18
+- Deduplicate similar headlines.
+- Keep educational disclaimer.
+
+3. DISCLAIMER POSITION CHANGE
+- Move disclaimer:
+  "This news is for educational purposes only..."
+  from TOP of page to BOTTOM section (below news cards).
+- Do not remove disclaimer, only reposition it.
+
+4. MULTI-LANGUAGE NEWS SUPPORT
+- In addition to English & Hindi, add:
+  Gujarati
+  Marathi
+  Tamil
+  Telugu
+- If API does not support language:
+  - Fallback to English automatically.
+  - Show no errors.
+
+==================================================
+PART 2: VIDEOS SECTION (LEGAL & POLICY SAFE)
+==================================================
+
+5. EMBED ISSUE FIX
+- Remove or disable large embedded video player that shows:
+  "This video is unavailable".
+- Do NOT attempt forced iframe playback.
+
+6. VIDEO DISPLAY STRATEGY
+- Use card-based layout only.
+- Each video card must include:
+  - Thumbnail
+  - Title
+  - Channel name
+  - Language badge
+  - "Watch on YouTube" button
+
+7. VIDEO CLICK BEHAVIOR
+- Clicking any video:
+  - Opens original YouTube video in a new tab.
+  - Never plays inside the website.
+
+8. APPROVED CHANNELS
+- Fetch latest videos from official channels only:
+  CNBC TV18
+  Zee Business
+  ET Now
+  Bloomberg Quint
+  NDTV Profit
+  Moneycontrol
+- Focus on daily market, stocks, economy content.
+
+9. MULTI-LANGUAGE VIDEOS
+- Support videos in:
+  English
+  Hindi
+  Gujarati
+  Marathi
+  Tamil
+  Telugu
+- Show language filter tabs.
+- If no video in a language:
+  - Gracefully hide that tab.
+
+==================================================
+STRICT RULES:
+==================================================
+- Do NOT download or rehost videos.
+- Do NOT scrape video streams.
+- Respect YouTube embed restrictions.
+- Do NOT change page routes or header navigation.
+- Do NOT break existing UI or styling.
+
+FINAL GOAL:
+A clean, legal, professional Live Business News & Videos experience
+similar to Moneycontrol / Inshorts / Google News style.

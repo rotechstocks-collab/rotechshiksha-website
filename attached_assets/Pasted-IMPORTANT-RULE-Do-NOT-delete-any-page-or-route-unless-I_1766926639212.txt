@@ -1,0 +1,153 @@
+IMPORTANT RULE: Do NOT delete any page or route unless I explicitly say “permanently remove”.
+I want to upgrade my Videos page into a premium Zerodha Varsity-style Video Hub (like a learning platform), using only legal YouTube embeds (no downloading, no rehosting).
+
+My target route:
+✅ /educational-videos
+
+✅ 1) Page Design (Varsity Style)
+
+Build a clean premium page:
+
+Background: #f7f9fc
+
+Container: max-w-6xl mx-auto px-4 py-12
+
+Heading: “Educational Videos”
+
+Subheading in Hinglish:
+“YouTube pe available best stock market videos — beginners ke liye bilkul simple.”
+
+Use clean card layout:
+
+bg-white border border-gray-200 rounded-2xl shadow-sm
+
+Hover: shadow-md -translate-y-0.5
+
+✅ 2) Data Source (Legal Only)
+
+Create a JSON file for video content:
+
+client/src/data/videos.ts
+
+Each video object must include:
+
+id (unique)
+
+title (Hinglish)
+
+description
+
+youtubeId
+
+channelName
+
+category (Basics, Trading, Investing, IPO, Mutual Funds, Psychology, Technical Analysis)
+
+playlistName (optional)
+
+duration (optional)
+
+level (“Beginner” | “Intermediate” | “Advanced”)
+
+Videos must be shown ONLY via:
+✅ YouTube iframe embed
+✅ thumbnail preview
+✅ “Watch on YouTube” link
+
+✅ 3) Categories + Filter System
+
+At top of page add:
+✅ Category chips (Basics, Trading, Investing, IPO, Mutual Funds, Psychology, Technical)
+✅ Level filter dropdown (Beginner / Intermediate / Advanced)
+✅ Search input (search title + description)
+✅ Sort dropdown (Most Popular / Newest / Duration)
+
+UX must be smooth and responsive.
+
+✅ 4) Playlist-style Layout (Varsity Feel)
+
+Show content in 2-level structure:
+
+✅ Left sidebar (or top on mobile):
+
+Playlist list (Beginner Series, Trading Series, Investing Series, etc.)
+
+✅ Main content area:
+
+Videos in selected playlist displayed as cards
+
+Each card shows:
+
+thumbnail
+
+title
+
+small channel name
+
+category tag badge
+
+duration badge
+
+“Watch” button
+
+Clicking video opens an embed player on the top (or in modal) and plays it.
+
+✅ 5) “Continue Watching” Section (Important)
+
+Build a Continue Watching feature:
+
+Track last watched videoId + timestamp
+
+Save progress in localStorage
+
+On page load:
+✅ show “Continue Watching” card at top if data exists
+
+Button: “Resume”
+
+Also create:
+✅ Watch History list (last 10 watched videos)
+
+✅ 6) Priya & Rohit Helper Tip (Optional)
+
+Add a small tip card under heading:
+
+Priya explains:
+“Videos ke saath course bhi follow karo to clarity fast milegi ✅”
+
+Use:
+<CharacterAvatar character="priya" size="sm" />
+
+✅ 7) Verification
+
+Verify on:
+✅ Desktop
+✅ Mobile
+
+Confirm:
+
+No 404
+
+Search works
+
+Category filtering works
+
+Playlist selection works
+
+Continue watching works
+
+Video plays using embed
+
+Watch on YouTube link works
+
+✅ OUTPUT REQUIRED
+
+List all files modified
+
+Show EducationalVideos.tsx final code
+
+Show videos.ts sample content
+
+Confirm verification completed
+
+Confirm no pages deleted

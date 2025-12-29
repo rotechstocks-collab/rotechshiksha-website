@@ -1,0 +1,173 @@
+You are an expert frontend engineer. You are working on rotechshiksha.com (React + TypeScript + Tailwind).
+Issue: On Desktop at 100% zoom, after the Pricing section, the content below is not visible / clipped / disappears.
+
+✅ GOAL
+
+Fix the layout so:
+
+No content clips after Pricing
+
+Works on Desktop (100%, 125% zoom), Mobile, Tablet
+
+No pages/routes deleted
+
+Top market ticker must remain (do not remove)
+
+SEBI-safe copy remains (no investment tips/guarantees)
+
+✅ BUG DESCRIPTION (Critical)
+
+After Pricing section, next sections exist in DOM but become invisible due to:
+
+overflow-hidden applied on parent containers
+
+h-screen, h-[100vh], fixed height wrappers
+
+misused min-h-screen combined with overflow-hidden
+
+layout collapse due to absolute positioning
+
+incorrect z-index stacking context clipping sections below
+
+✅ STEP-BY-STEP FIX INSTRUCTIONS
+1) Locate the Exact Cause (Must Do)
+
+Audit these files (and related wrappers):
+
+Home.tsx
+
+Layout.tsx / App.tsx
+
+Hero.tsx
+
+Pricing.tsx
+
+Any MainLayout, PageWrapper, or SectionWrapper
+
+Search for these classes and patterns:
+
+overflow-hidden
+
+h-screen
+
+h-[100vh]
+
+min-h-screen
+
+fixed, absolute, sticky
+
+relative with overflow-hidden
+
+transform, filter, backdrop-blur (creates stacking context)
+
+max-h-*
+
+grid with h-screen
+
+wrappers like min-h-screen overflow-hidden
+
+✅ Identify the exact container that is causing clipping after Pricing.
+
+2) Fix Rules (Do Not Guess Randomly)
+
+Apply these safe fixes:
+
+✅ Rule A: Never use overflow-hidden on full-page wrapper
+
+If needed, replace with:
+
+overflow-x-hidden (only horizontal protection)
+
+OR overflow-visible for vertical flow
+
+✅ Rule B: Avoid forced height containers
+Replace:
+
+h-screen, h-[100vh]
+With:
+
+min-h-[100svh]
+
+OR remove fixed height completely if content should scroll naturally
+
+✅ Rule C: Ensure every section naturally expands
+Each section should be like:
+
+py-12 md:py-20
+
+no h-screen unless it’s truly full-screen
+
+no wrapper that limits height
+
+✅ Rule D: Fix absolute positioning
+If Pricing or Hero is absolute, ensure parent has correct height:
+
+Prefer not to use absolute for large sections
+
+If required, parent must have:
+
+relative
+
+and correct padding/margin so next sections start below properly
+
+✅ Rule E: Fix stacking context clipping
+If you see a wrapper like:
+
+relative overflow-hidden
+
+transform + overflow-hidden
+This can clip below content.
+Solution:
+
+remove overflow-hidden
+
+remove unnecessary transform
+
+apply overflow-x-hidden only
+
+3) Must Add Quick Debug Validation (Do This Before Finalizing)
+
+Temporarily add this debug border to confirm where clipping happens:
+
+Add outline outline-2 outline-red-500 on suspected wrappers
+Find which wrapper ends exactly after Pricing.
+
+Also inspect in Chrome DevTools:
+
+check computed height of main wrapper
+
+check if main has height: 100vh
+
+check if sections below exist but hidden due to overflow clipping
+
+✅ REQUIRED FINAL OUTPUT
+
+When you implement:
+
+Tell me the exact root cause (which file + class)
+
+Show final code changes as diff
+
+Confirm it works on:
+
+Desktop 100% zoom ✅
+
+Desktop 125% zoom ✅
+
+Mobile ✅
+
+Ensure no page deleted, top ticker still present ✅
+
+✅ VERY IMPORTANT GUARDRAILS
+
+DO NOT delete any route/page
+
+DO NOT remove top market ticker
+
+Do NOT change Pricing plan structure
+
+Keep Priya (green blazer expert) & Rohit (navy blazer learner) as friends (same age, not siblings)
+
+Copy remains SEBI-safe
+
+Now implement these changes cleanly.

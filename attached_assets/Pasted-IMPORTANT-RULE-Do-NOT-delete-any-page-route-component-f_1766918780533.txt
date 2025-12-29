@@ -1,0 +1,101 @@
+IMPORTANT RULE: Do NOT delete any page/route/component from my website unless I explicitly say “permanently remove this page”. You may reorganize or move pages, but do not delete anything.
+
+I have uploaded a sprite sheet image at:
+client/public/characters/sprite.png
+It contains 8 characters in a 4 columns × 2 rows grid (Priya & Rohit poses).
+
+TASK 1: Split + Trim the sprite sheet into 8 clean PNG files
+
+Create a Node.js script (use sharp) inside scripts/splitCharacters.ts (or .js) that:
+
+Reads client/public/characters/sprite.png
+
+Splits it into 8 images (4 columns × 2 rows)
+
+Automatically trims/crops extra empty transparent or solid background space from each image
+
+Saves output into: client/public/characters/poses/
+
+Name the output files exactly like this:
+
+priya-point.png
+
+priya-think.png
+
+priya-clipboard.png
+
+priya-smile.png
+
+rohit-confused.png
+
+rohit-thumb.png
+
+rohit-idea.png
+
+rohit-write.png
+
+Also generate client/public/characters/poses/index.ts exporting these paths for easy import.
+
+TASK 2: Create reusable Character Tip UI system (Zerodha Varsity style)
+
+Create components:
+
+client/src/components/characters/CharacterTip.tsx
+
+accepts props: character: "priya" | "rohit", pose, title, message, actionLabel?, onAction?
+
+renders a small card with:
+
+avatar image (from poses)
+
+short text (max 2 lines)
+
+optional button for example
+
+client/src/components/characters/CharacterChat.tsx
+
+renders Priya + Rohit as short conversation (2–3 lines each)
+
+should look clean and professional, not childish
+
+TASK 3: Integrate Priya & Rohit in key pages (Do NOT remove pages)
+
+Add these components carefully without breaking routing:
+
+Homepage: show a hero chat where Rohit asks “Where should I start?” and Priya gives a roadmap answer + CTA buttons.
+
+Learning/Roadmap page: show a CharacterTip at top introducing Beginner → Intermediate → Advanced path.
+
+Calculator page: show PriyaTip explaining why the calculator is useful (risk control + position sizing).
+
+TASK 4: Occasional Cartoon Comic Panel (Quiz/Story Popup)
+
+Create a modal component: client/src/components/characters/ComicModal.tsx
+
+This modal shows 2–3 comic panels (for now use placeholders with the same characters)
+
+Add a “See Example” button in CharacterTip that opens this modal.
+
+TASK 5: Make sure everything is responsive + fast
+
+Lazy load large images
+
+Use loading="lazy" for character images
+
+Use proper alt text for SEO
+
+Deliverables:
+
+✅ scripts for split + trim
+✅ character pose assets exported in index.ts
+✅ CharacterTip + CharacterChat + ComicModal components
+✅ Integrated into Homepage + Calculator + Roadmap pages
+✅ No page deletion under any condition
+
+After implementation, show me:
+
+which files were created/changed
+
+how to run the split script (command)
+
+screenshots or explanation of how characters appear on pages

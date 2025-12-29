@@ -1,0 +1,191 @@
+IMPORTANT RULE: Do NOT delete any page or route unless I explicitly say “permanently remove”.
+Keep the top Market Ticker bar. Do NOT remove it. You may improve it.
+My goal is to upgrade my website into a Zerodha Varsity–style premium UI with soft colors, clean typography, and consistent spacing — while keeping Hinglish tone.
+
+✅ 1) Global Varsity Design System (Typography + Spacing + Soft UI)
+
+Create / update global style tokens so every page feels consistent:
+
+Typography
+
+Use Inter as primary font (fallback system font).
+
+Add consistent heading + body scale:
+
+h1: text-4xl md:text-5xl font-semibold tracking-tight
+
+h2: text-2xl md:text-3xl font-semibold
+
+body: text-base md:text-lg text-gray-700 leading-relaxed
+
+Layout utilities
+
+Add .page-container = max-w-6xl mx-auto px-4
+
+Add .section = py-12 md:py-16
+
+Cards
+
+Add .card-soft = rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition
+
+Buttons
+
+Primary: rounded-xl, slightly thick, no harsh gradient
+
+Secondary: outline style
+
+Background
+
+use bg-gray-50 / bg-slate-50 as the primary page background
+
+Apply these styles across the site so UI looks premium and minimal like Varsity.
+
+✅ 2) Home Page Varsity Blueprint Upgrade (/)
+
+Update Home page layout to the following structure:
+
+(A) Hero Section (2-column, Varsity-style)
+
+Left:
+
+Big headline: “Stock Market Seekho — Bilkul Zero Se”
+
+Hinglish subheading (short, trustable)
+
+CTA buttons:
+
+“FREE Course Shuru Karo” (primary)
+
+“Tools Dekho” (secondary)
+
+Under CTA: trust badge row:
+✅ 100% Free ✅ Hindi+Hinglish ✅ Education Only ✅ SEBI disclaimer
+
+Right:
+
+Priya & Rohit mini story/comic panel (small)
+
+Small chat bubble “Rohit asks / Priya answers”
+
+(B) Start Here flow section
+
+Create 4-step flow cards:
+
+Beginner Course
+
+Tools & Calculators
+
+Practice + Quiz
+
+Paid Plan (optional)
+
+(C) Why Trust section
+
+Add 3 premium cards:
+
+Simple Hinglish
+
+Real examples
+
+Step-by-step
+
+(D) Lead capture
+
+Add “WhatsApp group join karo” + “Email learning free” CTA section (soft card style).
+
+✅ 3) Calculators Page Varsity Blueprint Upgrade (/calculators)
+
+Create premium layout:
+
+Hero header: Title + subtitle + Priya tip card
+
+Featured calculators row (4 big cards)
+
+All calculators grid
+
+Add “Recently Used” section using localStorage (optional)
+
+Each calculator card has:
+
+button: “Use calculator”
+
+link: “Learn this topic” (links to beginner course)
+
+✅ 4) Educational Videos Varsity Video Hub Upgrade (/educational-videos)
+
+Upgrade into Varsity Video Hub:
+
+Hero header with title + Hinglish subtitle
+
+Priya tip bar
+
+Add “Continue Watching” row using localStorage
+
+Layout:
+Left sidebar playlists / series list
+Right video grid
+
+Add search + category + level filter
+
+On video click: open modal with:
+
+YouTube embed
+
+Mark watched
+
+Save to favorites
+
+Ensure all videos are from YouTube legally (embed only).
+
+✅ 5) Pricing Page Varsity Blueprint Upgrade (/pricing)
+
+Upgrade pricing page into high-trust conversion layout:
+
+Hero title + Hinglish subtitle
+
+3 plan cards:
+Free / Pro (recommended) / Premium
+
+Add comparison table
+
+Add FAQ section (Hinglish)
+
+Add trust block: “Education only — no guaranteed returns”
+
+✅ 6) Market Ticker Improve (Do NOT remove)
+
+Keep ticker, but improve it slightly:
+
+cleaner spacing
+
+softer fonts
+
+add optional speed control (small)
+
+add a “LIVE” badge left
+
+✅ 7) Verification
+
+Verify these pages:
+✅ /
+✅ /calculators
+✅ /educational-videos
+✅ /pricing
+
+Confirm:
+
+all pages use consistent typography + spacing
+
+all pages feel Varsity premium
+
+Hinglish content only (no pure English paragraphs)
+
+ticker still exists
+
+no routes/pages deleted
+
+Output:
+
+List all files modified
+
+Confirm verification done

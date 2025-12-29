@@ -1,0 +1,165 @@
+Website Name: ROTECH SHIKSHA
+
+Domain: Share Market Education
+
+Platform: Replit
+
+Stack: HTML + CSS + JavaScript / React
+
+🌐 LANGUAGE SWITCH – CORE REQUIREMENTS
+1️⃣ DEFAULT LANGUAGE (AUTO)
+
+Website load hote hi English automatically selected rahe
+
+Agar user ne pehle koi language select ki hai → wahi auto load ho
+
+2️⃣ USER LANGUAGE SELECTOR (GLOBAL)
+
+Add a 🌐 Language Selector in top navbar
+User jab bhi language change kare:
+
+✅ Entire website content instantly change ho
+✅ Page reload na ho
+✅ Same language sabhi pages par apply ho
+
+🌍 SUPPORTED LANGUAGES (ALL REQUIRED)
+
+English (default)
+
+हिंदी (Hindi)
+
+मराठी (Marathi)
+
+ગુજરાતી (Gujarati)
+
+తెలుగు (Telugu)
+
+മലയാളം (Malayalam)
+
+ಕನ್ನಡ (Kannada)
+
+Français (French)
+
+Español (Spanish)
+
+العربية (Arabic)
+
+Deutsch (German)
+
+Русский (Russian)
+
+اردو (Urdu)
+
+🗂 TRANSLATION SYSTEM (MANDATORY)
+🔹 Static Content Translation
+
+Use JSON based translations:
+
+/locales/
+  en.json
+  hi.json
+  mr.json
+  gu.json
+  te.json
+  ml.json
+  kn.json
+  fr.json
+  es.json
+  ar.json
+  de.json
+  ru.json
+  ur.json
+
+
+Translate everything:
+
+Navbar
+
+All pages headings
+
+Buttons
+
+Tools names
+
+Forms
+
+Error messages
+
+Footer
+
+Empty states
+
+CTA text
+
+❗ No hard-coded text allowed
+
+🔄 DYNAMIC CONTENT RULES
+
+API based text labels auto translate
+
+If translation missing:
+
+Show English fallback
+
+Language switch should be instant
+
+🔁 RTL LANGUAGE HANDLING (IMPORTANT)
+
+For Arabic & Urdu:
+
+Auto enable:
+
+dir="rtl"
+
+
+Flip layout:
+
+Text alignment
+
+Icons
+
+Padding / margin
+
+Other languages remain LTR
+
+💾 LANGUAGE MEMORY
+
+Save selected language in localStorage
+
+Refresh, navigation, new page → same language stays
+
+First visit → English default
+
+🎨 UI / UX FIXES
+
+No layout break on language change
+
+Smooth transition
+
+Mobile & desktop responsive
+
+Clean professional finance UI
+
+Fonts support all languages
+
+⚙️ TECH RULES
+
+Use data-i18n keys / translation hooks
+
+Lazy-load selected language file
+
+Performance optimized
+
+No console errors
+
+✅ FINAL EXPECTED RESULT
+
+Website default → English
+
+User selects language → 100% website content translated
+
+Language persists everywhere
+
+RTL works perfectly
+
+Stable UI, no glitches

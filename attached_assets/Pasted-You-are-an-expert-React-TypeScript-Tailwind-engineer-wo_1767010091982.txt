@@ -1,0 +1,190 @@
+You are an expert React + TypeScript + Tailwind engineer working on rotechshiksha.com.
+
+🎯 GOAL (Highest Priority)
+
+Fix trust-breaking UI issues and improve speed for better Google ranking + conversions.
+
+✅ Must fix:
+
+Desktop 100% zoom on Pricing page → <PricingPlans /> ke baad content clip/disappear issue
+
+Navbar se page change par → scroll reset to top
+
+Speed optimization → improve Core Web Vitals (LCP, CLS, TBT)
+
+Ensure responsive typography + spacing on desktop/mobile
+
+STRICT GUARDRAILS
+
+❌ Do NOT delete any page/route
+
+❌ Do NOT remove top market ticker (only improve if needed)
+
+✅ Copy must remain SEBI-safe (no tips/guarantees)
+
+✅ Keep Priya (green blazer expert) & Rohit (navy blazer learner) as friends, same age (not siblings)
+
+✅ TASK A — FIX PRICING PAGE CLIPPING (Desktop 100% zoom)
+
+Bug: In client/src/pages/PricingPage.tsx, content below <PricingPlans /> disappears on desktop 100% zoom.
+PricingPage.tsx and PricingPlans.tsx contain no forced height, so root cause is likely global wrapper.
+
+A1) Fix global layout wrapper in client/src/App.tsx
+Remove max-width wrapper around Router
+
+Replace:
+
+<div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
+  <Router />
+</div>
+
+
+With:
+
+<div className="w-full">
+  <Router />
+</div>
+
+Make <main> scroll-safe
+
+Replace:
+
+<main className="pt-14 md:pt-[102px] relative z-0">
+
+
+With:
+
+<main className="pt-14 md:pt-[102px] relative z-0 min-h-[100svh] overflow-visible">
+
+Safe viewport height wrapper
+
+Replace:
+
+<div className="min-h-screen ...">
+
+
+With:
+
+<div className="min-h-[100svh] ...">
+
+A2) Check global CSS (index.css or global styles)
+
+Ensure:
+
+body, html, #root DO NOT have overflow: hidden
+
+Only allow: overflow-x-hidden
+✅ Fix if any global overflow hidden is present.
+
+A3) Debug validation (Mandatory)
+
+Temporarily add:
+
+outline outline-2 outline-red-500
+
+
+on App wrapper, <main>, and PricingPlans wrapper to identify which container is clipping.
+Remove outlines after confirmation.
+
+✅ Confirm after fix:
+
+Desktop 100% zoom ✅
+
+Desktop 125% zoom ✅
+
+Mobile ✅
+
+✅ TASK B — SCROLL RESET ON ROUTE CHANGE (Wouter)
+
+Add ScrollToTop.tsx:
+
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+
+export default function ScrollToTop() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location]);
+
+  return null;
+}
+
+
+Mount <ScrollToTop /> once in App.tsx above routes.
+
+✅ Expected:
+Navbar page change → always opens from top.
+
+✅ TASK C — SPEED POLISH (Core Web Vitals Boost)
+
+Your job: reduce LCP, CLS, and TBT without changing UI drastically.
+
+C1) Reduce heavy animations (especially Framer Motion)
+
+Use viewport={{ once: true }} everywhere
+
+Avoid animations on mobile where possible (use prefers-reduced-motion)
+
+Remove unnecessary repeated motion wrappers in long pages (Home, Pricing)
+
+C2) Lazy-load heavy components/pages
+
+Lazy load PricingPlans, ComparisonTable, and heavy pages:
+Use React lazy + Suspense:
+
+const PricingPlans = lazy(() => import("./PricingPlans"));
+
+C3) Optimize images & avatars
+
+Ensure CharacterAvatar uses optimized sizes
+
+Avoid loading large images above the fold
+
+Use loading="lazy" for below-fold images
+
+C4) Reduce layout shift (CLS)
+
+Ensure buttons/cards have fixed heights where needed
+
+Avoid content jumping due to fonts or dynamic heights
+
+Ensure consistent spacing in responsive breakpoints
+
+C5) Ensure Tailwind layout best practices
+
+Avoid nested large containers
+
+Use consistent page widths:
+
+sections: max-w-6xl mx-auto px-4 md:px-6
+
+Ensure overflow-x-hidden globally only
+
+✅ After speed polish:
+
+Smooth scroll
+
+Faster load (especially mobile)
+
+No layout shifts
+
+✅ FINAL OUTPUT REQUIRED
+
+Identify exact root cause of clipping (file + className)
+
+Show code diff changes
+
+Confirm passes checklist:
+✅ Pricing page works after PricingPlans (100% zoom desktop)
+✅ Works at 125% zoom
+✅ Mobile works
+✅ Scroll reset works
+✅ Speed improved (mention what you optimized)
+✅ No route deleted
+✅ Ticker remains
+
+Keep changes minimal, clean, production-ready.
+
+Now implement everything cleanly.

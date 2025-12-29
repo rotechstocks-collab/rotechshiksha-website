@@ -1,5 +1,5 @@
 import { Switch, Route } from "wouter";
-import { lazy, Suspense, useLayoutEffect, useRef, useCallback } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -28,9 +28,7 @@ const About = lazy(() => import("@/pages/About"));
 const Courses = lazy(() => import("@/pages/Courses"));
 const CalculatorHub = lazy(() => import("@/pages/CalculatorHub"));
 const GenericCalculator = lazy(() => import("@/pages/GenericCalculator"));
-const BrokerageCalculatorPage = lazy(
-  () => import("@/pages/BrokerageCalculatorPage"),
-);
+const BrokerageCalculatorPage = lazy(() => import("@/pages/BrokerageCalculatorPage"));
 const PricingPage = lazy(() => import("@/pages/PricingPage"));
 const Payment = lazy(() => import("@/pages/Payment"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
@@ -86,10 +84,7 @@ function Router() {
         <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
         <Route path="/live-market" component={LiveMarket} />
         <Route path="/calculators" component={CalculatorHub} />
-        <Route
-          path="/calculators/brokerage"
-          component={BrokerageCalculatorPage}
-        />
+        <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
         <Route path="/calculators/:id" component={GenericCalculator} />
         <Route path="/pricing" component={PricingPage} />
         <Route path="/payment/:planId" component={Payment} />
@@ -110,29 +105,12 @@ function Router() {
   );
 }
 
-export default function App() {
-  const headerRef = useRef<HTMLDivElement>(null);
-
-  const updateHeaderHeight = useCallback(() => {
-    const height = headerRef.current?.offsetHeight || 104;
-    document.documentElement.style.setProperty('--app-header-offset', `${height}px`);
+function App() {
+  useEffect(() => {
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("padding-right");
+    document.documentElement.style.removeProperty("overflow");
   }, []);
-
-  useLayoutEffect(() => {
-    updateHeaderHeight();
-
-    let timeoutId: ReturnType<typeof setTimeout>;
-    const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(updateHeaderHeight, 100);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timeoutId);
-    };
-  }, [updateHeaderHeight]);
 
   return (
     <ErrorBoundary>
@@ -144,35 +122,23 @@ export default function App() {
                 <TooltipProvider>
                   <ScrollToTop />
                   <HreflangTags />
-
-                  {/* Fixed Header */}
-                  <div
-                    ref={headerRef}
-                    className="fixed top-0 left-0 right-0 z-50"
-                  >
-                    <MarketTicker />
+                  <MarketTicker />
+                  <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
                     <Header />
-                  </div>
-
-                  {/* Page wrapper */}
-                  <div className="min-h-[100svh] bg-background overflow-x-hidden relative">
                     <GlobalStoryStrip />
-
-                    {/* Content offset by fixed header height (CSS var) */}
-                    <main className="pt-[var(--app-header-offset)] relative z-10">
+                    <main className="pt-14 md:pt-[102px] relative z-0 min-h-[100svh] overflow-visible">
                       <div className="w-full">
                         <Router />
                       </div>
                     </main>
-
                     <Footer />
                     <div className="h-20 md:hidden" aria-hidden="true" />
                     <MobileBottomNav />
+                    <div className="safe-area-bottom" />
                     <AuthModal />
                     <LiveChat />
                     <WhatsAppButton />
                   </div>
-
                   <Toaster />
                 </TooltipProvider>
               </AuthProvider>
@@ -183,3 +149,5 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
+export default App;

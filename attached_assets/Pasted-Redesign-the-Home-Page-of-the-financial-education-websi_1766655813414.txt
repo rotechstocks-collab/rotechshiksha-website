@@ -1,0 +1,60 @@
+Redesign the Home Page of the financial education website with a modern, creative, and animated look focused on stock market & financial education.
+🎨 Visual & Animation Style:
+•	Use cartoon-style creative illustrations related to:
+o	Stock market learning
+o	Investing basics
+o	Financial growth
+o	Charts, coins, graphs, people learning finance
+•	Background should have subtle animated elements:
+o	Moving graphs
+o	Floating coins
+o	Animated candlesticks
+o	Soft motion shapes
+•	Animations must be smooth, lightweight, and non-distracting
+Use Lottie animations / SVG animations / CSS animations for best performance on Replit.
+________________________________________
+🌟 HERO SECTION (MOST IMPORTANT):
+Display the following text prominently in the center/front:
+“Building a financially aware and confident India.”
+Text Styling:
+•	Large, bold, premium typography
+•	Gradient or highlighted text effect
+•	Glassmorphism or soft glow background
+•	Smooth entrance animation (fade + slide)
+•	High contrast for readability
+The text should look very stylish, inspiring, and modern.
+________________________________________
+🧠 Supporting Content:
+Below the main highlighted text, add:
+•	Short tagline about financial education & smart investing
+•	Icons or small animated illustrations
+•	Clear CTA buttons like:
+o	“Explore Calculators”
+o	“Start Learning”
+________________________________________
+🎥 Background Requirements:
+•	Cartoon-style animated background (not realistic photos)
+•	Stock market education theme
+•	Use soft colors (green, blue, pastel)
+•	Should not slow down the website
+________________________________________
+📱 Responsive & Performance:
+•	Mobile-first design
+•	Animations should scale properly on mobile
+•	Lazy-load heavy assets
+•	Smooth scrolling
+________________________________________
+🚫 REMOVALS (IMPORTANT):
+•	Do NOT include Live Market Data section
+•	Do NOT include Startup Connect option
+•	Home page should focus only on:
+o	Financial education
+o	Calculators
+o	Awareness & learning
+________________________________________
+🛠️ TECH STACK (REPLIT FRIENDLY):
+•	HTML + CSS + JavaScript
+OR React + Tailwind CSS
+•	Use LottieFiles / SVG animations
+•	Clean, reusable, well-structured code
+

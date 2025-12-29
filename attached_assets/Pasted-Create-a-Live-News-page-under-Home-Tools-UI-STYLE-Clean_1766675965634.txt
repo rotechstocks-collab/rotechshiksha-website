@@ -1,0 +1,142 @@
+Create a “Live News” page under Home → Tools.
+
+UI STYLE:
+
+Clean fintech look (Groww / Zerodha Varsity style)
+
+Card-based layout
+
+Smooth hover & micro-interactions
+
+Fully responsive
+
+PAGE SECTIONS:
+
+1. Live Market News (RSS + API)
+
+News cards with:
+
+Image
+
+Headline
+
+Short summary
+
+Source name
+
+Time & date
+
+Read More link
+
+2. Market News Videos
+
+Official YouTube embeds only
+
+Auto-updating playlists / live streams
+
+Horizontal scroll layout
+
+RULES:
+
+Use only free & legal sources
+
+Show source credit clearly
+
+Auto refresh without page reload
+
+✅ BASIC REPLIT CODE STRUCTURE (HTML + JS)
+📁 FILE STRUCTURE
+/live-news
+ ├── index.html
+ ├── style.css
+ └── script.js
+
+📰 index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Market News | Rotech Shiksha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>📈 Live Market News</h1>
+<div id="news-container"></div>
+
+<h2>🎥 Market News Videos</h2>
+<div class="video-row">
+  <iframe src="https://www.youtube.com/embed/live_stream?channel=UCJ4gk0Y9J3v7i9GdZ0xkZQw"
+    allowfullscreen></iframe>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+🎨 style.css
+body {
+  font-family: Arial, sans-serif;
+  background: #f6f9fc;
+  padding: 20px;
+}
+
+#news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+  gap: 20px;
+}
+
+.news-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  transition: transform 0.3s;
+}
+
+.news-card:hover {
+  transform: translateY(-6px);
+}
+
+.news-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video-row iframe {
+  width: 100%;
+  height: 350px;
+  border-radius: 12px;
+}
+
+⚙️ script.js (FREE API EXAMPLE – NewsAPI)
+const apiKey = "YOUR_FREE_API_KEY";
+const url = `https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=10&apiKey=${apiKey}`;
+
+fetch(url)
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("news-container");
+    data.articles.forEach(news => {
+      const card = document.createElement("div");
+      card.className = "news-card";
+      card.innerHTML = `
+        <img src="${news.urlToImage || ''}">
+        <h3>${news.title}</h3>
+        <p>${news.description || ''}</p>
+        <small>${news.source.name}</small><br>
+        <a href="${news.url}" target="_blank">Read More</a>
+      `;
+      container.appendChild(card);
+    });
+  });
+
+✅ RSS INTEGRATION (OPTIONAL – FREE)
+
+👉 RSS ko backend ya RSS-to-JSON service se fetch karo
+👉 Headlines + links auto-update honge
+
+⚖️ LEGAL SUMMARY
+
+✅ RSS = legal
+✅ Free News API = legal
+✅ YouTube official embed = legal

@@ -1,0 +1,79 @@
+Polish and improve the existing FAQ page design and content for a Hindi stock market education website (Rotech Shiksha).
+
+Target audience:
+- Complete beginners
+- Zero stock market knowledge
+- Nervous and confused first-time learners
+
+Goal:
+- Increase trust
+- Reduce fear
+- Make beginners feel reassured
+- Keep design clean and professional (Zerodha Varsity style)
+
+DO NOT:
+- Redesign the entire page
+- Add flashy colors or animations
+- Add too many CTAs
+
+KEEP:
+- Existing FAQ questions
+- Simple accordion layout
+- Clean white fintech style
+
+IMPROVEMENTS REQUIRED:
+
+1. Heading Improvement
+Change main heading to:
+"Stock Market Beginners ke Common Doubts"
+
+Add a short subheading below it:
+"Yeh wahi sawal hain jo har beginner ke mann me aate hain — bilkul natural."
+
+2. Default Open FAQs
+Keep the first 3 FAQs expanded by default:
+- Kya stock market risky hai?
+- Stock market shuru karne ke liye kitna paisa chahiye?
+- Kya bilkul beginner stock market seekh sakta hai?
+
+3. Answer Tone Polish
+Rewrite answers in:
+- Very simple Hindi
+- Short paragraphs
+- Reassuring and friendly tone
+- Avoid technical jargon
+- No promises of profit
+
+Example tone:
+"Yeh confusion hona bilkul normal hai..."
+"Isliye hum pehle basics se shuru karte hain..."
+
+4. Visual Spacing & Readability
+- Increase vertical spacing between FAQ items
+- Improve line height for mobile reading
+- Keep font readable and calm
+- Center content nicely on desktop
+- Mobile-first layout
+
+5. Soft Trust Line (Above CTA)
+Add a soft reassurance line before CTA:
+"Yeh platform sirf education ke liye hai — hum tips ya stock recommendations nahi dete."
+
+6. CTA Section (Keep Minimal)
+Keep only ONE CTA at the bottom:
+Button text:
+"Start Beginner Stock Market Course"
+
+Add one supportive line above button:
+"Rohit ne bhi yahin se shuruaat ki thi — aap bhi kar sakte ho."
+
+7. Overall Feel
+The page should feel:
+- Calm
+- Trustworthy
+- Beginner-friendly
+- Not salesy
+- Not childish
+
+End result:
+A polished FAQ page that removes fear, builds confidence, and gently guides beginners toward learning.

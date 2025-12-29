@@ -1,0 +1,163 @@
+You are working on a React + Tailwind website (Rotech Shiksha).
+IMPORTANT RULE: Do NOT delete any pages/routes. Only improve styling + fix layout bugs.
+
+GOAL (Make Everything Premium)
+
+Fix right-side drift / horizontal overflow globally (content should never cut off).
+
+Improve global font scaling and typography system (mobile & desktop).
+
+Replace all Priya/Rohit avatar images everywhere with transparent main versions (consistent).
+
+Make the PDF Thankyou section + WhatsApp widget premium (Canva/Notion style).
+
+Keep everything responsive (mobile-first).
+
+✅ TASK 1: FIX RIGHT-SIDE DRIFT (GLOBAL)
+
+Find any element causing horizontal overflow.
+
+Add global CSS:
+
+html, body { overflow-x: hidden; }
+
+Replace any width: 100vw causing drift → use width: 100%.
+
+Ensure containers use:
+
+max-width: 1200px
+
+margin: 0 auto
+
+padding: 0 16px
+
+Check and confirm drift fixed on:
+
+Home, Courses, Learning Path, Tools, Blog, News, Pricing, PDF Thankyou section
+
+✅ TASK 2: GLOBAL PREMIUM FONT SCALING
+
+Implement premium typography:
+
+Base: 16px
+
+H1: clamp(28px, 3vw, 44px)
+
+H2: clamp(22px, 2.2vw, 32px)
+
+Body text: clamp(15px, 1.1vw, 18px)
+
+Increase line-height:
+
+paragraphs 1.6
+
+Buttons:
+
+font-weight 600
+
+font-size 14-16px
+
+Ensure mobile text never looks too small.
+
+Apply this consistently across the site.
+
+✅ TASK 3: REPLACE AVATARS EVERYWHERE
+
+Search whole project and replace avatar usage with ONLY transparent main versions:
+
+Use ONLY:
+
+priya_transparent.png
+
+rohit_transparent.png
+
+Ensure:
+
+No reference left to avatar_old folder.
+
+All components (CharacterCard, StoryStrip, StoryIntro, chat bubbles, WhatsApp widget) use the same transparent avatars.
+
+✅ TASK 4: PREMIUM PDF THANKYOU SECTION REDESIGN
+
+Redesign the Thankyou / PDF area into a premium confirmation layout:
+
+Layout:
+
+Left: “Dhanyavaad ✅ PDF Ready” premium card
+
+Right: “PDF mein kya milega?” premium feature list with icons
+
+Add below: Next step bar (Level 1 button + WhatsApp share)
+
+Premium Features to add:
+
+✅ Trust: “10,000+ learners downloaded”
+✅ “No spam — only learning”
+✅ “Instant access”
+✅ Smooth animation on load (fade/slide)
+✅ Hover lift on cards (subtle)
+
+CTA Buttons:
+
+Download PDF (Primary)
+
+Start Level 1 (Secondary)
+
+Share on WhatsApp (Outline)
+
+Make it responsive:
+
+Desktop = 2 columns
+
+Mobile = stacked cards
+
+✅ TASK 5: WHATSAPP WIDGET PREMIUM DESIGN
+
+Upgrade WhatsApp widget to look like premium support:
+
+Header:
+
+Priya avatar
+
+“Priya Verified ✅”
+
+“Reply within 1 minute”
+
+Buttons:
+
+Get Free Book (Primary)
+
+Course Details
+
+Join WhatsApp Community
+
+Share PDF
+
+Extras:
+
+Add “Send Custom Message” input
+
+Smooth open animation
+
+Microcopy: “Your number is safe. No spam.”
+
+✅ OUTPUT REQUIRED
+
+After implementing all tasks, provide:
+✅ Updated file list
+✅ Summary of what was fixed
+✅ Confirmation:
+
+No routes/pages deleted
+
+Drift fixed
+
+Fonts improved
+
+Avatars replaced everywhere
+
+Thankyou + widget premium
+
+Restart the app and verify on desktop + mobile.
+
+✅ END PROMPT
