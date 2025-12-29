@@ -636,7 +636,7 @@ export default function GenericCalculator() {
 
   if (!config) {
     return (
-      <div className="min-h-screen pt-20 pb-16 flex items-center justify-center">
+      <div className="page-bg pt-16 pb-16 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Calculator Not Found</h1>
           <Link href="/calculators">
@@ -678,7 +678,7 @@ export default function GenericCalculator() {
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
+    <div className="page-bg pt-16 pb-16">
       <div className="max-w-6xl mx-auto px-4 lg:px-8">
         <div className="mb-6">
           <Link href="/calculators">

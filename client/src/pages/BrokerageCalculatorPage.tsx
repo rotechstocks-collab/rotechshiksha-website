@@ -132,7 +132,7 @@ export default function BrokerageCalculatorPage() {
   ] : [];
 
   return (
-    <div className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-background to-muted/20">
+    <div className="page-bg pt-16 pb-16">
       <div className="max-w-6xl mx-auto px-4 lg:px-8">
         <div className="mb-6">
           <Link href="/calculators">

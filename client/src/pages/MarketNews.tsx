@@ -370,7 +370,7 @@ export default function MarketNews() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         <Card className="mb-6">
           <CardHeader className="pb-3">

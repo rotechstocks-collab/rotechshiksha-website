@@ -60,7 +60,7 @@ const level1Lessons = [
 
 export default function Level1Course() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <SEOHead
         title="Level 1: Stock Market ki Shuruaat – Rotech Shiksha"
         description="Stock market ki basic samajh – bilkul shuru se seekho. Hinglish me simple lessons for complete beginners."

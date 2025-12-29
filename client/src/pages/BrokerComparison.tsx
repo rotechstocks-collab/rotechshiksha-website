@@ -1249,7 +1249,7 @@ export default function BrokerComparison() {
 
   if (showComparison && selectedBrokerData.length >= 2) {
     return (
-      <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
+      <div className="page-bg">
         <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
           <div className="text-center mb-8">
             <Button 
@@ -1306,7 +1306,7 @@ export default function BrokerComparison() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
+    <div className="page-bg">
       <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
         <div className="text-center mb-10">
           <motion.div

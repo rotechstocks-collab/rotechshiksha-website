@@ -401,7 +401,7 @@ export default function Courses() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <SEOHead
         title="Free Stock Market Course for Beginners in Hindi | 8 Levels | Rotech Shiksha"
         description="Learn stock market step-by-step in simple Hindi. Free 8-level course covering basics to advanced strategies. 10,000+ learners. Start learning today!"

@@ -57,7 +57,7 @@ export default function Payment() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen pt-28 flex items-center justify-center">
+      <div className="page-bg pt-20 flex items-center justify-center">
         <Card className="max-w-md w-full mx-4">
           <CardContent className="pt-6 text-center space-y-4">
             <p className="text-muted-foreground">Please login to continue with payment</p>
@@ -72,7 +72,7 @@ export default function Payment() {
 
   if (!plan) {
     return (
-      <div className="min-h-screen pt-28 flex items-center justify-center">
+      <div className="page-bg pt-20 flex items-center justify-center">
         <Card className="max-w-md w-full mx-4">
           <CardContent className="pt-6 text-center space-y-4">
             <p className="text-muted-foreground">Invalid plan selected</p>
@@ -150,7 +150,7 @@ export default function Payment() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen pt-28 flex items-center justify-center">
+      <div className="page-bg pt-20 flex items-center justify-center">
         <Card className="max-w-md w-full mx-4">
           <CardContent className="pt-8 text-center space-y-6">
             <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/10 flex items-center justify-center">
@@ -181,7 +181,7 @@ export default function Payment() {
   }
 
   return (
-    <div className="min-h-screen pt-28">
+    <div className="page-bg pt-20">
       <div className="max-w-4xl mx-auto px-4 lg:px-8 py-8">
         <Link href="/pricing">
           <Button variant="ghost" className="mb-6" data-testid="button-back">

@@ -115,7 +115,7 @@ export default function BlogPost() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="page-bg flex items-center justify-center">
         <Card className="max-w-md mx-4">
           <CardContent className="py-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Article nahi mila</h2>
@@ -143,7 +143,7 @@ export default function BlogPost() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <SEOHead
         title={`${post.title} | Rotech Shiksha`}
         description={post.shortDescription}

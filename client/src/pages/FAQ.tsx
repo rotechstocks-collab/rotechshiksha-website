@@ -24,7 +24,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-28">
+    <div className="page-bg pt-20">
       <SEOHead
         title="Stock Market Beginners ke Common Doubts – Rotech Shiksha"
         description="Har beginner ke mann me aane wale sawaal – honest answers, simple Hindi me. No sales pitch, just education."

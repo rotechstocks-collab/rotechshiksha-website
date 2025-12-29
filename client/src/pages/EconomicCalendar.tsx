@@ -551,7 +551,7 @@ export default function EconomicCalendar() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <div className="max-w-7xl mx-auto px-4 py-8 pt-32">
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">

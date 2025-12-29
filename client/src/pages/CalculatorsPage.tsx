@@ -8,7 +8,7 @@ import { FloatingCoins } from "@/components/SmallcaseIllustrations";
 
 export default function CalculatorsPage() {
   return (
-    <div className="min-h-screen pt-28">
+    <div className="page-bg pt-20">
       <section className="relative py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
         <motion.div

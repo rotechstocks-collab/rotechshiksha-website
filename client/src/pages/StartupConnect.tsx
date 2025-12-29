@@ -178,7 +178,7 @@ export default function StartupConnect() {
   };
 
   return (
-    <div className="min-h-screen pt-28 pb-16">
+    <div className="page-bg pt-20 pb-16">
       <section className="py-12 bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 text-center">
           <Badge className="mb-4">Tata Funding / Startup Connect</Badge>

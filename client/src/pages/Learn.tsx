@@ -175,7 +175,7 @@ export default function Learn() {
   const isHindi = language === "hi";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       {/* Hero Section */}
       <section className="relative py-12 md:py-16 bg-gradient-to-br from-primary/5 via-background to-primary/10">
         <div className="max-w-6xl mx-auto px-4">

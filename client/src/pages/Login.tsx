@@ -20,7 +20,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen pt-12 flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen pt-10 flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
       
       <div className="absolute inset-0 overflow-hidden">

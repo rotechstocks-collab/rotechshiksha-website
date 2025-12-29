@@ -161,7 +161,7 @@ export default function Level6Lesson() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <div className="bg-gradient-to-br from-amber-600 via-orange-600 to-red-600 text-white">
         <div className="container mx-auto px-4 py-8 md:py-12">
           <FadeInUp>

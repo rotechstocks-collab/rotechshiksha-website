@@ -163,7 +163,7 @@ export default function Level8Lesson() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white">
         <div className="container mx-auto px-4 py-8 md:py-12">
           <FadeInUp>

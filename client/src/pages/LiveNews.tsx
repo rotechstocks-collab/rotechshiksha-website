@@ -440,7 +440,7 @@ export default function LiveNews() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         <Card className="mb-8 border-0 shadow-none bg-transparent">
           <CardHeader className="pb-4 px-0">

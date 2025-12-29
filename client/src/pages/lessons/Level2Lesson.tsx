@@ -172,7 +172,7 @@ export default function Level2Lesson() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="page-bg">
       {/* Header Section */}
       <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
         <div className="container mx-auto px-4 py-8 md:py-12">
