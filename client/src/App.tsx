@@ -131,6 +131,29 @@ function App() {
   useEffect(() => {
     unlockScroll();
 
+    // MutationObserver to catch any scroll-lock that gets stuck
+    const observer = new MutationObserver(() => {
+      const bodyOverflow = window.getComputedStyle(document.body).overflow;
+      const hasScrollLock = 
+        bodyOverflow === "hidden" || 
+        document.body.hasAttribute("data-scroll-locked") ||
+        document.documentElement.hasAttribute("data-scroll-locked");
+      
+      if (hasScrollLock) {
+        requestAnimationFrame(unlockScroll);
+      }
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style", "data-scroll-locked"],
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["style", "data-scroll-locked"],
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         unlockScroll();
@@ -145,11 +168,14 @@ function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("focus", unlockScroll);
+    window.addEventListener("resize", unlockScroll);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("focus", unlockScroll);
+      window.removeEventListener("resize", unlockScroll);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [unlockScroll]);
