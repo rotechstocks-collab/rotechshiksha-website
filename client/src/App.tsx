@@ -127,6 +127,30 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
+  // Dynamic header height measurement for perfect alignment at all zoom levels
+  useEffect(() => {
+    const measure = () => {
+      const header = document.getElementById("app-header");
+      if (!header) return;
+      const h = header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--app-header-offset", `${Math.ceil(h)}px`);
+    };
+
+    const raf1 = requestAnimationFrame(measure);
+    const t1 = window.setTimeout(measure, 50);
+    const t2 = window.setTimeout(measure, 200);
+
+    const onResize = () => measure();
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(raf1);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [location]);
+
   // Unconditional unlock on every route change (after render)
   useEffect(() => {
     const t = window.setTimeout(() => unlockScroll(), 0);
@@ -195,9 +219,11 @@ function App() {
                 <TooltipProvider>
                   <ScrollToTop />
                   <HreflangTags />
-                  <MarketTicker />
-                  <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
+                  <div id="app-header" className="fixed top-0 left-0 right-0 z-50">
+                    <MarketTicker />
                     <Header />
+                  </div>
+                  <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
                     <GlobalStoryStrip />
                     <main className="pt-[var(--app-header-offset)] relative z-10 min-h-[100svh] overflow-visible">
                       <div className="w-full">
