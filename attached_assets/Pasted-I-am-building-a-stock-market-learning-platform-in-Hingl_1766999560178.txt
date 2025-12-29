@@ -1,0 +1,175 @@
+I am building a stock market learning platform in Hinglish: rotechshiksha.com.
+Target users: Indian beginners (0 knowledge).
+Tone: Friendly, witty, professional.
+Characters: Priya (expert guide, green blazer) and Rohit (learner, navy blazer). They are friends (same age), not siblings.
+Important: Do not remove any pages/routes. Reorganize if needed, but do not delete anything.
+Goal: Improve Google ranking, increase course starts, build trust, and boost paid plan conversions.
+
+✅ TASK 1 — PRICING PAGE (Plans) FINAL COPY + STRUCTURE
+
+Create a high-converting Pricing/Plans page with 3 tiers:
+
+A) Plans Structure
+
+Free Starter Plan
+
+Pro Learner Plan
+
+Elite Mentorship Plan (recommended / best value)
+
+B) Pricing Page Must Include:
+
+✅ 1) Hero section (clear headline + subheadline + trust line)
+✅ 2) What you get in FREE vs PAID (comparison table)
+✅ 3) Best value highlight (Elite Plan)
+✅ 4) FAQ section (payments, refund, who should buy, why paid if free course exists?)
+✅ 5) Trust section: testimonials, learner count, rating
+✅ 6) Risk reversal line: “7-day refund / cancel anytime” (if applicable)
+✅ 7) Payment CTA buttons with urgency: “Upgrade Now →”
+✅ 8) Clear explanation:
+Free course exists, paid plan gives shortcuts + mentorship + advanced tools + community support
+
+C) Copy Style
+
+Hinglish, simple, friendly, no jargon.
+Use Priya-Rohit dialogue blocks in 1–2 sections for relatability.
+
+D) Output
+
+Provide:
+
+Page structure (section wise)
+
+Exact headings + subheadings
+
+Exact plan names + bullet features
+
+CTA button text
+
+FAQ questions + answers
+
+Best plan badge text
+
+Pricing justification (why it is worth it)
+
+✅ TASK 2 — COURSE PAGE SEO LAYOUT + SCHEMA
+
+Create a SEO-optimized Course page structure for beginners.
+
+A) Must Include SEO Layout:
+
+✅ H1 + keyword focused title
+✅ Short intro paragraph
+✅ Key benefits bullet list
+✅ Table of contents
+✅ Course levels breakdown (8 levels)
+✅ Who this is for / who this is NOT for
+✅ Learning outcomes
+✅ Course timeline (7–10 days)
+✅ Free tools included section
+✅ Testimonials
+✅ FAQ
+✅ Final CTA section
+
+B) Keywords to target:
+
+stock market course for beginners
+
+stock market basics in Hindi
+
+learn investing step by step
+
+share market course free
+
+stock market learning path
+
+C) Create Schema Markup:
+
+Generate JSON-LD schema for:
+✅ Course schema
+✅ FAQ schema
+✅ Breadcrumb schema
+✅ Organization schema (basic)
+
+D) Output
+
+Provide:
+
+SEO layout structure
+
+Suggested meta title + meta description
+
+Suggested URL slug
+
+H1/H2/H3 headings
+
+JSON-LD schema blocks (clean & correct)
+
+✅ TASK 3 — HOME PAGE COPY POLISH (HINGLISH + STORY)
+
+Rewrite the Home page copy to be:
+✅ more emotional + beginner-friendly
+✅ higher trust + higher conversion
+✅ story-based (Priya & Rohit)
+✅ scroll-friendly (mobile first)
+✅ action oriented
+
+Must Include Sections:
+
+Hero section (strong headline + clear value + CTA)
+
+Quick trust indicators (10k+ learners, rating, 100% free)
+
+“How it works” in 3 steps
+
+Priya-Rohit story section
+
+Tools preview section
+
+Learning Path preview
+
+Free PDF lead magnet section
+
+Testimonials
+
+FAQ
+
+Footer disclaimer & trust
+
+Copy Rules:
+
+Hinglish (simple Hindi + English mix)
+
+No boring corporate lines
+
+Each section should feel like a helpful friend guiding a beginner
+
+Use small punchy lines for mobile readability
+
+CTA repeated every 2–3 sections
+
+Avoid “guarantee” or any SEBI violation
+
+Keep education-only disclaimers.
+
+Output:
+
+Provide:
+
+Complete revised Home page copy
+
+CTA button text suggestions
+
+Microcopy suggestions (placeholders, helper texts)
+
+✅ FINAL REQUIREMENT:
+
+Everything should be written in a way that:
+
+Looks premium and trustworthy
+
+Increases course starts and paid conversions
+
+Builds community feel
+
+Makes beginners feel safe & confident
