@@ -245,11 +245,11 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="hidden xl:block w-52">
+            <div className="hidden 2xl:block w-52">
               <StockSearch variant="compact" />
             </div>
             
-            <div className="hidden lg:block">
+            <div className="hidden xl:block">
               <LanguageSelector />
             </div>
             
@@ -258,12 +258,12 @@ export function Header() {
               variant="ghost"
               onClick={toggleTheme}
               data-testid="button-theme-toggle"
-              className="hidden lg:flex"
+              className="hidden xl:flex"
             >
               {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </Button>
 
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex">
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
