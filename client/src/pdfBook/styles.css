@@ -1,0 +1,639 @@
+/* Premium Ebook Styles - Zerodha/Smallcase Style */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #387ED1;
+  --primary-dark: #2563EB;
+  --accent: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --dark: #1E293B;
+  --gray: #64748B;
+  --light-gray: #F1F5F9;
+  --priya-color: #10B981;
+  --rohit-color: #3B82F6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11pt;
+  line-height: 1.6;
+  color: var(--dark);
+  background: #fff;
+}
+
+/* Page Setup */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm 18mm;
+  position: relative;
+  page-break-after: always;
+  background: #fff;
+}
+
+.page:last-child {
+  page-break-after: avoid;
+}
+
+/* Cover Page */
+.cover-page {
+  background: linear-gradient(135deg, #1E3A5F 0%, #0F172A 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30mm 25mm;
+}
+
+.cover-badge {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 10pt;
+  font-weight: 500;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.cover-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 32pt;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #fff 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 400;
+  color: #94A3B8;
+  margin-bottom: 40px;
+  max-width: 400px;
+}
+
+.cover-characters {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.cover-character {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.3);
+  object-fit: cover;
+}
+
+.cover-tagline {
+  font-size: 11pt;
+  color: #94A3B8;
+  font-style: italic;
+}
+
+.cover-footer {
+  position: absolute;
+  bottom: 25mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.cover-logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12pt;
+  font-weight: 600;
+  color: #94A3B8;
+  letter-spacing: 1px;
+}
+
+/* Header */
+.page-header {
+  position: absolute;
+  top: 12mm;
+  left: 18mm;
+  right: 18mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8pt;
+  color: var(--gray);
+}
+
+.header-brand {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.header-chapter {
+  font-weight: 500;
+}
+
+/* Footer */
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 18mm;
+  right: 18mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8pt;
+  color: var(--gray);
+  border-top: 1px solid var(--light-gray);
+  padding-top: 8px;
+}
+
+.footer-url {
+  font-weight: 500;
+}
+
+.footer-page {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Watermark */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-family: 'Poppins', sans-serif;
+  font-size: 72pt;
+  font-weight: 800;
+  color: rgba(56, 126, 209, 0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Chapter Title */
+.chapter-number {
+  font-size: 10pt;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.chapter-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.chapter-intro {
+  font-size: 11pt;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  max-width: 90%;
+}
+
+/* Key Takeaways */
+.takeaways {
+  background: var(--light-gray);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.takeaways-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.takeaways-title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.takeaway-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 10pt;
+  line-height: 1.5;
+}
+
+.takeaway-item:last-child {
+  margin-bottom: 0;
+}
+
+.takeaway-bullet {
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+/* Comic Panel */
+.comic-panel {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #E2E8F0;
+}
+
+.comic-panel.priya {
+  border-left: 4px solid var(--priya-color);
+}
+
+.comic-panel.rohit {
+  border-left: 4px solid var(--rohit-color);
+}
+
+.comic-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.comic-content {
+  flex: 1;
+}
+
+.comic-name {
+  font-size: 9pt;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.comic-panel.priya .comic-name {
+  color: var(--priya-color);
+}
+
+.comic-panel.rohit .comic-name {
+  color: var(--rohit-color);
+}
+
+.comic-text {
+  font-size: 10pt;
+  color: var(--dark);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Checklist Card */
+.checklist-card {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.checklist-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--warning);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 10pt;
+}
+
+.checklist-item:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--warning);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Charts */
+.chart-container {
+  margin: 24px 0;
+  padding: 20px;
+  background: var(--light-gray);
+  border-radius: 12px;
+}
+
+.chart-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Pie Chart - 60-30-10 Rule */
+.pie-chart {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--primary) 0deg 216deg,
+    var(--accent) 216deg 324deg,
+    var(--warning) 324deg 360deg
+  );
+  margin: 0 auto 16px;
+  position: relative;
+}
+
+.pie-chart::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.pie-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 9pt;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-dot.blue { background: var(--primary); }
+.legend-dot.green { background: var(--accent); }
+.legend-dot.yellow { background: var(--warning); }
+
+/* Risk Scale Bar */
+.risk-scale {
+  height: 24px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, 
+    var(--accent) 0%, 
+    var(--warning) 50%, 
+    var(--danger) 100%
+  );
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.risk-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9pt;
+  color: var(--gray);
+}
+
+/* Info Box */
+.info-box {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.info-box-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-box-text {
+  font-size: 10pt;
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+/* CTA Page */
+.cta-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40mm 25mm;
+}
+
+.cta-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24pt;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.cta-subtitle {
+  font-size: 12pt;
+  color: var(--gray);
+  margin-bottom: 32px;
+  max-width: 400px;
+}
+
+.cta-qr {
+  width: 120px;
+  height: 120px;
+  background: var(--light-gray);
+  border: 2px dashed var(--gray);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 9pt;
+  color: var(--gray);
+}
+
+.cta-url {
+  font-size: 14pt;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 40px;
+}
+
+.cta-characters {
+  display: flex;
+  gap: 16px;
+}
+
+.cta-character {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--light-gray);
+}
+
+/* TOC Page */
+.toc-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24pt;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.toc-list {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.toc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--light-gray);
+  font-size: 11pt;
+}
+
+.toc-item:last-child {
+  border-bottom: none;
+}
+
+.toc-chapter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toc-number {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+  font-weight: 600;
+}
+
+.toc-name {
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.toc-page {
+  color: var(--gray);
+  font-weight: 500;
+}
+
+/* About Page */
+.about-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20pt;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+.about-text {
+  font-size: 11pt;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.character-intro {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.character-card {
+  flex: 1;
+  padding: 20px;
+  background: var(--light-gray);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.character-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  object-fit: cover;
+}
+
+.character-card h4 {
+  font-size: 12pt;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.character-card.priya h4 { color: var(--priya-color); }
+.character-card.rohit h4 { color: var(--rohit-color); }
+
+.character-card p {
+  font-size: 9pt;
+  color: var(--gray);
+}
+
+@media print {
+  .page {
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
