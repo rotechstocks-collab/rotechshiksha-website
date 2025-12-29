@@ -121,13 +121,14 @@ function useHeaderOffset() {
     const ticker = document.querySelector('[data-ticker]');
     const header = document.getElementById('app-header');
     
-    const tickerHeight = ticker?.getBoundingClientRect().height ?? 0;
-    const headerHeight = header?.getBoundingClientRect().height ?? 0;
+    const tickerHeight = ticker?.getBoundingClientRect().height ?? 38;
+    const headerHeight = header?.getBoundingClientRect().height ?? (window.innerWidth >= 768 ? 64 : 56);
     
     let totalOffset = tickerHeight + headerHeight;
     
-    if (totalOffset === 0) {
-      totalOffset = window.innerWidth >= 768 ? 102 : 56;
+    // Ensure minimum fallback matches CSS defaults (94px mobile, 102px desktop)
+    if (totalOffset < 50) {
+      totalOffset = window.innerWidth >= 768 ? 102 : 94;
     }
     
     document.documentElement.style.setProperty('--app-header-offset', `${totalOffset}px`);
@@ -196,7 +197,7 @@ function AppLayout() {
       <ScrollToTopAndClearLocks />
       <HreflangTags />
       <MarketTicker />
-      <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
+      <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden overflow-y-visible relative">
         <Header />
         <GlobalStoryStrip />
         <main 
