@@ -3,7 +3,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -78,8 +84,10 @@ const whyLearnHere = [
     icon: <TrendingUp className="w-6 h-6" />,
     title: "Market ko 10x easily samjhoge",
     titleHi: "Market को 10x आसानी से समझोगे",
-    description: "Candlestick, trend, support/resistance — beginner friendly tarike se sikhoge.",
-    descriptionHi: "Candlestick, trend, support/resistance — beginner friendly तरीके से सीखोगे।",
+    description:
+      "Candlestick, trend, support/resistance — beginner friendly tarike se sikhoge.",
+    descriptionHi:
+      "Candlestick, trend, support/resistance — beginner friendly तरीके से सीखोगे।",
     color: "text-violet-600 dark:text-violet-400",
     bgColor: "bg-violet-100 dark:bg-violet-900/30",
   },
@@ -87,8 +95,10 @@ const whyLearnHere = [
     icon: <Shield className="w-6 h-6" />,
     title: "Fake tips se safe rahoge",
     titleHi: "Fake tips से safe रहोगे",
-    description: "Risk control + common scams se bachna seekhoge. Ab koi bewakoof nahi bana payega.",
-    descriptionHi: "Risk control + common scams से बचना सीखोगे। अब कोई बेवकूफ नहीं बना पाएगा।",
+    description:
+      "Risk control + common scams se bachna seekhoge. Ab koi bewakoof nahi bana payega.",
+    descriptionHi:
+      "Risk control + common scams से बचना सीखोगे। अब कोई बेवकूफ नहीं बना पाएगा।",
     color: "text-emerald-600 dark:text-emerald-400",
     bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
   },
@@ -96,8 +106,10 @@ const whyLearnHere = [
     icon: <Target className="w-6 h-6" />,
     title: "Paper trading se confidence build hoga",
     titleHi: "Paper trading से confidence build होगा",
-    description: "Real market practice bina loss ke. Pehle seekho, phir invest karo.",
-    descriptionHi: "Real market practice बिना loss के। पहले सीखो, फिर invest करो।",
+    description:
+      "Real market practice bina loss ke. Pehle seekho, phir invest karo.",
+    descriptionHi:
+      "Real market practice बिना loss के। पहले सीखो, फिर invest करो।",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/30",
   },
@@ -190,38 +202,38 @@ const learningRoadmap = [
 ];
 
 const mostUsedTools = [
-  { 
-    name: "SIP Calculator", 
+  {
+    name: "SIP Calculator",
     nameHi: "SIP Calculator",
-    description: "Monthly investment growth calculate karo", 
-    icon: <PiggyBank className="w-5 h-5" />, 
+    description: "Monthly investment growth calculate karo",
+    icon: <PiggyBank className="w-5 h-5" />,
     href: "/calculators?calc=sip",
     color: "text-emerald-600",
     bgColor: "bg-emerald-100",
   },
-  { 
-    name: "Paper Trade", 
+  {
+    name: "Paper Trade",
     nameHi: "Paper Trade",
-    description: "Bina risk ke trading practice karo", 
-    icon: <LineChart className="w-5 h-5" />, 
+    description: "Bina risk ke trading practice karo",
+    icon: <LineChart className="w-5 h-5" />,
     href: "/paper-trade",
     color: "text-blue-600",
     bgColor: "bg-blue-100",
   },
-  { 
-    name: "Broker Compare", 
+  {
+    name: "Broker Compare",
     nameHi: "Broker Compare",
-    description: "Best broker select karo charges dekho", 
-    icon: <BarChart3 className="w-5 h-5" />, 
+    description: "Best broker select karo charges dekho",
+    icon: <BarChart3 className="w-5 h-5" />,
     href: "/brokers",
     color: "text-purple-600",
     bgColor: "bg-purple-100",
   },
-  { 
-    name: "CAGR Calculator", 
+  {
+    name: "CAGR Calculator",
     nameHi: "CAGR Calculator",
-    description: "Long term returns calculate karo", 
-    icon: <TrendingUp className="w-5 h-5" />, 
+    description: "Long term returns calculate karo",
+    icon: <TrendingUp className="w-5 h-5" />,
     href: "/calculators?calc=cagr",
     color: "text-amber-600",
     bgColor: "bg-amber-100",
@@ -232,38 +244,50 @@ const faqs = [
   {
     question: "Kya ye course beginners ke liye hai?",
     questionHi: "क्या ये course beginners के लिए है?",
-    answer: "Haan, bilkul! Yeh course zero knowledge se start hota hai. Koi prior experience ki zaroorat nahi. Simple Hindi mein step-by-step samjhayenge.",
-    answerHi: "हां, बिल्कुल! यह course zero knowledge से start होता है। कोई prior experience की ज़रूरत नहीं। Simple Hindi में step-by-step समझाएंगे।",
+    answer:
+      "Haan, bilkul! Yeh course zero knowledge se start hota hai. Koi prior experience ki zaroorat nahi. Simple Hindi mein step-by-step samjhayenge.",
+    answerHi:
+      "हां, बिल्कुल! यह course zero knowledge से start होता है। कोई prior experience की ज़रूरत नहीं। Simple Hindi में step-by-step समझाएंगे।",
   },
   {
     question: "Course kitne din mein complete hoga?",
     questionHi: "Course कितने दिन में complete होगा?",
-    answer: "Apni speed pe depend karta hai. Agar daily 30 min doge, toh 2-3 weeks mein complete ho jayega. Lifetime access hai toh jaldi koi rush nahi.",
-    answerHi: "अपनी speed पर depend करता है। अगर daily 30 min दोगे, तो 2-3 weeks में complete हो जाएगा। Lifetime access है तो जल्दी कोई rush नहीं।",
+    answer:
+      "Apni speed pe depend karta hai. Agar daily 30 min doge, toh 2-3 weeks mein complete ho jayega. Lifetime access hai toh jaldi koi rush nahi.",
+    answerHi:
+      "अपनी speed पर depend करता है। अगर daily 30 min दोगे, तो 2-3 weeks में complete हो जाएगा। Lifetime access है तो जल्दी कोई rush नहीं।",
   },
   {
     question: "Kya investment tips milenge?",
     questionHi: "क्या investment tips मिलेंगे?",
-    answer: "Nahi, hum SEBI registered advisor nahi hain. Yeh education platform hai - stock market samjhna sikhate hain, tips nahi dete. Decision aap khud loge.",
-    answerHi: "नहीं, हम SEBI registered advisor नहीं हैं। यह education platform है - stock market समझना सिखाते हैं, tips नहीं देते। Decision आप खुद लोगे।",
+    answer:
+      "Nahi, hum SEBI registered advisor nahi hain. Yeh education platform hai - stock market samjhna sikhate hain, tips nahi dete. Decision aap khud loge.",
+    answerHi:
+      "नहीं, हम SEBI registered advisor नहीं हैं। यह education platform है - stock market समझना सिखाते हैं, tips नहीं देते। Decision आप खुद लोगे।",
   },
   {
     question: "Kya payment karna padega?",
     questionHi: "क्या payment करना पड़ेगा?",
-    answer: "Abhi sab kuch FREE hai! 8 complete levels, calculators, paper trading - sab free. Future mein kuch premium features aa sakte hain, par core learning free rahega.",
-    answerHi: "अभी सब कुछ FREE है! 8 complete levels, calculators, paper trading - सब free। Future में कुछ premium features आ सकते हैं, पर core learning free रहेगा।",
+    answer:
+      "Abhi sab kuch FREE hai! 8 complete levels, calculators, paper trading - sab free. Future mein kuch premium features aa sakte hain, par core learning free rahega.",
+    answerHi:
+      "अभी सब कुछ FREE है! 8 complete levels, calculators, paper trading - सब free। Future में कुछ premium features आ सकते हैं, पर core learning free रहेगा।",
   },
   {
     question: "Mobile app hai kya?",
     questionHi: "Mobile app है क्या?",
-    answer: "Abhi website hai jo mobile friendly hai. App jaldi aane wala hai. Browser mein bookmark kar lo - same experience milega.",
-    answerHi: "अभी website है जो mobile friendly है। App जल्दी आने वाला है। Browser में bookmark कर लो - same experience मिलेगा।",
+    answer:
+      "Abhi website hai jo mobile friendly hai. App jaldi aane wala hai. Browser mein bookmark kar lo - same experience milega.",
+    answerHi:
+      "अभी website है जो mobile friendly है। App जल्दी आने वाला है। Browser में bookmark कर लो - same experience मिलेगा।",
   },
   {
     question: "Priya aur Rohit kaun hain?",
     questionHi: "Priya और Rohit कौन हैं?",
-    answer: "Priya tumhari guide hai jo concepts explain karti hai. Rohit tumhare jaisa learner hai jo sawal poochta hai. Dono ke saath story-based learning hai!",
-    answerHi: "Priya तुम्हारी guide है जो concepts explain करती है। Rohit तुम्हारे जैसा learner है जो सवाल पूछता है। दोनों के साथ story-based learning है!",
+    answer:
+      "Priya tumhari guide hai jo concepts explain karti hai. Rohit tumhare jaisa learner hai jo sawal poochta hai. Dono ke saath story-based learning hai!",
+    answerHi:
+      "Priya तुम्हारी guide है जो concepts explain करती है। Rohit तुम्हारे जैसा learner है जो सवाल पूछता है। दोनों के साथ story-based learning है!",
   },
 ];
 
@@ -272,7 +296,8 @@ const testimonials = [
     name: "Amit K.",
     location: "Mumbai",
     text: "Pehle stock market se bahut darta tha. Ab confidently SIP karta hoon. Thanks Rotech!",
-    textHi: "पहले stock market से बहुत डरता था। अब confidently SIP करता हूं। Thanks Rotech!",
+    textHi:
+      "पहले stock market से बहुत डरता था। अब confidently SIP करता हूं। Thanks Rotech!",
     rating: 5,
   },
   {
@@ -291,9 +316,15 @@ const testimonials = [
   },
 ];
 
-function FAQItem({ faq, isHindi }: { faq: typeof faqs[0]; isHindi: boolean }) {
+function FAQItem({
+  faq,
+  isHindi,
+}: {
+  faq: (typeof faqs)[0];
+  isHindi: boolean;
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
       <button
@@ -338,16 +369,16 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contact.trim()) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const response = await fetch("/api/leads/pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact: contact.trim() }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setPdfUrl(data.pdfUrl || "/pdf/stock-market-beginner-checklist.pdf");
@@ -356,8 +387,13 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
           description: "PDF ready hai - abhi download karo!",
         });
       } else {
-        const leads = JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY) || "[]");
-        leads.push({ contact: contact.trim(), timestamp: new Date().toISOString() });
+        const leads = JSON.parse(
+          localStorage.getItem(LEAD_STORAGE_KEY) || "[]",
+        );
+        leads.push({
+          contact: contact.trim(),
+          timestamp: new Date().toISOString(),
+        });
         localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads));
         setPdfUrl("/pdf/stock-market-beginner-checklist.pdf");
         toast({
@@ -367,7 +403,10 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
       }
     } catch (error) {
       const leads = JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY) || "[]");
-      leads.push({ contact: contact.trim(), timestamp: new Date().toISOString() });
+      leads.push({
+        contact: contact.trim(),
+        timestamp: new Date().toISOString(),
+      });
       localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads));
       setPdfUrl("/pdf/stock-market-beginner-checklist.pdf");
       toast({
@@ -375,21 +414,30 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
         description: "PDF ready hai!",
       });
     }
-    
+
     setIsSubmitting(false);
   };
 
   if (pdfUrl) {
     const pdfFeatures = [
-      { icon: <CheckCircle className="w-4 h-4" />, text: "5 Steps to Start Investing" },
-      { icon: <CheckCircle className="w-4 h-4" />, text: "Common Mistakes to Avoid" },
+      {
+        icon: <CheckCircle className="w-4 h-4" />,
+        text: "5 Steps to Start Investing",
+      },
+      {
+        icon: <CheckCircle className="w-4 h-4" />,
+        text: "Common Mistakes to Avoid",
+      },
       { icon: <CheckCircle className="w-4 h-4" />, text: "Glossary + Tools" },
       { icon: <CheckCircle className="w-4 h-4" />, text: "Weekly Action Plan" },
     ];
 
     const handleShareOnWhatsApp = () => {
       const message = `Maine Rotech Shiksha se ye FREE Stock Market PDF download ki! Tum bhi download karo: ${window.location.origin}`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(message)}`,
+        "_blank",
+      );
     };
 
     return (
@@ -402,7 +450,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
         {/* Decorative blur circles */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-200/40 dark:bg-emerald-800/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-200/30 dark:bg-blue-800/15 rounded-full blur-3xl" />
-        
+
         <div className="relative bg-gradient-to-br from-emerald-50 via-white to-emerald-50/50 dark:from-emerald-950/40 dark:via-slate-900/80 dark:to-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/60 rounded-2xl p-6 md:p-8">
           {/* Premium Badge */}
           <div className="flex justify-center mb-4">
@@ -411,7 +459,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
               Premium PDF Ready
             </Badge>
           </div>
-          
+
           {/* Main Content */}
           <div className="text-center mb-6">
             <motion.div
@@ -432,15 +480,15 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
 
           {/* Download Button */}
           <div className="flex justify-center mb-4">
-            <a 
-              href={pdfUrl} 
-              target="_blank" 
+            <a
+              href={pdfUrl}
+              target="_blank"
               rel="noopener noreferrer"
               className="inline-flex"
               data-testid="link-download-pdf"
             >
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="gap-2 rounded-full px-8 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all hover:scale-[1.02]"
               >
                 <Download className="w-5 h-5" />
@@ -448,7 +496,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
               </Button>
             </a>
           </div>
-          
+
           {/* Trust badges */}
           <div className="flex items-center justify-center gap-4 flex-wrap text-xs text-slate-500 dark:text-slate-400 mb-6">
             <span className="flex items-center gap-1">
@@ -476,7 +524,9 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
                 className="flex items-center gap-2 bg-white/70 dark:bg-slate-800/50 rounded-lg px-3 py-2.5 border border-emerald-100 dark:border-emerald-900/50"
               >
                 <span className="text-emerald-500">{feature.icon}</span>
-                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{feature.text}</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                  {feature.text}
+                </span>
               </motion.div>
             ))}
           </div>
@@ -497,13 +547,17 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
               </p>
               <div className="flex flex-col sm:flex-row gap-2">
                 <Link href="/courses/level1/lesson1" className="flex-1">
-                  <Button variant="outline" className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 btn-glow-primary" data-testid="button-start-level1">
+                  <Button
+                    variant="outline"
+                    className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 btn-glow-primary"
+                    data-testid="button-start-level1"
+                  >
                     <GraduationCap className="w-4 h-4" />
                     Start Level 1
                   </Button>
                 </Link>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="gap-2 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300"
                   onClick={handleShareOnWhatsApp}
                   data-testid="button-share-pdf-whatsapp"
@@ -534,7 +588,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
           </p>
         </div>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-3">
         <Input
           type="text"
@@ -544,8 +598,8 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
           className="bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700"
           data-testid="input-lead-capture"
         />
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className="w-full gap-2"
           disabled={isSubmitting || !contact.trim()}
           data-testid="button-send-pdf"
@@ -554,7 +608,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
           {isSubmitting ? "Sending..." : "Send me Free PDF"}
         </Button>
       </form>
-      
+
       <p className="text-xs text-slate-500 dark:text-slate-500 mt-3 text-center">
         No spam. Sirf learning updates. Unsubscribe anytime.
       </p>
@@ -588,7 +642,8 @@ export default function Home() {
 
   const getContinueUrl = (): string | null => {
     if (!progress) return null;
-    if (progress.completedLevels.length === 0 && progress.currentLevel <= 1) return null;
+    if (progress.completedLevels.length === 0 && progress.currentLevel <= 1)
+      return null;
     const targetLevel = progress.currentLevel;
     if (targetLevel <= 8) {
       return `/courses/level${targetLevel}/lesson1`;
@@ -600,20 +655,29 @@ export default function Home() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
+    mainEntity: faqs.map((faq) => ({
       "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
+      name: faq.question,
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
+        text: faq.answer,
+      },
+    })),
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
-      <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
-        <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
+    <div
+      className="min-h-screen relative"
+      style={{ backgroundColor: "#f7f9fc" }}
+    >
+      <Dialog
+        open={showWelcome}
+        onOpenChange={(open) => !open && handleCloseWelcome()}
+      >
+        <DialogContent
+          className="max-w-md"
+          data-testid="dialog-welcome-onboarding"
+        >
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center">
               Rotech Shiksha mein Swagat Hai!
@@ -622,24 +686,28 @@ export default function Home() {
               Stock market seekho – Simple Hindi mein, Step by Step.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
               <CharacterAvatar character="priya" size="lg" />
               <div>
                 <p className="font-medium text-foreground">Priya se Milo</p>
-                <p className="text-sm text-muted-foreground">Tumhari Guide (Friend)</p>
+                <p className="text-sm text-muted-foreground">
+                  Tumhari Guide (Friend)
+                </p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
               <CharacterAvatar character="rohit" size="lg" />
               <div>
                 <p className="font-medium text-foreground">Rohit se Milo</p>
-                <p className="text-sm text-muted-foreground">Tumhare Saath Seekhne Wala</p>
+                <p className="text-sm text-muted-foreground">
+                  Tumhare Saath Seekhne Wala
+                </p>
               </div>
             </div>
-            
+
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -655,15 +723,24 @@ export default function Home() {
               </li>
             </ul>
           </div>
-          
+
           <div className="flex flex-col gap-2">
             <Link href="/beginner-course">
-              <Button className="w-full gap-2" size="lg" onClick={handleCloseWelcome} data-testid="button-welcome-start-course">
+              <Button
+                className="w-full gap-2"
+                size="lg"
+                onClick={handleCloseWelcome}
+                data-testid="button-welcome-start-course"
+              >
                 <Play className="w-4 h-4" />
                 FREE Course Shuru Karo
               </Button>
             </Link>
-            <Button variant="ghost" onClick={handleCloseWelcome} data-testid="button-welcome-explore">
+            <Button
+              variant="ghost"
+              onClick={handleCloseWelcome}
+              data-testid="button-welcome-explore"
+            >
               Pehle Website Explore Karunga
             </Button>
           </div>
@@ -675,15 +752,15 @@ export default function Home() {
         description="Simple Hindi mein stock market seekho. Free beginner course with Priya & Rohit. Step-by-step learning for Indian investors. No prior knowledge needed."
         keywords="stock market course in hindi, stock market learning for beginners, share market basics hindi, learn investing india, rotech shiksha, free stock market course"
       />
-      
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      
+
       <section className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -693,62 +770,85 @@ export default function Home() {
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
               100% FREE • Hindi Mein • Beginners Ke Liye
             </Badge>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
               Stock Market Seekho
               <br />
               <span className="text-primary">— Bilkul Zero Se</span>
             </h1>
-            
+
             <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto mb-8">
               Simple Hindi + Story-based learning with Priya & Rohit ke saath.
               No jargon, no confusion – sirf clear understanding.
             </p>
-            
+
             <div className="flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-4">
               <span className="flex items-center gap-1">
                 <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                 <span className="font-medium">4.8</span> rating
               </span>
               <span className="text-slate-300 dark:text-slate-600">•</span>
-              <span><span className="font-medium">10,000+</span> learners</span>
+              <span>
+                <span className="font-medium">10,000+</span> learners
+              </span>
               <span className="text-slate-300 dark:text-slate-600">•</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium">100% Free</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                100% Free
+              </span>
             </div>
 
             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm inline-block p-6 md:p-8 mb-4">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link href="/beginner-course" data-testid="link-start-learning-hero">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6 btn-glow-primary" data-testid="button-start-learning-hero">
+                <Link
+                  href="/beginner-course"
+                  data-testid="link-start-learning-hero"
+                >
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6 btn-glow-primary"
+                    data-testid="button-start-learning-hero"
+                  >
                     <Play className="w-5 h-5" />
                     Start Level 1 Free
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
                 <Link href="/calculators" data-testid="link-explore-tools">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-explore-tools">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6"
+                    data-testid="button-explore-tools"
+                  >
                     <Calculator className="w-5 h-5" />
                     Explore Tools
                   </Button>
                 </Link>
               </div>
-              
+
               <p className="text-xs text-slate-500 dark:text-slate-500 mt-4 text-center">
                 No signup required • Sirf seekhna hai, invest nahi
               </p>
             </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10 max-w-xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {stats.map((stat, index) => (
-              <div key={index} className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-4 text-center">
-                <p className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">{isHindi ? stat.labelHi : stat.label}</p>
+              <div
+                key={index}
+                className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-4 text-center"
+              >
+                <p className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                  {stat.value}
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                  {isHindi ? stat.labelHi : stat.label}
+                </p>
               </div>
             ))}
           </motion.div>
@@ -776,35 +876,53 @@ export default function Home() {
               Priya explains, Rohit asks doubts you might have
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <div className="flex items-center gap-4 mb-4">
-                <CharacterAvatar character="priya" size="lg" emotion="excited" />
+                <CharacterAvatar
+                  character="priya"
+                  size="lg"
+                  emotion="excited"
+                />
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">Priya</h3>
-                  <p className="text-sm text-emerald-600 dark:text-emerald-400">Your Expert Guide</p>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">
+                    Priya
+                  </h3>
+                  <p className="text-sm text-emerald-600 dark:text-emerald-400">
+                    Your Expert Guide
+                  </p>
                 </div>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                "Main tumhe stock market simple Hindi mein samjhaungi. Koi jargon nahi, koi confusion nahi. Step by step seekhenge!"
+                "Main tumhe stock market simple Hindi mein samjhaungi. Koi
+                jargon nahi, koi confusion nahi. Step by step seekhenge!"
               </p>
             </div>
-            
+
             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <div className="flex items-center gap-4 mb-4">
-                <CharacterAvatar character="rohit" size="lg" emotion="warning" />
+                <CharacterAvatar
+                  character="rohit"
+                  size="lg"
+                  emotion="warning"
+                />
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">Rohit</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">Fellow Learner (Just Like You)</p>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">
+                    Rohit
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Fellow Learner (Just Like You)
+                  </p>
                 </div>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                "Main bhi tum jaisa beginner hoon. Jo sawal tumhare mann mein aaye, main Priya se poochunga – taaki hum dono samjhein!"
+                "Main bhi tum jaisa beginner hoon. Jo sawal tumhare mann mein
+                aaye, main Priya se poochunga – taaki hum dono samjhein!"
               </p>
             </div>
           </div>
-          
+
           <HeroCharacterChat className="max-w-2xl mx-auto" />
         </div>
       </section>
@@ -815,7 +933,7 @@ export default function Home() {
             <div>
               <LeadCaptureSection isHindi={isHindi} />
             </div>
-            
+
             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
               <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-4">
                 PDF mein kya hai?
@@ -826,9 +944,12 @@ export default function Home() {
                   "Common mistakes se kaise bache",
                   "Best apps & tools list",
                   "Glossary of basic terms",
-                  "Weekly learning checklist"
+                  "Weekly learning checklist",
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400"
+                  >
                     <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                     {item}
                   </li>
@@ -853,12 +974,16 @@ export default function Home() {
                       Wapas Aane Par Swagat Hai!
                     </p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {progress.completedLevels.length} levels complete | Jahaan chhoda tha wahaan se shuru karo
+                      {progress.completedLevels.length} levels complete | Jahaan
+                      chhoda tha wahaan se shuru karo
                     </p>
                   </div>
                 </div>
                 <Link href={continueUrl}>
-                  <Button className="gap-2 min-h-[44px]" data-testid="button-continue-learning-home">
+                  <Button
+                    className="gap-2 min-h-[44px]"
+                    data-testid="button-continue-learning-home"
+                  >
                     <Play className="w-4 h-4" />
                     Aage Badho
                     <ArrowRight className="w-4 h-4" />
@@ -894,12 +1019,17 @@ export default function Home() {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                <Link href={module.href} data-testid={`link-module-${module.title.toLowerCase().replace(' ', '-')}`}>
-                  <div 
+                <Link
+                  href={module.href}
+                  data-testid={`link-module-${module.title.toLowerCase().replace(" ", "-")}`}
+                >
+                  <div
                     className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-5 text-center cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 h-full"
-                    data-testid={`card-module-${module.title.toLowerCase().replace(' ', '-')}`}
+                    data-testid={`card-module-${module.title.toLowerCase().replace(" ", "-")}`}
                   >
-                    <div className={`w-12 h-12 ${module.bgColor} rounded-xl flex items-center justify-center mx-auto mb-3`}>
+                    <div
+                      className={`w-12 h-12 ${module.bgColor} rounded-xl flex items-center justify-center mx-auto mb-3`}
+                    >
                       <span className={module.color}>{module.icon}</span>
                     </div>
                     <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-1">
@@ -941,7 +1071,9 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full relative">
-                  <div className={`w-10 h-10 ${step.color} text-white rounded-xl flex items-center justify-center font-bold text-lg mb-4`}>
+                  <div
+                    className={`w-10 h-10 ${step.color} text-white rounded-xl flex items-center justify-center font-bold text-lg mb-4`}
+                  >
                     {step.step}
                   </div>
                   <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">
@@ -957,7 +1089,11 @@ export default function Home() {
 
           <div className="text-center mt-8">
             <Link href="/beginner-course">
-              <Button size="lg" className="gap-2" data-testid="button-start-roadmap">
+              <Button
+                size="lg"
+                className="gap-2"
+                data-testid="button-start-roadmap"
+              >
                 <Play className="w-4 h-4" />
                 Learning Shuru Karo
                 <ArrowRight className="w-4 h-4" />
@@ -966,14 +1102,33 @@ export default function Home() {
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-            <a href="/pdf/stock-market-beginner-checklist.pdf" download target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-download-checklist-home">
+            <a
+              href="/pdf/stock-market-beginner-checklist.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-2 w-full sm:w-auto"
+                data-testid="button-download-checklist-home"
+              >
                 <Download className="w-4 h-4" />
                 Quick Checklist PDF
               </Button>
             </a>
-            <a href="/pdf/stock-market-beginner-guide.pdf" download target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-download-premium-book">
+            <a
+              href="/pdf/stock-market-beginner-guide.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                size="lg"
+                className="gap-2 w-full sm:w-auto"
+                data-testid="button-download-premium-book"
+              >
                 <BookOpen className="w-4 h-4" />
                 Download Premium Book (13 Pages)
               </Button>
@@ -1006,9 +1161,14 @@ export default function Home() {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                <Link href={tool.href} data-testid={`link-tool-${tool.name.toLowerCase().replace(' ', '-')}`}>
+                <Link
+                  href={tool.href}
+                  data-testid={`link-tool-${tool.name.toLowerCase().replace(" ", "-")}`}
+                >
                   <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-5 cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-4">
-                    <div className={`w-12 h-12 ${tool.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                    <div
+                      className={`w-12 h-12 ${tool.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}
+                    >
                       <span className={tool.color}>{tool.icon}</span>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -1028,7 +1188,11 @@ export default function Home() {
 
           <div className="text-center mt-8">
             <Link href="/calculators">
-              <Button variant="outline" className="gap-2" data-testid="button-explore-all-tools">
+              <Button
+                variant="outline"
+                className="gap-2"
+                data-testid="button-explore-all-tools"
+              >
                 Explore All Tools
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -1047,7 +1211,9 @@ export default function Home() {
               {isHindi ? "Course के बाद आप..." : "After This Course..."}
             </h2>
             <p className="text-slate-600 dark:text-slate-400">
-              {isHindi ? "ये 3 चीज़ें ज़रूर होंगी" : "These 3 things will definitely happen"}
+              {isHindi
+                ? "ये 3 चीज़ें ज़रूर होंगी"
+                : "These 3 things will definitely happen"}
             </p>
           </div>
 
@@ -1060,8 +1226,13 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full hover:shadow-md transition-shadow" data-testid={`card-why-${index}`}>
-                  <div className={`w-14 h-14 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}>
+                <div
+                  className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full hover:shadow-md transition-shadow"
+                  data-testid={`card-why-${index}`}
+                >
+                  <div
+                    className={`w-14 h-14 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}
+                  >
                     <span className={item.color}>{item.icon}</span>
                   </div>
                   <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">
@@ -1101,7 +1272,10 @@ export default function Home() {
                 <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full">
                   <div className="flex items-center gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <Star
+                        key={i}
+                        className="w-4 h-4 fill-amber-400 text-amber-400"
+                      />
                     ))}
                   </div>
                   <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm mb-4">
@@ -1112,8 +1286,12 @@ export default function Home() {
                       {testimonial.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-medium text-sm text-slate-900 dark:text-white">{testimonial.name}</p>
-                      <p className="text-xs text-slate-500">{testimonial.location}</p>
+                      <p className="font-medium text-sm text-slate-900 dark:text-white">
+                        {testimonial.name}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {testimonial.location}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1152,20 +1330,22 @@ export default function Home() {
         primaryButton={{
           text: "FREE Course Shuru Karo",
           href: "/beginner-course",
-          testId: "button-final-cta-primary"
+          testId: "button-final-cta-primary",
         }}
         secondaryButton={{
           text: "Tools Dekho",
           href: "/calculators",
-          testId: "button-final-cta-secondary"
+          testId: "button-final-cta-secondary",
         }}
       />
 
       <section className="py-6 border-t border-gray-200 dark:border-slate-800">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
-            <strong>Disclaimer:</strong> This platform is independent and not affiliated with Zerodha, Groww, or any broker. 
-            We provide education only – no investment advice. Always do your own research before investing.
+            <strong>Disclaimer:</strong> This platform is independent and not
+            affiliated with Zerodha, Groww, or any broker. We provide education
+            only – no investment advice. Always do your own research before
+            investing.
           </p>
         </div>
       </section>
