@@ -52,7 +52,6 @@ import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProgress, UserProgress } from "@/lib/progress";
 import { useToast } from "@/hooks/use-toast";
-import { generatePremiumStockMarketBookPDF } from "@/utils/pdf/premiumBookTemplate";
 
 const FIRST_VISIT_KEY = "rotech-first-visit-complete";
 const LEAD_STORAGE_KEY = "rotech-pdf-leads";
@@ -858,15 +857,12 @@ export default function Home() {
                 Quick Checklist PDF
               </Button>
             </a>
-            <Button 
-              size="lg" 
-              className="gap-2"
-              onClick={() => generatePremiumStockMarketBookPDF()}
-              data-testid="button-download-premium-book"
-            >
-              <BookOpen className="w-4 h-4" />
-              Download Premium Book (13 Pages)
-            </Button>
+            <a href="/pdf/stock-market-beginner-guide.pdf" download target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="gap-2 w-full sm:w-auto" data-testid="button-download-premium-book">
+                <BookOpen className="w-4 h-4" />
+                Download Premium Book (13 Pages)
+              </Button>
+            </a>
           </div>
         </div>
       </section>

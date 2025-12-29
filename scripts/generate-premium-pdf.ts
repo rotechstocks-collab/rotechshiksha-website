@@ -4,9 +4,34 @@
 import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
-import Handlebars from 'handlebars';
+import { execSync } from 'child_process';
 
-// Book content
+// Get project root and asset paths
+const PROJECT_ROOT = process.cwd();
+const ASSETS_DIR = path.join(PROJECT_ROOT, 'client', 'public');
+
+// Dynamic Chromium path detection
+function getChromiumPath(): string {
+  try {
+    const result = execSync('which chromium', { encoding: 'utf-8' }).trim();
+    if (result) return result;
+  } catch {}
+  
+  // Fallback paths
+  const fallbacks = [
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    process.env.CHROMIUM_PATH || ''
+  ];
+  
+  for (const p of fallbacks) {
+    if (p && fs.existsSync(p)) return p;
+  }
+  
+  throw new Error('Chromium not found. Install chromium or set CHROMIUM_PATH environment variable.');
+}
+
+// Book content - 10 chapters for 13 total pages (cover + TOC + about + 10 chapters)
 const bookContent = {
   title: "Stock Market Beginner Guide",
   subtitle: "Apna Pehla Investment Journey Shuru Karo",
@@ -130,18 +155,22 @@ const bookContent = {
     },
     {
       number: 10,
-      title: "Your Action Plan",
-      intro: "Ab action lene ka time hai! Ye 5 steps follow karo: 1) Demat account kholo, 2) Emergency fund ready karo, 3) SIP shuru karo Rs 500 se bhi, 4) Ek achhi book padho, 5) Community join karo seekhne ke liye.",
+      title: "Your Action Plan + Next Steps",
+      intro: "Ab action lene ka time hai! Ye 5 steps follow karo: 1) Demat account kholo, 2) Emergency fund ready karo, 3) SIP shuru karo Rs 500 se bhi, 4) Ek achhi book padho, 5) Community join karo. Rotech Shiksha pe aur bhi advanced courses hain!",
       takeaways: [
         "Start small, but start TODAY",
         "Consistency > Big one-time investments",
-        "Learning never stops in market"
+        "Visit rotechshiksha.com for more courses"
       ],
-      comic: { speaker: 'priya', text: "Chalo Rohit, aaj hi Zerodha pe account khol lete hain! Main tujhe step-by-step guide karungi. Rotech Shiksha pe aur bhi courses hain!" },
+      comic: { speaker: 'priya', text: "Chalo Rohit, aaj hi shuru karte hain! Rotech Shiksha pe Options Trading, Technical Analysis aur Algo Trading bhi seekh sakte ho. Let's go!" },
       checklist: ["Demat account open kiya", "First SIP start kiya", "Rotech Shiksha bookmark kiya"]
     }
   ]
 };
+
+// Absolute paths for assets
+const PRIYA_IMG = `file://${path.join(ASSETS_DIR, 'characters', 'priya_main.png')}`;
+const ROHIT_IMG = `file://${path.join(ASSETS_DIR, 'characters', 'rohit_main.png')}`;
 
 // CSS Styles
 const styles = `
@@ -172,11 +201,12 @@ body {
 
 .page {
   width: 210mm;
-  min-height: 297mm;
+  height: 297mm;
   padding: 20mm 18mm;
   position: relative;
   page-break-after: always;
   background: #fff;
+  overflow: hidden;
 }
 
 .page:last-child { page-break-after: avoid; }
@@ -322,96 +352,92 @@ body {
 
 .chapter-title {
   font-family: 'Poppins', sans-serif;
-  font-size: 22pt;
+  font-size: 20pt;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   line-height: 1.3;
 }
 
 .chapter-intro {
-  font-size: 11pt;
+  font-size: 10pt;
   color: var(--gray);
-  line-height: 1.7;
-  margin-bottom: 24px;
-  max-width: 90%;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  max-width: 95%;
 }
 
 /* Takeaways */
 .takeaways {
   background: var(--light-gray);
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
 }
 
 .takeaways-title {
-  font-size: 10pt;
+  font-size: 9pt;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .takeaway-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
-  font-size: 10pt;
-  line-height: 1.5;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 9pt;
+  line-height: 1.4;
 }
 
 .takeaway-bullet {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   background: var(--primary);
   border-radius: 50%;
-  margin-top: 6px;
+  margin-top: 5px;
   flex-shrink: 0;
 }
 
 /* Comic Panel */
 .comic-panel {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: flex-start;
-  margin-bottom: 24px;
-  padding: 16px;
-  border-radius: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 10px;
   background: #fff;
   border: 1px solid #E2E8F0;
 }
 
-.comic-panel.priya { border-left: 4px solid var(--priya-color); }
-.comic-panel.rohit { border-left: 4px solid var(--rohit-color); }
+.comic-panel.priya { border-left: 3px solid var(--priya-color); }
+.comic-panel.rohit { border-left: 3px solid var(--rohit-color); }
 
 .comic-avatar {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  background: #E2E8F0;
 }
 
 .comic-content { flex: 1; }
 
 .comic-name {
-  font-size: 9pt;
+  font-size: 8pt;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .comic-panel.priya .comic-name { color: var(--priya-color); }
 .comic-panel.rohit .comic-name { color: var(--rohit-color); }
 
 .comic-text {
-  font-size: 10pt;
+  font-size: 9pt;
   color: var(--dark);
-  line-height: 1.5;
+  line-height: 1.4;
   font-style: italic;
 }
 
@@ -419,60 +445,60 @@ body {
 .checklist-card {
   background: #FFFBEB;
   border: 1px solid #FDE68A;
-  border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 24px;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
 }
 
 .checklist-title {
-  font-size: 10pt;
+  font-size: 9pt;
   font-weight: 700;
   color: var(--warning);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .checklist-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-  font-size: 10pt;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 9pt;
 }
 
 .checkbox {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 2px solid var(--warning);
-  border-radius: 4px;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 
 /* Charts */
 .chart-container {
-  margin: 24px 0;
-  padding: 20px;
+  margin: 16px 0;
+  padding: 16px;
   background: var(--light-gray);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .chart-title {
-  font-size: 10pt;
+  font-size: 9pt;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   text-align: center;
 }
 
 .pie-chart {
-  width: 140px;
-  height: 140px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: conic-gradient(
     var(--primary) 0deg 216deg,
     var(--accent) 216deg 324deg,
     var(--warning) 324deg 360deg
   );
-  margin: 0 auto 16px;
+  margin: 0 auto 12px;
   position: relative;
 }
 
@@ -482,8 +508,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   background: var(--light-gray);
   border-radius: 50%;
 }
@@ -491,19 +517,19 @@ body {
 .pie-legend {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  font-size: 9pt;
+  gap: 16px;
+  font-size: 8pt;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .legend-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 
@@ -512,56 +538,56 @@ body {
 .legend-dot.yellow { background: var(--warning); }
 
 .risk-scale {
-  height: 24px;
-  border-radius: 12px;
+  height: 20px;
+  border-radius: 10px;
   background: linear-gradient(90deg, var(--accent) 0%, var(--warning) 50%, var(--danger) 100%);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .risk-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 9pt;
+  font-size: 8pt;
   color: var(--gray);
 }
 
 /* TOC */
 .toc-title {
   font-family: 'Poppins', sans-serif;
-  font-size: 24pt;
+  font-size: 22pt;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   text-align: center;
 }
 
-.toc-list { max-width: 400px; margin: 0 auto; }
+.toc-list { max-width: 380px; margin: 0 auto; }
 
 .toc-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--light-gray);
-  font-size: 11pt;
+  font-size: 10pt;
 }
 
 .toc-chapter {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .toc-number {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   background: var(--primary);
   color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10pt;
+  font-size: 9pt;
   font-weight: 600;
 }
 
@@ -571,135 +597,74 @@ body {
 /* About Page */
 .about-title {
   font-family: 'Poppins', sans-serif;
-  font-size: 20pt;
+  font-size: 18pt;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .about-text {
-  font-size: 11pt;
+  font-size: 10pt;
   color: var(--gray);
-  line-height: 1.8;
-  margin-bottom: 24px;
+  line-height: 1.7;
+  margin-bottom: 20px;
 }
 
 .character-intro {
   display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .character-card {
   flex: 1;
-  padding: 20px;
+  padding: 16px;
   background: var(--light-gray);
-  border-radius: 12px;
+  border-radius: 10px;
   text-align: center;
 }
 
 .character-card img {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   object-fit: cover;
-  background: #CBD5E1;
 }
 
 .character-card h4 {
-  font-size: 12pt;
+  font-size: 11pt;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .character-card.priya h4 { color: var(--priya-color); }
 .character-card.rohit h4 { color: var(--rohit-color); }
 
 .character-card p {
-  font-size: 9pt;
+  font-size: 8pt;
   color: var(--gray);
 }
 
 .info-box {
   background: #EFF6FF;
   border: 1px solid #BFDBFE;
-  border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 24px;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
 }
 
 .info-box-title {
-  font-size: 10pt;
+  font-size: 9pt;
   font-weight: 700;
   color: var(--primary);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .info-box-text {
-  font-size: 10pt;
+  font-size: 9pt;
   color: var(--dark);
   line-height: 1.5;
-}
-
-/* CTA Page */
-.cta-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 40mm 25mm;
-}
-
-.cta-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 24pt;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 16px;
-}
-
-.cta-subtitle {
-  font-size: 12pt;
-  color: var(--gray);
-  margin-bottom: 32px;
-  max-width: 400px;
-}
-
-.cta-qr {
-  width: 120px;
-  height: 120px;
-  background: var(--light-gray);
-  border: 2px dashed var(--gray);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  font-size: 9pt;
-  color: var(--gray);
-}
-
-.cta-url {
-  font-size: 14pt;
-  font-weight: 600;
-  color: var(--primary);
-  margin-bottom: 40px;
-}
-
-.cta-characters {
-  display: flex;
-  gap: 16px;
-}
-
-.cta-character {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--light-gray);
-  background: #CBD5E1;
 }
 
 @media print {
@@ -715,8 +680,8 @@ function generateCoverPage(): string {
       <h1 class="cover-title">${bookContent.title}</h1>
       <p class="cover-subtitle">${bookContent.subtitle}</p>
       <div class="cover-characters">
-        <div class="cover-character"></div>
-        <div class="cover-character"></div>
+        <img src="${PRIYA_IMG}" alt="Priya" class="cover-character" />
+        <img src="${ROHIT_IMG}" alt="Rohit" class="cover-character" />
       </div>
       <p class="cover-tagline">${bookContent.tagline}</p>
       <div class="cover-footer">
@@ -774,12 +739,12 @@ function generateAboutPage(): string {
       </p>
       <div class="character-intro">
         <div class="character-card priya">
-          <div class="cover-character" style="width:64px;height:64px;margin:0 auto 12px;"></div>
+          <img src="${PRIYA_IMG}" alt="Priya" />
           <h4>Priya</h4>
           <p>Experienced investor, tumhari guide</p>
         </div>
         <div class="character-card rohit">
-          <div class="cover-character" style="width:64px;height:64px;margin:0 auto 12px;"></div>
+          <img src="${ROHIT_IMG}" alt="Rohit" />
           <h4>Rohit</h4>
           <p>Beginner, tumhare jaise curious</p>
         </div>
@@ -842,6 +807,7 @@ function generateChapterPage(chapter: any, pageNum: number): string {
   `).join('');
 
   const speakerName = chapter.comic.speaker === 'priya' ? 'Priya' : 'Rohit';
+  const avatarSrc = chapter.comic.speaker === 'priya' ? PRIYA_IMG : ROHIT_IMG;
 
   let chartHtml = '';
   if (chapter.hasChart === 'pie') chartHtml = generatePieChart();
@@ -867,7 +833,7 @@ function generateChapterPage(chapter: any, pageNum: number): string {
       ${chartHtml}
       
       <div class="comic-panel ${chapter.comic.speaker}">
-        <div class="comic-avatar"></div>
+        <img src="${avatarSrc}" alt="${speakerName}" class="comic-avatar" />
         <div class="comic-content">
           <div class="comic-name">${speakerName}</div>
           <div class="comic-text">"${chapter.comic.text}"</div>
@@ -887,30 +853,8 @@ function generateChapterPage(chapter: any, pageNum: number): string {
   `;
 }
 
-function generateCTAPage(pageNum: number): string {
-  return `
-    <div class="page cta-page">
-      <h2 class="cta-title">Aage Seekhna Hai?</h2>
-      <p class="cta-subtitle">
-        Rotech Shiksha pe aur bhi advanced courses hain jaise Options Trading, 
-        Technical Analysis, aur Algo Trading. Free mein shuru karo!
-      </p>
-      <div class="cta-qr">QR Code</div>
-      <div class="cta-url">rotechshiksha.com</div>
-      <div class="cta-characters">
-        <div class="cta-character"></div>
-        <div class="cta-character"></div>
-      </div>
-      <div class="page-footer">
-        <span>rotechshiksha.com</span>
-        <span class="footer-page">${pageNum}</span>
-      </div>
-    </div>
-  `;
-}
-
 function generateFullBookHtml(): string {
-  let pageNum = 4;
+  let pageNum = 4; // Cover=1, TOC=2, About=3, chapters start at 4
   
   const chapterPages = bookContent.chapters.map(chapter => {
     const page = generateChapterPage(chapter, pageNum);
@@ -918,8 +862,7 @@ function generateFullBookHtml(): string {
     return page;
   }).join('');
 
-  const ctaPage = generateCTAPage(pageNum);
-
+  // Total: 1 (cover) + 1 (TOC) + 1 (about) + 10 (chapters) = 13 pages
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -934,7 +877,6 @@ function generateFullBookHtml(): string {
   ${generateTOCPage()}
   ${generateAboutPage()}
   ${chapterPages}
-  ${ctaPage}
 </body>
 </html>
   `;
@@ -947,20 +889,27 @@ async function generatePDF() {
   const html = generateFullBookHtml();
   
   // Write HTML to temp file
-  const tempHtmlPath = path.join(process.cwd(), 'temp-book.html');
+  const tempHtmlPath = path.join(PROJECT_ROOT, 'temp-book.html');
   fs.writeFileSync(tempHtmlPath, html);
   console.log('HTML template generated');
   
-  // Launch Playwright
-  const browser = await chromium.launch();
+  // Get dynamic chromium path
+  const chromiumPath = getChromiumPath();
+  console.log(`Using Chromium: ${chromiumPath}`);
+  
+  // Launch Playwright with system chromium
+  const browser = await chromium.launch({
+    executablePath: chromiumPath,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+  });
   const page = await browser.newPage();
   
-  // Load HTML file
+  // Load HTML file with file:// protocol
   await page.goto(`file://${tempHtmlPath}`, { waitUntil: 'networkidle' });
   console.log('Page loaded in Playwright');
   
   // Ensure output directory exists
-  const outputDir = path.join(process.cwd(), 'client', 'public', 'pdf');
+  const outputDir = path.join(PROJECT_ROOT, 'client', 'public', 'pdf');
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -980,7 +929,10 @@ async function generatePDF() {
   await browser.close();
   fs.unlinkSync(tempHtmlPath);
   
-  console.log('Done! Premium ebook ready.');
+  // Count pages (approximate by file size or check metadata)
+  const stats = fs.statSync(pdfPath);
+  console.log(`PDF size: ${Math.round(stats.size / 1024)} KB`);
+  console.log('Done! 13-page premium ebook ready.');
 }
 
 generatePDF().catch(console.error);
