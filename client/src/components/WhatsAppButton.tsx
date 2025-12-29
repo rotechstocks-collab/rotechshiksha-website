@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, BookOpen, GraduationCap, Users, Send, ChevronLeft, Share2, Shield, Check } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
@@ -9,6 +9,7 @@ import priyaAvatar from "@/assets/characters/priya_main_transparent.png";
 
 const WHATSAPP_NUMBER = "918085616343";
 const POPUP_CLOSED_KEY = "whatsapp-popup-closed-session";
+const WIDGET_OPEN_EVENT = "widget-opened";
 
 const encodeWhatsAppMessage = (message: string): string => {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -105,6 +106,23 @@ export function WhatsAppButton() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  // Close when another widget opens (prevents overlap on mobile)
+  useEffect(() => {
+    const handleOtherWidgetOpen = (e: CustomEvent) => {
+      if (e.detail !== "whatsapp" && isOpen) {
+        setIsOpen(false);
+        setShowForm(false);
+      }
+    };
+    window.addEventListener(WIDGET_OPEN_EVENT, handleOtherWidgetOpen as EventListener);
+    return () => window.removeEventListener(WIDGET_OPEN_EVENT, handleOtherWidgetOpen as EventListener);
+  }, [isOpen]);
+
+  // Dispatch event when this widget opens
+  const notifyWidgetOpen = useCallback(() => {
+    window.dispatchEvent(new CustomEvent(WIDGET_OPEN_EVENT, { detail: "whatsapp" }));
+  }, []);
+
   const handleClosePopup = () => {
     setShowPopup(false);
     sessionStorage.setItem(POPUP_CLOSED_KEY, "true");
@@ -114,6 +132,7 @@ export function WhatsAppButton() {
     handleClosePopup();
     if (!isOpen) {
       setIsOpen(true);
+      notifyWidgetOpen();
     } else {
       window.open(
         encodeWhatsAppMessage("Hi Priya, Mujhe Stock Market seekhna hai. Please guide karo (0 to Hero)."),
@@ -160,7 +179,7 @@ export function WhatsAppButton() {
       
       <div
         ref={popupRef}
-        className="fixed right-4 bottom-24 md:bottom-6 z-50"
+        className="fixed right-2 sm:right-4 bottom-20 md:bottom-6 z-50"
         data-testid="floating-whatsapp-container"
       >
         <AnimatePresence>
@@ -169,7 +188,7 @@ export function WhatsAppButton() {
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute bottom-16 right-0 w-72 bg-card border rounded-xl shadow-xl overflow-hidden mb-2"
+              className="absolute bottom-16 right-0 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] bg-card border rounded-xl shadow-xl overflow-hidden mb-2"
             >
               <div className="bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-4 py-3">
                 <div className="flex items-center justify-between">
@@ -215,7 +234,7 @@ export function WhatsAppButton() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              className="absolute bottom-16 right-0 w-80 bg-card border rounded-xl shadow-2xl overflow-hidden"
+              className="absolute bottom-16 right-0 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] bg-card border rounded-xl shadow-2xl overflow-hidden"
             >
             <div className="bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-4 py-3">
               <div className="flex items-center justify-between">

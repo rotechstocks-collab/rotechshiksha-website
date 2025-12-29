@@ -36,7 +36,7 @@ export function MobileBottomNav() {
       }}
       data-testid="mobile-bottom-nav"
     >
-      <div className="flex items-center justify-around px-1 py-2">
+      <div className="flex items-center justify-around px-1 py-1.5">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -44,7 +44,7 @@ export function MobileBottomNav() {
           return (
             <Link key={item.href} href={item.href}>
               <button
-                className={`flex flex-col items-center justify-center min-w-[52px] py-1.5 px-2 rounded-xl transition-all duration-200 ${
+                className={`flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1.5 px-2 rounded-xl transition-all duration-200 ${
                   active 
                     ? "text-primary bg-primary/10 scale-105" 
                     : "text-muted-foreground hover:text-foreground active:scale-95"

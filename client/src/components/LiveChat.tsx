@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAuth } from "@/context/AuthContext";
 import { MessageCircle, X, Send, Loader2, TrendingUp, TrendingDown } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+
+const WIDGET_OPEN_EVENT = "widget-opened";
 
 interface Message {
   id: string;
@@ -47,6 +49,45 @@ export function LiveChat() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Close when another widget opens (prevents overlap on mobile)
+  useEffect(() => {
+    const handleOtherWidgetOpen = (e: CustomEvent) => {
+      if (e.detail !== "livechat" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener(WIDGET_OPEN_EVENT, handleOtherWidgetOpen as EventListener);
+    return () => window.removeEventListener(WIDGET_OPEN_EVENT, handleOtherWidgetOpen as EventListener);
+  }, [isOpen]);
+
+  // Dispatch event when this widget opens
+  const notifyWidgetOpen = useCallback(() => {
+    window.dispatchEvent(new CustomEvent(WIDGET_OPEN_EVENT, { detail: "livechat" }));
+  }, []);
+
+  // Close on scroll (mobile UX - minimize widget when user scrolls)
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleScroll = () => {
+      setIsOpen(false);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isOpen]);
+
+  // Close on outside click
+  const chatRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (chatRef.current && !chatRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   const fetchMessages = async () => {
     setIsLoading(true);
@@ -94,6 +135,7 @@ export function LiveChat() {
 
   const handleOpen = () => {
     setIsOpen(true);
+    notifyWidgetOpen();
     if (messages.length === 0) {
       setMessages([
         {
@@ -110,15 +152,16 @@ export function LiveChat() {
     <>
       <Button
         size="lg"
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg"
+        className="fixed bottom-20 md:bottom-6 left-2 sm:left-4 z-50 h-12 w-12 md:h-14 md:w-14 rounded-full shadow-lg"
         onClick={handleOpen}
         data-testid="button-open-chat"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5 md:w-6 md:h-6" />
       </Button>
 
       {isOpen && (
-        <Card className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 shadow-xl" data-testid="chat-window">
+        <div ref={chatRef}>
+        <Card className="fixed bottom-20 md:bottom-24 left-2 sm:left-4 z-50 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] sm:w-80 md:w-96 shadow-xl" data-testid="chat-window">
           <CardHeader className="flex flex-row items-center justify-between gap-4 py-3 px-4 border-b">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
@@ -213,6 +256,7 @@ export function LiveChat() {
             </form>
           </CardContent>
         </Card>
+        </div>
       )}
     </>
   );
