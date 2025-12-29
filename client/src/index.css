@@ -24,10 +24,8 @@ html, body {
   }
 }
 
-/* Ensure scroll is never locked globally */
-html, body, #root {
-  overflow-y: auto !important;
-}
+/* Note: Do NOT add global overflow-y locks here - modals need to control scroll */
+/* ScrollToTop component handles cleanup on route changes */
 
 /* ===== PREMIUM TYPOGRAPHY (Zerodha/Smallcase vibe) ===== */
 @layer base {
