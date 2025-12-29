@@ -1,5 +1,5 @@
-import { Switch, Route, useLocation } from "wouter";
-import { lazy, Suspense, useLayoutEffect, useEffect, useCallback } from "react";
+import { Switch, Route } from "wouter";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -19,7 +19,7 @@ import { HreflangTags } from "@/components/HreflangTags";
 import { MarketTicker } from "@/components/market/MarketTicker";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PageLoadingSkeleton } from "@/components/LoadingSkeleton";
-import { clearScrollLock } from "@/lib/scrollLock";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 import Home from "@/pages/Home";
 import NotFound from "@/pages/not-found";
@@ -105,122 +105,6 @@ function Router() {
   );
 }
 
-function ScrollToTopAndClearLocks() {
-  const [location] = useLocation();
-  
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    clearScrollLock();
-  }, [location]);
-  
-  return null;
-}
-
-function useHeaderOffset() {
-  const updateHeaderOffset = useCallback(() => {
-    const ticker = document.querySelector('[data-ticker]');
-    const header = document.getElementById('app-header');
-    
-    const tickerHeight = ticker?.getBoundingClientRect().height ?? 38;
-    const headerHeight = header?.getBoundingClientRect().height ?? (window.innerWidth >= 768 ? 64 : 56);
-    
-    let totalOffset = tickerHeight + headerHeight;
-    
-    // Ensure minimum fallback matches CSS defaults (94px mobile, 102px desktop)
-    if (totalOffset < 50) {
-      totalOffset = window.innerWidth >= 768 ? 102 : 94;
-    }
-    
-    document.documentElement.style.setProperty('--app-header-offset', `${totalOffset}px`);
-  }, []);
-
-  useLayoutEffect(() => {
-    updateHeaderOffset();
-    
-    const ticker = document.querySelector('[data-ticker]');
-    const header = document.getElementById('app-header');
-    
-    const resizeObserver = new ResizeObserver(() => {
-      updateHeaderOffset();
-    });
-    
-    if (ticker) resizeObserver.observe(ticker);
-    if (header) resizeObserver.observe(header);
-    
-    const handleResize = () => updateHeaderOffset();
-    window.addEventListener('resize', handleResize);
-    
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleResize);
-    }
-    
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', handleResize);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleResize);
-      }
-    };
-  }, [updateHeaderOffset]);
-}
-
-function useScrollLockCleanup() {
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        clearScrollLock();
-      }
-    };
-    
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setTimeout(clearScrollLock, 100);
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    document.addEventListener('keydown', handleEscape);
-    
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, []);
-}
-
-function AppLayout() {
-  useHeaderOffset();
-  useScrollLockCleanup();
-  
-  return (
-    <>
-      <ScrollToTopAndClearLocks />
-      <HreflangTags />
-      <MarketTicker />
-      <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden overflow-y-visible relative">
-        <Header />
-        <main 
-          className="relative z-0" 
-          style={{ paddingTop: 'var(--app-header-offset)' }}
-        >
-          <GlobalStoryStrip />
-          <div className="w-full">
-            <Router />
-          </div>
-        </main>
-        <Footer />
-        <div className="h-20 md:hidden" aria-hidden="true" />
-        <MobileBottomNav />
-        <div className="safe-area-bottom" />
-        <AuthModal />
-        <LiveChat />
-        <WhatsAppButton />
-      </div>
-      <Toaster />
-    </>
-  );
-}
-
 function App() {
   return (
     <ErrorBoundary>
@@ -230,7 +114,26 @@ function App() {
             <LessonLanguageProvider>
               <AuthProvider>
                 <TooltipProvider>
-                  <AppLayout />
+                  <ScrollToTop />
+                  <HreflangTags />
+                  <MarketTicker />
+                  <div className="min-h-screen bg-background safe-area-top overflow-x-hidden">
+                    <Header />
+                    <GlobalStoryStrip />
+                    <main className="pt-14 md:pt-[102px]">
+                      <div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
+                        <Router />
+                      </div>
+                    </main>
+                    <Footer />
+                    <div className="h-20 md:hidden" aria-hidden="true" />
+                    <MobileBottomNav />
+                    <div className="safe-area-bottom" />
+                    <AuthModal />
+                    <LiveChat />
+                    <WhatsAppButton />
+                  </div>
+                  <Toaster />
                 </TooltipProvider>
               </AuthProvider>
             </LessonLanguageProvider>
