@@ -896,8 +896,9 @@ export default function Home() {
               >
                 <Link href={module.href} data-testid={`link-module-${module.title.toLowerCase().replace(' ', '-')}`}>
                   <div 
-                    className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-5 text-center cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 h-full"
+                    className="group bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-sm p-5 text-center interactive-card-hover h-full"
                     data-testid={`card-module-${module.title.toLowerCase().replace(' ', '-')}`}
+                    tabIndex={0}
                   >
                     <div className={`w-12 h-12 ${module.bgColor} rounded-xl flex items-center justify-center mx-auto mb-3`}>
                       <span className={module.color}>{module.icon}</span>
@@ -1007,7 +1008,7 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <Link href={tool.href} data-testid={`link-tool-${tool.name.toLowerCase().replace(' ', '-')}`}>
-                  <div className="group bg-white dark:bg-card rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-5 cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-slate-200 dark:hover:border-slate-600 flex items-center gap-4 h-full">
+                  <div className="group bg-white dark:bg-card rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-5 interactive-card-hover flex items-center gap-4 h-full" tabIndex={0}>
                     <div className={`h-12 w-12 ${tool.bgColor} rounded-2xl flex items-center justify-center flex-shrink-0`}>
                       <span className={tool.color}>{tool.icon}</span>
                     </div>
@@ -1060,7 +1061,7 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 h-full hover:shadow-md transition-shadow" data-testid={`card-why-${index}`}>
+                <div className="bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-sm p-6 h-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" data-testid={`card-why-${index}`}>
                   <div className={`w-14 h-14 rounded-xl ${item.bgColor} flex items-center justify-center mb-4`}>
                     <span className={item.color}>{item.icon}</span>
                   </div>

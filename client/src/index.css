@@ -608,15 +608,36 @@ html, body {
   /* ===== BUTTONS (Varsity Style) ===== */
   .btn-varsity-primary {
     @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl 
-           transition-all duration-150 shadow-sm active:scale-95;
+           transition-all duration-150 shadow-sm active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-900;
   }
   .btn-varsity-secondary {
     @apply bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 
-           font-medium px-6 py-3 rounded-xl transition-all duration-150 hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95;
+           font-medium px-6 py-3 rounded-xl transition-all duration-150 hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-900;
   }
   .btn-varsity-outline {
     @apply bg-transparent border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 
-           font-medium px-6 py-3 rounded-xl transition-all duration-150 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95;
+           font-medium px-6 py-3 rounded-xl transition-all duration-150 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-900;
+  }
+
+  /* ===== INTERACTIVE CARD (Premium micro-interactions + accessibility) ===== */
+  .interactive-card {
+    @apply cursor-pointer transition-all duration-200 ease-out
+           active:scale-[0.99]
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-900;
+  }
+  .interactive-card-hover {
+    @apply cursor-pointer transition-all duration-200 ease-out
+           hover:shadow-lg hover:-translate-y-1 hover:border-slate-200 dark:hover:border-slate-600
+           active:scale-[0.99]
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-900;
+  }
+
+  /* ===== FOCUS RING UTILITY ===== */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-900;
   }
 
   /* ===== LEGAL/DISCLAIMER STRIP ===== */

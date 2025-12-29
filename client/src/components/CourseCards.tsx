@@ -164,7 +164,7 @@ export function CourseCards() {
                 transition={{ delay: index * 0.1 }}
               >
                 <div
-                  className="bg-white dark:bg-card rounded-xl border border-border/50 p-6 h-full flex flex-col relative transition-all duration-200 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5"
+                  className="group bg-white dark:bg-card rounded-xl border border-slate-200/60 dark:border-slate-700/60 p-6 h-full flex flex-col relative interactive-card-hover"
                   data-testid={`card-course-${course.id}`}
                 >
                   <div className={`absolute -top-3 -left-2 w-8 h-8 rounded-full ${colors.number} text-white flex items-center justify-center text-sm font-bold shadow-md`}>
