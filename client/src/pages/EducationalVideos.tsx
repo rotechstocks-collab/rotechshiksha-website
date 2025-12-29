@@ -318,7 +318,7 @@ export default function EducationalVideos() {
   const playlistNames = getPlaylistNames();
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
+    <div className="min-h-screen page-bg">
       <SEOHead
         title="Educational Videos – Stock Market Learning | Rotech Shiksha"
         description="Best stock market educational videos in Hindi. Learn trading, investing, IPO, mutual funds from top YouTube educators."

@@ -231,7 +231,7 @@ export default function CalculatorHub() {
   const popularCalcs = calculators.filter(c => c.popular);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+    <div className="min-h-screen page-bg">
       <StoryIntro
         priyaLine="Investing se pehle calculation important hai. Yeh tools try kar – returns pata chal jayega!"
         rohitLine="SIP calculator se shuru karta hoon – kitna invest karna chahiye yeh samajh aayega!"
