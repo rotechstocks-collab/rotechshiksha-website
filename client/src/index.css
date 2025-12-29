@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== HEADER OFFSET VARIABLE (stable at 100% zoom) ===== */
+:root {
+  --app-header-offset: 104px; /* desktop: ticker + navbar combined */
+}
+@media (max-width: 768px) {
+  :root {
+    --app-header-offset: 56px; /* mobile header */
+  }
+}
+
 /* ===== PAGE BACKGROUND (Dark Mode Compatible) ===== */
 .page-bg {
   @apply bg-slate-50 dark:bg-slate-950;

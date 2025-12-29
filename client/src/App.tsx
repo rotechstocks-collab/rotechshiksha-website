@@ -122,6 +122,11 @@ function App() {
     h.removeAttribute("data-scroll-locked");
   }, []);
 
+  // Force scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   // Unconditional unlock on every route change (after render)
   useEffect(() => {
     const t = window.setTimeout(() => unlockScroll(), 0);
@@ -194,7 +199,7 @@ function App() {
                   <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
                     <Header />
                     <GlobalStoryStrip />
-                    <main className="pt-14 md:pt-[102px] relative z-10 min-h-[100svh] overflow-visible">
+                    <main className="pt-[var(--app-header-offset)] relative z-10 min-h-[100svh] overflow-visible">
                       <div className="w-full">
                         <Router />
                       </div>

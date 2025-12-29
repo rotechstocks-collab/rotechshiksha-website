@@ -1,0 +1,87 @@
+You are working on rotechshiksha.com (React + TS + Tailwind + shadcn + Radix UI + wouter).
+STRICT RULES:
+- DO NOT delete any pages/routes.
+- DO NOT remove or change the top market ticker (must stay).
+- Keep SEBI-safe copy rules intact.
+- Make minimal, surgical diffs.
+
+PROBLEM:
+At 100% zoom the site does not look “proper”: large blank space appears above hero / content feels shifted or clipped.
+Dark theme visibility is fixed, but layout/spacing at 100% zoom is still wrong.
+This is likely due to header+ticker combined height mismatch, pixel rounding, and route scroll restoration.
+
+GOAL:
+Permanently stabilize layout at 100% zoom and prevent any “shift/blank area” on load or after navigation/theme toggle.
+
+----------------------------------------------------------------
+TASK 1 — Implement stable header offset using CSS variable (mandatory)
+1) In client/src/index.css (or global CSS used by app):
+   - Add CSS variables for combined fixed header height (ticker + navbar).
+   - Use separate values for desktop and mobile.
+   Append this EXACT block near top (or bottom) of the file:
+
+:root{
+  --app-header-offset: 104px; /* desktop: ticker + navbar combined */
+}
+@media (max-width: 768px){
+  :root{
+    --app-header-offset: 56px; /* mobile header */
+  }
+}
+
+2) In the main layout (client/src/App.tsx), locate the <main> element that currently uses
+   something like "pt-14 md:pt-[102px]" or similar.
+   Replace that padding-top with:
+   pt-[var(--app-header-offset)]
+
+Example:
+<main className="pt-[var(--app-header-offset)] relative min-h-[100svh] overflow-visible ...">
+
+IMPORTANT:
+- Do NOT remove any content.
+- Only change the padding-top strategy to use the variable.
+- If <main> contains "z-0", change it to "z-10" to avoid stacking/clip issues.
+
+----------------------------------------------------------------
+TASK 2 — Force scroll-to-top on route change (mandatory)
+In client/src/App.tsx where wouter location changes are handled:
+- Add an effect that runs on every route change and forces scroll to top (no smooth scrolling).
+Use exactly:
+
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, [location]);
+
+This prevents pages loading “scrolled down” which looks like blank space/shift at 100% zoom.
+
+----------------------------------------------------------------
+TASK 3 — Keep scroll unlock safety net (mandatory)
+If App.tsx still has scroll-lock hard unlock logic, keep it.
+If it still contains hasOpenOverlay()/safeUnlockScroll(), REMOVE those and ensure unlock is unconditional.
+
+Minimum required:
+- Have unlockScroll() that resets body/html overflow + removes data-scroll-locked
+- Run unlock on route change (setTimeout 0 ok)
+- MutationObserver force unlock if overflow hidden or data-scroll-locked detected
+
+DO NOT block unlock based on overlay detection.
+
+----------------------------------------------------------------
+TASK 4 — Prevent wrapper overflow traps (mandatory)
+Search for any global wrapper that applies "overflow-hidden" on body/html/root containers.
+- Keep overflow-x-hidden allowed, but remove overflow-hidden that can clip content.
+Set:
+html, body { height: 100%; overflow-x: hidden; }
+Do NOT set overflow-y hidden globally.
+
+----------------------------------------------------------------
+VALIDATION (must confirm)
+After changes:
+1) At 100% zoom, Home hero should start correctly under ticker+navbar with no large blank area.
+2) Navigate Home -> Pricing -> Home: page must start at top, no shifted view.
+3) Dark mode toggle must not break layout or hide content.
+4) Ticker remains intact and visible.
+
+Deliver:
+- Show a brief diff summary (which files changed and what).
+- Ensure TypeScript builds successfully.
