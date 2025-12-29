@@ -1249,7 +1249,7 @@ export default function BrokerComparison() {
 
   if (showComparison && selectedBrokerData.length >= 2) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+      <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
         <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
           <div className="text-center mb-8">
             <Button 
@@ -1261,10 +1261,10 @@ export default function BrokerComparison() {
               <ChevronRight className="w-4 h-4 mr-1 rotate-180" />
               Back to Selection
             </Button>
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">
               Broker Comparison
             </h1>
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
               Detailed side-by-side comparison of {selectedBrokerData.map(b => b.name).join(", ")}
             </p>
           </div>
@@ -1279,7 +1279,7 @@ export default function BrokerComparison() {
               </SheetTrigger>
               <SheetContent side="left" className="w-72">
                 <div className="py-4">
-                  <h3 className="font-semibold mb-4 text-slate-900">Compare By</h3>
+                  <h3 className="font-semibold mb-4 text-slate-900 dark:text-white">Compare By</h3>
                   <VerticalNav activeTab={activeTab} onTabChange={setActiveTab} />
                 </div>
               </SheetContent>
@@ -1287,9 +1287,9 @@ export default function BrokerComparison() {
             
             <div className="hidden lg:block w-56 flex-shrink-0">
               <div className="sticky top-24">
-                <Card className="bg-white border-gray-200 shadow-sm rounded-2xl">
+                <Card className="bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 shadow-sm rounded-2xl">
                   <CardContent className="p-4">
-                    <h3 className="font-semibold mb-4 text-slate-900">Compare By</h3>
+                    <h3 className="font-semibold mb-4 text-slate-900 dark:text-white">Compare By</h3>
                     <VerticalNav activeTab={activeTab} onTabChange={setActiveTab} />
                   </CardContent>
                 </Card>
@@ -1306,7 +1306,7 @@ export default function BrokerComparison() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+    <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
       <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
         <div className="text-center mb-10">
           <motion.div
@@ -1318,10 +1318,10 @@ export default function BrokerComparison() {
               <Sparkles className="w-3 h-3 mr-1" />
               Compare & Choose
             </Badge>
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">
               Compare Stock Brokers in India
             </h1>
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
               Select 2 or more brokers to compare their features, charges, ratings and more. 
               Make an informed decision for your trading journey.
             </p>

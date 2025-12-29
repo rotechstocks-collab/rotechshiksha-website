@@ -231,7 +231,7 @@ export default function CalculatorHub() {
   const popularCalcs = calculators.filter(c => c.popular);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+    <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
       <StoryIntro
         priyaLine="Investing se pehle calculation important hai. Yeh tools try kar – returns pata chal jayega!"
         rohitLine="SIP calculator se shuru karta hoon – kitna invest karna chahiye yeh samajh aayega!"
@@ -245,7 +245,7 @@ export default function CalculatorHub() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-4">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 rounded-full text-sm font-medium mb-4">
               <Calculator className="w-4 h-4" />
               20+ Free Tools
             </span>
@@ -255,7 +255,7 @@ export default function CalculatorHub() {
             <p className="varsity-body max-w-2xl mx-auto">
               Apne investment plan karo, tax calculate karo, aur informed decisions lo.
               <br />
-              <span className="text-sm text-slate-500">Sab FREE hai - koi signup nahi chahiye.</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Sab FREE hai - koi signup nahi chahiye.</span>
             </p>
           </motion.div>
 
