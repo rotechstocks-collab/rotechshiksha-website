@@ -109,71 +109,50 @@ function App() {
   const [location] = useLocation();
 
   const unlockScroll = useCallback(() => {
-    document.body.style.removeProperty("overflow");
-    document.body.style.removeProperty("padding-right");
-    document.documentElement.style.removeProperty("overflow");
-    document.body.removeAttribute("data-scroll-locked");
-    document.documentElement.removeAttribute("data-scroll-locked");
+    const b = document.body;
+    const h = document.documentElement;
+    b.style.overflow = "";
+    b.style.paddingRight = "";
+    b.style.position = "";
+    b.style.top = "";
+    b.style.width = "";
+    h.style.overflow = "";
+    h.style.paddingRight = "";
+    b.removeAttribute("data-scroll-locked");
+    h.removeAttribute("data-scroll-locked");
   }, []);
 
-  const hasOpenOverlay = useCallback(() => {
-    return !!document.querySelector(
-      '[data-radix-portal] [data-state="open"], [data-state="open"][role="dialog"], [role="dialog"][data-state="open"]'
-    );
-  }, []);
-
-  const safeUnlockScroll = useCallback(() => {
-    if (!hasOpenOverlay()) {
-      requestAnimationFrame(unlockScroll);
-    }
-  }, [hasOpenOverlay, unlockScroll]);
-
+  // Unconditional unlock on every route change (after render)
   useEffect(() => {
-    unlockScroll();
+    const t = window.setTimeout(() => unlockScroll(), 0);
+    return () => window.clearTimeout(t);
   }, [location, unlockScroll]);
 
   useEffect(() => {
     unlockScroll();
 
-    const observer = new MutationObserver(() => {
-      const bodyOverflow = window.getComputedStyle(document.body).overflow;
-      const hasScrollLock = 
-        bodyOverflow === "hidden" || 
-        document.body.hasAttribute("data-scroll-locked") ||
-        document.documentElement.hasAttribute("data-scroll-locked");
-      
-      if (hasScrollLock) {
-        safeUnlockScroll();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        unlockScroll();
       }
-    });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["style", "data-scroll-locked"],
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["style", "data-scroll-locked"],
-    });
+    };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        safeUnlockScroll();
+        unlockScroll();
       }
     };
 
-    window.addEventListener("focus", safeUnlockScroll);
-    window.addEventListener("resize", safeUnlockScroll);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("focus", unlockScroll);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("focus", safeUnlockScroll);
-      window.removeEventListener("resize", safeUnlockScroll);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("focus", unlockScroll);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [unlockScroll, safeUnlockScroll]);
+  }, [unlockScroll]);
 
   return (
     <ErrorBoundary>
