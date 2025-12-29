@@ -178,6 +178,7 @@ export function WhatsAppButton() {
                       src={priyaAvatar} 
                       alt="Priya" 
                       className="w-8 h-8 rounded-full border-2 border-white/30 bg-white/10"
+                      loading="lazy"
                     />
                     <span className="font-semibold text-sm">Priya se baat karo</span>
                   </div>
@@ -225,6 +226,7 @@ export function WhatsAppButton() {
                       src={priyaAvatar} 
                       alt="Priya" 
                       className="w-10 h-10 rounded-full border-2 border-white/30 bg-white/10"
+                      loading="lazy"
                     />
                     <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-white rounded-full flex items-center justify-center">
                       <Check className="w-2.5 h-2.5 text-[#25D366]" />
