@@ -75,29 +75,29 @@ const stats = [
 
 const whyLearnHere = [
   {
-    icon: <Lightbulb className="w-6 h-6" />,
-    title: "Simple Hindi Mein",
-    titleHi: "सरल हिंदी में",
-    description: "No jargon, no complex terms. Stock market ko aise samjho jaise apne dost se baat kar rahe ho.",
-    descriptionHi: "कोई जटिल शब्द नहीं। Stock market को ऐसे समझो जैसे अपने दोस्त से बात कर रहे हो।",
+    icon: <TrendingUp className="w-6 h-6" />,
+    title: "Market ko 10x easily samjhoge",
+    titleHi: "Market को 10x आसानी से समझोगे",
+    description: "Candlestick, trend, support/resistance — beginner friendly tarike se sikhoge.",
+    descriptionHi: "Candlestick, trend, support/resistance — beginner friendly तरीके से सीखोगे।",
     color: "text-violet-600 dark:text-violet-400",
     bgColor: "bg-violet-100 dark:bg-violet-900/30",
   },
   {
     icon: <Shield className="w-6 h-6" />,
-    title: "Fear-Free Learning",
-    titleHi: "डर-मुक्त सीखना",
-    description: "Safe investing samjhoge – galti karne ka darr khatam ho jayega. Confidence se start karo.",
-    descriptionHi: "Safe investing समझोगे – गलती करने का डर खत्म हो जाएगा। Confidence से start करो।",
+    title: "Fake tips se safe rahoge",
+    titleHi: "Fake tips से safe रहोगे",
+    description: "Risk control + common scams se bachna seekhoge. Ab koi bewakoof nahi bana payega.",
+    descriptionHi: "Risk control + common scams से बचना सीखोगे। अब कोई बेवकूफ नहीं बना पाएगा।",
     color: "text-emerald-600 dark:text-emerald-400",
     bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
   },
   {
     icon: <Target className="w-6 h-6" />,
-    title: "Action-Ready",
-    titleHi: "Action-Ready",
-    description: "Course ke baad apna pehla investment confidently kar sakte ho. Theory + practical dono.",
-    descriptionHi: "Course के बाद अपना पहला investment confidently कर सकते हो। Theory + practical दोनों।",
+    title: "Paper trading se confidence build hoga",
+    titleHi: "Paper trading से confidence build होगा",
+    description: "Real market practice bina loss ke. Pehle seekho, phir invest karo.",
+    descriptionHi: "Real market practice बिना loss के। पहले सीखो, फिर invest करो।",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/30",
   },
@@ -497,7 +497,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
               </p>
               <div className="flex flex-col sm:flex-row gap-2">
                 <Link href="/courses/level1/lesson1" className="flex-1">
-                  <Button variant="outline" className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50" data-testid="button-start-level1">
+                  <Button variant="outline" className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 btn-glow-primary" data-testid="button-start-level1">
                     <GraduationCap className="w-4 h-4" />
                     Start Level 1
                   </Button>

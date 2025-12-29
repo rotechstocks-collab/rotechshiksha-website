@@ -117,6 +117,35 @@ html, body {
 .animate-ring-pink { animation: ring-glow-pink 2.2s ease-in-out infinite; }
 .animate-ring-slate { animation: ring-glow-slate 3.5s ease-in-out infinite; }
 
+/* ===== PREMIUM CTA BUTTON EFFECTS ===== */
+.btn-glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+.btn-glow-emerald:hover {
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+.btn-glow-primary {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.25);
+  transition: box-shadow 0.3s ease;
+}
+.btn-glow-primary:hover {
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.4);
+}
+
+/* Premium soft card styling */
+.soft-card {
+  background: hsl(var(--card));
+  border-radius: 1rem;
+  border: 1px solid hsl(var(--border) / 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.soft-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
 /* RTL (Right-to-Left) Support for Arabic and Urdu */
 [dir="rtl"] {
   text-align: right;

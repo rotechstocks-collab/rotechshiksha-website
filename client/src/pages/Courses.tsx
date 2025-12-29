@@ -25,6 +25,9 @@ import {
   Clock,
   ArrowRight,
   Sparkles,
+  Star,
+  Users,
+  MessageCircle,
 } from "lucide-react";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
 import { SEOHead } from "@/components/SEOHead";
@@ -370,6 +373,25 @@ export default function Courses() {
               </div>
             </div>
 
+            {/* Trust Proof Row */}
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-6">
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span className="font-medium text-foreground">4.8</span>
+                <span>rating</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Users className="w-4 h-4 text-blue-500" />
+                <span className="font-medium text-foreground">10,000+</span>
+                <span>learners</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <MessageCircle className="w-4 h-4 text-emerald-500" />
+                <span className="font-medium text-foreground">2,000+</span>
+                <span>WhatsApp community</span>
+              </div>
+            </div>
+            
             {/* Continue Learning Card */}
             <div className="max-w-lg mx-auto">
               <div className="soft-card border-2 border-emerald-200 dark:border-emerald-800 p-4 lg:p-5">
@@ -386,7 +408,7 @@ export default function Courses() {
                 </div>
                 <Link href={currentLevelData.route}>
                   <Button 
-                    className="w-full min-h-[44px] gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="w-full min-h-[44px] gap-2 bg-emerald-600 hover:bg-emerald-700 text-white btn-glow-emerald"
                     data-testid="button-continue-learning"
                   >
                     <Play className="w-4 h-4" />
@@ -394,6 +416,10 @@ export default function Courses() {
                     <ArrowRight className="w-4 h-4 ml-auto" />
                   </Button>
                 </Link>
+                {/* Trust text below button */}
+                <p className="text-xs text-muted-foreground text-center mt-3">
+                  Is level ke baad tum market ki basic language samjh jaoge.
+                </p>
               </div>
             </div>
           </FadeInUp>
