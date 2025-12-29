@@ -194,37 +194,37 @@ const mostUsedTools = [
     name: "SIP Calculator", 
     nameHi: "SIP Calculator",
     description: "Monthly investment growth calculate karo", 
-    icon: <PiggyBank className="w-5 h-5" />, 
+    icon: <PiggyBank className="w-6 h-6" />, 
     href: "/calculators?calc=sip",
     color: "text-emerald-600",
-    bgColor: "bg-emerald-100",
+    bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
   },
   { 
     name: "Paper Trade", 
     nameHi: "Paper Trade",
     description: "Bina risk ke trading practice karo", 
-    icon: <LineChart className="w-5 h-5" />, 
+    icon: <LineChart className="w-6 h-6" />, 
     href: "/paper-trade",
     color: "text-blue-600",
-    bgColor: "bg-blue-100",
+    bgColor: "bg-blue-50 dark:bg-blue-900/20",
   },
   { 
     name: "Broker Compare", 
     nameHi: "Broker Compare",
     description: "Best broker select karo charges dekho", 
-    icon: <BarChart3 className="w-5 h-5" />, 
+    icon: <BarChart3 className="w-6 h-6" />, 
     href: "/brokers",
     color: "text-purple-600",
-    bgColor: "bg-purple-100",
+    bgColor: "bg-purple-50 dark:bg-purple-900/20",
   },
   { 
-    name: "CAGR Calculator", 
-    nameHi: "CAGR Calculator",
-    description: "Long term returns calculate karo", 
-    icon: <TrendingUp className="w-5 h-5" />, 
-    href: "/calculators?calc=cagr",
+    name: "EMI Calculator", 
+    nameHi: "EMI Calculator",
+    description: "Loan EMI aur interest calculate karo", 
+    icon: <Calculator className="w-6 h-6" />, 
+    href: "/calculators?calc=emi",
     color: "text-amber-600",
-    bgColor: "bg-amber-100",
+    bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
 ];
 
@@ -984,7 +984,7 @@ export default function Home() {
 
       <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 mb-3">
               <Wrench className="w-3.5 h-3.5 mr-1.5" />
               Most Used Tools
@@ -997,29 +997,29 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {mostUsedTools.map((tool, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
                 <Link href={tool.href} data-testid={`link-tool-${tool.name.toLowerCase().replace(' ', '-')}`}>
-                  <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm p-5 cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-4">
-                    <div className={`w-12 h-12 ${tool.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                  <div className="group bg-white dark:bg-card rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-5 cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-slate-200 dark:hover:border-slate-600 flex items-center gap-4 h-full">
+                    <div className={`h-12 w-12 ${tool.bgColor} rounded-2xl flex items-center justify-center flex-shrink-0`}>
                       <span className={tool.color}>{tool.icon}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-slate-900 dark:text-white mb-0.5">
+                      <h3 className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
                         {isHindi ? tool.nameHi : tool.name}
                       </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 truncate">
+                      <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-6 mt-1">
                         {tool.description}
                       </p>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                    <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition flex-shrink-0" />
                   </div>
                 </Link>
               </motion.div>
