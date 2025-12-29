@@ -1,20 +1,20 @@
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/context/LanguageContext";
-import { Home, BookOpen, Wrench, FileText, HelpCircle, CreditCard } from "lucide-react";
+import { Home, BookOpen, Calculator, HelpCircle, CreditCard } from "lucide-react";
 
 interface NavItem {
   labelKey: string;
+  fallbackLabel: string;
   href: string;
   icon: typeof Home;
 }
 
 const navItems: NavItem[] = [
-  { labelKey: "nav.home", href: "/", icon: Home },
-  { labelKey: "nav.courses", href: "/courses", icon: BookOpen },
-  { labelKey: "nav.tools", href: "/calculators", icon: Wrench },
-  { labelKey: "nav.blog", href: "/blog", icon: FileText },
-  { labelKey: "nav.faq", href: "/faq", icon: HelpCircle },
-  { labelKey: "nav.pricing", href: "/pricing", icon: CreditCard },
+  { labelKey: "nav.home", fallbackLabel: "Home", href: "/", icon: Home },
+  { labelKey: "nav.courses", fallbackLabel: "Courses", href: "/courses", icon: BookOpen },
+  { labelKey: "nav.tools", fallbackLabel: "Tools", href: "/calculators", icon: Calculator },
+  { labelKey: "nav.faq", fallbackLabel: "FAQ", href: "/faq", icon: HelpCircle },
+  { labelKey: "nav.pricing", fallbackLabel: "Pricing", href: "/pricing", icon: CreditCard },
 ];
 
 export function MobileBottomNav() {
@@ -28,15 +28,15 @@ export function MobileBottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 dark:bg-background/95 backdrop-blur-md border-t border-slate-200 dark:border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] rounded-t-2xl"
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-700/50"
       style={{ 
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        paddingBottom: 'max(8px, env(safe-area-inset-bottom, 0px))',
         paddingLeft: 'env(safe-area-inset-left, 0px)',
         paddingRight: 'env(safe-area-inset-right, 0px)'
       }}
       data-testid="mobile-bottom-nav"
     >
-      <div className="flex items-center justify-around px-1 py-1.5">
+      <div className="flex items-stretch justify-around h-14">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -44,23 +44,21 @@ export function MobileBottomNav() {
           return (
             <Link key={item.href} href={item.href}>
               <button
-                className={`flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1.5 px-2 rounded-xl transition-all duration-200 ${
+                className={`flex flex-col items-center justify-center flex-1 min-w-[56px] h-full px-1 transition-colors duration-150 ${
                   active 
-                    ? "text-primary bg-primary/10 scale-105" 
-                    : "text-muted-foreground hover:text-foreground active:scale-95"
+                    ? "text-emerald-600 dark:text-emerald-400" 
+                    : "text-slate-500 dark:text-slate-400"
                 }`}
                 data-testid={`mobile-nav-${item.labelKey}`}
               >
                 <Icon 
-                  className={`w-5 h-5 mb-0.5 transition-transform ${
-                    active ? "scale-110" : ""
-                  }`} 
-                  strokeWidth={active ? 2.5 : 2}
+                  className="w-5 h-5 mb-1" 
+                  strokeWidth={active ? 2.2 : 1.8}
                 />
-                <span className={`text-[10px] font-medium leading-tight ${
-                  active ? "font-semibold" : ""
+                <span className={`text-[10px] leading-none truncate max-w-[48px] text-center ${
+                  active ? "font-semibold" : "font-medium"
                 }`}>
-                  {t(item.labelKey)}
+                  {t(item.labelKey) || item.fallbackLabel}
                 </span>
               </button>
             </Link>

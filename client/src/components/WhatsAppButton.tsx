@@ -179,7 +179,8 @@ export function WhatsAppButton() {
       
       <div
         ref={popupRef}
-        className="fixed right-2 sm:right-4 bottom-20 md:bottom-6 z-50"
+        className="fixed right-3 sm:right-4 z-50"
+        style={{ bottom: 'max(80px, calc(72px + env(safe-area-inset-bottom)))' }}
         data-testid="floating-whatsapp-container"
       >
         <AnimatePresence>

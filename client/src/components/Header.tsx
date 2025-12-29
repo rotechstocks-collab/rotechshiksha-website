@@ -244,7 +244,7 @@ export function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <div className="hidden xl:block w-52">
               <StockSearch variant="compact" />
             </div>
@@ -263,51 +263,50 @@ export function Header() {
               {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </Button>
 
-            <div className="flex">
-              {isAuthenticated ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="gap-2" data-testid="button-user-menu">
-                      <User className="w-4 h-4" />
-                      <span className="hidden xl:inline">{user?.fullName?.split(" ")[0]}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5 px-2 sm:px-3" data-testid="button-user-menu">
+                    <User className="w-4 h-4" />
+                    <span className="hidden sm:inline text-xs">{user?.fullName?.split(" ")[0]}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">
+                      <span className="flex items-center gap-2 cursor-pointer w-full" data-testid="link-dashboard">
+                        <LayoutDashboard className="w-4 h-4" />
+                        {t("nav.dashboard")}
+                      </span>
+                    </Link>
+                  </DropdownMenuItem>
+                  {user?.isAdmin && (
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard">
-                        <span className="flex items-center gap-2 cursor-pointer w-full" data-testid="link-dashboard">
-                          <LayoutDashboard className="w-4 h-4" />
-                          {t("nav.dashboard")}
+                      <Link href="/admin">
+                        <span className="flex items-center gap-2 cursor-pointer w-full" data-testid="link-admin">
+                          <User className="w-4 h-4" />
+                          {t("nav.adminPanel")}
                         </span>
                       </Link>
                     </DropdownMenuItem>
-                    {user?.isAdmin && (
-                      <DropdownMenuItem asChild>
-                        <Link href="/admin">
-                          <span className="flex items-center gap-2 cursor-pointer w-full" data-testid="link-admin">
-                            <User className="w-4 h-4" />
-                            {t("nav.adminPanel")}
-                          </span>
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={logout} data-testid="button-logout">
-                      <LogOut className="w-4 h-4 mr-2" />
-                      {t("nav.logout")}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button onClick={handleLoginClick} data-testid="button-login">
-                  {t("nav.login")}
-                </Button>
-              )}
-            </div>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout} data-testid="button-logout">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    {t("nav.logout")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button onClick={handleLoginClick} size="sm" className="px-3 sm:px-4" data-testid="button-login">
+                <User className="w-4 h-4 sm:hidden" />
+                <span className="hidden sm:inline">{t("nav.login")}</span>
+              </Button>
+            )}
 
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild className="xl:hidden">
-                <Button size="icon" variant="ghost" data-testid="button-mobile-menu" className="h-10 w-10">
+                <Button size="icon" variant="ghost" data-testid="button-mobile-menu">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>

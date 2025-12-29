@@ -3,7 +3,52 @@ import { Link } from "wouter";
 import { SiWhatsapp, SiTelegram, SiInstagram, SiYoutube } from "react-icons/si";
 import { AlertTriangle, Mail, Phone, MapPin, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+// AnimatePresence is still used for the disclaimer section
 import logoImage from "@assets/generated_images/professional_rotech_shiksha_logo.png";
+
+const courseLinks = [
+  { href: "/courses/basic", label: "Basic Course", testId: "footer-link-basic-course" },
+  { href: "/courses/intermediate", label: "Intermediate", testId: "footer-link-intermediate-course" },
+  { href: "/courses/advanced", label: "Advanced", testId: "footer-link-advanced-course" },
+  { href: "/courses/algo", label: "Algo Trading", testId: "footer-link-algo-trading" },
+];
+
+const resourceLinks = [
+  { href: "/calculators", label: "Calculators", testId: "footer-link-calculators" },
+  { href: "/blog", label: "Market Gyaan", testId: "footer-link-blog" },
+  { href: "/faq", label: "FAQ", testId: "footer-link-faq" },
+  { href: "/pricing", label: "Pricing", testId: "footer-link-pricing" },
+  { href: "/about", label: "About Us", testId: "footer-link-about" },
+];
+
+interface AccordionSectionProps {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+function AccordionSection({ title, children, defaultOpen = false }: AccordionSectionProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  
+  return (
+    <div className="border-b border-slate-200/60 dark:border-slate-700/50 md:border-0">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-3 md:hidden"
+        data-testid={`footer-accordion-${title.toLowerCase()}`}
+      >
+        <h4 className="text-sm font-semibold text-slate-800 dark:text-white">{title}</h4>
+        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      <h4 className="hidden md:block text-sm font-semibold text-slate-800 dark:text-white mb-3">{title}</h4>
+      <div className={`overflow-hidden transition-all duration-200 md:!max-h-none md:!opacity-100 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 md:max-h-none md:opacity-100'}`}>
+        <div className="pb-3 md:pb-0">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function Footer() {
   const [showFullDisclaimer, setShowFullDisclaimer] = useState(false);
@@ -16,13 +61,13 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pb-20 md:pb-0">
       <div 
-        className="max-w-6xl mx-auto px-4 py-10 md:py-12" 
-        style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))', paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom))' }}
+        className="max-w-6xl mx-auto px-4 py-8 md:py-12" 
+        style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}
       >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-          <div className="col-span-2 md:col-span-1 space-y-3">
+        <div className="space-y-0 md:space-y-0 md:grid md:grid-cols-4 md:gap-8">
+          <div className="pb-4 md:pb-0 border-b border-slate-200/60 dark:border-slate-700/50 md:border-0">
             <Link href="/">
               <img 
                 src={logoImage} 
@@ -32,17 +77,17 @@ export function Footer() {
                 data-testid="footer-logo"
               />
             </Link>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              India's trusted stock market education platform. From basics to algo trading.
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              India's trusted stock market education platform.
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mt-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-1.5 rounded-md ${social.color} transition-transform hover:scale-110`}
+                  className={`p-2 rounded-lg ${social.color} transition-transform hover:scale-110`}
                   data-testid={`link-${social.label}`}
                 >
                   <social.icon className="w-4 h-4" />
@@ -51,72 +96,58 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">Courses</h4>
-            <nav className="flex flex-col gap-1.5">
-              {[
-                { href: "/courses/basic", label: "Basic Course", testId: "footer-link-basic-course" },
-                { href: "/courses/intermediate", label: "Intermediate", testId: "footer-link-intermediate-course" },
-                { href: "/courses/advanced", label: "Advanced", testId: "footer-link-advanced-course" },
-                { href: "/courses/algo", label: "Algo Trading", testId: "footer-link-algo-trading" },
-              ].map((link) => (
+          <AccordionSection title="Courses">
+            <nav className="flex flex-col gap-2">
+              {courseLinks.map((link) => (
                 <Link 
                   key={link.href}
                   href={link.href} 
-                  className="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" 
+                  className="text-sm md:text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors py-1 md:py-0" 
                   data-testid={link.testId}
                 >
                   {link.label}
                 </Link>
               ))}
             </nav>
-          </div>
+          </AccordionSection>
 
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">Resources</h4>
-            <nav className="flex flex-col gap-1.5">
-              {[
-                { href: "/calculators", label: "Calculators", testId: "footer-link-calculators" },
-                { href: "/blog", label: "Market Gyaan", testId: "footer-link-blog" },
-                { href: "/faq", label: "FAQ", testId: "footer-link-faq" },
-                { href: "/pricing", label: "Pricing", testId: "footer-link-pricing" },
-                { href: "/about", label: "About Us", testId: "footer-link-about" },
-              ].map((link) => (
+          <AccordionSection title="Resources">
+            <nav className="flex flex-col gap-2">
+              {resourceLinks.map((link) => (
                 <Link 
                   key={link.href}
                   href={link.href} 
-                  className="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" 
+                  className="text-sm md:text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors py-1 md:py-0" 
                   data-testid={link.testId}
                 >
                   {link.label}
                 </Link>
               ))}
             </nav>
-          </div>
+          </AccordionSection>
 
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">Contact</h4>
-            <div className="flex flex-col gap-1.5">
+          <AccordionSection title="Contact">
+            <div className="flex flex-col gap-2">
               <a 
                 href="tel:+918349024108"
-                className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
+                className="flex items-center gap-2 text-sm md:text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors py-1 md:py-0"
               >
-                <Phone className="w-3.5 h-3.5" />
+                <Phone className="w-4 h-4 md:w-3.5 md:h-3.5" />
                 <span>+91 83490 24108</span>
               </a>
               <a 
                 href="mailto:support@rotechshiksha.com"
-                className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
+                className="flex items-center gap-2 text-sm md:text-xs text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors py-1 md:py-0"
               >
-                <Mail className="w-3.5 h-3.5" />
+                <Mail className="w-4 h-4 md:w-3.5 md:h-3.5" />
                 <span>support@rotechshiksha.com</span>
               </a>
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-                <MapPin className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-2 text-sm md:text-xs text-slate-500 dark:text-slate-400 py-1 md:py-0">
+                <MapPin className="w-4 h-4 md:w-3.5 md:h-3.5" />
                 <span>India</span>
               </div>
             </div>
-          </div>
+          </AccordionSection>
         </div>
 
         <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
