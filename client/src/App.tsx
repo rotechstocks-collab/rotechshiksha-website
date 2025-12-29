@@ -107,9 +107,37 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    document.body.style.removeProperty("overflow");
-    document.body.style.removeProperty("padding-right");
-    document.documentElement.style.removeProperty("overflow");
+    const unlockScroll = () => {
+      document.body.style.removeProperty("overflow");
+      document.body.style.removeProperty("padding-right");
+      document.documentElement.style.removeProperty("overflow");
+      document.body.removeAttribute("data-scroll-locked");
+    };
+
+    unlockScroll();
+
+    const observer = new MutationObserver(() => {
+      const bodyOverflow = window.getComputedStyle(document.body).overflow;
+      if (bodyOverflow === "hidden" || document.body.hasAttribute("data-scroll-locked")) {
+        unlockScroll();
+      }
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style", "data-scroll-locked"],
+    });
+
+    window.addEventListener("keydown", unlockScroll);
+    window.addEventListener("click", unlockScroll);
+    window.addEventListener("resize", unlockScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("keydown", unlockScroll);
+      window.removeEventListener("click", unlockScroll);
+      window.removeEventListener("resize", unlockScroll);
+    };
   }, []);
 
   return (
