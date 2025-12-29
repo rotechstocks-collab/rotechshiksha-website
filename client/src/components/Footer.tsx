@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { SiWhatsapp, SiTelegram, SiInstagram, SiYoutube } from "react-icons/si";
-import { AlertTriangle, Mail, Phone, MapPin } from "lucide-react";
-import { motion } from "framer-motion";
+import { AlertTriangle, Mail, Phone, MapPin, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import logoImage from "@assets/generated_images/professional_rotech_shiksha_logo.png";
 
 export function Footer() {
+  const [showFullDisclaimer, setShowFullDisclaimer] = useState(false);
+
   const socialLinks = [
     { href: "https://wa.me/918349024108", icon: SiWhatsapp, label: "whatsapp", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
     { href: "https://t.me/Bharatfincap", icon: SiTelegram, label: "telegram", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
@@ -13,187 +16,163 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-card dark:to-background border-t border-slate-100 dark:border-card-border">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12" style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))', paddingBottom: 'max(3rem, env(safe-area-inset-bottom))' }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+      <div 
+        className="max-w-6xl mx-auto px-4 py-10 md:py-12" 
+        style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))', paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom))' }}
+      >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          <div className="col-span-2 md:col-span-1 space-y-3">
             <Link href="/">
               <img 
                 src={logoImage} 
                 alt="Rotech Shiksha Logo" 
-                className="h-10 w-auto object-contain cursor-pointer"
+                className="h-8 w-auto object-contain cursor-pointer"
                 loading="lazy"
                 data-testid="footer-logo"
               />
             </Link>
-            <p className="text-sm text-slate-600 dark:text-muted-foreground leading-relaxed">
-              Learn stock market trading with India's trusted education platform.
-              From basics to advanced algo trading, we cover everything.
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              India's trusted stock market education platform. From basics to algo trading.
             </p>
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social, index) => (
-                <motion.a
+            <div className="flex items-center gap-2">
+              {socialLinks.map((social) => (
+                <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-2 rounded-md ${social.color}`}
+                  className={`p-1.5 rounded-md ${social.color} transition-transform hover:scale-110`}
                   data-testid={`link-${social.label}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  <social.icon className="w-5 h-5" />
-                </motion.a>
+                  <social.icon className="w-4 h-4" />
+                </a>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <h4 className="font-semibold text-slate-800 dark:text-foreground">Quick Links</h4>
-            <nav className="flex flex-col gap-2">
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">Courses</h4>
+            <nav className="flex flex-col gap-1.5">
               {[
                 { href: "/courses/basic", label: "Basic Course", testId: "footer-link-basic-course" },
-                { href: "/courses/intermediate", label: "Intermediate Course", testId: "footer-link-intermediate-course" },
-                { href: "/courses/advanced", label: "Advanced Course", testId: "footer-link-advanced-course" },
+                { href: "/courses/intermediate", label: "Intermediate", testId: "footer-link-intermediate-course" },
+                { href: "/courses/advanced", label: "Advanced", testId: "footer-link-advanced-course" },
                 { href: "/courses/algo", label: "Algo Trading", testId: "footer-link-algo-trading" },
-              ].map((link, index) => (
-                <motion.div
+              ].map((link) => (
+                <Link 
                   key={link.href}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.05 }}
+                  href={link.href} 
+                  className="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" 
+                  data-testid={link.testId}
                 >
-                  <Link 
-                    href={link.href} 
-                    className="text-sm text-slate-500 dark:text-muted-foreground hover:text-[#4A90E2] dark:hover:text-primary cursor-pointer transition-colors duration-200" 
-                    data-testid={link.testId}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
+                  {link.label}
+                </Link>
               ))}
             </nav>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h4 className="font-semibold text-slate-800 dark:text-foreground">Resources</h4>
-            <nav className="flex flex-col gap-2">
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">Resources</h4>
+            <nav className="flex flex-col gap-1.5">
               {[
                 { href: "/calculators", label: "Calculators", testId: "footer-link-calculators" },
-                { href: "/blog", label: "Market Gyaan (Blog)", testId: "footer-link-blog" },
+                { href: "/blog", label: "Market Gyaan", testId: "footer-link-blog" },
                 { href: "/faq", label: "FAQ", testId: "footer-link-faq" },
-                { href: "/pricing", label: "Pricing Plans", testId: "footer-link-pricing" },
+                { href: "/pricing", label: "Pricing", testId: "footer-link-pricing" },
                 { href: "/about", label: "About Us", testId: "footer-link-about" },
-              ].map((link, index) => (
-                <motion.div
+              ].map((link) => (
+                <Link 
                   key={link.href}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + index * 0.05 }}
+                  href={link.href} 
+                  className="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" 
+                  data-testid={link.testId}
                 >
-                  <Link 
-                    href={link.href} 
-                    className="text-sm text-slate-500 dark:text-muted-foreground hover:text-[#4A90E2] dark:hover:text-primary cursor-pointer transition-colors duration-200" 
-                    data-testid={link.testId}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
+                  {link.label}
+                </Link>
               ))}
             </nav>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h4 className="font-semibold text-slate-800 dark:text-foreground">Contact</h4>
-            <div className="flex flex-col gap-3">
-              <motion.a 
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">Contact</h4>
+            <div className="flex flex-col gap-1.5">
+              <a 
                 href="tel:+918349024108"
-                className="flex items-center gap-2 text-sm text-slate-500 dark:text-muted-foreground hover:text-[#4A90E2] dark:hover:text-primary transition-colors duration-200"
-                whileHover={{ x: 4 }}
+                className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-3.5 h-3.5" />
                 <span>+91 83490 24108</span>
-              </motion.a>
-              <motion.a 
+              </a>
+              <a 
                 href="mailto:support@rotechshiksha.com"
-                className="flex items-center gap-2 text-sm text-slate-500 dark:text-muted-foreground hover:text-[#4A90E2] dark:hover:text-primary transition-colors duration-200"
-                whileHover={{ x: 4 }}
+                className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-3.5 h-3.5" />
                 <span>support@rotechshiksha.com</span>
-              </motion.a>
-              <div className="flex items-start gap-2 text-sm text-slate-500 dark:text-muted-foreground">
-                <MapPin className="w-4 h-4 mt-0.5" />
+              </a>
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                <MapPin className="w-3.5 h-3.5" />
                 <span>India</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div 
-          className="mt-12 pt-8 border-t border-slate-200 dark:border-border"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-            <motion.div 
-              className="flex items-start gap-2 p-4 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-            >
-              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-amber-700 dark:text-amber-300 leading-relaxed">
-                <strong>Disclaimer:</strong> This website is for educational purpose only. We do not provide investment advice. 
-                Invest at your own risk after proper research. No guaranteed returns. Past performance is not indicative of future results.
-                Consult a SEBI registered advisor before making investment decisions.
-              </p>
-            </motion.div>
-            <p className="text-sm text-slate-500 dark:text-muted-foreground">
+        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-4 md:p-5">
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <span className="font-medium text-slate-700 dark:text-slate-300">Disclaimer:</span> This website is for educational purposes only. We do not provide investment advice or trading tips.
+                  {!showFullDisclaimer && (
+                    <button 
+                      onClick={() => setShowFullDisclaimer(true)}
+                      className="ml-1 text-primary hover:underline font-medium inline-flex items-center gap-0.5"
+                      data-testid="button-expand-disclaimer"
+                    >
+                      Read more
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
+                  )}
+                </p>
+                <AnimatePresence>
+                  {showFullDisclaimer && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2">
+                        Invest at your own risk after proper research. No guaranteed returns. Past performance is not indicative of future results. 
+                        Consult a SEBI registered advisor before making investment decisions. Always do your own research before making any financial decisions.
+                      </p>
+                      <button 
+                        onClick={() => setShowFullDisclaimer(false)}
+                        className="mt-2 text-xs text-primary hover:underline font-medium inline-flex items-center gap-0.5"
+                        data-testid="button-collapse-disclaimer"
+                      >
+                        Show less
+                        <ChevronUp className="w-3 h-3" />
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <p className="text-xs text-slate-400 dark:text-slate-500">
               © {new Date().getFullYear()} Rotech Shiksha. All rights reserved.
             </p>
-          </div>
-          
-          <div className="mt-6 pt-4 border-t border-slate-200 dark:border-border text-center">
-            <p className="text-xs text-slate-500 dark:text-muted-foreground">
-              Rotech Shiksha is an education platform.<br />
-              We do not provide trading tips or investment advice.
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              Made with care for Indian investors
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
