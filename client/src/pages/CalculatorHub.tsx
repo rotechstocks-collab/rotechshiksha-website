@@ -237,39 +237,40 @@ export default function CalculatorHub() {
         rohitLine="SIP calculator se shuru karta hoon – kitna invest karna chahiye yeh samajh aayega!"
       />
 
-      <section className="section">
+      <section className="py-10 md:py-14">
         <div className="page-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            className="text-center mb-10"
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 rounded-full text-sm font-medium mb-4">
               <Calculator className="w-4 h-4" />
               20+ Free Tools
             </span>
-            <h1 className="varsity-h1 mb-3">
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-3">
               Financial Calculators
             </h1>
-            <p className="varsity-body max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
               Apne investment plan karo, tax calculate karo, aur informed decisions lo.
-              <br />
-              <span className="text-sm text-slate-500 dark:text-slate-400">Sab FREE hai - koi signup nahi chahiye.</span>
+              <span className="block text-xs text-slate-500 dark:text-slate-500 mt-1">Sab FREE hai - koi signup nahi chahiye.</span>
             </p>
           </motion.div>
 
         <div className="max-w-2xl mx-auto mb-10">
-          <CharacterTip
-            character="priya"
-            pose="clipboard"
-            title={characterCopy.calculators.tipTitle}
-            message={characterCopy.calculators.tipMessage}
-          />
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200/60 dark:border-emerald-800/50 rounded-xl p-4 shadow-sm">
+            <CharacterTip
+              character="priya"
+              pose="clipboard"
+              title={characterCopy.calculators.tipTitle}
+              message={characterCopy.calculators.tipMessage}
+            />
+          </div>
         </div>
 
-        <section className="mb-16">
-          <h2 className="text-xl font-semibold text-foreground mb-6">Popular Calculators</h2>
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-5">Popular Calculators</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {popularCalcs.map((calc, index) => {
               const colors = categoryColors[calc.category];
@@ -285,10 +286,10 @@ export default function CalculatorHub() {
                       className="soft-card-hover p-4 h-full flex flex-col items-center text-center cursor-pointer"
                       data-testid={`card-calc-${calc.id}`}
                     >
-                      <div className={`w-12 h-12 rounded-2xl ${colors.bg} ${colors.icon} flex items-center justify-center mb-3`}>
+                      <div className={`h-12 w-12 rounded-2xl ${colors.bg} ${colors.icon} flex items-center justify-center mb-3`}>
                         {calc.icon}
                       </div>
-                      <h3 className="text-sm font-medium text-foreground">{calc.name}</h3>
+                      <h3 className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">{calc.name}</h3>
                     </div>
                   </Link>
                 </motion.div>
@@ -302,9 +303,9 @@ export default function CalculatorHub() {
           const colors = categoryColors[category];
           
           return (
-            <section key={category} className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <h2 className="text-xl font-semibold text-foreground">
+            <section key={category} className="mb-10">
+              <div className="flex items-center gap-3 mb-5">
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                   {categoryLabels[category]}
                 </h2>
                 <Badge className={`${colors.badge} border-0`} variant="outline">
@@ -323,21 +324,21 @@ export default function CalculatorHub() {
                   >
                     <Link href={`/calculators/${calc.id}`}>
                       <div
-                        className="soft-card-hover p-5 h-full flex items-start gap-4 cursor-pointer group"
+                        className="soft-card-hover p-4 h-full flex items-start gap-3 cursor-pointer group"
                         data-testid={`card-calc-${calc.id}`}
                       >
-                        <div className={`w-12 h-12 rounded-2xl ${colors.bg} ${colors.icon} flex items-center justify-center shrink-0`}>
+                        <div className={`h-12 w-12 rounded-2xl ${colors.bg} ${colors.icon} flex items-center justify-center shrink-0`}>
                           {calc.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors mb-1">
+                          <h3 className="text-base md:text-lg font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors mb-0.5">
                             {calc.name}
                           </h3>
-                          <p className="text-sm text-muted-foreground line-clamp-2">
+                          <p className="text-sm md:text-base leading-6 text-slate-600 dark:text-slate-400 line-clamp-2">
                             {calc.description}
                           </p>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1" />
+                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-primary transition-colors shrink-0 mt-1" />
                       </div>
                     </Link>
                   </motion.div>

@@ -568,11 +568,11 @@ html, body {
     @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm;
   }
   .soft-card-hover {
-    @apply bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm 
+    @apply bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-sm 
            transition-all duration-200 ease-out;
   }
   .soft-card-hover:hover {
-    @apply shadow-md border-gray-300 dark:border-slate-600;
+    @apply shadow-lg border-slate-300 dark:border-slate-600 -translate-y-1;
   }
 
   /* ===== PASTEL CATEGORY CARDS ===== */
