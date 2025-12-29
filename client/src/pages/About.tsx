@@ -13,25 +13,25 @@ import { SEOHead } from "@/components/SEOHead";
 
 export default function About() {
   return (
-    <div className="min-h-screen pt-28 bg-background">
+    <div className="bg-slate-50 dark:bg-background pt-20">
       <SEOHead
         title="About Rotech Shiksha | Stock Market Education Platform"
         description="Learn about Rotech Shiksha - a beginner-friendly stock market education platform founded by Rohit Vaish. Free, honest, and focused on Indian retail investors."
         keywords="rotech shiksha about, stock market education india, rohit vaish, beginner investing"
       />
 
-      <section className="py-16 lg:py-20">
+      <section className="pt-12 md:pt-16 pb-10 md:pb-12">
         <div className="max-w-4xl mx-auto px-4 lg:px-8">
-          <div className="text-center space-y-6 mb-16">
-            <h1 className="text-4xl lg:text-5xl font-bold text-foreground">
+          <div className="text-center space-y-4 mb-10">
+            <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
               About Rotech Shiksha
             </h1>
             <p className="text-sm text-muted-foreground">(Humari kahani)</p>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="prose prose-lg max-w-none">
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Rotech Shiksha ek beginner-friendly stock market education platform hai. 
                 Humara goal simple hai: har Indian ko stock market ki basic samajh dena – 
                 bina confusion, bina jargon ke.
@@ -45,7 +45,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-20 bg-slate-50 dark:bg-card/30">
+      <section className="py-10 md:py-12 bg-white dark:bg-card/30 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-4xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
@@ -70,7 +70,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-20">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
@@ -96,7 +96,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-20 bg-slate-50 dark:bg-card/30">
+      <section className="py-10 md:py-12 bg-slate-50 dark:bg-card/30">
         <div className="max-w-4xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
@@ -153,7 +153,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-20">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
@@ -182,7 +182,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-20 bg-slate-800 dark:bg-slate-900 text-white">
+      <section className="py-10 md:py-12 bg-slate-800 dark:bg-slate-900 text-white">
         <div className="max-w-4xl mx-auto px-4 lg:px-8 text-center space-y-6">
           <h2 className="text-2xl lg:text-3xl font-bold">
             Ready to Start Learning?

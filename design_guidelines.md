@@ -133,12 +133,19 @@
 - **Desktop**: > 1024px (xl, 2xl)
 
 ## Consistent Section Spacing
-- **Section Padding**: py-16 md:py-24 (standard sections)
-- **Section Padding (Compact)**: py-12 md:py-16 (dense content)
-- **Container Max-Width**: max-w-6xl mx-auto px-4 (full width)
-- **Content Max-Width**: max-w-4xl mx-auto px-4 (reading)
+- **Hero Section**: pt-12 md:pt-16 pb-10 md:pb-14 (top-aligned, not centered)
+- **Standard Section**: py-10 md:py-12 (balanced vertical rhythm)
+- **Compact Section**: py-8 md:py-10 (tight spacing)
+- **Container Max-Width**: max-w-6xl mx-auto px-4 (full width layouts)
+- **Content Max-Width**: max-w-4xl mx-auto px-4 (reading content)
+- **Narrow Content**: max-w-3xl mx-auto px-4 (focused modules)
 - **Card Padding**: p-5 md:p-6 (standard cards)
 - **Gap Between Cards**: gap-4 md:gap-6 (card grids)
+
+## Layout Rules
+- **No min-h-screen** on hero sections (causes excessive whitespace)
+- **No vertical centering** (justify-center) for hero content - use top alignment
+- **Background**: bg-slate-50 dark:bg-background for page body, white cards with subtle borders
 
 ## Performance Guidelines
 - Use SVG for all illustrations (scalable, small file size)

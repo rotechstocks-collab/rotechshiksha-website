@@ -95,14 +95,14 @@ export default function BeginnerCourse() {
   }, 0);
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
+    <div className="bg-slate-50 dark:bg-background">
       <SEOHead
         title="Beginner Stock Market Course – Rotech Shiksha"
         description="Learn stock market basics step by step in simple Hinglish. Complete beginner course with 13 lessons across 3 modules."
         keywords="stock market course hindi, beginner investing course, share market basics, learn investing india"
       />
 
-      <section className="py-16 md:py-24 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-950/20">
+      <section className="pt-12 md:pt-16 pb-10 md:pb-14 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-950/20">
         <div className="max-w-4xl mx-auto px-4">
           <motion.div 
             className="text-center"
@@ -197,9 +197,9 @@ export default function BeginnerCourse() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24">
+      <section className="py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
               Course Curriculum
             </h2>
@@ -235,23 +235,23 @@ export default function BeginnerCourse() {
         </div>
       </section>
 
-      <section className="py-12 bg-emerald-50 dark:bg-emerald-950/20 border-t border-emerald-100 dark:border-emerald-900/30">
+      <section className="py-10 bg-emerald-50 dark:bg-emerald-950/20 border-t border-emerald-100 dark:border-emerald-900/30">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3">
             Ready to Start Your Journey?
           </h2>
-          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+          <p className="text-sm text-muted-foreground mb-5 max-w-md mx-auto">
             Pehla lesson padhne ke baad confidence aayega. Simple Hindi mein samjhao.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/beginner-course/paise-invest-kyu">
-              <Button size="lg" className="gap-2 min-h-[48px] px-8" data-testid="button-beginner-cta-primary">
-                <Play className="w-5 h-5" />
+              <Button size="lg" className="gap-2" data-testid="button-beginner-cta-primary">
+                <Play className="w-4 h-4" />
                 Pehla Lesson Shuru Karo
               </Button>
             </Link>
             <Link href="/calculators">
-              <Button variant="outline" size="lg" className="gap-2 min-h-[48px]" data-testid="button-beginner-cta-secondary">
+              <Button variant="outline" size="lg" className="gap-2" data-testid="button-beginner-cta-secondary">
                 Calculators Try Karo
               </Button>
             </Link>
@@ -259,19 +259,13 @@ export default function BeginnerCourse() {
         </div>
       </section>
 
-      <section className="py-8 border-t border-slate-200 dark:border-slate-800">
+      <section className="py-6 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-3xl mx-auto px-4">
-          <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
-            <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium mb-1">
-                Education Only
-              </p>
-              <p className="text-xs text-amber-700/80 dark:text-amber-300/80">
-                Rotech Shiksha is an education platform. We do not provide trading tips or investment advice. 
-                Always do your own research before making any financial decisions.
-              </p>
-            </div>
+          <div className="flex items-start gap-2 p-3 rounded-md bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
+            <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-700/80 dark:text-amber-300/80">
+              <span className="font-medium">Education Only:</span> Rotech Shiksha is an education platform. We do not provide trading tips or investment advice. Always do your own research before making any financial decisions.
+            </p>
           </div>
         </div>
       </section>

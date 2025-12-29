@@ -611,7 +611,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative bg-[#f7f9fc] dark:bg-background">
+    <div className="relative bg-slate-50 dark:bg-background">
       <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
@@ -681,7 +681,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      <section className="py-14 md:py-20">
+      <section className="pt-12 md:pt-16 pb-10 md:pb-14">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div 
             className="text-center"
@@ -766,7 +766,7 @@ export default function Home() {
         <WhatsAppStrip />
       </div>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
@@ -809,7 +809,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div>
@@ -870,7 +870,7 @@ export default function Home() {
         </section>
       )}
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 mb-3">
@@ -916,7 +916,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 mb-3">
@@ -982,7 +982,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 mb-3">
@@ -1037,7 +1037,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800 mb-3">
@@ -1077,7 +1077,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 mb-3">
@@ -1123,7 +1123,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-10 md:py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
             <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 mb-3">
