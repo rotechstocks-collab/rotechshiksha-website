@@ -497,7 +497,7 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
               </p>
               <div className="flex flex-col sm:flex-row gap-2">
                 <Link href="/courses/level1/lesson1" className="flex-1">
-                  <Button variant="outline" className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50">
+                  <Button variant="outline" className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50" data-testid="button-start-level1">
                     <GraduationCap className="w-4 h-4" />
                     Start Level 1
                   </Button>
