@@ -380,33 +380,142 @@ function LeadCaptureSection({ isHindi }: { isHindi: boolean }) {
   };
 
   if (pdfUrl) {
+    const pdfFeatures = [
+      { icon: <CheckCircle className="w-4 h-4" />, text: "5 Steps to Start Investing" },
+      { icon: <CheckCircle className="w-4 h-4" />, text: "Common Mistakes to Avoid" },
+      { icon: <CheckCircle className="w-4 h-4" />, text: "Glossary + Tools" },
+      { icon: <CheckCircle className="w-4 h-4" />, text: "Weekly Action Plan" },
+    ];
+
+    const handleShareOnWhatsApp = () => {
+      const message = `Maine Rotech Shiksha se ye FREE Stock Market PDF download ki! Tum bhi download karo: ${window.location.origin}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+    };
+
     return (
-      <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 text-center">
-        <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Check className="w-6 h-6 text-emerald-600" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative overflow-hidden"
+      >
+        {/* Decorative blur circles */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-200/40 dark:bg-emerald-800/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-200/30 dark:bg-blue-800/15 rounded-full blur-3xl" />
+        
+        <div className="relative bg-gradient-to-br from-emerald-50 via-white to-emerald-50/50 dark:from-emerald-950/40 dark:via-slate-900/80 dark:to-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/60 rounded-2xl p-6 md:p-8">
+          {/* Premium Badge */}
+          <div className="flex justify-center mb-4">
+            <Badge className="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700 px-3 py-1 gap-1.5">
+              <Check className="w-3.5 h-3.5" />
+              Premium PDF Ready
+            </Badge>
+          </div>
+          
+          {/* Main Content */}
+          <div className="text-center mb-6">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/25"
+            >
+              <Check className="w-8 h-8 text-white" />
+            </motion.div>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+              Dhanyavaad!
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Tumhara Premium PDF ready hai. Abhi download karo!
+            </p>
+          </div>
+
+          {/* Download Button */}
+          <div className="flex justify-center mb-4">
+            <a 
+              href={pdfUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex"
+              data-testid="link-download-pdf"
+            >
+              <Button 
+                size="lg" 
+                className="gap-2 rounded-full px-8 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all hover:scale-[1.02]"
+              >
+                <Download className="w-5 h-5" />
+                Download PDF
+              </Button>
+            </a>
+          </div>
+          
+          {/* Trust badges */}
+          <div className="flex items-center justify-center gap-4 flex-wrap text-xs text-slate-500 dark:text-slate-400 mb-6">
+            <span className="flex items-center gap-1">
+              <Check className="w-3 h-3 text-emerald-500" />
+              100% Free
+            </span>
+            <span className="flex items-center gap-1">
+              <Shield className="w-3 h-3 text-emerald-500" />
+              No Spam
+            </span>
+            <span className="flex items-center gap-1">
+              <Zap className="w-3 h-3 text-emerald-500" />
+              Instant Access
+            </span>
+          </div>
+
+          {/* PDF Features Grid */}
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {pdfFeatures.map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + idx * 0.1, duration: 0.3 }}
+                className="flex items-center gap-2 bg-white/70 dark:bg-slate-800/50 rounded-lg px-3 py-2.5 border border-emerald-100 dark:border-emerald-900/50"
+              >
+                <span className="text-emerald-500">{feature.icon}</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{feature.text}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Social proof */}
+          <div className="flex items-center justify-center gap-1 text-sm text-slate-600 dark:text-slate-400 mb-6">
+            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+            <span>10,000+ learners already downloaded this PDF</span>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-emerald-200/50 dark:border-emerald-800/50 pt-5">
+            {/* Next Step Section */}
+            <div className="bg-blue-50/80 dark:bg-blue-950/30 rounded-xl p-4 border border-blue-100 dark:border-blue-900/50">
+              <p className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-3 flex items-center gap-2">
+                <ArrowRight className="w-4 h-4" />
+                Next Step: Start Level 1 Free Course
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Link href="/courses/level1/lesson1" className="flex-1">
+                  <Button variant="outline" className="w-full gap-2 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50">
+                    <GraduationCap className="w-4 h-4" />
+                    Start Level 1
+                  </Button>
+                </Link>
+                <Button 
+                  variant="outline" 
+                  className="gap-2 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300"
+                  onClick={handleShareOnWhatsApp}
+                  data-testid="button-share-pdf-whatsapp"
+                >
+                  <Phone className="w-4 h-4" />
+                  Share on WhatsApp
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-        <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
-          Dhanyavaad!
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-          Tumhara PDF ready hai. Abhi download karo!
-        </p>
-        <a 
-          href={pdfUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex"
-          data-testid="link-download-pdf"
-        >
-          <Button className="gap-2">
-            <Download className="w-4 h-4" />
-            Download PDF
-          </Button>
-        </a>
-        <p className="text-xs text-slate-500 mt-3">
-          PDF WhatsApp/Email pe bhi bhej diya jayega
-        </p>
-      </div>
+      </motion.div>
     );
   }
 

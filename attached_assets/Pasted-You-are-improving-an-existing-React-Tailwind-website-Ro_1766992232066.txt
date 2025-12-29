@@ -1,0 +1,114 @@
+You are improving an existing React + Tailwind website (Rotech Shiksha).
+Do NOT delete any pages/routes/components. Only enhance design and fix alignment issues.
+Goal: Make the “PDF Download Thankyou + WhatsApp Support” section look premium like Canva/fintech style.
+
+✅ REQUIREMENTS:
+
+1) Fix Right Side Drift / Layout Overflow Globally
+
+Check for horizontal overflow in all layouts.
+
+Add global CSS:
+
+html, body { overflow-x: hidden; width: 100%; }
+
+Ensure all main containers use max-w-[1200px] mx-auto px-4
+
+Identify any element using fixed width causing drift and replace with responsive values.
+
+2) Premium Thankyou Section UI (most important)
+
+Locate the page/section where it shows:
+“Dhanyavaad! Tumhara PDF ready hai. Abhi download karo!” and the button Download PDF
+
+Replace with premium design:
+
+Background: soft gradient card (very light green → white)
+
+Add subtle pattern/blur circle decoration behind card
+
+Add a top badge:
+✅ “Premium PDF Ready”
+
+Add Priya + Rohit mini avatars on top right corner of card
+
+Improve typography:
+
+Heading: bold + 2xl
+
+Subheading: muted small text
+
+Button:
+
+Big primary button, rounded-full, shadow-lg
+
+Hover glow + slight scale
+
+Icon on button: download icon
+
+Add below the button:
+✅ “100% Free | No Spam | Instant Access”
+
+Add “Next Step” section inside same card:
+
+Text: “Next: Start Level 1 Free Course →”
+
+A secondary button: “Start Level 1”
+
+This should route to existing learning path/courses page.
+
+3) Replace “PDF mein kya hai?” bullets with Premium Feature Chips
+
+Convert the bullet list into:
+
+2-column grid
+
+Each item inside a rounded chip/card with icon + short text
+Example:
+✅ 5 Steps to Start Investing
+✅ Common Mistakes to Avoid
+✅ Glossary + Tools
+✅ Weekly Plan
+
+Add social proof line:
+⭐ “10,000+ learners already downloaded this PDF”
+
+4) Upgrade WhatsApp Support Widget UI
+
+Improve WhatsApp widget (“Chat with Priya”):
+
+Add Priya avatar at top-left with a green verified badge
+
+Title: “Priya (Verified Rotech Support)”
+
+Subtitle: “Reply within 1 minute ❤️”
+
+Buttons should look like premium cards:
+
+left icon + title + subtitle
+
+Add 1 more button:
+✅ “Share PDF on WhatsApp”
+
+Add a mini trust note at bottom:
+“Your number is safe. No spam.”
+
+5) Animations (Premium, subtle)
+
+Card fade-in on scroll
+
+Button hover pop effect
+
+WhatsApp widget open animation smooth
+
+✅ Output required:
+
+List all files changed
+
+Mention the exact components updated
+
+Ensure build runs without errors
+
+No routes deleted
+
+Start implementing now.
