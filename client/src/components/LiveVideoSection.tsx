@@ -110,7 +110,6 @@ export function LiveVideoSection() {
                     src={rotechLogo} 
                     alt="Rotech Shiksha" 
                     className="w-10 h-10 rounded-lg object-contain"
-                    loading="lazy"
                     data-testid="img-logo-watermark"
                   />
                   <div className="text-white">
@@ -127,7 +126,6 @@ export function LiveVideoSection() {
                   src={rotechLogo} 
                   alt="Rotech Shiksha" 
                   className="w-6 h-6 rounded object-contain"
-                  loading="lazy"
                 />
                 <span className="text-white text-xs font-semibold">Rotech Shiksha</span>
               </div>

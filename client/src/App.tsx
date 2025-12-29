@@ -1,5 +1,5 @@
 import { Switch, Route } from "wouter";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -106,12 +106,6 @@ function Router() {
 }
 
 function App() {
-  useEffect(() => {
-    document.body.style.removeProperty("overflow");
-    document.body.style.removeProperty("padding-right");
-    document.documentElement.style.removeProperty("overflow");
-  }, []);
-
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
