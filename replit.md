@@ -6,6 +6,16 @@ Rotech Shiksha is a comprehensive stock market education platform targeting Indi
 
 ## Recent Changes
 
+- **Dec 2024**: Premium Design & Layout Improvements
+  - **Layout Fix**: Horizontal overflow prevented with overflow-x-hidden on html/body
+  - **Content Wrapper**: max-w-[1200px] mx-auto px-3 md:px-6 centered container
+  - **Typography Upgrade**: Premium font scaling (15px mobile, 17px desktop base)
+  - **Heading Scaling**: h1 32px→48px, h2 24px→36px, h3 20px→28px responsive
+  - **Emotion Animations**: Subtle, slow Zerodha-style glows (2-3.5s duration)
+  - **Badge Icons Updated**: excited→Rocket, happy→Smile, serious→Brain, confused→HelpCircle
+  - **PDF Generator**: `npx tsx scripts/generate-pdf.ts` generates premium checklist PDF
+  - **PDF Location**: client/public/pdf/stock-market-beginner-checklist.pdf
+
 - **Dec 2024**: Character System Integration (Priya & Rohit)
   - Mascot characters for interactive storytelling-based learning in Hinglish
   - **Priya**: Helpful guide who explains concepts and encourages learners
