@@ -104,6 +104,7 @@ export function MarketTicker() {
   return (
     <>
       <div
+        data-ticker
         className="fixed top-0 left-0 right-0 z-[100] h-[38px] overflow-hidden"
         style={{
           backgroundColor: '#0b1220',

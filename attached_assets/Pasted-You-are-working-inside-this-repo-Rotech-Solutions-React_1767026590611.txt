@@ -1,0 +1,103 @@
+You are working inside this repo: Rotech-Solutions (React + Wouter + Tailwind, Radix UI).
+Goal: Fix the website layout/scroll bugs without removing any pages/routes/components.
+Do NOT delete MarketTicker or any page.
+All changes must be minimal, stable, and reversible.
+
+Problems to fix (must solve ALL):
+
+Header + MarketTicker are fixed top. At 90% / 100% / 125% zoom, content gets clipped or extra white band appears. The page top padding doesn’t consistently match header height.
+
+Scroll lock gets stuck after opening/closing header Sheet/Dropdown or changing routes. Body overflow stays hidden; page becomes unscrollable or looks blank.
+
+Dark theme overlay / hero background mismatch on Pricing and Home: harsh transitions / bands.
+
+Replit HMR sometimes gets stale and changes don’t reflect reliably — ensure the fix is robust without requiring hacks.
+
+Hard constraints:
+
+Keep MarketTicker visible at top (do not remove).
+
+Do not remove any routes/pages/tools.
+
+Do not add heavy MutationObserver/interval loops that cause instability.
+
+Only fix layout/scroll/overlay bugs.
+
+Must work reliably in Chrome desktop, 90/100/125 zoom.
+
+Required implementation plan (do exactly this):
+A) Make header offset stable
+
+The header wrapper has id app-header and is fixed top-0.
+
+Implement a simple and reliable header height measurement and store it in CSS var --app-header-offset.
+
+Use:
+
+useLayoutEffect (preferred) or useEffect if needed
+
+ResizeObserver on #app-header
+
+also update on window.resize and visualViewport.resize
+
+Provide fallback: if header height is 0, set default offset = 120px.
+
+B) Ensure main content always starts below header
+
+Ensure <main> (or main container) has: padding-top: var(--app-header-offset)
+
+Ensure the layout wrapper uses min-h-[100svh] and no overflow: hidden on main containers.
+
+C) Fix stuck scroll lock globally
+
+Create a small utility in App.tsx: clearScrollLock() that resets:
+
+document.body.style.overflow = ""
+
+document.documentElement.style.overflow = ""
+
+remove any data-scroll-locked attribute
+
+remove paddingRight/position/top applied by scroll-lock systems
+
+Run clearScrollLock():
+
+on every route change
+
+on visibilitychange when visible
+
+on Escape key
+
+when a Radix Sheet/Dropdown closes (see next)
+
+D) Fix Header.tsx Sheet/Dropdown cleanup
+
+In Header.tsx, the mobile menu uses Radix Sheet.
+
+Ensure the Sheet open state is controlled (useState open).
+
+When Sheet closes (onOpenChange(false)), call clearScrollLock() (import from a small util or define locally).
+
+Also ensure Dropdown menus don’t leave overlays behind.
+
+E) Fix dark theme banding
+
+Audit Home hero + Pricing hero sections:
+
+Avoid hard-coded light backgrounds in dark mode
+
+Use theme variables (bg-background, from-background, to-background, etc.)
+
+Ensure transitions are consistent and no white bands appear.
+
+Deliverables:
+
+Show exact file changes you made (App.tsx, Header.tsx, any CSS file).
+
+Explain why each change fixes the bug.
+
+Ensure no new warnings/errors.
+
+Run the app and verify: Home + Pricing at 90/100/125 zoom, open/close menu, route changes — scroll must never get stuck.
+
+If any part is unclear, inspect existing code instead of guessing.

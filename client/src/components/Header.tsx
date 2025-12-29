@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { clearScrollLock } from "@/lib/scrollLock";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -144,8 +145,16 @@ export function Header() {
     </div>
   );
 
+  const handleSheetOpenChange = useCallback((open: boolean) => {
+    setMobileMenuOpen(open);
+    if (!open) {
+      setTimeout(clearScrollLock, 50);
+    }
+  }, []);
+
   return (
     <motion.header 
+      id="app-header"
       className="fixed top-0 md:top-11 left-0 right-0 z-40 bg-white/95 dark:bg-background/95 backdrop-blur-md border-b border-slate-100 dark:border-border"
       style={{ 
         top: 'env(safe-area-inset-top, 0px)',
@@ -305,7 +314,7 @@ export function Header() {
               )}
             </div>
 
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <Sheet open={mobileMenuOpen} onOpenChange={handleSheetOpenChange}>
               <SheetTrigger asChild className="lg:hidden">
                 <Button size="icon" variant="ghost" data-testid="button-mobile-menu" className="h-10 w-10">
                   <Menu className="w-5 h-5" />
