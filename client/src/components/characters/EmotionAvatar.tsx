@@ -17,7 +17,6 @@ const characterConfig = {
     avatar: priyaAvatar,
     displayName: "Priya",
     defaultGradient: "bg-gradient-to-br from-emerald-100 via-emerald-50 to-green-100 dark:from-emerald-900/40 dark:via-emerald-800/30 dark:to-green-900/40",
-    defaultBorder: "ring-2 ring-emerald-400 dark:ring-emerald-600",
     fallbackBg: "bg-emerald-100 dark:bg-emerald-900/50",
     fallbackText: "text-emerald-700 dark:text-emerald-300",
   },
@@ -25,18 +24,17 @@ const characterConfig = {
     avatar: rohitAvatar,
     displayName: "Rohit",
     defaultGradient: "bg-gradient-to-br from-blue-100 via-blue-50 to-sky-100 dark:from-blue-900/40 dark:via-blue-800/30 dark:to-sky-900/40",
-    defaultBorder: "ring-2 ring-blue-400 dark:ring-blue-600",
     fallbackBg: "bg-blue-100 dark:bg-blue-900/50",
     fallbackText: "text-blue-700 dark:text-blue-300",
   },
 };
 
 const sizeConfig = {
-  xs: { container: "w-8 h-8", padding: "p-0.5", badge: "w-5 h-5 -top-1 -right-1", iconSize: "w-3 h-3" },
-  sm: { container: "w-10 h-10", padding: "p-0.5", badge: "w-5 h-5 -top-1 -right-1", iconSize: "w-3 h-3" },
-  md: { container: "w-14 h-14", padding: "p-1", badge: "w-6 h-6 -top-1 -right-1", iconSize: "w-4 h-4" },
-  lg: { container: "w-18 h-18", padding: "p-1", badge: "w-7 h-7 -top-1.5 -right-1.5", iconSize: "w-4 h-4" },
-  xl: { container: "w-24 h-24", padding: "p-1.5", badge: "w-8 h-8 -top-2 -right-2", iconSize: "w-5 h-5" },
+  xs: { outer: "w-8 h-8", inner: "w-6 h-6", badge: "w-4 h-4 -top-0.5 -right-0.5", iconSize: "w-2.5 h-2.5" },
+  sm: { outer: "w-10 h-10", inner: "w-8 h-8", badge: "w-5 h-5 -top-0.5 -right-0.5", iconSize: "w-3 h-3" },
+  md: { outer: "w-14 h-14", inner: "w-11 h-11", badge: "w-5 h-5 -top-1 -right-1", iconSize: "w-3 h-3" },
+  lg: { outer: "w-18 h-18", inner: "w-14 h-14", badge: "w-6 h-6 -top-1 -right-1", iconSize: "w-3.5 h-3.5" },
+  xl: { outer: "w-24 h-24", inner: "w-20 h-20", badge: "w-7 h-7 -top-1.5 -right-1.5", iconSize: "w-4 h-4" },
 };
 
 export function EmotionAvatar({
@@ -52,22 +50,30 @@ export function EmotionAvatar({
   const emotionBadge = showBadge ? getEmotionBadge(emotion) : null;
 
   const hasEmotion = emotion !== "neutral";
-  const ringClass = hasEmotion ? emotionStyles.borderColor : config.defaultBorder;
-  const shadowClass = hasEmotion ? emotionStyles.glowColor : "shadow-md";
-  const animationClass = emotionStyles.animation;
 
   return (
-    <div className={`relative inline-block ${className}`}>
+    <div className={`relative inline-flex items-center justify-center ${sizeStyles.outer} ${className}`}>
+      {/* Animated ring layer - behind avatar */}
       <div
         className={`
-          ${sizeStyles.container} 
-          rounded-full 
-          ${config.defaultGradient} 
-          ${ringClass}
-          ${sizeStyles.padding} 
-          ${shadowClass}
-          ${animationClass}
-          transition-all duration-300
+          absolute inset-0
+          rounded-full
+          ${emotionStyles.borderColor}
+          ${hasEmotion ? emotionStyles.animation : ""}
+        `}
+        data-testid={`ring-${character}-${emotion}`}
+      />
+
+      {/* Fixed avatar layer - never moves */}
+      <div
+        className={`
+          relative z-10
+          ${sizeStyles.inner}
+          rounded-full
+          ${config.defaultGradient}
+          border-2 border-white dark:border-gray-800
+          shadow-sm
+          overflow-hidden
         `}
         data-testid={`avatar-${character}-${emotion}`}
       >
@@ -92,11 +98,12 @@ export function EmotionAvatar({
         </div>
       </div>
 
+      {/* Fixed badge - never moves */}
       {emotionBadge && (
         <div
           className={`
-            absolute ${sizeStyles.badge} 
-            rounded-full 
+            absolute z-20 ${sizeStyles.badge}
+            rounded-full
             ${emotionStyles.badgeBg}
             border-2 border-current
             flex items-center justify-center
@@ -105,7 +112,7 @@ export function EmotionAvatar({
           `}
           title={emotionBadge.label}
         >
-          <emotionBadge.icon className={`${sizeStyles.iconSize}`} />
+          <emotionBadge.icon className={sizeStyles.iconSize} />
         </div>
       )}
     </div>

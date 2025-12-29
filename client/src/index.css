@@ -2,68 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== CHARACTER EMOTION ANIMATIONS ===== */
-@keyframes shake {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px) rotate(-2deg); }
-  20%, 40%, 60%, 80% { transform: translateX(4px) rotate(2deg); }
+/* ===== CHARACTER EMOTION ANIMATIONS (Ring/Glow only - avatar stays fixed) ===== */
+@keyframes ring-pulse-yellow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.5), 0 0 12px 4px rgba(250, 204, 21, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.3), 0 0 20px 8px rgba(250, 204, 21, 0.4); }
 }
 
-@keyframes bounce-happy {
-  0%, 100% { transform: translateY(0) scale(1); }
-  25% { transform: translateY(-8px) scale(1.02); }
-  50% { transform: translateY(-4px) scale(1); }
-  75% { transform: translateY(-6px) scale(1.01); }
+@keyframes ring-pulse-blue {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5), 0 0 12px 4px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 0 20px 8px rgba(59, 130, 246, 0.4); }
 }
 
-@keyframes pulse-think {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-  50% { transform: scale(1.03); box-shadow: 0 0 20px 8px rgba(59, 130, 246, 0.3); }
+@keyframes ring-pulse-orange {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5), 0 0 12px 4px rgba(249, 115, 22, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.3), 0 0 20px 8px rgba(249, 115, 22, 0.4); }
 }
 
-@keyframes fade-sad {
-  0%, 100% { opacity: 0.9; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.97); }
+@keyframes ring-pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5), 0 0 12px 4px rgba(34, 197, 94, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3), 0 0 20px 8px rgba(34, 197, 94, 0.4); }
 }
 
-@keyframes wobble-confused {
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(-6deg); }
-  40% { transform: rotate(5deg); }
-  60% { transform: rotate(-4deg); }
-  80% { transform: rotate(3deg); }
+@keyframes ring-pulse-gray {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(156, 163, 175, 0.4), 0 0 8px 2px rgba(156, 163, 175, 0.2); }
+  50% { box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.2), 0 0 12px 4px rgba(156, 163, 175, 0.3); }
 }
 
-@keyframes pop-excited {
-  0%, 100% { transform: scale(1); }
-  25% { transform: scale(1.12); }
-  50% { transform: scale(0.95); }
-  75% { transform: scale(1.08); }
+@keyframes ring-pulse-purple {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5), 0 0 12px 4px rgba(168, 85, 247, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.3), 0 0 20px 8px rgba(168, 85, 247, 0.4); }
 }
 
-.animate-shake {
-  animation: shake 0.6s ease-in-out infinite;
+@keyframes ring-pulse-pink {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.5), 0 0 12px 4px rgba(236, 72, 153, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.3), 0 0 24px 10px rgba(236, 72, 153, 0.5); }
 }
 
-.animate-bounce-subtle {
-  animation: bounce-happy 0.8s ease-in-out infinite;
+@keyframes ring-pulse-slate {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(100, 116, 139, 0.4), 0 0 8px 2px rgba(100, 116, 139, 0.2); }
+  50% { box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.2), 0 0 12px 4px rgba(100, 116, 139, 0.3); }
 }
 
-.animate-pulse-slow {
-  animation: pulse-think 1.5s ease-in-out infinite;
-}
-
-.animate-fade {
-  animation: fade-sad 2s ease-in-out infinite;
-}
-
-.animate-wobble {
-  animation: wobble-confused 1s ease-in-out infinite;
-}
-
-.animate-pop {
-  animation: pop-excited 0.6s ease-in-out infinite;
-}
+.animate-ring-yellow { animation: ring-pulse-yellow 1.5s ease-in-out infinite; }
+.animate-ring-blue { animation: ring-pulse-blue 1.5s ease-in-out infinite; }
+.animate-ring-orange { animation: ring-pulse-orange 1s ease-in-out infinite; }
+.animate-ring-green { animation: ring-pulse-green 1.2s ease-in-out infinite; }
+.animate-ring-gray { animation: ring-pulse-gray 2s ease-in-out infinite; }
+.animate-ring-purple { animation: ring-pulse-purple 1.3s ease-in-out infinite; }
+.animate-ring-pink { animation: ring-pulse-pink 1s ease-in-out infinite; }
+.animate-ring-slate { animation: ring-pulse-slate 2s ease-in-out infinite; }
 
 /* RTL (Right-to-Left) Support for Arabic and Urdu */
 [dir="rtl"] {
