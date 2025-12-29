@@ -1,0 +1,226 @@
+You are a senior UI/UX designer + conversion copywriter + SEO engineer working on Rotech Shiksha (React + Tailwind).
+
+Goal: Make rotechshiksha.com feel like India’s #1 stock market learning platform (Zerodha Varsity / Groww / Smallcase vibe), focusing on conversion + trust + SEO + premium design.
+
+IMPORTANT RULES:
+
+Do NOT delete/remove any page or route.
+
+Keep all existing pages. You can reorganize or improve layout only.
+
+Keep Hinglish tone.
+
+Priya & Rohit are professional friends (same age) — never portray as siblings.
+
+Keep the top market ticker always visible.
+
+Keep WhatsApp support system.
+
+Maintain mobile-first experience.
+
+========================================================
+✅ TASK 1: Fix Scroll-to-Top on Navigation (must)
+
+Issue: When user scrolls to bottom and switches tabs (Courses/Tools/etc.), new page opens at same scroll position.
+Fix: Add global ScrollToTop on route change so every navigation starts at top.
+Implement correct solution based on router used (React Router or Next.js).
+Ensure smooth and reliable behavior on mobile.
+
+========================================================
+✅ TASK 2: Pricing Page – Full Conversion Rewrite (Free / Pro / Elite)
+
+Create a killer Pricing page with these plans:
+
+FREE Starter – ₹0 (Forever)
+
+PRO Learner – ₹199/month (Most Popular ⭐)
+
+ELITE Mentorship – ₹999 one-time (Best Value 🔥 Recommended)
+
+Pricing page MUST include:
+
+Premium hero section with trust line:
+“10,000+ learners • 4.8⭐ rated • 100% Education-only”
+
+Clear explanation: Why paid if free course exists
+
+Plan cards with strong benefits
+
+Comparison table (Free vs Pro vs Elite)
+
+Testimonials section
+
+FAQ section (conversion-based)
+
+Final CTA section
+
+Copy tone: Hinglish, friendly, simple, no jargon.
+Add 1 Priya-Rohit short dialogue block explaining paid vs free.
+
+Buttons:
+
+Free: “Start Free Course →”
+
+Pro: “Unlock Pro ₹199/month →”
+
+Elite: “Join Elite Mentorship ₹999 →”
+
+Add small disclaimer:
+“Education only. No investment advice.”
+
+========================================================
+✅ TASK 3: Courses Page – SEO + Layout Upgrade
+
+Upgrade /courses page to become SEO-friendly + conversion-friendly.
+
+Add:
+
+SEO H1 + intro paragraph (keyword: stock market course for beginners)
+
+“What you’ll learn” section (bullets)
+
+8-level roadmap preview
+
+Learning outcomes section
+
+Who this course is for / not for
+
+Testimonials
+
+FAQ
+
+Final CTA + WhatsApp support CTA
+
+Also generate JSON-LD schema:
+✅ Course schema
+✅ FAQ schema
+✅ Breadcrumb schema
+✅ Organization schema
+
+Ensure schema is valid and included properly.
+
+Meta SEO:
+
+Meta title (55–60 chars)
+
+Meta description (150–160 chars)
+
+OG tags
+
+========================================================
+✅ TASK 4: Home Page Copy Polish (Hinglish + Story + Trust)
+
+Rewrite home page copy to increase trust + conversions.
+Must include:
+
+Hero headline (powerful)
+
+Trust proof row near CTA (10k+ learners, rating, 100% free)
+
+“How it works in 3 steps”
+
+Priya-Rohit story strip (witty + professional)
+
+Tools preview section (SIP, CAGR, Brokerage, Watchlist etc.)
+
+Learning path preview (8 levels)
+
+Free PDF lead magnet section
+
+Testimonials section
+
+FAQ section
+
+Final CTA section
+
+Copy should be mobile-friendly:
+
+short lines
+
+punchy headings
+
+clear CTAs every 2–3 sections
+
+Avoid SEBI violations:
+
+Education only disclaimer
+
+No guaranteed returns
+
+========================================================
+✅ TASK 5: Premium Design System (Global)
+
+Apply premium typography + spacing system globally:
+
+Base font 16px
+
+H1: clamp(28px, 3vw, 44px)
+
+H2: clamp(22px, 2.2vw, 32px)
+
+Body: clamp(15px, 1.1vw, 18px)
+
+Line-height 1.6
+
+Consistent card shadows, rounded corners
+
+Improve spacing/padding for mobile
+
+Also fix any remaining horizontal overflow / right-drift:
+
+html, body overflow-x hidden
+
+remove any 100vw causing drift
+
+ensure all containers max-w-1200 mx-auto px-4
+
+========================================================
+✅ TASK 6: WhatsApp Widget Optimization (premium, non-intrusive)
+
+Make WhatsApp widget feel premium and not annoying:
+
+Default: small bubble only
+
+Open: bottom-sheet style on mobile (70% height)
+
+Add overlay blur when open
+
+After user closes once, do not auto-open again in same session
+
+Add microcopy:
+“No spam. Sirf learning support.”
+
+Add quick actions:
+
+Free Book
+
+Course Details
+
+Join Community
+
+Share PDF
+
+Custom message input
+
+========================================================
+✅ OUTPUT REQUIRED
+
+After implementing, return:
+
+List of files changed
+
+Which pages updated (Home/Courses/Pricing etc.)
+
+Confirm:
+
+No routes deleted
+
+ScrollToTop works
+
+SEO schema valid
+
+Mobile view tested
+
+Provide final screenshot checklist (what user should verify)
+
+Implement all tasks fully, end-to-end.

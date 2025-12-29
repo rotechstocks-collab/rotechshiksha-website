@@ -11,6 +11,7 @@ interface Plan {
   nameHi: string;
   price: number;
   originalPrice?: number;
+  priceLabel?: string;
   description: string;
   descriptionHi: string;
   features: { text: string; textHi: string; included: boolean }[];
@@ -48,14 +49,15 @@ const plans: Plan[] = [
     id: "pro",
     name: "Pro Learner",
     nameHi: "Pro Learner",
-    price: 499,
-    originalPrice: 999,
+    price: 199,
+    priceLabel: "/month",
     description: "For serious learners wanting faster progress",
     descriptionHi: "Fast progress chahiye? Ye hai tumhare liye",
     icon: <Zap className="w-6 h-6" />,
     color: "blue",
-    ctaText: "Upgrade Now",
-    ctaTextHi: "Upgrade Karo",
+    popular: true,
+    ctaText: "Unlock Pro ₹199/month",
+    ctaTextHi: "Unlock Pro ₹199/month",
     features: [
       { text: "Everything in Free Starter", textHi: "Free Starter ki sab cheezein", included: true },
       { text: "Weekly Live Q&A Sessions", textHi: "Weekly Live Q&A Sessions", included: true },
@@ -71,15 +73,14 @@ const plans: Plan[] = [
     id: "elite",
     name: "Elite Mentorship",
     nameHi: "Elite Mentorship",
-    price: 2999,
-    originalPrice: 4999,
+    price: 999,
+    priceLabel: " one-time",
     description: "Complete hand-holding for maximum results",
     descriptionHi: "Personal mentor ke saath complete guidance",
     icon: <Crown className="w-6 h-6" />,
     color: "purple",
-    popular: true,
-    ctaText: "Join Elite Now",
-    ctaTextHi: "Elite Join Karo",
+    ctaText: "Join Elite ₹999",
+    ctaTextHi: "Join Elite ₹999",
     features: [
       { text: "Everything in Pro Learner", textHi: "Pro Learner ki sab cheezein", included: true },
       { text: "4 Personal 1-on-1 Calls", textHi: "4 Personal 1-on-1 Calls", included: true },
@@ -135,14 +136,14 @@ export function PricingPlans() {
                 key={plan.id}
                 className={`relative flex flex-col ${
                   plan.popular
-                    ? "border-2 border-purple-500 md:scale-105 shadow-xl z-10"
+                    ? "border-2 border-blue-500 md:scale-105 shadow-xl z-10"
                     : "border"
                 }`}
                 data-testid={`card-plan-${plan.id}`}
               >
                 {plan.popular && (
                   <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg px-4 py-1">
-                    Best Value - Most Popular
+                    Most Popular
                   </Badge>
                 )}
 
@@ -158,21 +159,14 @@ export function PricingPlans() {
 
                 <CardContent className="text-center space-y-4 flex-1">
                   <div>
-                    {plan.originalPrice && (
-                      <span className="text-lg text-muted-foreground line-through mr-2">
-                        ₹{plan.originalPrice}
-                      </span>
-                    )}
                     <span className="text-4xl font-bold text-foreground">
                       {plan.price === 0 ? "FREE" : `₹${plan.price}`}
                     </span>
-                    {plan.price > 0 && (
-                      <span className="text-muted-foreground text-sm block mt-1">one-time payment</span>
+                    {plan.priceLabel && (
+                      <span className="text-muted-foreground text-sm">{plan.priceLabel}</span>
                     )}
-                    {plan.originalPrice && (
-                      <Badge className="mt-2 bg-red-100 text-red-700 border-0">
-                        {Math.round(((plan.originalPrice - plan.price) / plan.originalPrice) * 100)}% OFF
-                      </Badge>
+                    {plan.price === 0 && (
+                      <span className="text-muted-foreground text-sm block mt-1">Forever free</span>
                     )}
                   </div>
 
@@ -231,7 +225,7 @@ export function PricingPlans() {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8">
-          Sab plans one-time payment hain. Koi monthly charges nahi. Ek baar pay karo, lifetime access lo.
+          Education only. No investment advice. Cancel anytime.
         </p>
       </div>
     </section>
@@ -261,8 +255,8 @@ export function ComparisonTable() {
           <tr className="border-b">
             <th className="text-left py-4 px-4 font-medium text-muted-foreground">Features</th>
             <th className="text-center py-4 px-4 font-semibold text-emerald-600">Free Starter</th>
-            <th className="text-center py-4 px-4 font-semibold text-blue-600">Pro Learner</th>
-            <th className="text-center py-4 px-4 font-semibold text-purple-600 bg-purple-50 dark:bg-purple-900/20 rounded-t-lg">Elite Mentorship</th>
+            <th className="text-center py-4 px-4 font-semibold text-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-t-lg">Pro Learner</th>
+            <th className="text-center py-4 px-4 font-semibold text-purple-600">Elite Mentorship</th>
           </tr>
         </thead>
         <tbody>
@@ -278,7 +272,7 @@ export function ComparisonTable() {
                   <span className="text-emerald-600 font-medium">{feature.free}</span>
                 )}
               </td>
-              <td className="py-3 px-4 text-center">
+              <td className="py-3 px-4 text-center bg-blue-50/50 dark:bg-blue-900/10">
                 {feature.pro === true ? (
                   <Check className="w-5 h-5 text-blue-500 mx-auto" />
                 ) : feature.pro === false ? (
@@ -287,7 +281,7 @@ export function ComparisonTable() {
                   <span className="text-blue-600 font-medium">{feature.pro}</span>
                 )}
               </td>
-              <td className="py-3 px-4 text-center bg-purple-50/50 dark:bg-purple-900/10">
+              <td className="py-3 px-4 text-center">
                 {feature.elite === true ? (
                   <Check className="w-5 h-5 text-purple-500 mx-auto" />
                 ) : feature.elite === false ? (
@@ -301,13 +295,11 @@ export function ComparisonTable() {
           <tr>
             <td className="py-4 px-4 font-semibold text-foreground">Price</td>
             <td className="py-4 px-4 text-center font-bold text-emerald-600">FREE</td>
-            <td className="py-4 px-4 text-center">
-              <span className="line-through text-muted-foreground text-xs">₹999</span>
-              <span className="font-bold text-blue-600 ml-1">₹499</span>
+            <td className="py-4 px-4 text-center bg-blue-50/50 dark:bg-blue-900/10 rounded-b-lg">
+              <span className="font-bold text-blue-600">₹199/month</span>
             </td>
-            <td className="py-4 px-4 text-center bg-purple-50/50 dark:bg-purple-900/10 rounded-b-lg">
-              <span className="line-through text-muted-foreground text-xs">₹4999</span>
-              <span className="font-bold text-purple-600 ml-1">₹2999</span>
+            <td className="py-4 px-4 text-center">
+              <span className="font-bold text-purple-600">₹999 one-time</span>
             </td>
           </tr>
         </tbody>

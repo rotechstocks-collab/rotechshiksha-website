@@ -86,9 +86,9 @@ export default function PricingPage() {
       {/* Hero Section */}
       <section className="py-12 md:py-16 bg-gradient-to-b from-primary/5 to-background">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <Badge className="bg-amber-100 text-amber-700 border-amber-200 mb-4">
+          <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 mb-4">
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-            Limited Time Offer - 40% OFF
+            8 Levels FREE Forever
           </Badge>
           
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
