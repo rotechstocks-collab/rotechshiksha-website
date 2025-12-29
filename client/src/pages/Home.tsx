@@ -611,7 +611,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative page-bg">
+    <div className="min-h-screen relative page-bg dark-spotlight-bg">
       <Dialog open={showWelcome} onOpenChange={(open) => !open && handleCloseWelcome()}>
         <DialogContent className="max-w-md" data-testid="dialog-welcome-onboarding">
           <DialogHeader>
@@ -681,7 +681,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      <section className="py-14 md:py-20">
+      <section className="py-14 md:py-20 relative z-10">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div 
             className="text-center"
@@ -716,7 +716,7 @@ export default function Home() {
               <span className="text-emerald-600 dark:text-emerald-400 font-medium">100% Free</span>
             </div>
 
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm inline-block p-6 md:p-8 mb-4">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-slate-900/70 dark:to-slate-950/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl shadow-sm inline-block p-6 md:p-8 mb-4">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/beginner-course" data-testid="link-start-learning-hero">
                   <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6 btn-glow-primary" data-testid="button-start-learning-hero">

@@ -1249,8 +1249,8 @@ export default function BrokerComparison() {
 
   if (showComparison && selectedBrokerData.length >= 2) {
     return (
-      <div className="min-h-screen page-bg">
-        <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+      <div className="min-h-screen relative page-bg dark-spotlight-bg">
+        <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 relative z-10">
           <div className="text-center mb-8">
             <Button 
               variant="ghost" 
@@ -1306,8 +1306,8 @@ export default function BrokerComparison() {
   }
 
   return (
-    <div className="min-h-screen page-bg">
-      <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+    <div className="min-h-screen relative page-bg dark-spotlight-bg">
+      <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 relative z-10">
         <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

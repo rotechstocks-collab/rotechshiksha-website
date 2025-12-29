@@ -318,14 +318,14 @@ export default function EducationalVideos() {
   const playlistNames = getPlaylistNames();
 
   return (
-    <div className="min-h-screen page-bg">
+    <div className="min-h-screen relative page-bg dark-spotlight-bg">
       <SEOHead
         title="Educational Videos – Stock Market Learning | Rotech Shiksha"
         description="Best stock market educational videos in Hindi. Learn trading, investing, IPO, mutual funds from top YouTube educators."
         keywords="stock market videos hindi, trading videos, investing youtube, share market learning"
       />
 
-      <section className="py-10 lg:py-14 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-card/50">
+      <section className="py-10 lg:py-14 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-card/50 relative z-10">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-start gap-4 mb-6">
             <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
