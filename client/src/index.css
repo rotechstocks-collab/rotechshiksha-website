@@ -607,10 +607,16 @@ html, body {
 
   /* ===== BUTTONS (Varsity Style) ===== */
   .btn-varsity-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl transition-colors shadow-sm;
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl 
+           transition-all duration-150 shadow-sm active:scale-95;
   }
   .btn-varsity-secondary {
-    @apply bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-slate-700;
+    @apply bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 
+           font-medium px-6 py-3 rounded-xl transition-all duration-150 hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95;
+  }
+  .btn-varsity-outline {
+    @apply bg-transparent border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 
+           font-medium px-6 py-3 rounded-xl transition-all duration-150 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95;
   }
 
   /* ===== LEGAL/DISCLAIMER STRIP ===== */
