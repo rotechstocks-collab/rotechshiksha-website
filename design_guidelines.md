@@ -132,6 +132,14 @@
 - **Tablet**: 640px - 1024px (md, lg)
 - **Desktop**: > 1024px (xl, 2xl)
 
+## Consistent Section Spacing
+- **Section Padding**: py-16 md:py-24 (standard sections)
+- **Section Padding (Compact)**: py-12 md:py-16 (dense content)
+- **Container Max-Width**: max-w-6xl mx-auto px-4 (full width)
+- **Content Max-Width**: max-w-4xl mx-auto px-4 (reading)
+- **Card Padding**: p-5 md:p-6 (standard cards)
+- **Gap Between Cards**: gap-4 md:gap-6 (card grids)
+
 ## Performance Guidelines
 - Use SVG for all illustrations (scalable, small file size)
 - Lazy load below-fold content

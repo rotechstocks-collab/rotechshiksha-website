@@ -1,10 +1,8 @@
 import { Link } from "wouter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   BookOpen,
-  ChevronRight,
   Clock,
   GraduationCap,
   Wallet,
@@ -12,14 +10,14 @@ import {
   Play,
   CheckCircle,
   Shield,
+  Download,
+  Users,
+  Star,
 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { motion } from "framer-motion";
-import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/AnimationWrappers";
-import { CharacterIntro } from "@/components/Characters";
+import { ModuleCard } from "@/components/ModuleCard";
 import { useLanguage } from "@/context/LanguageContext";
-import { StoryIntro, CTABlock } from "@/components/characters/StoryIntro";
-import { Download } from "lucide-react";
 
 interface Lesson {
   id: string;
@@ -31,7 +29,7 @@ interface Lesson {
 interface Module {
   id: number;
   title: string;
-  titleHi: string;
+  subtitle: string;
   description: string;
   icon: React.ReactNode;
   color: string;
@@ -43,7 +41,7 @@ const modules: Module[] = [
   {
     id: 1,
     title: "Stock Market ki Shuruaat",
-    titleHi: "The Beginning",
+    subtitle: "The Beginning",
     description: "Pehla kadam – stock market ko samjhein bina kisi confusion ke",
     icon: <BookOpen className="w-6 h-6" />,
     color: "text-emerald-600 dark:text-emerald-400",
@@ -59,7 +57,7 @@ const modules: Module[] = [
   {
     id: 2,
     title: "Account aur Basics",
-    titleHi: "Getting Started",
+    subtitle: "Getting Started",
     description: "Trading shuru karne ke liye kya chahiye – step by step",
     icon: <Wallet className="w-6 h-6" />,
     color: "text-blue-600 dark:text-blue-400",
@@ -74,7 +72,7 @@ const modules: Module[] = [
   {
     id: 3,
     title: "Beginner Investing Soch",
-    titleHi: "Mindset & Safety",
+    subtitle: "Mindset & Safety",
     description: "Sahi soch aur safe tarike se investing seekhein",
     icon: <Brain className="w-6 h-6" />,
     color: "text-purple-600 dark:text-purple-400",
@@ -97,168 +95,172 @@ export default function BeginnerCourse() {
   }, 0);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f7f9fc] dark:bg-background">
       <SEOHead
         title="Beginner Stock Market Course – Rotech Shiksha"
         description="Learn stock market basics step by step in simple Hinglish. Complete beginner course with 13 lessons across 3 modules."
         keywords="stock market course hindi, beginner investing course, share market basics, learn investing india"
       />
 
-      <StoryIntro
-        priyaLine="Stock market seekhna hai? Bilkul basics se shuru karte hain – koi confusion nahi hoga!"
-        rohitLine="Yaar mujhe bhi zero se start karna hai. Chal saath mein seekhte hain!"
-      />
-
-      <section className="py-12 lg:py-16 bg-slate-50 dark:bg-card/30">
+      <section className="py-16 md:py-24 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-950/20">
         <div className="max-w-4xl mx-auto px-4">
-          <FadeInUp>
-            <div className="text-center">
-              <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-0 mb-4">
-                <GraduationCap className="w-3 h-3 mr-1" />
-                Beginner Course
-              </Badge>
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-0 mb-4">
+              <GraduationCap className="w-3.5 h-3.5 mr-1.5" />
+              Beginner Course
+            </Badge>
 
-              <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-3">
-                Stock Market Seekho – Zero Se
-              </h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
+              Stock Market Seekho
+              <br />
+              <span className="text-emerald-600 dark:text-emerald-400">— Zero Se Hero Tak</span>
+            </h1>
 
-              <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-                Simple Hinglish me, step-by-step learning. Complete beginners ke liye banaya gaya course.
-              </p>
+            <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto mb-8">
+              Simple Hinglish mein, step-by-step learning. 
+              Complete beginners ke liye banaya gaya course.
+            </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{totalLessons} Lessons</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{totalDuration} min total</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
-                  <span className="text-sm text-muted-foreground">100% Free</span>
-                </div>
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+              <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
+                <BookOpen className="w-4 h-4 text-emerald-600" />
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{totalLessons} Chapters</span>
               </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link href="/beginner-course/paise-invest-kyu" data-testid="link-start-course">
-                  <Button size="lg" className="gap-2" data-testid="button-start-course">
-                    <Play className="w-4 h-4" />
-                    {isHindi ? "Course शुरू करें – Lesson 1" : "Start Course – Lesson 1"}
-                  </Button>
-                </Link>
-                <a href="/pdf/stock-market-beginner-checklist.pdf" download target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="lg" className="gap-2" data-testid="button-download-checklist-course">
-                    <Download className="w-4 h-4" />
-                    Download Beginner Checklist PDF
-                  </Button>
-                </a>
+              <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
+                <Clock className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{totalDuration} min</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
+                <CheckCircle className="w-4 h-4 text-emerald-500" />
+                <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">100% Free</span>
               </div>
             </div>
-          </FadeInUp>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link href="/beginner-course/paise-invest-kyu" data-testid="link-start-course">
+                <Button size="lg" className="gap-2 min-h-[48px] text-base px-8" data-testid="button-start-course">
+                  <Play className="w-5 h-5" />
+                  Start Learning
+                </Button>
+              </Link>
+              <a href="/pdf/stock-market-beginner-checklist.pdf" download target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" className="gap-2 min-h-[48px]" data-testid="button-download-checklist-course">
+                  <Download className="w-4 h-4" />
+                  Download PDF
+                </Button>
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="py-8 lg:py-10 bg-muted/30">
+      <section className="py-8 bg-white dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-6">
-            <h2 className="text-lg font-bold text-foreground mb-1">
-              {isHindi ? "आपके Learning Companions" : "Meet Your Learning Companions"}
+          <div className="flex flex-wrap items-center justify-center gap-8 text-center">
+            <div>
+              <div className="flex items-center justify-center gap-1 text-amber-500 mb-1">
+                <Star className="w-4 h-4 fill-amber-500" />
+                <span className="font-bold text-lg text-slate-900 dark:text-white">4.8</span>
+              </div>
+              <span className="text-xs text-muted-foreground">Avg Rating</span>
+            </div>
+            <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />
+            <div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Users className="w-4 h-4 text-blue-600" />
+                <span className="font-bold text-lg text-slate-900 dark:text-white">10,000+</span>
+              </div>
+              <span className="text-xs text-muted-foreground">Learners</span>
+            </div>
+            <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />
+            <div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <BookOpen className="w-4 h-4 text-emerald-600" />
+                <span className="font-bold text-lg text-slate-900 dark:text-white">{modules.length}</span>
+              </div>
+              <span className="text-xs text-muted-foreground">Modules</span>
+            </div>
+            <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />
+            <div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <CheckCircle className="w-4 h-4 text-emerald-500" />
+                <span className="font-bold text-lg text-emerald-600">FREE</span>
+              </div>
+              <span className="text-xs text-muted-foreground">No Payment</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              Course Curriculum
             </h2>
-            <p className="text-sm text-muted-foreground">
-              {isHindi 
-                ? "इनके साथ step-by-step सीखें – Priya समझाएगी, Rohit के doubts शायद आपके भी हों!"
-                : "Learn step-by-step with them – Priya explains, Rohit asks questions you might also have!"}
+            <p className="text-muted-foreground">
+              {modules.length} Modules • {totalLessons} Chapters • Hinglish mein
             </p>
           </div>
-          <CharacterIntro isHindi={isHindi} />
+
+          <div className="space-y-4">
+            {modules.map((module, index) => (
+              <motion.div
+                key={module.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <ModuleCard
+                  moduleNumber={module.id}
+                  title={module.title}
+                  subtitle={module.subtitle}
+                  description={module.description}
+                  icon={module.icon}
+                  color={module.color}
+                  bgColor={module.bgColor}
+                  lessons={module.lessons}
+                  basePath="/beginner-course"
+                  defaultOpen={index === 0}
+                  totalDuration={`${module.lessons.reduce((a, l) => a + parseInt(l.duration), 0)} min`}
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-12 lg:py-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <StaggerContainer>
-            <div className="space-y-8">
-              {modules.map((module, moduleIndex) => (
-                <StaggerItem key={module.id}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: moduleIndex * 0.1 }}
-                  >
-                    <Card className="overflow-visible" data-testid={`card-module-${module.id}`}>
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 rounded-lg ${module.bgColor}`}>
-                            <div className={module.color}>{module.icon}</div>
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <Badge variant="outline" className="text-xs">
-                                Module {module.id}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                {module.lessons.length} lessons
-                              </span>
-                            </div>
-                            <CardTitle className="text-xl mb-1">{module.title}</CardTitle>
-                            <p className="text-sm text-muted-foreground">{module.description}</p>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          {module.lessons.map((lesson, lessonIndex) => (
-                            <Link
-                              key={lesson.id}
-                              href={`/beginner-course/${lesson.slug}`}
-                              data-testid={`link-lesson-${lesson.slug}`}
-                            >
-                              <div className="flex items-center justify-between p-3 rounded-md hover-elevate cursor-pointer group">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">
-                                    {moduleIndex * 5 + lessonIndex + 1 - (moduleIndex > 0 ? (moduleIndex === 1 ? 0 : 1) : 0)}
-                                  </div>
-                                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                                    {lesson.title}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-xs text-muted-foreground">{lesson.duration}</span>
-                                  <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                                </div>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </StaggerItem>
-              ))}
-            </div>
-          </StaggerContainer>
+      <section className="py-12 bg-emerald-50 dark:bg-emerald-950/20 border-t border-emerald-100 dark:border-emerald-900/30">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-4">
+            Ready to Start Your Journey?
+          </h2>
+          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+            Pehla lesson padhne ke baad confidence aayega. Simple Hindi mein samjhao.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link href="/beginner-course/paise-invest-kyu">
+              <Button size="lg" className="gap-2 min-h-[48px] px-8" data-testid="button-beginner-cta-primary">
+                <Play className="w-5 h-5" />
+                Pehla Lesson Shuru Karo
+              </Button>
+            </Link>
+            <Link href="/calculators">
+              <Button variant="outline" size="lg" className="gap-2 min-h-[48px]" data-testid="button-beginner-cta-secondary">
+                Calculators Try Karo
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
-      <CTABlock
-        priyaLine="Pehla lesson padhne ke baad tujhe confidence aayega – chal shuru karte hain!"
-        rohitLine="Haan! Simple Hindi mein toh main bhi samajh jaunga!"
-        primaryButton={{
-          text: "Pehla Lesson Shuru Karo",
-          href: "/beginner-course/paise-invest-kyu",
-          testId: "button-beginner-cta-primary"
-        }}
-        secondaryButton={{
-          text: "Calculators Try Karo",
-          href: "/calculators",
-          testId: "button-beginner-cta-secondary"
-        }}
-      />
-
-      <section className="py-8 border-t">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="py-8 border-t border-slate-200 dark:border-slate-800">
+        <div className="max-w-3xl mx-auto px-4">
           <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
             <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
