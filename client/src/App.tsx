@@ -108,24 +108,37 @@ function Router() {
 function App() {
   const [location] = useLocation();
 
-  const unlockScroll = useCallback(() => {
+  // Debug scroll state
+  const debugScrollState = useCallback(() => {
     const b = document.body;
     const h = document.documentElement;
+    const root = document.getElementById("root");
+    const header = document.getElementById("app-header");
 
-    b.style.overflow = "";
-    b.style.paddingRight = "";
-    b.style.position = "";
-    b.style.top = "";
-    b.style.left = "";
-    b.style.right = "";
-    b.style.width = "";
-    b.style.height = "";
+    console.log("=== SCROLL DEBUG ===");
+    console.log("body overflow:", getComputedStyle(b).overflow);
+    console.log("html overflow:", getComputedStyle(h).overflow);
+    console.log("root overflow:", root ? getComputedStyle(root).overflow : "no root");
+    console.log("header found:", !!header, header?.getBoundingClientRect().height);
+    console.log("active portals:", document.querySelectorAll("[data-radix-portal]").length);
+    console.log("====================");
+  }, []);
 
-    h.style.overflow = "";
-    h.style.paddingRight = "";
+  // Hard reset overflow on all containers
+  const hardResetOverflow = useCallback(() => {
+    const nodes = [document.body, document.documentElement, document.getElementById("root")].filter(Boolean) as HTMLElement[];
 
-    b.removeAttribute("data-scroll-locked");
-    h.removeAttribute("data-scroll-locked");
+    nodes.forEach((el) => {
+      el.style.overflow = "";
+      el.style.overflowY = "";
+      el.style.height = "";
+      el.style.minHeight = "";
+      el.style.position = "";
+      el.style.top = "";
+      el.style.width = "";
+      el.style.paddingRight = "";
+      el.removeAttribute("data-scroll-locked");
+    });
 
     // Clean stale Radix portal nodes
     document.querySelectorAll("[data-radix-portal]").forEach((node) => {
@@ -135,12 +148,18 @@ function App() {
     });
   }, []);
 
-  // Real-time header height tracker with ResizeObserver + VisualViewport
+  // Real-time header height tracker
   const setHeaderOffset = useCallback(() => {
     const header = document.getElementById("app-header");
-    if (!header) return;
+    if (!header) {
+      console.warn("app-header NOT FOUND");
+      return;
+    }
     const height = Math.ceil(header.getBoundingClientRect().height);
-    document.documentElement.style.setProperty("--app-header-offset", `${height}px`);
+    if (height > 0) {
+      document.documentElement.style.setProperty("--app-header-offset", `${height}px`);
+      console.log("header offset set:", height);
+    }
   }, []);
 
   // Force scroll to top on every route change
@@ -150,7 +169,35 @@ function App() {
 
   // ResizeObserver + VisualViewport for robust header offset at all zoom levels
   useEffect(() => {
-    setHeaderOffset();
+    // Retry until we get a valid height (content might load async)
+    let retryCount = 0;
+    const maxRetries = 10;
+    
+    const trySetOffset = () => {
+      const header = document.getElementById("app-header");
+      if (!header) return false;
+      const height = Math.ceil(header.getBoundingClientRect().height);
+      if (height > 0) {
+        document.documentElement.style.setProperty("--app-header-offset", `${height}px`);
+        console.log("header offset set:", height);
+        return true;
+      }
+      return false;
+    };
+
+    // Immediate try
+    if (!trySetOffset()) {
+      // Retry with increasing delays
+      const retryInterval = setInterval(() => {
+        retryCount++;
+        if (trySetOffset() || retryCount >= maxRetries) {
+          clearInterval(retryInterval);
+        }
+      }, 100);
+      
+      // Cleanup interval on unmount
+      setTimeout(() => clearInterval(retryInterval), 2000);
+    }
 
     const header = document.getElementById("app-header");
     if (!header) return;
@@ -167,9 +214,11 @@ function App() {
     window.addEventListener("resize", setHeaderOffset);
     window.addEventListener("load", setHeaderOffset);
 
-    // Also update after route change (fonts/images might load late)
-    const t1 = setTimeout(setHeaderOffset, 50);
-    const t2 = setTimeout(setHeaderOffset, 200);
+    // Additional delayed measurements
+    const t1 = setTimeout(setHeaderOffset, 100);
+    const t2 = setTimeout(setHeaderOffset, 300);
+    const t3 = setTimeout(setHeaderOffset, 500);
+    const t4 = setTimeout(setHeaderOffset, 1000);
 
     return () => {
       ro.disconnect();
@@ -179,66 +228,58 @@ function App() {
       window.removeEventListener("load", setHeaderOffset);
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
     };
   }, [location, setHeaderOffset]);
 
-  // Unconditional unlock on every route change (after render)
+  // Unconditional hard reset on every route change
   useEffect(() => {
-    const t = window.setTimeout(() => unlockScroll(), 0);
-    return () => window.clearTimeout(t);
-  }, [location, unlockScroll]);
+    const t = setTimeout(() => {
+      hardResetOverflow();
+      debugScrollState();
+    }, 0);
+    return () => clearTimeout(t);
+  }, [location, hardResetOverflow, debugScrollState]);
 
+  // Global event listeners for scroll recovery
   useEffect(() => {
-    unlockScroll();
+    hardResetOverflow();
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") hardResetOverflow();
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") hardResetOverflow();
+    };
+
+    window.addEventListener("focus", hardResetOverflow);
+    window.addEventListener("resize", hardResetOverflow);
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("keydown", onKeyDown);
 
     // MutationObserver to catch any scroll-lock that gets stuck
     const observer = new MutationObserver(() => {
-      const bodyOverflow = window.getComputedStyle(document.body).overflow;
-      const hasScrollLock = 
-        bodyOverflow === "hidden" || 
+      const bodyOverflow = getComputedStyle(document.body).overflow;
+      const hasScrollLock =
+        bodyOverflow === "hidden" ||
         document.body.hasAttribute("data-scroll-locked") ||
         document.documentElement.hasAttribute("data-scroll-locked");
-      
-      if (hasScrollLock) {
-        requestAnimationFrame(unlockScroll);
-      }
+
+      if (hasScrollLock) requestAnimationFrame(hardResetOverflow);
     });
 
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["style", "data-scroll-locked"],
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["style", "data-scroll-locked"],
-    });
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        unlockScroll();
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        unlockScroll();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("focus", unlockScroll);
-    window.addEventListener("resize", unlockScroll);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["style", "data-scroll-locked"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["style", "data-scroll-locked"] });
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("focus", unlockScroll);
-      window.removeEventListener("resize", unlockScroll);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", hardResetOverflow);
+      window.removeEventListener("resize", hardResetOverflow);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, [unlockScroll]);
+  }, [hardResetOverflow]);
 
   return (
     <ErrorBoundary>

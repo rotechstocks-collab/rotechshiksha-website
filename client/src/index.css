@@ -37,14 +37,19 @@
 }
 
 /* ===== GLOBAL LAYOUT & OVERFLOW FIX ===== */
-html, body {
-  height: 100%;
-  overflow-x: hidden;
+html, body, #root {
+  height: auto !important;
+  min-height: 100dvh !important;
+  overflow-x: hidden !important;
   max-width: 100vw;
 }
 
+#root {
+  overflow: visible !important;
+}
+
 body {
-  min-height: 100dvh;
+  position: relative !important;
 }
 
 body[data-scroll-locked] {
