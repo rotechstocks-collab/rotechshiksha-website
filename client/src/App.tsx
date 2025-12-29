@@ -134,20 +134,22 @@ function App() {
       if (!header) return;
       const h = header.getBoundingClientRect().height;
       document.documentElement.style.setProperty("--app-header-offset", `${Math.ceil(h)}px`);
+      console.log("header offset set:", getComputedStyle(document.documentElement).getPropertyValue("--app-header-offset"));
     };
 
-    const raf1 = requestAnimationFrame(measure);
+    const raf = requestAnimationFrame(measure);
     const t1 = window.setTimeout(measure, 50);
     const t2 = window.setTimeout(measure, 200);
 
-    const onResize = () => measure();
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
 
     return () => {
-      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("load", measure);
     };
   }, [location]);
 

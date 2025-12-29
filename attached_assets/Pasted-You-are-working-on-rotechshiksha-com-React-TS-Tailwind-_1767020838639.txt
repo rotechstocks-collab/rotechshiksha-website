@@ -1,0 +1,103 @@
+You are working on rotechshiksha.com (React + TS + Tailwind + shadcn + Radix UI + wouter).
+STRICT RULES:
+- DO NOT delete any pages/routes.
+- DO NOT remove or change the top market ticker.
+- Keep SEBI-safe copy rules intact.
+- Make minimal diffs.
+- IMPORTANT: Do NOT add new junk files like attached_assets/Pasted-*.txt. If already added, delete it.
+
+PROBLEM:
+Home page starts too low at 100% zoom because the fixed header (ticker + navbar) height is not applied correctly.
+Pricing page looks fine. This is a layout offset issue, not scroll lock.
+
+GOAL:
+Apply TRUE dynamic header measurement and make <main> padding match the real fixed header height at all zoom levels.
+This must work in Home + every route.
+
+----------------------------------------------------------------
+TASK 1 — Wrap Ticker + Navbar in a single fixed header container (MANDATORY)
+In client/src/App.tsx:
+Find the part where MarketTicker and Navbar/Header are rendered.
+Wrap BOTH inside:
+
+<div id="app-header" className="fixed top-0 left-0 right-0 z-50">
+  ... MarketTicker ...
+  ... Navbar/Header ...
+</div>
+
+IMPORTANT:
+- ticker must remain
+- navbar must remain
+- do not change their content, only wrap
+
+----------------------------------------------------------------
+TASK 2 — Dynamic measurement effect (MANDATORY)
+In client/src/App.tsx, add a useEffect that runs on mount + route change and sets:
+--app-header-offset CSS variable on documentElement.
+
+Use EXACT code:
+
+useEffect(() => {
+  const measure = () => {
+    const header = document.getElementById("app-header");
+    if (!header) return;
+    const h = header.getBoundingClientRect().height;
+    document.documentElement.style.setProperty("--app-header-offset", `${Math.ceil(h)}px`);
+  };
+
+  const raf = requestAnimationFrame(measure);
+  const t1 = window.setTimeout(measure, 50);
+  const t2 = window.setTimeout(measure, 200);
+
+  window.addEventListener("resize", measure);
+  window.addEventListener("load", measure);
+
+  return () => {
+    cancelAnimationFrame(raf);
+    window.clearTimeout(t1);
+    window.clearTimeout(t2);
+    window.removeEventListener("resize", measure);
+    window.removeEventListener("load", measure);
+  };
+}, [location]);
+
+Also add a one-time debug log to confirm it runs:
+console.log("header offset set:", getComputedStyle(document.documentElement).getPropertyValue("--app-header-offset"));
+
+----------------------------------------------------------------
+TASK 3 — Ensure <main> uses the measured offset (MANDATORY)
+Find the <main> element that currently uses pt-14 md:pt-[102px] or any fixed padding.
+Replace ONLY its top padding with:
+pt-[var(--app-header-offset)]
+
+Example:
+<main className="pt-[var(--app-header-offset)] relative z-10 min-h-[100svh] overflow-visible">
+
+If main contains z-0, change to z-10.
+
+----------------------------------------------------------------
+TASK 4 — Add fallback CSS variable + remove overflow traps (MANDATORY)
+In client/src/index.css:
+Append:
+
+:root { --app-header-offset: 104px; }
+html, body { height: 100%; overflow-x: hidden; }
+
+DO NOT set overflow-y hidden globally.
+
+----------------------------------------------------------------
+TASK 5 — Remove junk file created by AI (MANDATORY)
+Delete attached_assets/Pasted-You-are-working-on-rotechshiksha-com-React-TS-Tailwind-*.txt
+This file is useless and should not be in repo.
+
+----------------------------------------------------------------
+VALIDATION (MUST CONFIRM)
+After changes:
+1) At 100% zoom, Home hero must start directly below header (no extra blank gap).
+2) Navigate Home -> Pricing -> Home: still aligned.
+3) Console must print header offset set: e.g. "104px" or similar.
+4) No pages deleted, ticker stays.
+
+Deliver:
+- Show diff summary for App.tsx and index.css
+- Confirm junk file deleted
