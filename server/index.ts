@@ -7,7 +7,7 @@ const app = express();
 const httpServer = createServer(app);
 
 // SECURITY: Trust proxy for rate limiting behind reverse proxy (Replit/Nginx)
-app.set("trust proxy", 1);
+app.set('trust proxy', 1);
 
 declare module "http" {
   interface IncomingMessage {
@@ -71,7 +71,7 @@ app.use((req, res, next) => {
 
     // Log error for debugging but don't crash the server
     console.error(`[ERROR] ${status}: ${message}`, err.stack || err);
-
+    
     res.status(status).json({ message });
     // SECURITY FIX: Do NOT rethrow - this was crashing the server in production
   });
