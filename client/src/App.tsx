@@ -111,15 +111,36 @@ function App() {
   const unlockScroll = useCallback(() => {
     const b = document.body;
     const h = document.documentElement;
+
     b.style.overflow = "";
     b.style.paddingRight = "";
     b.style.position = "";
     b.style.top = "";
+    b.style.left = "";
+    b.style.right = "";
     b.style.width = "";
+    b.style.height = "";
+
     h.style.overflow = "";
     h.style.paddingRight = "";
+
     b.removeAttribute("data-scroll-locked");
     h.removeAttribute("data-scroll-locked");
+
+    // Clean stale Radix portal nodes
+    document.querySelectorAll("[data-radix-portal]").forEach((node) => {
+      if (!node.querySelector("[role='dialog'],[data-state='open'],[data-state='delayed-open']")) {
+        node.remove();
+      }
+    });
+  }, []);
+
+  // Real-time header height tracker with ResizeObserver + VisualViewport
+  const setHeaderOffset = useCallback(() => {
+    const header = document.getElementById("app-header");
+    if (!header) return;
+    const height = Math.ceil(header.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--app-header-offset", `${height}px`);
   }, []);
 
   // Force scroll to top on every route change
@@ -127,31 +148,39 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
-  // Dynamic header height measurement for perfect alignment at all zoom levels
+  // ResizeObserver + VisualViewport for robust header offset at all zoom levels
   useEffect(() => {
-    const measure = () => {
-      const header = document.getElementById("app-header");
-      if (!header) return;
-      const h = header.getBoundingClientRect().height;
-      document.documentElement.style.setProperty("--app-header-offset", `${Math.ceil(h)}px`);
-      console.log("header offset set:", getComputedStyle(document.documentElement).getPropertyValue("--app-header-offset"));
-    };
+    setHeaderOffset();
 
-    const raf = requestAnimationFrame(measure);
-    const t1 = window.setTimeout(measure, 50);
-    const t2 = window.setTimeout(measure, 200);
+    const header = document.getElementById("app-header");
+    if (!header) return;
 
-    window.addEventListener("resize", measure);
-    window.addEventListener("load", measure);
+    const ro = new ResizeObserver(() => setHeaderOffset());
+    ro.observe(header);
+
+    const vv = window.visualViewport;
+    const onVV = () => setHeaderOffset();
+
+    vv?.addEventListener("resize", onVV);
+    vv?.addEventListener("scroll", onVV);
+
+    window.addEventListener("resize", setHeaderOffset);
+    window.addEventListener("load", setHeaderOffset);
+
+    // Also update after route change (fonts/images might load late)
+    const t1 = setTimeout(setHeaderOffset, 50);
+    const t2 = setTimeout(setHeaderOffset, 200);
 
     return () => {
-      cancelAnimationFrame(raf);
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-      window.removeEventListener("resize", measure);
-      window.removeEventListener("load", measure);
+      ro.disconnect();
+      vv?.removeEventListener("resize", onVV);
+      vv?.removeEventListener("scroll", onVV);
+      window.removeEventListener("resize", setHeaderOffset);
+      window.removeEventListener("load", setHeaderOffset);
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
-  }, [location]);
+  }, [location, setHeaderOffset]);
 
   // Unconditional unlock on every route change (after render)
   useEffect(() => {
@@ -227,7 +256,7 @@ function App() {
                   </div>
                   <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
                     <GlobalStoryStrip />
-                    <main className="pt-[var(--app-header-offset)] relative z-10 min-h-[100svh] overflow-visible">
+                    <main className="pt-[var(--app-header-offset)] min-h-[100dvh] relative z-10 overflow-visible">
                       <div className="w-full">
                         <Router />
                       </div>
