@@ -19,6 +19,7 @@ import { HreflangTags } from "@/components/HreflangTags";
 import { MarketTicker } from "@/components/market/MarketTicker";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PageLoadingSkeleton } from "@/components/LoadingSkeleton";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 import Home from "@/pages/Home";
 import NotFound from "@/pages/not-found";
@@ -113,6 +114,7 @@ function App() {
             <LessonLanguageProvider>
               <AuthProvider>
                 <TooltipProvider>
+                  <ScrollToTop />
                   <HreflangTags />
                   <MarketTicker />
                   <div className="min-h-screen bg-background safe-area-top overflow-x-hidden">

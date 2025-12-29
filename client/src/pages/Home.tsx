@@ -705,36 +705,37 @@ export default function Home() {
               No jargon, no confusion – sirf clear understanding.
             </p>
             
+            <div className="flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-4">
+              <span className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span className="font-medium">4.8</span> rating
+              </span>
+              <span className="text-slate-300 dark:text-slate-600">•</span>
+              <span><span className="font-medium">10,000+</span> learners</span>
+              <span className="text-slate-300 dark:text-slate-600">•</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium">100% Free</span>
+            </div>
+
             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm inline-block p-6 md:p-8 mb-4">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/beginner-course" data-testid="link-start-learning-hero">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-start-learning-hero">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6 btn-glow-primary" data-testid="button-start-learning-hero">
                     <Play className="w-5 h-5" />
-                    FREE Course Shuru Karo
+                    Start Level 1 Free
+                    <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
                 <Link href="/calculators" data-testid="link-explore-tools">
                   <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 min-h-[52px] text-base px-6" data-testid="button-explore-tools">
                     <Calculator className="w-5 h-5" />
-                    Tools Dekho
+                    Explore Tools
                   </Button>
                 </Link>
               </div>
               
-              <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
-                <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <CheckCircle className="w-3 h-3 text-emerald-500" />
-                  No Signup Required
-                </span>
-                <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <CheckCircle className="w-3 h-3 text-emerald-500" />
-                  Education Only
-                </span>
-                <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <CheckCircle className="w-3 h-3 text-emerald-500" />
-                  Beginner Friendly
-                </span>
-              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-500 mt-4 text-center">
+                No signup required • Sirf seekhna hai, invest nahi
+              </p>
             </div>
           </motion.div>
           

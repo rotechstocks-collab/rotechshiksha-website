@@ -219,25 +219,69 @@ export default function Learn() {
         variant="default"
       />
 
-      {/* Stats Section */}
-      <section className="py-8 border-b">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4">
-              <div className="text-2xl md:text-3xl font-bold text-primary">8</div>
-              <div className="text-sm text-muted-foreground">Learning Levels</div>
+      {/* Journey Overview Section */}
+      <section className="py-10 bg-gradient-to-b from-primary/5 to-background">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-card border rounded-2xl p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-bold text-center mb-6">
+              Tumhari 8-Level Journey Ka Overview
+            </h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="text-center p-4 bg-primary/5 rounded-xl">
+                <div className="text-2xl md:text-3xl font-bold text-primary">8</div>
+                <div className="text-sm text-muted-foreground">Complete Levels</div>
+              </div>
+              <div className="text-center p-4 bg-primary/5 rounded-xl">
+                <div className="text-2xl md:text-3xl font-bold text-primary">84+</div>
+                <div className="text-sm text-muted-foreground">Video Lessons</div>
+              </div>
+              <div className="text-center p-4 bg-primary/5 rounded-xl">
+                <div className="text-2xl md:text-3xl font-bold text-primary">~8</div>
+                <div className="text-sm text-muted-foreground">Weeks (30 min/day)</div>
+              </div>
+              <div className="text-center p-4 bg-primary/5 rounded-xl">
+                <div className="text-2xl md:text-3xl font-bold text-primary">100%</div>
+                <div className="text-sm text-muted-foreground">Free Forever</div>
+              </div>
             </div>
-            <div className="text-center p-4">
-              <div className="text-2xl md:text-3xl font-bold text-primary">84+</div>
-              <div className="text-sm text-muted-foreground">Video Lessons</div>
+
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl">
+                <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-emerald-700 dark:text-emerald-300 font-bold text-sm">1-3</span>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Foundation Levels</p>
+                  <p className="text-sm text-muted-foreground">Market basics, charts reading, company analysis - samjho market kaise kaam karta hai</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-blue-700 dark:text-blue-300 font-bold text-sm">4-5</span>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Risk & Psychology</p>
+                  <p className="text-sm text-muted-foreground">Paisa bachana seekho, emotions control karo - ye sabse important skills hain</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+                <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-purple-700 dark:text-purple-300 font-bold text-sm">6-8</span>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Advanced Trading</p>
+                  <p className="text-sm text-muted-foreground">Options, Futures, Algo trading - pro-level strategies sikhoge</p>
+                </div>
+              </div>
             </div>
-            <div className="text-center p-4">
-              <div className="text-2xl md:text-3xl font-bold text-primary">100%</div>
-              <div className="text-sm text-muted-foreground">Free Content</div>
-            </div>
-            <div className="text-center p-4">
-              <div className="text-2xl md:text-3xl font-bold text-primary">Hinglish</div>
-              <div className="text-sm text-muted-foreground">Language</div>
+
+            <div className="mt-8 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+              <p className="text-center text-sm md:text-base text-amber-800 dark:text-amber-200">
+                <span className="font-semibold">Complete karne ke baad:</span> Tum ek informed investor banoge jo market samajhta hai, risk manage kar sakta hai, aur apne decisions le sakta hai confidently.
+              </p>
             </div>
           </div>
         </div>

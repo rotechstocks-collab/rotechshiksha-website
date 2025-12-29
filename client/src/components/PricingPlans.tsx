@@ -98,12 +98,18 @@ export function PricingPlans() {
   return (
     <section className="py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="text-center space-y-4 mb-12">
+        <div className="text-center space-y-4 mb-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
             Simple, Transparent Pricing
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Start free and upgrade when you're ready for more personalized learning
+            Core learning FREE hai. Premium plans mein personalized guidance milti hai - live sessions, expert Q&A, aur 1-on-1 support.
+          </p>
+        </div>
+
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-8 max-w-3xl mx-auto">
+          <p className="text-sm text-center text-blue-800 dark:text-blue-200">
+            <span className="font-semibold">Kyun Paid Plans?</span> 8 levels ka content 100% free hai. Par agar aapko live guidance, personal mentorship, ya trading strategies ki deep dive chahiye - toh premium plans help karte hain. Ye optional hai - free content se bhi bahut kuch seekh sakte ho!
           </p>
         </div>
 
@@ -121,8 +127,8 @@ export function PricingPlans() {
                 data-testid={`card-plan-${plan.id}`}
               >
                 {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground">
-                    Most Popular
+                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg">
+                    Best Value
                   </Badge>
                 )}
 
