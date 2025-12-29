@@ -117,10 +117,10 @@ function App() {
                   <ScrollToTop />
                   <HreflangTags />
                   <MarketTicker />
-                  <div className="min-h-screen bg-background safe-area-top overflow-x-hidden">
+                  <div className="min-h-screen bg-background safe-area-top overflow-x-hidden relative">
                     <Header />
                     <GlobalStoryStrip />
-                    <main className="pt-14 md:pt-[102px]">
+                    <main className="pt-14 md:pt-[102px] relative z-0">
                       <div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
                         <Router />
                       </div>

@@ -39,7 +39,7 @@ export function Hero() {
   ];
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center overflow-visible">
       <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
       
       {/* Static blur elements for mobile (no animations for performance) */}

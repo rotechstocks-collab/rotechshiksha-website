@@ -76,7 +76,7 @@ const trustBadges = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f7f9fc' }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#f7f9fc' }}>
       <SEOHead
         title="Pricing Plans - Free vs Paid | Rotech Shiksha Stock Market Course"
         description="Compare Rotech Shiksha pricing plans. Free Starter, Pro Learner, Elite Mentorship. 8 levels FREE forever. Upgrade for personal mentorship & live sessions."
