@@ -180,7 +180,7 @@ export function BeginnerLessonLayout({ lesson }: BeginnerLessonLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background">
       <SEOHead
         title={`${lesson.title} – Rotech Shiksha`}
         description={`Learn ${lesson.title} in simple Hinglish. Beginner-friendly stock market education.`}

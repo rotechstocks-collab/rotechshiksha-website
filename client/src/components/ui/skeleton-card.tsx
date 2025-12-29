@@ -71,7 +71,7 @@ export function SkeletonList({ count = 5 }: { count?: number }) {
 
 export function SkeletonHero() {
   return (
-    <section className="py-16 md:py-24">
+    <section className="pt-10 md:pt-14 pb-8 md:pb-10">
       <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
         <Skeleton className="h-8 w-32 mx-auto rounded-full" />
         <Skeleton className="h-12 w-3/4 mx-auto" />

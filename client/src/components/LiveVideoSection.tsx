@@ -47,7 +47,7 @@ export function LiveVideoSection() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-muted/30 to-background">
+    <section className="py-12 md:py-16 bg-gradient-to-b from-muted/30 to-background">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

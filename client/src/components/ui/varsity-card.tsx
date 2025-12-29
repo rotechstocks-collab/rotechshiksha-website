@@ -236,7 +236,7 @@ export function VarsitySection({
   centered = false,
 }: VarsitySectionProps) {
   return (
-    <section className={cn("py-16 md:py-20", className)}>
+    <section className={cn("py-12 md:py-16", className)}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {(title || subtitle) && (
           <div className={cn("mb-12", centered && "text-center")}>
@@ -278,7 +278,7 @@ export function VarsityHero({
   className,
 }: VarsityHeroProps) {
   return (
-    <section className={cn("py-16 md:py-24 bg-gradient-to-b from-background to-muted/20", className)}>
+    <section className={cn("pt-10 md:pt-14 pb-8 md:pb-10 bg-gradient-to-b from-background to-muted/20", className)}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>

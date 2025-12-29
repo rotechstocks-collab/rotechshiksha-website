@@ -39,7 +39,7 @@ export function Hero() {
   ];
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-visible">
+    <section className="relative pt-12 md:pt-16 pb-10 md:pb-14 overflow-visible">
       <div className="absolute inset-0 bg-gradient-to-br from-[#FDF6F0] via-[#FFEEE4] to-[#FFF5EE] dark:from-background dark:via-background dark:to-background" />
       
       {/* Static blur elements for mobile (no animations for performance) */}
@@ -63,7 +63,7 @@ export function Hero() {
         transition={{ duration: 12, repeat: Infinity, delay: 4 }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 w-full py-16 lg:py-0 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 w-full relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <div className="space-y-8 text-center lg:text-left">
             <FadeInUp delay={0.1}>
