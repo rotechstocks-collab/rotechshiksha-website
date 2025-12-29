@@ -117,10 +117,13 @@ function App() {
                   <ScrollToTop />
                   <HreflangTags />
                   <MarketTicker />
-                  <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden relative">
+                  <div className="min-h-[100svh] bg-background safe-area-top overflow-x-hidden overflow-y-visible relative">
                     <Header />
                     <GlobalStoryStrip />
-                    <main className="pt-14 md:pt-[102px] relative z-0 min-h-[100svh] overflow-visible">
+                    <main 
+                      className="relative z-0 overflow-visible" 
+                      style={{ paddingTop: 'var(--app-header-offset)' }}
+                    >
                       <div className="w-full">
                         <Router />
                       </div>
