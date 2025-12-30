@@ -146,7 +146,7 @@ export function Header() {
 
   return (
     <motion.header 
-      className="fixed top-0 md:top-11 left-0 right-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200/60 dark:border-slate-700/40"
+      className="fixed top-0 md:top-11 left-0 right-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-white/30 dark:border-slate-700/30 shadow-[0_2px_20px_rgba(0,0,0,0.03)]"
       style={{ 
         top: 'env(safe-area-inset-top, 0px)',
       }}

@@ -27,7 +27,7 @@ export function MobileBottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-[60] md:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/60 dark:border-slate-700/40 shadow-sm"
+      className="fixed bottom-0 left-0 right-0 z-[60] md:hidden bg-white/85 dark:bg-slate-900/85 backdrop-blur-2xl border-t border-white/30 dark:border-slate-700/30 shadow-[0_-2px_20px_rgba(0,0,0,0.04)]"
       style={{ 
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         paddingLeft: 'env(safe-area-inset-left, 0px)',

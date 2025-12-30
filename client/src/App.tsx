@@ -121,7 +121,7 @@ function App() {
                     <Header />
                     <GlobalStoryStrip />
                     <main className="pt-14 md:pt-[102px] pb-20 md:pb-0 relative z-0">
-                      <div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
+                      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                         <Router />
                       </div>
                     </main>
