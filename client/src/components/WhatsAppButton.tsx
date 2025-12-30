@@ -61,9 +61,14 @@ export function WhatsAppButton() {
   const [goal, setGoal] = useState("");
   const popupRef = useRef<HTMLDivElement>(null);
 
+  // Auto-trigger popup only on desktop (md+), mobile shows FAB only by default
   useEffect(() => {
     const wasClosedInSession = sessionStorage.getItem(POPUP_CLOSED_KEY);
     if (wasClosedInSession) return;
+    
+    // Check if mobile (< 768px)
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return; // No auto-popup on mobile
 
     let hasTriggered = false;
     const triggerPopup = () => {
@@ -118,6 +123,17 @@ export function WhatsAppButton() {
     return () => window.removeEventListener(WIDGET_OPEN_EVENT, handleOtherWidgetOpen as EventListener);
   }, [isOpen]);
 
+  // Lock body scroll when modal is open on mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isOpen]);
+
   // Dispatch event when this widget opens
   const notifyWidgetOpen = useCallback(() => {
     window.dispatchEvent(new CustomEvent(WIDGET_OPEN_EVENT, { detail: "whatsapp" }));
@@ -167,7 +183,7 @@ export function WhatsAppButton() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-40 md:hidden"
+            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[9998] md:hidden"
             onClick={() => {
               setIsOpen(false);
               setShowForm(false);
@@ -179,8 +195,10 @@ export function WhatsAppButton() {
       
       <div
         ref={popupRef}
-        className="fixed right-3 sm:right-4 z-50"
-        style={{ bottom: 'max(80px, calc(72px + env(safe-area-inset-bottom)))' }}
+        className={`fixed right-3 sm:right-4 ${isOpen ? 'z-[9999]' : 'z-40 md:z-50'}`}
+        style={{ 
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 88px)',
+        }}
         data-testid="floating-whatsapp-container"
       >
         <AnimatePresence>
@@ -236,6 +254,9 @@ export function WhatsAppButton() {
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
               transition={{ duration: 0.2 }}
               className="absolute bottom-16 right-0 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] bg-card border rounded-xl shadow-2xl overflow-hidden"
+              style={{
+                maxHeight: 'calc(100vh - env(safe-area-inset-bottom, 0px) - 180px)',
+              }}
             >
             <div className="bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-4 py-3">
               <div className="flex items-center justify-between">

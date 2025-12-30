@@ -61,7 +61,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pb-20 md:pb-0">
+    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 md:pb-0">
       <div 
         className="max-w-6xl mx-auto px-4 py-8 md:py-12" 
         style={{ paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}

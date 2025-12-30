@@ -89,6 +89,17 @@ export function LiveChat() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  // Lock body scroll when open on mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isOpen]);
+
   const fetchMessages = async () => {
     setIsLoading(true);
     try {
@@ -152,7 +163,10 @@ export function LiveChat() {
     <>
       <Button
         size="lg"
-        className="fixed bottom-20 md:bottom-6 left-2 sm:left-4 z-50 h-12 w-12 md:h-14 md:w-14 rounded-full shadow-lg"
+        className="fixed left-2 sm:left-4 z-40 md:z-50 h-12 w-12 md:h-14 md:w-14 rounded-full shadow-lg"
+        style={{ 
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 88px)',
+        }}
         onClick={handleOpen}
         data-testid="button-open-chat"
       >
@@ -161,7 +175,14 @@ export function LiveChat() {
 
       {isOpen && (
         <div ref={chatRef}>
-        <Card className="fixed bottom-20 md:bottom-24 left-2 sm:left-4 z-50 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] sm:w-80 md:w-96 shadow-xl" data-testid="chat-window">
+        <Card 
+          className="fixed left-2 sm:left-4 z-40 md:z-50 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] sm:w-80 md:w-96 shadow-xl" 
+          style={{ 
+            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 150px)',
+            maxHeight: 'calc(100vh - env(safe-area-inset-bottom, 0px) - 170px)',
+          }}
+          data-testid="chat-window"
+        >
           <CardHeader className="flex flex-row items-center justify-between gap-4 py-3 px-4 border-b">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />

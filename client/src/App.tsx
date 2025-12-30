@@ -126,7 +126,11 @@ function App() {
                       </div>
                     </main>
                     <Footer />
-                    <div className="h-20 md:hidden" aria-hidden="true" />
+                    {/* Spacer for fixed bottom nav on mobile - ensures content isn't hidden behind it */}
+                    <div 
+                      className="md:hidden pb-[calc(env(safe-area-inset-bottom,0px)+88px)]"
+                      aria-hidden="true" 
+                    />
                     <MobileBottomNav />
                     <div className="safe-area-bottom" />
                     <AuthModal />

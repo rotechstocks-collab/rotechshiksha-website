@@ -28,15 +28,16 @@ export function MobileBottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-700/50"
+      className="fixed bottom-0 left-0 right-0 z-[60] md:hidden bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-700/50"
       style={{ 
-        paddingBottom: 'max(8px, env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         paddingLeft: 'env(safe-area-inset-left, 0px)',
         paddingRight: 'env(safe-area-inset-right, 0px)'
       }}
       data-testid="mobile-bottom-nav"
     >
-      <div className="flex items-stretch justify-around h-14">
+      {/* Nav height is 72px (h-[72px]) plus safe-area-inset-bottom */}
+      <div className="flex items-stretch justify-around h-[72px]">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
