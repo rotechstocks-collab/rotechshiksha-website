@@ -86,11 +86,12 @@ export function Header() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className={`gap-1 font-medium ${isDropdownActive(items) ? "bg-accent text-accent-foreground" : ""}`}
+          size="sm"
+          className={`gap-1 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isDropdownActive(items) ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
           data-testid={testId}
         >
           {label}
-          <ChevronDown className="w-4 h-4" />
+          <ChevronDown className="w-3.5 h-3.5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-56">
@@ -146,13 +147,13 @@ export function Header() {
 
   return (
     <motion.header 
-      className="fixed top-0 md:top-11 left-0 right-0 z-40 bg-white/95 dark:bg-background/95 backdrop-blur-md border-b border-slate-100 dark:border-border"
+      className="fixed top-0 md:top-11 left-0 right-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200/60 dark:border-slate-700/40"
       style={{ 
         top: 'env(safe-area-inset-top, 0px)',
       }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <style>{`
         @media (min-width: 768px) {
@@ -160,7 +161,7 @@ export function Header() {
         }
       `}</style>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8" style={{ paddingLeft: 'max(0.75rem, env(safe-area-inset-left))', paddingRight: 'max(0.75rem, env(safe-area-inset-right))' }}>
-        <div className="flex items-center justify-between h-14 md:h-16 gap-2 sm:gap-4 flex-nowrap">
+        <div className="flex items-center justify-between h-14 gap-2 sm:gap-3 flex-nowrap">
           <Link href="/">
             <motion.div
               className="flex items-center cursor-pointer flex-shrink-0"
@@ -176,11 +177,12 @@ export function Header() {
             </motion.div>
           </Link>
 
-          <nav className="hidden xl:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-0.5">
             <Link href="/">
               <Button
                 variant="ghost"
-                className={`font-medium ${isActive("/") && location === "/" ? "bg-accent text-accent-foreground" : ""}`}
+                size="sm"
+                className={`text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isActive("/") && location === "/" ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
                 data-testid="nav-home"
               >
                 {t("nav.home")}
@@ -190,7 +192,8 @@ export function Header() {
             <Link href="/courses">
               <Button
                 variant="ghost"
-                className={`font-medium ${isActive("/courses") ? "bg-accent text-accent-foreground" : ""}`}
+                size="sm"
+                className={`text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isActive("/courses") ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
                 data-testid="nav-courses"
               >
                 {t("nav.courses")}
@@ -200,7 +203,8 @@ export function Header() {
             <Link href="/beginner-course">
               <Button
                 variant="ghost"
-                className={`font-medium ${isActive("/beginner-course") || isActive("/level-1") ? "bg-accent text-accent-foreground" : ""}`}
+                size="sm"
+                className={`text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isActive("/beginner-course") || isActive("/level-1") ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
                 data-testid="nav-learning-path"
               >
                 {t("nav.learningPath") || "Learning Path"}
@@ -216,7 +220,8 @@ export function Header() {
             <Link href="/blog">
               <Button
                 variant="ghost"
-                className={`font-medium ${isActive("/blog") ? "bg-accent text-accent-foreground" : ""}`}
+                size="sm"
+                className={`text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isActive("/blog") ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
                 data-testid="nav-blog"
               >
                 {t("nav.blog")}
@@ -226,7 +231,8 @@ export function Header() {
             <Link href="/live-news">
               <Button
                 variant="ghost"
-                className={`font-medium ${isActive("/live-news") || isActive("/market-news") ? "bg-accent text-accent-foreground" : ""}`}
+                size="sm"
+                className={`text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isActive("/live-news") || isActive("/market-news") ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
                 data-testid="nav-news"
               >
                 {t("nav.news") || "News"}
@@ -236,7 +242,8 @@ export function Header() {
             <Link href="/pricing">
               <Button
                 variant="ghost"
-                className={`font-medium ${isActive("/pricing") ? "bg-accent text-accent-foreground" : ""}`}
+                size="sm"
+                className={`text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white ${isActive("/pricing") ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" : ""}`}
                 data-testid="nav-pricing"
               >
                 {t("nav.pricing")}
@@ -244,8 +251,9 @@ export function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 flex-nowrap">
-            <div className="hidden xl:block w-52">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 flex-nowrap">
+            {/* Desktop search - hidden on mobile/tablet */}
+            <div className="hidden xl:block w-[200px] max-w-[240px]">
               <StockSearch variant="compact" />
             </div>
             
@@ -258,15 +266,15 @@ export function Header() {
               variant="ghost"
               onClick={toggleTheme}
               data-testid="button-theme-toggle"
-              className="hidden lg:flex"
+              className="hidden lg:flex h-9 w-9"
             >
-              {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
             </Button>
 
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-1.5 px-2 sm:px-3" data-testid="button-user-menu">
+                  <Button variant="outline" size="sm" className="gap-1.5 px-2 sm:px-3 h-9 flex-shrink-0" data-testid="button-user-menu">
                     <User className="w-4 h-4" />
                     <span className="hidden sm:inline text-xs">{user?.fullName?.split(" ")[0]}</span>
                   </Button>
@@ -300,10 +308,10 @@ export function Header() {
             ) : (
               <button 
                 onClick={handleLoginClick} 
-                className="flex-shrink-0 flex items-center gap-1 h-9 px-3 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors whitespace-nowrap"
+                className="flex-shrink-0 flex items-center gap-1.5 h-9 px-3 sm:px-4 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-600/50 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors whitespace-nowrap"
                 data-testid="button-login"
               >
-                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <User className="w-4 h-4" />
                 <span>{t("nav.login")}</span>
               </button>
             )}

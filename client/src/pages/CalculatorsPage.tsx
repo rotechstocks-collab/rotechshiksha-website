@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { AllCalculators } from "@/components/Calculators";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calculator, Info, Sparkles } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Calculator, Info, Sparkles, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { FadeInUp, ScaleIn } from "@/components/AnimationWrappers";
 import { FloatingCoins } from "@/components/SmallcaseIllustrations";
 
 export default function CalculatorsPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  
   return (
     <div className="page-bg">
       <section className="relative py-12 overflow-hidden">
@@ -45,6 +49,19 @@ export default function CalculatorsPage() {
             <ScaleIn delay={0.2} className="hidden md:block">
               <FloatingCoins size={120} />
             </ScaleIn>
+          </div>
+          
+          {/* Search input */}
+          <div className="relative max-w-md mt-6">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search calculators..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-10 rounded-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+              data-testid="input-search-calculators"
+            />
           </div>
         </div>
       </section>

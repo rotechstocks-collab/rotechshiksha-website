@@ -3,16 +3,22 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, ArrowRight, Calendar } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { BookOpen, ArrowRight, Calendar, Search } from "lucide-react";
 import { blogPosts, blogCategories, BlogCategory } from "@/content/blog-data";
 import { SEOHead } from "@/components/SEOHead";
 
 export default function Blog() {
   const [activeCategory, setActiveCategory] = useState<BlogCategory | "all">("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredPosts = activeCategory === "all" 
-    ? blogPosts 
-    : blogPosts.filter(post => post.category === activeCategory);
+  const filteredPosts = blogPosts.filter(post => {
+    const matchesCategory = activeCategory === "all" || post.category === activeCategory;
+    const matchesSearch = searchQuery === "" || 
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="page-bg">
@@ -32,6 +38,19 @@ export default function Blog() {
             <p className="text-muted-foreground max-w-xl mx-auto">
               Simple Hinglish me stock market concepts. Beginners ke liye easy-to-read articles.
             </p>
+            
+            {/* Search input */}
+            <div className="relative max-w-md mx-auto mt-6">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                data-testid="input-search-blog"
+              />
+            </div>
           </div>
 
           <div className="flex flex-wrap justify-center gap-2 mb-10">
