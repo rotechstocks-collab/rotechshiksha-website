@@ -13,7 +13,7 @@ import { SEOHead } from "@/components/SEOHead";
 
 export default function About() {
   return (
-    <div className="bg-slate-50 dark:bg-background pt-20">
+    <div className="bg-slate-50 dark:bg-background">
       <SEOHead
         title="About Rotech Shiksha | Stock Market Education Platform"
         description="Learn about Rotech Shiksha - a beginner-friendly stock market education platform founded by Rohit Vaish. Free, honest, and focused on Indian retail investors."

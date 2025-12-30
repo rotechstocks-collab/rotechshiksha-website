@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="page-bg pt-20 flex items-center justify-center">
+      <div className="page-bg flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground">Loading...</div>
       </div>
     );
@@ -65,7 +65,7 @@ export default function Dashboard() {
     : [];
 
   return (
-    <div className="page-bg pt-20">
+    <div className="page-bg">
       <section className="py-8 bg-card/50 border-b">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

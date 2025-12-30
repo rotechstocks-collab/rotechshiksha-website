@@ -248,7 +248,7 @@ export default function PaperTrade() {
 
   if (!isAuthenticated) {
     return (
-      <div className="page-bg pt-20 pb-16">
+      <div className="page-bg pb-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -285,7 +285,7 @@ export default function PaperTrade() {
 
   if (accountLoading) {
     return (
-      <div className="page-bg pt-20 pb-16">
+      <div className="page-bg pb-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
@@ -303,7 +303,7 @@ export default function PaperTrade() {
   }
 
   return (
-    <div className="page-bg pt-20 pb-16">
+    <div className="page-bg pb-16">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

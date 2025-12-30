@@ -729,24 +729,6 @@ export default function Courses() {
           testId: "button-courses-cta-secondary"
         }}
       />
-
-      {/* Disclaimer - Compact */}
-      <section className="py-6 border-t bg-muted/30">
-        <div className="section-container">
-          <div className="flex items-start gap-3 p-3 lg:p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30">
-            <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium mb-0.5">
-                Education Platform
-              </p>
-              <p className="text-xs lg:text-sm text-amber-700 dark:text-amber-300/80">
-                Rotech Shiksha ek education platform hai. Yahan trading tips ya investment advice nahi di jaati.
-                Sabhi content sirf educational purpose ke liye hai.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

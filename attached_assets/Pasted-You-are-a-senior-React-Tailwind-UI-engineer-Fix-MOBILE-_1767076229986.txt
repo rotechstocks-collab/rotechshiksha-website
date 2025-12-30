@@ -1,0 +1,52 @@
+You are a senior React + Tailwind UI engineer. Fix MOBILE UX issues and make the website feel “minimal & classy (varsity style)”.
+
+GOALS:
+1) Mobile header: Login button must never hide. Remove overflow issues.
+2) Remove extra top whitespace across all pages (global fix).
+3) WhatsApp widget/popup must not cover content or bottom nav on mobile.
+4) Footer bottom area must look premium; remove duplicate disclaimers and remove ugly blank space.
+5) Make bottom navigation premium and non-cluttered.
+
+PROJECT CONTEXT:
+- App.tsx currently uses: main className="pt-14 md:pt-[102px]" and adds an extra <div className="h-20 md:hidden" /> spacer after Footer.
+- Many pages add their own pt-20/pt-24 and/or min-h-screen, causing double spacing (example: src/pages/Blog.tsx uses "pt-20").
+- Courses page also has an “Education Platform” disclaimer banner AND Footer already has a disclaimer. This looks duplicate/ugly.
+- On mobile, header has too many items in one row -> login button gets pushed out/cut.
+- WhatsApp popup/float overlaps bottom nav and blocks content.
+
+TASKS (DO THESE CHANGES):
+A) GLOBAL SPACING FIX
+- Create a reusable <PageShell> wrapper component (max-w + px + py) and use it for all pages.
+- Remove page-level "pt-20 / pt-24 / min-h-screen" from pages and rely on PageShell spacing.
+- Use consistent spacing: top padding should be handled only by App.tsx main, not per page.
+- Hero sections should use py-10/py-12 (not min-h-screen).
+
+B) MOBILE HEADER FIX (LOGIN BUTTON MUST SHOW)
+- In Header.tsx: for <lg screens, hide desktop nav links and large search input.
+- Layout for mobile: left = logo, right = (hamburger + login). Keep login as flex-shrink-0.
+- Move search into a Drawer/Sheet opened by hamburger or a search icon.
+- Ensure header row has overflow-hidden and items do not push login out.
+- Add safe-area top padding if needed but no extra blank.
+
+C) WHATSAPP + FLOATING UI FIX
+- In WhatsAppButton.tsx: on mobile, disable auto popup (no large modal by default).
+- Keep only floating WhatsApp button on mobile; popup should open only on click.
+- Position floating button above bottom nav using calc(navHeight + safeArea). No overlap.
+- Ensure z-index stack is correct (bottom nav above content, floating above nav, but not blocking important buttons).
+
+D) FOOTER PREMIUM + NO DUPLICATE DISCLAIMER
+- Keep ONLY ONE disclaimer location (prefer Footer collapsible disclaimer).
+- Remove the extra disclaimer banners from pages like Courses.tsx (Education Platform banner) unless it’s strictly necessary.
+- Improve footer mobile layout: use accordions with tight spacing, better typography, and proper separators.
+- Remove the extra blank space at the bottom:
+  - Remove <div className="h-20 md:hidden" /> from App.tsx
+  - Instead add pb-24 md:pb-0 to main so content clears the bottom nav without creating a huge blank area.
+
+E) BOTTOM NAV RECOMMENDATION
+- Reduce bottom nav to 4 primary tabs (Home, Courses, Tools, Pricing).
+- Move FAQ into hamburger menu (or replace FAQ with “Help” that opens a sheet containing FAQ link + WhatsApp link).
+- Style: minimal pill active state, subtle border-top, background blur, safe-area bottom padding.
+
+DELIVERABLE:
+- Provide exact code edits for App.tsx, Header.tsx, WhatsAppButton.tsx, MobileBottomNav.tsx, and affected pages (Blog.tsx, Courses.tsx, FAQ page).
+- After changes: mobile should scroll smoothly, no extra white space above headings, login button always visible, WhatsApp doesn’t block UI, footer looks premium and clean.

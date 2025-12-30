@@ -165,7 +165,7 @@ export function LiveChat() {
         size="lg"
         className="fixed left-2 sm:left-4 z-40 md:z-50 h-12 w-12 md:h-14 md:w-14 rounded-full shadow-lg"
         style={{ 
-          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 88px)',
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 72px)',
         }}
         onClick={handleOpen}
         data-testid="button-open-chat"
@@ -178,8 +178,8 @@ export function LiveChat() {
         <Card 
           className="fixed left-2 sm:left-4 z-40 md:z-50 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] sm:w-80 md:w-96 shadow-xl" 
           style={{ 
-            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 150px)',
-            maxHeight: 'calc(100vh - env(safe-area-inset-bottom, 0px) - 170px)',
+            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 130px)',
+            maxHeight: 'calc(100vh - env(safe-area-inset-bottom, 0px) - 150px)',
           }}
           data-testid="chat-window"
         >

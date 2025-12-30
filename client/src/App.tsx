@@ -120,17 +120,12 @@ function App() {
                   <div className="min-h-screen bg-background safe-area-top overflow-x-hidden relative">
                     <Header />
                     <GlobalStoryStrip />
-                    <main className="pt-14 md:pt-[102px] relative z-0">
+                    <main className="pt-14 md:pt-[102px] pb-20 md:pb-0 relative z-0">
                       <div className="max-w-[1200px] mx-auto px-3 md:px-6 w-full">
                         <Router />
                       </div>
                     </main>
                     <Footer />
-                    {/* Spacer for fixed bottom nav on mobile - ensures content isn't hidden behind it */}
-                    <div 
-                      className="md:hidden pb-[calc(env(safe-area-inset-bottom,0px)+88px)]"
-                      aria-hidden="true" 
-                    />
                     <MobileBottomNav />
                     <div className="safe-area-bottom" />
                     <AuthModal />

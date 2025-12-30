@@ -15,7 +15,7 @@ export default function Blog() {
     : blogPosts.filter(post => post.category === activeCategory);
 
   return (
-    <div className="page-bg pt-20">
+    <div className="page-bg">
       <SEOHead
         title="Market Gyaan – Stock Market Blog in Hindi | Rotech Shiksha"
         description="Stock market articles in simple Hinglish. Beginner questions answered, no trading tips. Educational content only."

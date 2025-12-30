@@ -197,7 +197,7 @@ export function WhatsAppButton() {
         ref={popupRef}
         className={`fixed right-3 sm:right-4 ${isOpen ? 'z-[9999]' : 'z-40 md:z-50'}`}
         style={{ 
-          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 88px)',
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 72px)',
         }}
         data-testid="floating-whatsapp-container"
       >

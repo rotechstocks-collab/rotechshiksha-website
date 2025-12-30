@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/context/LanguageContext";
-import { Home, BookOpen, Calculator, HelpCircle, CreditCard } from "lucide-react";
+import { Home, BookOpen, Calculator, CreditCard } from "lucide-react";
 
 interface NavItem {
   labelKey: string;
@@ -13,7 +13,6 @@ const navItems: NavItem[] = [
   { labelKey: "nav.home", fallbackLabel: "Home", href: "/", icon: Home },
   { labelKey: "nav.courses", fallbackLabel: "Courses", href: "/courses", icon: BookOpen },
   { labelKey: "nav.tools", fallbackLabel: "Tools", href: "/calculators", icon: Calculator },
-  { labelKey: "nav.faq", fallbackLabel: "FAQ", href: "/faq", icon: HelpCircle },
   { labelKey: "nav.pricing", fallbackLabel: "Pricing", href: "/pricing", icon: CreditCard },
 ];
 
@@ -28,7 +27,7 @@ export function MobileBottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-[60] md:hidden bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-700/50"
+      className="fixed bottom-0 left-0 right-0 z-[60] md:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/60 dark:border-slate-700/40 shadow-sm"
       style={{ 
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         paddingLeft: 'env(safe-area-inset-left, 0px)',
@@ -36,8 +35,8 @@ export function MobileBottomNav() {
       }}
       data-testid="mobile-bottom-nav"
     >
-      {/* Nav height is 72px (h-[72px]) plus safe-area-inset-bottom */}
-      <div className="flex items-stretch justify-around h-[72px]">
+      {/* 4-item nav with minimal pill active state */}
+      <div className="flex items-stretch justify-around h-14">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -45,18 +44,18 @@ export function MobileBottomNav() {
           return (
             <Link key={item.href} href={item.href}>
               <button
-                className={`flex flex-col items-center justify-center flex-1 min-w-[56px] h-full px-1 transition-colors duration-150 ${
+                className={`flex flex-col items-center justify-center min-w-[64px] h-full px-3 transition-all duration-150 rounded-xl mx-0.5 ${
                   active 
-                    ? "text-emerald-600 dark:text-emerald-400" 
+                    ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-900/30" 
                     : "text-slate-500 dark:text-slate-400"
                 }`}
                 data-testid={`mobile-nav-${item.labelKey}`}
               >
                 <Icon 
-                  className="w-5 h-5 mb-1" 
-                  strokeWidth={active ? 2.2 : 1.8}
+                  className="w-5 h-5" 
+                  strokeWidth={active ? 2 : 1.5}
                 />
-                <span className={`text-[10px] leading-none truncate max-w-[48px] text-center ${
+                <span className={`text-[10px] mt-0.5 leading-none ${
                   active ? "font-semibold" : "font-medium"
                 }`}>
                   {t(item.labelKey) || item.fallbackLabel}
