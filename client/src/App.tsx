@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -20,6 +20,7 @@ import { MarketTicker } from "@/components/market/MarketTicker";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PageLoadingSkeleton } from "@/components/LoadingSkeleton";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Home from "@/pages/Home";
 import NotFound from "@/pages/not-found";
@@ -58,50 +59,62 @@ const MarketNews = lazy(() => import("@/pages/MarketNews"));
 const LiveNews = lazy(() => import("@/pages/LiveNews"));
 const Learn = lazy(() => import("@/pages/Learn"));
 
-function Router() {
+function AnimatedRoutes() {
+  const [location] = useLocation();
+
   return (
-    <Suspense fallback={<PageLoadingSkeleton />}>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/courses" component={Courses} />
-        <Route path="/courses/:level" component={Courses} />
-        <Route path="/learn" component={Learn} />
-        <Route path="/learning-path" component={Learn} />
-        <Route path="/learn/level-1" component={Level1Lesson} />
-        <Route path="/learn/level-2" component={Level2Lesson} />
-        <Route path="/learn/level-3" component={Level3Lesson} />
-        <Route path="/learn/level-4" component={Level4Lesson} />
-        <Route path="/learn/level-5" component={Level5Lesson} />
-        <Route path="/learn/level-6" component={Level6Lesson} />
-        <Route path="/learn/level-7" component={Level7Lesson} />
-        <Route path="/learn/level-8" component={Level8Lesson} />
-        <Route path="/compare-brokers" component={BrokerComparison} />
-        <Route path="/economic-calendar" component={EconomicCalendar} />
-        <Route path="/paper-trade" component={PaperTrade} />
-        <Route path="/videos" component={EducationalVideos} />
-        <Route path="/educational-videos" component={EducationalVideos} />
-        <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
-        <Route path="/live-market" component={LiveMarket} />
-        <Route path="/calculators" component={CalculatorHub} />
-        <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
-        <Route path="/calculators/:id" component={GenericCalculator} />
-        <Route path="/pricing" component={PricingPage} />
-        <Route path="/payment/:planId" component={Payment} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/login" component={Login} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/blog/:slug" component={BlogPost} />
-        <Route path="/faq" component={FAQ} />
-        <Route path="/beginner-course" component={BeginnerCourse} />
-        <Route path="/beginner-course/:slug" component={BeginnerLesson} />
-        <Route path="/level-1" component={Level1Course} />
-        <Route path="/market-news" component={MarketNews} />
-        <Route path="/live-news" component={LiveNews} />
-        <Route path="/:rest*" component={NotFound} />
-      </Switch>
-    </Suspense>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.12, ease: "easeInOut" }}
+      >
+        <Suspense fallback={<PageLoadingSkeleton />}>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/courses" component={Courses} />
+            <Route path="/courses/:level" component={Courses} />
+            <Route path="/learn" component={Learn} />
+            <Route path="/learning-path" component={Learn} />
+            <Route path="/learn/level-1" component={Level1Lesson} />
+            <Route path="/learn/level-2" component={Level2Lesson} />
+            <Route path="/learn/level-3" component={Level3Lesson} />
+            <Route path="/learn/level-4" component={Level4Lesson} />
+            <Route path="/learn/level-5" component={Level5Lesson} />
+            <Route path="/learn/level-6" component={Level6Lesson} />
+            <Route path="/learn/level-7" component={Level7Lesson} />
+            <Route path="/learn/level-8" component={Level8Lesson} />
+            <Route path="/compare-brokers" component={BrokerComparison} />
+            <Route path="/economic-calendar" component={EconomicCalendar} />
+            <Route path="/paper-trade" component={PaperTrade} />
+            <Route path="/videos" component={EducationalVideos} />
+            <Route path="/educational-videos" component={EducationalVideos} />
+            <Route path="/loans-credit-cards" component={LoansAndCreditCards} />
+            <Route path="/live-market" component={LiveMarket} />
+            <Route path="/calculators" component={CalculatorHub} />
+            <Route path="/calculators/brokerage" component={BrokerageCalculatorPage} />
+            <Route path="/calculators/:id" component={GenericCalculator} />
+            <Route path="/pricing" component={PricingPage} />
+            <Route path="/payment/:planId" component={Payment} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/admin" component={Admin} />
+            <Route path="/login" component={Login} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/blog/:slug" component={BlogPost} />
+            <Route path="/faq" component={FAQ} />
+            <Route path="/beginner-course" component={BeginnerCourse} />
+            <Route path="/beginner-course/:slug" component={BeginnerLesson} />
+            <Route path="/level-1" component={Level1Course} />
+            <Route path="/market-news" component={MarketNews} />
+            <Route path="/live-news" component={LiveNews} />
+            <Route path="/:rest*" component={NotFound} />
+          </Switch>
+        </Suspense>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
@@ -122,7 +135,7 @@ function App() {
                     <GlobalStoryStrip />
                     <main className="pt-14 md:pt-[102px] pb-20 md:pb-0 relative z-0">
                       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                        <Router />
+                        <AnimatedRoutes />
                       </div>
                     </main>
                     <Footer />
