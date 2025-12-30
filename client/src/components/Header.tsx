@@ -160,7 +160,7 @@ export function Header() {
         }
       `}</style>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8" style={{ paddingLeft: 'max(0.75rem, env(safe-area-inset-left))', paddingRight: 'max(0.75rem, env(safe-area-inset-right))' }}>
-        <div className="flex items-center justify-between h-14 md:h-16 gap-4">
+        <div className="flex items-center justify-between h-14 md:h-16 gap-2 sm:gap-4 flex-nowrap">
           <Link href="/">
             <motion.div
               className="flex items-center cursor-pointer flex-shrink-0"
@@ -244,7 +244,7 @@ export function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 flex-nowrap">
             <div className="hidden xl:block w-52">
               <StockSearch variant="compact" />
             </div>
@@ -300,10 +300,10 @@ export function Header() {
             ) : (
               <button 
                 onClick={handleLoginClick} 
-                className="flex-shrink-0 flex items-center gap-1.5 h-10 px-4 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                className="flex-shrink-0 flex items-center gap-1 h-9 px-3 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors whitespace-nowrap"
                 data-testid="button-login"
               >
-                <User className="w-4 h-4" />
+                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>{t("nav.login")}</span>
               </button>
             )}
