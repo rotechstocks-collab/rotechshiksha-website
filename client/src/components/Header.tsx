@@ -298,10 +298,14 @@ export function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={handleLoginClick} size="sm" className="px-3 sm:px-4" data-testid="button-login">
-                <User className="w-4 h-4 sm:hidden" />
-                <span className="hidden sm:inline">{t("nav.login")}</span>
-              </Button>
+              <button 
+                onClick={handleLoginClick} 
+                className="flex-shrink-0 flex items-center gap-1.5 h-10 px-4 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                data-testid="button-login"
+              >
+                <User className="w-4 h-4" />
+                <span>{t("nav.login")}</span>
+              </button>
             )}
 
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
