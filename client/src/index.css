@@ -660,12 +660,21 @@ html, body {
     @apply bg-slate-50 dark:bg-background;
   }
 
+  /* ===== RESPONSIVE PAGE SECTION (Varsity minimal style) ===== */
+  .page-section {
+    @apply py-8 md:py-12 px-4;
+  }
+
+  .page-hero {
+    @apply pt-8 pb-10 md:pt-12 md:pb-14 px-4;
+  }
+
   /* Legacy utilities for compatibility */
   .section-container {
     @apply max-w-6xl mx-auto px-4;
   }
   .section-padding {
-    @apply py-10 md:py-14;
+    @apply py-8 md:py-12;
   }
 }
 

@@ -249,13 +249,14 @@ export function WhatsAppButton() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.9 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute bottom-16 right-0 w-[min(20rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] bg-card border rounded-xl shadow-2xl overflow-hidden"
+              className="fixed md:absolute left-0 md:left-auto right-0 w-full md:w-80 md:max-w-[calc(100vw-2rem)] bg-card md:border md:rounded-xl rounded-t-2xl shadow-2xl overflow-hidden"
               style={{
-                maxHeight: 'calc(100vh - env(safe-area-inset-bottom, 0px) - 180px)',
+                bottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
+                maxHeight: 'min(60vh, calc(100vh - 180px))',
               }}
             >
             <div className="bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-4 py-3">

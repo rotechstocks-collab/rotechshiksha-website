@@ -35,7 +35,6 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { StockSearch } from "./StockSearch";
 import { LanguageSelector } from "./LanguageSelector";
 import { motion } from "framer-motion";
 import logoImage from "@assets/generated_images/professional_rotech_shiksha_logo.png";
@@ -252,11 +251,6 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 flex-nowrap">
-            {/* Desktop search - hidden on mobile/tablet */}
-            <div className="hidden xl:block w-[200px] max-w-[240px]">
-              <StockSearch variant="compact" />
-            </div>
-            
             <div className="hidden lg:block">
               <LanguageSelector />
             </div>
@@ -308,11 +302,11 @@ export function Header() {
             ) : (
               <button 
                 onClick={handleLoginClick} 
-                className="flex-shrink-0 flex items-center gap-1.5 h-9 px-3 sm:px-4 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-600/50 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors whitespace-nowrap"
+                className="flex-shrink-0 flex items-center gap-1 h-8 px-2.5 sm:px-3 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-600/50 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 data-testid="button-login"
               >
                 <User className="w-4 h-4" />
-                <span>{t("nav.login")}</span>
+                <span className="hidden sm:inline">{t("nav.login")}</span>
               </button>
             )}
 
